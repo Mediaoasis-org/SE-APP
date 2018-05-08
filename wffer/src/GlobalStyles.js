@@ -49,8 +49,10 @@ export const gstyles = StyleSheet.create({
 		height:24,
 		width:24
 	},
+	drawerView:{width:'100%',flexDirection:'row'},
 	drawertitleHeadingText:{backgroundColor:'#eee',padding:10,color:'#333',borderBottomColor:'#dedede',borderBottomWidth:1,fontSize:16,fontWeight:'bold'},
-	drawertitleNormalText:{padding:10,color:'#333',fontSize:16},
+	drawertitleNormalText:{padding:10,color:'#333',fontSize:16,width:'80%'},
+	drawerImage:{marginTop:10,marginLeft:10,marginRight:0,width:24,height:24,flexDirection:'column'},
 	flatimage:{ 
 	  height: 150,
 	  width: '100%',
