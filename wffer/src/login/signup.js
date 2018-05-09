@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import {gstyles} from '../GlobalStyles';
+import CheckBox from 'react-native-checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 // const window= Dimensions.get('window');
@@ -23,6 +24,7 @@ export class SignupComponent extends Component {
 		this.state={
 			email:'',
 			password:'',
+			 checked: false,
 		}
 		// alert(JSON.stringify(this.props.navigation))
 	}
@@ -45,13 +47,30 @@ export class SignupComponent extends Component {
 							<TextInput name="confirm_password" placeholder="Confirm Password" secureTextEntry={true} underlineColorAndroid="#fff" style={{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'}}/>	
 							<View>
 									<ModalDropdown 
-					                
-					                	dropdownTextStyle={{fontSize: 18, color: '#000',margin:10,padding:10}}
-		                				textStyle={{color: '#000', fontSize: 18,margin:10,padding:10}}
-					                	dropdownStyle={{width:'100%',margin:2,padding:5}}
-					                	defaultValue='2001'
-					                	options={['2001', '2002', '2003','2004','2005','2006','2007','2008','2009','2010']}/>
+					                	style={{borderWidth:1,borderColor:'#ccc',margin:10,padding:5}}
+					                	dropdownTextStyle={{fontSize: 18, color: '#000',padding:10}}
+		                				textStyle={{color: '#000', fontSize: 18,padding:10}}
+					                	dropdownStyle={{width:'100%',padding:5,}}
+					                	defaultValue='Select Time Zone'
+					                	options={['Saudi','India','America']}/>
 							</View>
+							<View>
+									<ModalDropdown 
+					                	style={{borderWidth:1,borderColor:'#ccc',margin:10,padding:5}}
+					                	dropdownTextStyle={{fontSize: 18, color: '#000',padding:10}}
+		                				textStyle={{color: '#000', fontSize: 18,padding:10}}
+					                	dropdownStyle={{width:'100%',padding:5}}
+					                	defaultValue='Select Language'
+					                	options={['English','Saudi Arabia Arabic']}/>
+							</View>
+							<View style={{flexDirection: 'row',padding: 15,width:'100%'}}>
+								<CheckBox
+								  label='I have read and agreed to the terms and services'
+								  labelStyle={{color:'#000',fontSize:16}}
+								  onClick={() => this.setState({checked: !checked})}
+								/>
+				   			</View>
+				   			<View style={{flexDirection: 'row',justifyContent:'center',width:'100%'}}><TouchableOpacity><Text style={{color:'#62C462',fontSize:16}}>Click Here</Text></TouchableOpacity><Text style={{fontSize:16}}> to read the terms of service</Text></View>
 							<TouchableOpacity onPress={()=>alert('submit')} style={{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'}}><Text style={{color:'#fff',fontSize:16,fontWeight:'bold'}}>Submit</Text></TouchableOpacity>
 							
 						</View>

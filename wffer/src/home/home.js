@@ -11,6 +11,7 @@ ScrollView
 } from 'react-native';
 import {gstyles} from '../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { HeaderComponent } from '../header';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 // const window= Dimensions.get('window');
 
@@ -25,11 +26,7 @@ export class HomeComponent extends Component {
 	render(){
 		return(
 				<View style={gstyles.container}>
-					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
-									<Icon name="bars" size={24} color="#fff" />
-			                    </TouchableOpacity>
-					</View>
+					<HeaderComponent />
 					<ScrollView>
 					<View style={{width:'100%',flexDirection:'row'}}>
 						<FlatList numColumns={2} data={[{id: 1,name:'Puck Cream Cheese Spread 500 g',discount:'40% Off',company:'Panda',category:'Dairy',price:'15.70 SAR',discountedPrice:'9.48 SAR'}, 

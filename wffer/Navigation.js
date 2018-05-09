@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { HomeComponent } from './src/home/home';
 import { LoginComponent } from './src/login/login';
 import { SignupComponent } from './src/login/signup';
+import { ForgetComponent } from './src/login/forgetPassword';
+import { HeaderComponent } from './src/header';
 import { gstyles } from './src/GlobalStyles';
 class DrawerTitle extends React.Component{
 constructor(props) {
@@ -76,11 +78,17 @@ const stack = createStackNavigator({
 	Home:{
 		screen: HomeComponent,
 	},
+  Header:{
+    screen: HeaderComponent,
+  },
   Login:{
     screen: LoginComponent,
   },
   Signup:{
     screen: SignupComponent,
+  },
+  ForgetPassword : {
+    screen : ForgetComponent
   }
 },
 {
@@ -99,6 +107,9 @@ const DrawerStack = createDrawerNavigator({
 {
   drawerBackgroundColor:'#fff',
   drawerWidth: 300,
+  drawerOpenRoute: 'DrawerOpen',
+        drawerCloseRoute: 'DrawerClose',
+        drawerToggleRoute: 'DrawerToggle',
   // drawerPosition:'right',
   gesturesEnabled: false,
   contentComponent:({navigation}) => <DrawerTitle navigation={navigation}/>

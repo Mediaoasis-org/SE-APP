@@ -9,9 +9,11 @@
   "dependencies": {
     "react": "16.3.1",
     "react-native": "0.55.3",
+    "react-native-checkbox": "^2.0.0",
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-vector-icons": "^4.6.0",
-    "react-navigation": "^2.0.0-rc.9"
+    
+    "react-navigation":"^1.0.3"
   },
   "devDependencies": {
     "babel-jest": "22.4.3",
