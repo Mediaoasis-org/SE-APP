@@ -11,6 +11,7 @@ import {
   ScrollView
 } from 'react-native';
 import {gstyles} from '../GlobalStyles';
+import { DrawerActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 // const window= Dimensions.get('window');
@@ -30,9 +31,10 @@ export class ForgetComponent extends Component {
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
-									<Icon name="bars" size={24} color="#fff" />
+								<TouchableOpacity onPress={() =>this.props.navigation.goBack() } style={gstyles.headerMenuButton}>
+									<Icon name="angle-left" size={30} color="#fff" />
 			                    </TouchableOpacity>
+			                    
 					</View>
 					<ScrollView>
 						<View style={{width:'100%',alignItems:'center'}}><Text style={{padding:10,fontSize:20}}>Forget Password</Text></View>

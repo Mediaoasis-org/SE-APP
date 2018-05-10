@@ -12,8 +12,7 @@
     "react-native-checkbox": "^2.0.0",
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-vector-icons": "^4.6.0",
-    
-    "react-navigation":"^1.0.3"
+    "react-navigation": "^2.0.0-rc.9"
   },
   "devDependencies": {
     "babel-jest": "22.4.3",

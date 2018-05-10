@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {gstyles} from '../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { DrawerActions } from 'react-navigation';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 // const window= Dimensions.get('window');
 
@@ -28,10 +29,11 @@ export class LoginComponent extends Component {
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
 	render(){
+		// const navigation = this.props.navigation;
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.popToTop()} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 					</View>

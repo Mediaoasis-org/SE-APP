@@ -45,6 +45,20 @@ export const gstyles = StyleSheet.create({
 		},
   	})
 	},
+	headerBackButton: {
+	...Platform.select({
+		ios:{
+			position: 'absolute', 
+			paddingTop:22,
+			left: 40,
+		},
+		android:{
+			position: 'absolute', 
+			paddingTop:10,
+			left: 30,
+		},
+  	})
+	},
 	menuicon:{
 		height:24,
 		width:24
