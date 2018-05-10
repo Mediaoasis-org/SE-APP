@@ -7,7 +7,7 @@ import { HomeComponent } from './src/home/home';
 import { LoginComponent } from './src/login/login';
 import { SignupComponent } from './src/login/signup';
 import { ForgetComponent } from './src/login/forgetPassword';
-import { HeaderComponent } from './src/header';
+// import { HeaderComponent } from './src/header';
 import { gstyles } from './src/GlobalStyles';
 import {DrawerTitle} from './src/components/sideMenu';
 
@@ -24,9 +24,9 @@ const stack = createStackNavigator({
 	Home:{
 		screen: HomeComponent,
 	},
-  Header:{
-    screen: HeaderComponent,
-  },
+  // Header:{
+  //   screen: HeaderComponent,
+  // },
   Login:{
     screen: LoginComponent,
   },
