@@ -9,7 +9,8 @@ Image,
 FlatList,
 ScrollView
 } from 'react-native';
-import {gstyles} from './GlobalStyles';
+import {gstyles} from '../GlobalStyles';
+import { DrawerActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 export class HeaderComponent extends Component<Props> {
 	constructor(props){
@@ -19,7 +20,7 @@ export class HeaderComponent extends Component<Props> {
 	render(){
 		return(
 				<View style={gstyles.headerMenu}>
-							<TouchableOpacity onPress={() => this.props.navigation.navigate('DrawerOpen')} style={gstyles.headerMenuButton}>
+							<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
 								<Icon name="bars" size={24} color="#fff" />
 		                    </TouchableOpacity>
 				</View>

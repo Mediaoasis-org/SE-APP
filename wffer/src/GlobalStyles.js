@@ -45,6 +45,26 @@ export const gstyles = StyleSheet.create({
 		},
   	})
 	},
+	headerProfileLabel:{
+		...Platform.select({
+	    ios:{
+	      paddingTop:22,
+	      position: 'absolute',
+	      top:5,
+	      fontSize:18,
+	      letterSpacing: 3,
+	      color: '#fff',
+	     },
+	     android:{
+	      paddingTop:8,
+	      position: 'absolute',
+	      top:5,
+	      fontSize:18,
+	      letterSpacing: 3,
+	      color: '#fff',
+	     },
+	  })
+	},
 	headerBackButton: {
 	...Platform.select({
 		ios:{

@@ -10,7 +10,8 @@ import {
   FlatList,
   ScrollView
 } from 'react-native';
-import {gstyles} from '../GlobalStyles';
+import {gstyles} from '../../GlobalStyles';
+import {Constants} from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
@@ -36,6 +37,7 @@ export class LoginComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>{Constants.Login}</Text>
 					</View>
 					<ScrollView>
 						<View style={{width:'100%',alignItems:'center'}}><Text style={{padding:10,fontSize:20}}>Sign In</Text></View>

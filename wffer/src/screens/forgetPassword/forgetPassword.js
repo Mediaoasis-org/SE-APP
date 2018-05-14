@@ -10,8 +10,9 @@ import {
   FlatList,
   ScrollView
 } from 'react-native';
-import {gstyles} from '../GlobalStyles';
+import {gstyles} from '../../GlobalStyles';
 import { DrawerActions } from 'react-navigation';
+import {Constants} from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 // const window= Dimensions.get('window');
@@ -34,6 +35,7 @@ export class ForgetComponent extends Component {
 								<TouchableOpacity onPress={() =>this.props.navigation.goBack() } style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={30} color="#fff" />
 			                    </TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>{Constants.forgetPassword}</Text>
 			                    
 					</View>
 					<ScrollView>

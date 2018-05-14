@@ -3,12 +3,18 @@ import React, { Component } from 'react';
 import { View,ScrollView,Text,Image,TouchableOpacity } from 'react-native';
 import { SwitchNavigator,SafeAreaView,createStackNavigator,createDrawerNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { HomeComponent } from './src/home/home';
-import { LoginComponent } from './src/login/login';
-import { SignupComponent } from './src/login/signup';
-import { ForgetComponent } from './src/login/forgetPassword';
-// import { HeaderComponent } from './src/header';
+import { HomeComponent } from './src/screens/home/home';
+import { LoginComponent } from './src/screens/login/login';
+import { SignupComponent } from './src/screens/signUp/signup';
+import { ForgetComponent } from './src/screens/forgetPassword/forgetPassword';
+import { HeaderComponent } from './src/screens/header';
+import { Catalog } from './src/screens/catalog/catalog';
+import { CatalogItems } from './src/screens/catalog/catalogItems';
+import { Products } from './src/screens/category/categoryProducts';
+import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
+
 import { gstyles } from './src/GlobalStyles';
+
 import {DrawerTitle} from './src/components/sideMenu';
 
 // const navigateOnce = (getStateForAction) => (action, state) => {
@@ -35,6 +41,18 @@ const stack = createStackNavigator({
   },
   ForgetPassword : {
     screen : ForgetComponent
+  },
+  Catalog:{
+    screen:Catalog,
+  },
+  CatalogItems:{
+    screen:CatalogItems
+  },
+  Products:{
+    screen:Products
+  },
+  SpecialOffers:{
+    screen:SpecialOffers
   }
 },
 {

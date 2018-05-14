@@ -10,7 +10,7 @@ ScrollView
 } from 'react-native';
 import {gstyles} from '../GlobalStyles';
 import { SafeAreaView} from 'react-navigation';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
+// import Icon from 'react-native-vector-icons/dist/FontAwesome';
 export class DrawerTitle extends React.Component{
   constructor(props) {
       super(props);
@@ -34,26 +34,26 @@ export class DrawerTitle extends React.Component{
 
         		<View>
   	      		<Text style={gstyles.drawertitleHeadingText}> Shopping</Text>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Catalog</Text></View>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Catalog')}><Image source={require('../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Catalog</Text></TouchableOpacity>
   	      		<View style={gstyles.drawerView}><Image source={require('../../assets/shopping-basket.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> My Shopping List</Text></View>
   	      		<View style={gstyles.drawerView}><Image source={require('../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Create New List</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Special Offer</Text></View>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('SpecialOffers')}><Image source={require('../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Special Offer</Text></TouchableOpacity>
   	      		<View style={gstyles.drawerView}><Image source={require('../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Store Locator</Text></View>
         		</View>
 
         		<View>
             <Text style={gstyles.drawertitleHeadingText}>Categories</Text>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> All Categories</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/bakery-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> All Food and Bakery</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/beverages-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Beverages</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/canned-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Canned and Jarred Food</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/cleaner-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Cleaner</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/dairy-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Diary</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/baking-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Dry Backing Food</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/frozen-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Frozen Goods</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/grocery-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Grocerry</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/dispo-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Paper Disposable</Text></View>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../assets/personal-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Personal Care</Text></View>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'All Categories'})}}><Image source={require('../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> All Categories</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'All Food and Baker'})}}><Image source={require('../../assets/bakery-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> All Food and Bakery</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Beverages'})}}><Image source={require('../../assets/beverages-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Beverages</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Canned and Jarred Food'})}}><Image source={require('../../assets/canned-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Canned and Jarred Food</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Cleaner'})}}><Image source={require('../../assets/cleaner-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Cleaner</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Diary'})}}><Image source={require('../../assets/dairy-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Diary</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Dry Baking Foods'})}}><Image source={require('../../assets/baking-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Dry Baking Food</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Frozen Goods'})}}><Image source={require('../../assets/frozen-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Frozen Goods</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Grocerry'})}}><Image source={require('../../assets/grocery-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Grocerry</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Paper Disposable'})}}><Image source={require('../../assets/dispo-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Paper Disposable</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Personal Care'})}}><Image source={require('../../assets/personal-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Personal Care</Text></TouchableOpacity>
         		</View>
 
         		<View style={{marginBottom:20}}>

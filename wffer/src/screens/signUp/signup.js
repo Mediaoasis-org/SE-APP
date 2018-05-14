@@ -11,8 +11,9 @@ import {
   ScrollView,
 
 } from 'react-native';
+import {Constants} from '../../common';
 import ModalDropdown from 'react-native-modal-dropdown';
-import {gstyles} from '../GlobalStyles';
+import {gstyles} from '../../GlobalStyles';
 import CheckBox from 'react-native-checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
@@ -39,6 +40,7 @@ export class SignupComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>{Constants.Signup}</Text>
 					</View>
 					<ScrollView>
 						<View style={{width:'100%',alignItems:'center'}}><Text style={{padding:10,fontSize:20}}>Sign Up</Text></View>

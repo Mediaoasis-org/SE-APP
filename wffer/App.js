@@ -5,6 +5,8 @@ import {
   Text,
   View
 } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import MyNavigation from './Navigation';
 import SplashScreen from './SplashScreen';
 type Props = {};
