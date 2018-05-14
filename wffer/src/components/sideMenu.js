@@ -10,7 +10,7 @@ ScrollView
 } from 'react-native';
 import {gstyles} from '../GlobalStyles';
 import { SafeAreaView} from 'react-navigation';
-// import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 export class DrawerTitle extends React.Component{
   constructor(props) {
       super(props);
