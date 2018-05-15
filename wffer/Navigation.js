@@ -11,6 +11,7 @@ import { HeaderComponent } from './src/screens/header';
 import { Catalog } from './src/screens/catalog/catalog';
 import { CatalogItems } from './src/screens/catalog/catalogItems';
 import { Products } from './src/screens/category/categoryProducts';
+import { ProductDetails } from './src/screens/category/categoryItems';
 import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
 
 import { gstyles } from './src/GlobalStyles';
@@ -50,6 +51,9 @@ const stack = createStackNavigator({
   },
   Products:{
     screen:Products
+  },
+  ProductDetails:{
+    screen:ProductDetails
   },
   SpecialOffers:{
     screen:SpecialOffers

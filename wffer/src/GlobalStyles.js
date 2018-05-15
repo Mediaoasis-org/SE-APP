@@ -95,4 +95,5 @@ export const gstyles = StyleSheet.create({
 	  fontSize: 18,
 	  color: '#000',
 	},
+	likeButton:{width:'45%',padding:10,backgroundColor:'#e9ebee',borderColor:'#ddd',borderWidth:1,margin:10,justifyContent:'center'},
 })

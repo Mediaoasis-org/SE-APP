@@ -9,6 +9,7 @@ export default {
   Signup:"Sign Up",
   Login:"Sign In",
   forgetPassword:"Forget Password",
+  specialOffer:"Special Offers",
   // for right to left language
   RTL: false,
 
