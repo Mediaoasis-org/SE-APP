@@ -1,16 +1,6 @@
 import React, { Component,PureComponent } from 'react';
 import { withNavigation } from 'react-navigation';
-import {
-  Text,
-  View,
-  Dimensions,
-TouchableOpacity,
-TouchableHighlight,
-Image,
-FlatList,
-ScrollView,
-Modal
-} from 'react-native';
+import { Text,View,Dimensions,TouchableOpacity,TouchableHighlight,Image,FlatList,ScrollView,Modal} from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {Constants} from '../../common';

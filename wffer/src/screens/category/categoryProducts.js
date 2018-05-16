@@ -17,7 +17,7 @@ import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {Constants} from '../../common';
 import { DrawerActions } from 'react-navigation';
-import {FlatlistComponent} from '../../components/FlatlistComponent';
+// import { CategoryListComponent } from '../../components/CategoryList';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 // const window= Dimensions.get('window');
 
@@ -60,6 +60,7 @@ export class Products extends Component {
 					</View>
 					<ScrollView>
 					<View style={{width:'100%',flexDirection:'row'}}>
+
 						<FlatList numColumns={1} data={[{id: '1',name:'Puck Cream Cheese Spread 500 g',discount:'40% Off',company:'Panda',category:'Dairy',price:'15.70 SAR',discountedPrice:'9.48 SAR',offerEnd:'16-5-18'},{id: '2',name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},	{id: '3',name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'17-5-18'},{id: '4',name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},
 														{id: '5',name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'17-5-18'}]}
 	                		removeClippedSubviews
@@ -80,8 +81,9 @@ export class Products extends Component {
 	                    }
 	                keyExtractor={(item, index) => index.toString()}
 	              />
+
 					</View>
-					
+						
 					</ScrollView>
 				</View>
 			);

@@ -13,10 +13,12 @@ import { CatalogItems } from './src/screens/catalog/catalogItems';
 import { Products } from './src/screens/category/categoryProducts';
 import { ProductDetails } from './src/screens/category/categoryItems';
 import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
+import { CreateWishlistComponent } from './src/screens/newList/createNewList';
+import { ShoppingListComponent } from './src/screens/shoppingList/shoppingList';
 
 import { gstyles } from './src/GlobalStyles';
 
-import {DrawerTitle} from './src/components/sideMenu';
+import {DrawerTitle} from './src/components/SideMenu/index';
 
 // const navigateOnce = (getStateForAction) => (action, state) => {
 //   const {type, routeName} = action;
@@ -57,6 +59,12 @@ const stack = createStackNavigator({
   },
   SpecialOffers:{
     screen:SpecialOffers
+  },
+  CreateWishlist:{
+    screen:CreateWishlistComponent
+  },
+  ShoppingList:{
+    screen:ShoppingListComponent,
   }
 },
 {
