@@ -38,7 +38,7 @@ export class DrawerTitle extends React.Component{
   	      		<TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.drawerView}><Image source={require('../../../assets/shopping-basket.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> My Shopping List</Text></TouchableOpacity>
   	      		<TouchableOpacity onPress={()=>this.props.navigation.navigate('CreateWishlist')} style={gstyles.drawerView}><Image source={require('../../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Create New List</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('SpecialOffers')}><Image source={require('../../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Special Offer</Text></TouchableOpacity>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Store Locator</Text></View>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('StoreLocator')}><Image source={require('../../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Store Locator</Text></TouchableOpacity>
         		</View>
 
         		<View>

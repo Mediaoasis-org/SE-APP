@@ -21,46 +21,80 @@ import Accordion from 'react-native-collapsible/Accordion';
 
 const SECTIONS = [
   {
-    title: 'First',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'},
+    title: 'My Shopping List',
+    listname:'qwerty',
+    product:'oil'
+
+  },
   {
-    title: 'Second',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'},
+    title: 'Recommended List',
+     listname:''
+  },
   
 ];
 export class ShoppingListComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
-			name:'',
-			note:''
+      activeSection: false,
+    collapsed: true
 		}
 		// alert(JSON.stringify(this.props.navigation))
 	}
+	  
 
-	_renderSectionTitle(section) {
-    return (
-      <View style={styles.content}>
-        <Text>{section.content}</Text>
-      </View>
-    );
-  }
+
+	 // _renderSectionTitle(section) {
+  //   return (
+  //     <View style={styles.title}>
+  //       <Text>{section.title}</Text>
+  //     </View>
+  //   );
+  // }
 
   _renderHeader(section) {
     return (
       <View style={styles.header}>
-        <Text style={styles.headerText}>{section.title}</Text>
+        <Icon name="angle-down" size={24} color="#000" style={{flexDirection:'column'}} /> <Text style={styles.headerText}> {section.title}</Text>
       </View>
     );
   }
 
   _renderContent(section) {
-    return (
-      <View style={styles.content}>
-        <Text>{section.content}</Text>
-      </View>
-    );
+     
+        if(section.listname!=""){
+            return (
+            <View style={styles.content}>
+           
+                  <Text style={styles.shoppingText}>shopping list found</Text>
+                  <View style={{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,flexDirection:'row'}}>
+                      <View style={{flexDirection:'column',width:'20%'}}>
+                          <Image source={require('../../../assets/nophoto.png')} resizeMode="contain" style={{width:'100%'}}/>
+                      </View>
+                      <View style={{flexDirection:'column',width:'80%'}}>
+                          <Text style={{fontSize:16,fontWeight:'bold',marginTop:5}}>{section.listname}</Text>
+                          <Text style={{marginTop:5}}>0 entries</Text>
+                          <Text style={{marginTop:5}}>Wed at 5:18 PM</Text>
+                          <Text style={{marginTop:5}}>list note</Text>
+                      </View>
+                  </View>
+            </View>
+            );
+        }
+        else
+        {
+            return(
+                <View style={styles.content}>
+                  <Text style={styles.shoppingText}>No data found</Text>
+                </View>
+            );
+  
+        }
+      
+      
   }
+
+ 
 
 	render(){
 		return(
@@ -72,10 +106,12 @@ export class ShoppingListComponent extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
 					</View>
 					<Accordion
-					  sections={['Section 1', 'Section 2', 'Section 3']}
-					  renderSectionTitle={this._renderSectionTitle}
+        	  sections={SECTIONS}
+					
 					  renderHeader={this._renderHeader}
 					  renderContent={this._renderContent}
+					 
+
 					/>;
 			</View>
 		)
@@ -88,20 +124,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF'
   },
   title: {
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 22,
     fontWeight: '300',
     marginBottom: 20
   },
   header: {
-    backgroundColor: '#F5FCFF',
-    padding: 10
+    backgroundColor: '#F5FCCC',
+    padding: 10,
+    flexDirection:'row'
   },
   headerText: {
-    textAlign: 'center',
-    fontSize: 16,
+    // textAlign: 'center',
+    flexDirection:'column',
+    fontSize: 18,
     fontWeight: '500',
     color:'#000'
+  },
+  shoppingText:{
+    fontSize:20
   },
   content: {
     padding: 20,

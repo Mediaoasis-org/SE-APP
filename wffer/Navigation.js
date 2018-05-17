@@ -15,7 +15,7 @@ import { ProductDetails } from './src/screens/category/categoryItems';
 import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
 import { CreateWishlistComponent } from './src/screens/newList/createNewList';
 import { ShoppingListComponent } from './src/screens/shoppingList/shoppingList';
-
+import { StoreLocatorComponent } from './src/screens/storeLocality/storeLocator';
 import { gstyles } from './src/GlobalStyles';
 
 import {DrawerTitle} from './src/components/SideMenu/index';
@@ -65,6 +65,9 @@ const stack = createStackNavigator({
   },
   ShoppingList:{
     screen:ShoppingListComponent,
+  },
+  StoreLocator:{
+    screen:StoreLocatorComponent
   }
 },
 {
