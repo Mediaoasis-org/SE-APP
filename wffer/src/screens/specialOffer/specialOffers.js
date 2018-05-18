@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { withNavigation } from 'react-navigation';
-import { Text, View, Dimension, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Text, View, Dimension, TouchableOpacity, Image, ScrollView,Platform,TextInput } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -11,6 +11,9 @@ import { SpecialOfferComponent } from '../../components/specialOffer';
 export class SpecialOffers extends Component {
     constructor(props){
     	super(props);
+    	this.state={
+    		search:''
+    	}
     }
     removeCompleted = () => {
 	    const {dispatch} = this.props
@@ -26,6 +29,18 @@ export class SpecialOffers extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.specialOffer}</Text>
 					</View>
 					<ScrollView>
+					<View style={{width:'100%',flexDirection:'row',padding:10}}>
+						<TouchableOpacity style={{width:'8%',flexDirection:'column'}}><Icon name="search" size={24} color="#ccc" /></TouchableOpacity>
+						<TextInput 
+	                        style={{width:'90%',flexDirection:'column',...Platform.select({android:{padding:0}})}}
+	                        placeholder="Search Product"
+	                        underlineColorAndroid="transparent"
+	                        placeholderTextColor="rgb(158,145,140)"
+	                        autoCorrect={true}
+	                        value={this.state.search}
+	                        onChangeText={(text) => this.setState({search: text})}
+	                    />
+					</View>
 						<View>
 								<ModalDropdown 
 				                	style={{borderWidth:1,borderColor:'#ccc',margin:10,padding:5}}

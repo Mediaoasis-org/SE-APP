@@ -72,7 +72,7 @@ export class CatalogItems extends PureComponent {
 			                    }
 			                keyExtractor={(item, index) => index.toString()}
 			              />
-					}
+					
 					</View>
 				
 				</View>

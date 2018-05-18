@@ -28,6 +28,7 @@ export class DrawerTitle extends React.Component{
         	<SafeAreaView>
         		<View>
   	      		<Text style={gstyles.drawertitleHeadingText}>Menu</Text>
+              <TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Profile')}><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Profile</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Home')}><Text style={gstyles.drawertitleNormalText}><Icon name="home" size={24} color="#febe2b" />  Home</Text></TouchableOpacity>
   	      		<View style={gstyles.drawerView}><Image source={require('../../../assets/switch_lang.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Language</Text></View>
         		</View>
@@ -58,6 +59,8 @@ export class DrawerTitle extends React.Component{
 
         		<View style={{marginBottom:20}}>
   	      		<Text style={gstyles.drawertitleHeadingText}>Settings</Text>
+              <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('AccountSettings')} ><Icon name="cog" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Account Settings</Text></TouchableOpacity>
+              <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign In</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={() => this.props.navigation.navigate('Signup')}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign Up</Text></TouchableOpacity>
         		</View>

@@ -7,6 +7,8 @@ import {
   Dimension,
   TouchableOpacity,
   Image,
+  Platform,
+  
   FlatList,
   ScrollView,
   StyleSheet
@@ -37,7 +39,8 @@ export class ShoppingListComponent extends Component {
 		super(props);
 		this.state={
       activeSection: false,
-    collapsed: true
+      collapsed: true,
+       search :'',
 		}
 		// alert(JSON.stringify(this.props.navigation))
 	}
@@ -55,7 +58,7 @@ export class ShoppingListComponent extends Component {
   _renderHeader(section) {
     return (
       <View style={styles.header}>
-        <Icon name="angle-down" size={24} color="#000" style={{flexDirection:'column'}} /> <Text style={styles.headerText}> {section.title}</Text>
+        <Text style={styles.headerText}><Icon name="angle-down" size={24} color="#000" style={{flexDirection:'column'}} />  {section.title}</Text>
       </View>
     );
   }
@@ -101,20 +104,29 @@ export class ShoppingListComponent extends Component {
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
 								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
-									<Icon name="bars" size={24} color="#fff" />
-			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
+									<Text><Icon name="bars" size={24} color="#fff" /></Text>
+                </TouchableOpacity>
+                <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
 					</View>
+          <View style={{width:'100%',flexDirection:'row',padding:10}}>
+            <TouchableOpacity style={{width:'8%',flexDirection:'column'}}><Icon name="search" size={24} color="#ccc" /></TouchableOpacity>
+            <TextInput 
+                          style={{width:'90%',flexDirection:'column',...Platform.select({android:{padding:0}})}}
+                          placeholder="Search Product"
+                          underlineColorAndroid="transparent"
+                          placeholderTextColor="rgb(158,145,140)"
+                          autoCorrect={true}
+                          value={this.state.search}
+                          onChangeText={(text) => this.setState({search: text})}
+                      />
+          </View>
 					<Accordion
         	  sections={SECTIONS}
-					
 					  renderHeader={this._renderHeader}
 					  renderContent={this._renderContent}
-					 
-
-					/>;
+					/>
 			</View>
-		)
+		);
 	}
 }
 const styles = StyleSheet.create({

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { withNavigation } from 'react-navigation';
 import {
   Text,
   View,
+  TextInput,
+  Platform,
   Dimension,
 TouchableOpacity,
 TouchableHighlight,
@@ -28,12 +29,13 @@ export class Products extends Component {
     	this.state = {
             qty:1,
             activeRow:'',
+            search:''
       }
     }
-    removeCompleted = () => {
-	    const {dispatch} = this.props
-	    dispatch(actionCreators.removeCompleted())
-	  }
+   //  removeCompleted = () => {
+	  //   const {dispatch} = this.props
+	  //   dispatch(actionCreators.removeCompleted())
+	  // }
 
 	decrease_qty(id,qty){
 		// alert(qty)
@@ -58,37 +60,46 @@ export class Products extends Component {
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.cat_name}</Text>
 					</View>
-					<ScrollView>
+					<View style={{width:'100%',flexDirection:'row',padding:10}}>
+						<TouchableOpacity style={{width:'8%',flexDirection:'column'}}><Icon name="search" size={24} color="#ccc" /></TouchableOpacity>
+						<TextInput 
+	                        style={{width:'90%',flexDirection:'column',...Platform.select({android:{padding:0}})}}
+	                        placeholder="Search Product"
+	                        underlineColorAndroid="transparent"
+	                        placeholderTextColor="rgb(158,145,140)"
+	                        autoCorrect={true}
+	                        value={this.state.search}
+	                        onChangeText={(text) => this.setState({search: text})}
+	                    />
+					</View>
 					<View style={{width:'100%',flexDirection:'row'}}>
 
-						<FlatList numColumns={1} data={[{id: '1',name:'Puck Cream Cheese Spread 500 g',discount:'40% Off',company:'Panda',category:'Dairy',price:'15.70 SAR',discountedPrice:'9.48 SAR',offerEnd:'16-5-18'},{id: '2',name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},	{id: '3',name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'17-5-18'},{id: '4',name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},
-														{id: '5',name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'17-5-18'}]}
-	                		removeClippedSubviews
-	                renderItem={({item}) =>      
-	                   
-	                    <TouchableOpacity style={styles.flatlist} onPress={()=>this.props.navigation.navigate('ProductDetails')}>
-				          		<View style={{flexDirection: 'column'}}>
-				          			<View style={{width: '90%'}}><Image source={require('../../../assets/product1.jpg')} style={styles.flatimage}/></View>
-				          		</View>
-					            <View style={{flexDirection: 'column'}}>
-						          		<View style={{width: '80%'}}><Text style={styles.title}>{item.name}</Text></View>
-						          		<Text style={styles.discountDeal}>Best Deal</Text>
-						          		<Text style={styles.subtitle}>$ {item.discountedPrice}</Text>
-						               
-				          		</View>
-				        </TouchableOpacity>
-				                      
-	                    }
-	                keyExtractor={(item, index) => index.toString()}
-	              />
-
+						<FlatList data={[{id: '1',name:'Puck Cream Cheese Spread 500 g',discount:'40% Off',company:'Panda',category:'Dairy',price:'15.70 SAR',discountedPrice:'9.48 SAR',offerEnd:'16-5-18'},{id: '2',name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},{id: '3',name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'17-5-18'},{id: '4',name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},{id: '5',name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'17-5-18'}]}
+	                		renderItem={({item}) =>      
+				                    	<View style={styles.flatlist}>
+							          		<View style={{flexDirection: 'column'}}>
+							          			<View style={{width: '90%'}}>
+							          				<TouchableOpacity  onPress={()=>this.props.navigation.navigate('ProductDetails')}>
+							          					<Image source={require('../../../assets/product1.jpg')} style={styles.flatimage} />
+							          				</TouchableOpacity>
+							          			</View>
+							          		 </View>
+								            <View style={{flexDirection: 'column'}}>
+									          		<View style={{width: '80%'}}><Text style={styles.title}>{item.name}</Text></View>
+									          		<Text style={styles.discountDeal}>Best Deal</Text>
+									          		<Text style={styles.subtitle}>$ {item.discountedPrice}</Text>									               
+							          		</View>
+							        	</View>
+				                    }
+				                keyExtractor={(item, index) => index.toString()}
+				              />
 					</View>
-						
-					</ScrollView>
 				</View>
 			);
 	}
-}const styles  = StyleSheet.create({
+}
+
+const styles  = StyleSheet.create({
 	  flatlist:{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1},
 	  flatimage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '10%', width: 115, height: 115},
 	  title:{fontSize: 18, marginTop: '10%',color:'#000'},

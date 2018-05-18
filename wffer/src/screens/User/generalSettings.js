@@ -14,16 +14,16 @@ import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
-export  class PersonalInfoComponent extends Component {
+export  class GeneralSettingsComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
-			firstname:'',
+			email:'',
 			lastname:''
 		}
 	}
 	static navigationOptions = {
-        title: 'Personal Info',
+        title: 'General',
         
 
     };
@@ -39,17 +39,24 @@ export  class PersonalInfoComponent extends Component {
 				 	<ScrollView>
 						<View style={{width:'100%',alignItems:'center'}}><Text style={{padding:10,fontSize:20}}>Personal Information</Text></View>
 						<View>
-							<TextInput name="firstname" placeholder="First Name" returnKeyType="next" underlineColorAndroid="#fff" style={{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'}}/>	
-							<TextInput name="lastname" placeholder="Last Name" returnKeyType="next" underlineColorAndroid="#fff" style={{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'}}/>	
+							<TextInput name="email" keyboardType="email-address" placeholder="Email Address" value="test@example.com" returnKeyType="next" underlineColorAndroid="#fff" style={{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'}}/>	
 							<ModalDropdown 
 				                	style={{borderWidth:1,borderColor:'#ccc',margin:10,padding:5}}
 				                	dropdownTextStyle={{fontSize: 18, color: '#000',padding:10}}
 	                				textStyle={{color: '#000', fontSize: 18,padding:10}}
 				                	dropdownStyle={{width:'90%',padding:5,margin:5}}
 				                	showsVerticalScrollIndicator={true}
-				                	defaultValue='Select Gender'
-				                	options={['Male','Female']}/>
-							<TouchableOpacity onPress={()=>alert('submit')} style={{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'}}><Text style={{color:'#fff',fontSize:16,fontWeight:'bold'}}>Save</Text></TouchableOpacity>
+				                	defaultValue='Select Time Zone'
+				                	options={['(UTC+5:30) Bombay,Calcutta,New Delhi','(UTC+5:45) Nepal','(UTC+6) Dhaka','(UTC+9:30) Darwin']}/>	
+							<ModalDropdown 
+				                	style={{borderWidth:1,borderColor:'#ccc',margin:10,padding:5}}
+				                	dropdownTextStyle={{fontSize: 18, color: '#000',padding:10}}
+	                				textStyle={{color: '#000', fontSize: 18,padding:10}}
+				                	dropdownStyle={{width:'90%',padding:5,margin:5}}
+				                	showsVerticalScrollIndicator={true}
+				                	defaultValue='Select Locale'
+				                	options={['English','English(United Status)','Hindi','Maxican','Persain','Greek','Spanish','Urdu']}/>
+							<TouchableOpacity onPress={()=>alert('submit')} style={{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'}}><Text style={{color:'#fff',fontSize:16,fontWeight:'bold'}}>Save Changes</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 			</View>

@@ -3,13 +3,16 @@ import { withNavigation } from 'react-navigation';
 import {
   Text,
   View,
-  Dimension,
+  Dimensions,
 TouchableOpacity,
+TextInput,
 Image,
+Platform,
 // FlatList,
 ScrollView
 } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
+import Carousel from 'react-native-banner-carousel';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {Constants} from '../../common';
@@ -17,17 +20,35 @@ import { DrawerActions } from 'react-navigation';
 import {SpecialOfferComponent} from '../../components/specialOffer';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 // const window= Dimensions.get('window');
+const BannerWidth = Dimensions.get('window').width;
+const BannerHeight = 260;
+const images = [
+    require('../../../assets/Background-Sliders-2.jpg'),
+    require('../../../assets/Background-Sliders-3.jpg'),
+    require('../../../assets/Background-Sliders.jpg')
+];
 
 export class HomeComponent extends Component {
 
     constructor(props){
     	super(props);
-
+    	this.state={
+    		search :'',
+    	}
     }
    //  removeCompleted = () => {
 	  //   const {dispatch} = this.props
 	  //   dispatch(actionCreators.removeCompleted())
 	  // }
+	   renderPage(image, index) {
+	        return (
+	            <View key={index}>
+	            	<TouchableOpacity>
+	                <Image style={{ width: BannerWidth, height: BannerHeight }} source={image} />
+	                </TouchableOpacity>
+	            </View>
+	        );
+	    }
 	render(){
 		return(
 				<View style={gstyles.container}>
@@ -38,6 +59,26 @@ export class HomeComponent extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
 					</View>
 					<ScrollView>
+					<View style={{width:'100%',flexDirection:'row',padding:10}}>
+						<TouchableOpacity style={{width:'8%',flexDirection:'column'}}><Icon name="search" size={24} color="#ccc" /></TouchableOpacity>
+						<TextInput 
+	                        style={{width:'90%',flexDirection:'column',...Platform.select({android:{padding:0}})}}
+	                        placeholder="Search Product"
+	                        underlineColorAndroid="transparent"
+	                        placeholderTextColor="rgb(158,145,140)"
+	                        autoCorrect={true}
+	                        value={this.state.search}
+	                        onChangeText={(text) => this.setState({search: text})}
+	                    />
+					</View>
+					<Carousel
+	                    autoplay
+	                    autoplayTimeout={5000}
+	                    loop
+	                    index={0}
+	                    pageSize={BannerWidth} >
+	                  		  {images.map((image, index) => this.renderPage(image, index))}
+	                </Carousel>
 					<View style={{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#e9ebee'}}><Text style={{fontSize:18}}>Promotional Offers in Stores</Text></View>
 					<ScrollView horizontal={true} showsHorizontalScrollIndicator={true} alwaysBounce={true} scrollEventThrottle={16}>
 						<Image source={require("../../../assets/so-carrefour.png")}  />

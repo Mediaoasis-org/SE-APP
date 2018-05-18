@@ -8,9 +8,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
-import MapView from 'react-native-maps';
+// import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-
+import { DrawerActions } from 'react-navigation';
 export  class StoreLocatorComponent extends Component {
 	constructor(props){
 		super(props);
@@ -24,7 +24,7 @@ export  class StoreLocatorComponent extends Component {
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Store Locator</Text>
 					</View>
-				 
+				 	
 			</View>
 		)
 	}

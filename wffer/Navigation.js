@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View,ScrollView,Text,Image,TouchableOpacity } from 'react-native';
-import { SwitchNavigator,SafeAreaView,createStackNavigator,createDrawerNavigator} from 'react-navigation';
+import { SwitchNavigator,SafeAreaView,createStackNavigator,createDrawerNavigator,createBottomTabNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { HomeComponent } from './src/screens/home/home';
 import { LoginComponent } from './src/screens/login/login';
@@ -16,6 +16,12 @@ import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
 import { CreateWishlistComponent } from './src/screens/newList/createNewList';
 import { ShoppingListComponent } from './src/screens/shoppingList/shoppingList';
 import { StoreLocatorComponent } from './src/screens/storeLocality/storeLocator';
+import { PersonalInfoComponent } from './src/screens/User/personalInfo';
+import { UploadPhotoComponent } from './src/screens/User/photoUpload';
+import { GeneralSettingsComponent } from './src/screens/User/generalSettings';
+import { PrivacySettingsComponent } from './src/screens/User/privacySettings';
+import { OtherSettingsComponent } from './src/screens/User/otherSettings';
+
 import { gstyles } from './src/GlobalStyles';
 
 import {DrawerTitle} from './src/components/SideMenu/index';
@@ -29,6 +35,57 @@ import {DrawerTitle} from './src/components/SideMenu/index';
 //   ) ? null : getStateForAction(action, state);
 // };
 
+const profilenav = createBottomTabNavigator({
+  Personal:{
+    screen: PersonalInfoComponent
+  },
+  PhotoEdit:{
+    screen: UploadPhotoComponent
+  }
+},{
+  swipeEnabled:false,
+  animationEnabled:true,
+  tabBarOptions: {
+  activeTintColor: '#000',
+  inactiveTintColor:'#000',
+  activeBackgroundColor:'#eee',
+  showLabel:true,
+  labelStyle: {
+    fontSize: 16,
+    paddingBottom:10,
+  },
+  style: {
+    backgroundColor: '#ccc',
+  },
+}
+})
+const accountSettingsNav = createBottomTabNavigator({
+  General:{
+    screen: GeneralSettingsComponent
+  },
+  Privacy:{
+    screen: PrivacySettingsComponent
+  },
+  Other:{
+    screen: OtherSettingsComponent
+  }
+},{
+  swipeEnabled:false,
+  animationEnabled:true,
+  tabBarOptions: {
+  activeTintColor: '#000',
+  inactiveTintColor:'#000',
+  activeBackgroundColor:'#eee',
+  showLabel:true,
+  labelStyle: {
+    fontSize: 16,
+    paddingBottom:10,
+  },
+  style: {
+    backgroundColor: '#ccc',
+  },
+}
+})
 const stack = createStackNavigator({
 	Home:{
 		screen: HomeComponent,
@@ -68,6 +125,12 @@ const stack = createStackNavigator({
   },
   StoreLocator:{
     screen:StoreLocatorComponent
+  },
+  Profile:{
+    screen:profilenav
+  },
+  AccountSettings:{
+    screen:accountSettingsNav
   }
 },
 {
