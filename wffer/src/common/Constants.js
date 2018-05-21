@@ -8,6 +8,7 @@ export default {
   AppName: "Wffer",
   Signup:"Sign Up",
   Login:"Sign In",
+  Language:"Choose Language",
   forgetPassword:"Forget Password",
   specialOffer:"Special Offers",
   // for right to left language

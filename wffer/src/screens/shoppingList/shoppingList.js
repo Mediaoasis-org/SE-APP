@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import {Constants} from '../../common';
+import { SearchComponent } from '../../components/Search';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -34,6 +35,7 @@ const SECTIONS = [
   },
   
 ];
+
 export class ShoppingListComponent extends Component {
 	constructor(props){
 		super(props);
@@ -46,7 +48,6 @@ export class ShoppingListComponent extends Component {
 	}
 	  
 
-
 	 // _renderSectionTitle(section) {
   //   return (
   //     <View style={styles.title}>
@@ -54,7 +55,9 @@ export class ShoppingListComponent extends Component {
   //     </View>
   //   );
   // }
-
+  handleNavigation(){
+    this.props.navigation.navigate('Wishlists');
+  }
   _renderHeader(section) {
     return (
       <View style={styles.header}>
@@ -63,12 +66,12 @@ export class ShoppingListComponent extends Component {
     );
   }
 
-  _renderContent(section) {
+  _renderContent = (section) => {
      
         if(section.listname!=""){
             return (
             <View style={styles.content}>
-           
+                <TouchableOpacity onPress={()=>this.handleNavigation()} >
                   <Text style={styles.shoppingText}>shopping list found</Text>
                   <View style={{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,flexDirection:'row'}}>
                       <View style={{flexDirection:'column',width:'20%'}}>
@@ -81,6 +84,7 @@ export class ShoppingListComponent extends Component {
                           <Text style={{marginTop:5}}>list note</Text>
                       </View>
                   </View>
+                </TouchableOpacity>
             </View>
             );
         }
@@ -107,19 +111,9 @@ export class ShoppingListComponent extends Component {
 									<Text><Icon name="bars" size={24} color="#fff" /></Text>
                 </TouchableOpacity>
                 <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
 					</View>
-          <View style={{width:'100%',flexDirection:'row',padding:10}}>
-            <TouchableOpacity style={{width:'8%',flexDirection:'column'}}><Icon name="search" size={24} color="#ccc" /></TouchableOpacity>
-            <TextInput 
-                          style={{width:'90%',flexDirection:'column',...Platform.select({android:{padding:0}})}}
-                          placeholder="Search Product"
-                          underlineColorAndroid="transparent"
-                          placeholderTextColor="rgb(158,145,140)"
-                          autoCorrect={true}
-                          value={this.state.search}
-                          onChangeText={(text) => this.setState({search: text})}
-                      />
-          </View>
+          <SearchComponent />
 					<Accordion
         	  sections={SECTIONS}
 					  renderHeader={this._renderHeader}

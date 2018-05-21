@@ -75,9 +75,25 @@ export const gstyles = StyleSheet.create({
 		android:{
 			position: 'absolute', 
 			paddingTop:10,
-			left: 30,
+			left: 40,
 		},
   	})
+	},
+	headerRightButton: {
+	...Platform.select({
+		ios:{
+			position: 'absolute',
+		    paddingTop:22, 
+		    right: 10,
+		    top:5,
+		},
+		android:{
+			position: 'absolute',
+		    paddingTop:8,
+		    right: 10,
+		    top:5,
+		},
+	  })
 	},
 	menuicon:{
 		height:24,

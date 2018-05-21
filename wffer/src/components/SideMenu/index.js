@@ -30,7 +30,7 @@ export class DrawerTitle extends React.Component{
   	      		<Text style={gstyles.drawertitleHeadingText}>Menu</Text>
               <TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Profile')}><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Profile</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Home')}><Text style={gstyles.drawertitleNormalText}><Icon name="home" size={24} color="#febe2b" />  Home</Text></TouchableOpacity>
-  	      		<View style={gstyles.drawerView}><Image source={require('../../../assets/switch_lang.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Language</Text></View>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Language')}><Image source={require('../../../assets/switch_lang.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Language</Text></TouchableOpacity>
         		</View>
 
         		<View>

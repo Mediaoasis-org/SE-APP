@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Constants } from '../../common';
 import { DrawerActions } from 'react-navigation';
 import { SpecialOfferComponent } from '../../components/specialOffer';
+import { SearchComponent } from '../../components/Search';
 
 export class SpecialOffers extends Component {
     constructor(props){
@@ -27,20 +28,10 @@ export class SpecialOffers extends Component {
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.specialOffer}</Text>
+			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					<ScrollView>
-					<View style={{width:'100%',flexDirection:'row',padding:10}}>
-						<TouchableOpacity style={{width:'8%',flexDirection:'column'}}><Icon name="search" size={24} color="#ccc" /></TouchableOpacity>
-						<TextInput 
-	                        style={{width:'90%',flexDirection:'column',...Platform.select({android:{padding:0}})}}
-	                        placeholder="Search Product"
-	                        underlineColorAndroid="transparent"
-	                        placeholderTextColor="rgb(158,145,140)"
-	                        autoCorrect={true}
-	                        value={this.state.search}
-	                        onChangeText={(text) => this.setState({search: text})}
-	                    />
-					</View>
+					<SearchComponent />
 						<View>
 								<ModalDropdown 
 				                	style={{borderWidth:1,borderColor:'#ccc',margin:10,padding:5}}

@@ -71,6 +71,7 @@ export class SignupComponent extends Component {
 								  label='I have read and agreed to the terms and services'
 								  labelStyle={{color:'#000',fontSize:16}}
 								  onClick={() => this.setState({checked: !checked})}
+								  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
 								/>
 				   			</View>
 				   			<View style={{flexDirection: 'row',justifyContent:'center',width:'100%'}}><TouchableOpacity><Text style={{color:'#62C462',fontSize:16}}>Click Here</Text></TouchableOpacity><Text style={{fontSize:16}}> to read the terms of service</Text></View>

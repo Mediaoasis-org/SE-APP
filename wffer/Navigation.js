@@ -13,7 +13,9 @@ import { CatalogItems } from './src/screens/catalog/catalogItems';
 import { Products } from './src/screens/category/categoryProducts';
 import { ProductDetails } from './src/screens/category/categoryItems';
 import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
+import { WishlistComponent } from './src/screens/wishlist/wishlist';
 import { CreateWishlistComponent } from './src/screens/newList/createNewList';
+import {MultipleWishlistComponent } from './src/screens/newList/wishlistMultiple';
 import { ShoppingListComponent } from './src/screens/shoppingList/shoppingList';
 import { StoreLocatorComponent } from './src/screens/storeLocality/storeLocator';
 import { PersonalInfoComponent } from './src/screens/User/personalInfo';
@@ -21,6 +23,7 @@ import { UploadPhotoComponent } from './src/screens/User/photoUpload';
 import { GeneralSettingsComponent } from './src/screens/User/generalSettings';
 import { PrivacySettingsComponent } from './src/screens/User/privacySettings';
 import { OtherSettingsComponent } from './src/screens/User/otherSettings';
+import { LanguageComponent } from './src/screens/language/language';
 
 import { gstyles } from './src/GlobalStyles';
 
@@ -93,6 +96,9 @@ const stack = createStackNavigator({
   // Header:{
   //   screen: HeaderComponent,
   // },
+  Language:{
+    screen:LanguageComponent
+  },
   Login:{
     screen: LoginComponent,
   },
@@ -117,8 +123,14 @@ const stack = createStackNavigator({
   SpecialOffers:{
     screen:SpecialOffers
   },
+  Wishlists:{
+    screen:WishlistComponent
+  },
   CreateWishlist:{
     screen:CreateWishlistComponent
+  },
+  MultipleWishlist:{
+    screen:MultipleWishlistComponent
   },
   ShoppingList:{
     screen:ShoppingListComponent,

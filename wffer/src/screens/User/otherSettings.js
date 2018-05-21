@@ -40,24 +40,24 @@ export  class OtherSettingsComponent extends Component {
 						<View style={{width:'100%',alignItems:'center'}}><Text style={{padding:10,fontSize:20}}>More Settings</Text></View>
 						<View>
 							<TouchableOpacity onPress={()=>alert('Notifications')} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center',flexDirection:'row'}}>
-								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'90%'}}>Notifications</Text>
-								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'10%'}}/>
+								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'95%'}}>Notifications</Text>
+								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'5%'}}/>
 							</TouchableOpacity>
 							<TouchableOpacity onPress={()=>alert('Hide Content Feed')} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center',flexDirection:'row'}}>
-								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'90%'}}>Hide Content Feed</Text>
-								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'10%'}}/>
+								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'95%'}}>Hide Content Feed</Text>
+								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'5%'}}/>
 							</TouchableOpacity>
 							<TouchableOpacity onPress={()=>alert('Change Password')} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center',flexDirection:'row'}}>
-								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'90%'}}>Change Password</Text>
-								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'10%'}}/>
+								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'95%'}}>Change Password</Text>
+								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'5%'}}/>
 							</TouchableOpacity>
 							<TouchableOpacity onPress={()=>alert('Delete Account')} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center',flexDirection:'row'}}>
-								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'90%'}}>Delete Account</Text>
-								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'10%'}}/>
+								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'95%'}}>Delete Account</Text>
+								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'5%'}}/>
 							</TouchableOpacity>
 							<TouchableOpacity onPress={()=>alert('Cancel')} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center',flexDirection:'row'}}>
-								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'90%'}}>Cancel</Text>
-								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'10%'}}/>
+								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'95%'}}>Cancel</Text>
+								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'5%'}}/>
 							</TouchableOpacity>
 							<TouchableOpacity onPress={()=>alert('submit')} style={{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'}}><Text style={{color:'#fff',fontSize:16,fontWeight:'bold'}}>Save</Text></TouchableOpacity>
 						</View>

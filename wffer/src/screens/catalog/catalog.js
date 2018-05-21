@@ -13,6 +13,7 @@ ScrollView
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import { SearchComponent } from '../../components/Search';
 import {Constants} from '../../common';
 import { DrawerActions } from 'react-navigation';
 // import {FlatlistComponent} from '../../components/FlatlistComponent';
@@ -34,18 +35,7 @@ export class Catalog extends Component {
 		                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
 				</View>
 				<ScrollView>
-					<View style={{width:'100%',flexDirection:'row',padding:10}}>
-						<TouchableOpacity style={{width:'8%',flexDirection:'column'}}><Icon name="search" size={24} color="#ccc" /></TouchableOpacity>
-						<TextInput 
-	                        style={{width:'90%',flexDirection:'column',...Platform.select({android:{padding:0}})}}
-	                        placeholder="Search Product"
-	                        underlineColorAndroid="transparent"
-	                        placeholderTextColor="rgb(158,145,140)"
-	                        autoCorrect={true}
-	                        value={this.state.search}
-	                        onChangeText={(text) => this.setState({search: text})}
-	                    />
-					</View>
+					<SearchComponent />
 					<View style={{width:'100%',flexDirection:'row'}}>
 						<FlatList data={[{id: '1',name:'Danube May 9 - May 15 ',total_items:'20',image:require("../../../assets/albumphoto.jpg")}, {id: '2',name:'Othaim May 10 -May 16',total_items:'30',image:require("../../../assets/albumphoto.jpg")}]}
 			                renderItem={({item}) =>      
