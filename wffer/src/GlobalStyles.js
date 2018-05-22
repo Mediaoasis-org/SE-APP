@@ -111,5 +111,12 @@ export const gstyles = StyleSheet.create({
 	  fontSize: 18,
 	  color: '#000',
 	},
-	likeButton:{width:'45%',padding:10,backgroundColor:'#e9ebee',borderColor:'#ddd',borderWidth:1,margin:10,justifyContent:'center'},
+	likeButton:{width:'45%',padding:10,backgroundColor:'#e9ebee',borderColor:'#ddd',borderWidth:1,margin:10,justifyContent:'center',flexDirection:'column'},
+	 slider: {
+        marginTop: 15,
+        overflow: 'visible' // for custom animations
+    },
+    sliderContentContainer: {
+        paddingVertical: 10 // for custom animation
+    },
 })

@@ -30,7 +30,7 @@ export class BannerSliderComponent extends React.Component{
           return (
               <View key={index}>
                 <TouchableOpacity>
-                  <Image style={{ width: BannerWidth, height: BannerHeight }} source={image} />
+                  <Image style={{ width: '100%', height: BannerHeight }} source={image} />
                   </TouchableOpacity>
               </View>
           );

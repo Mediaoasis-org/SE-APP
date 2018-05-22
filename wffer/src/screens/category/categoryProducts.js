@@ -111,7 +111,7 @@ export class Products extends Component {
 
 const styles  = StyleSheet.create({
 	  flatlist:{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1},
-	  flatimage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '10%', width: 115, height: 115},
+	  flatimage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '100%', height: 115},
 	  title:{fontSize: 18, marginTop: '10%',color:'#000'},
 	  subtitle:{color: '#000', marginTop: '3%', fontSize: 18},
 	  discountDeal:{color: '#ff0000', marginTop: '3%', fontSize: 18},

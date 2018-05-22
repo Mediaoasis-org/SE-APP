@@ -43,9 +43,9 @@ export class Catalog extends Component {
 			                     
 			                      <TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.props.navigation.navigate('CatalogItems')}>
 				                      <Text style={{padding:10,backgroundColor:'#000',color:'#fff',position:'absolute',top:0,zIndex:1000,right:0,fontSize:16,fontWeight:'bold'}}>{item.total_items}</Text>
-				                      <Image source={item.image} style={{height: window.height/4,width: '100%'}}/>
+				                      <Image source={item.image} style={{height: window.height/4,width: '100%'}} />
 			                      </TouchableOpacity>
-			                      <View style={{padding:10,backgroundColor:'#d7dade'}}><Text style={{fontSize:16,fontWeight:'bold'}}>{item.name}</Text></View> 
+			                      <View style={{padding:10,backgroundColor:'#d7dade'}}><Text style={{fontSize:16,fontWeight:'bold',color:'#000'}}>{item.name}</Text></View> 
 			                    </View>                    
 			                    }
 			                keyExtractor={(item, index) => index.toString()}

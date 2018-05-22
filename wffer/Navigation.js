@@ -24,6 +24,9 @@ import { GeneralSettingsComponent } from './src/screens/User/generalSettings';
 import { PrivacySettingsComponent } from './src/screens/User/privacySettings';
 import { OtherSettingsComponent } from './src/screens/User/otherSettings';
 import { LanguageComponent } from './src/screens/language/language';
+import { LowestPriceComponent } from './src/screens/getPrice/lowestPrice';
+import { NearByStoreComponent } from './src/screens/getPrice/NearByStore';
+import { MultiStoreComponent } from './src/screens/getPrice/multiStore';
 
 import { gstyles } from './src/GlobalStyles';
 
@@ -71,6 +74,33 @@ const accountSettingsNav = createBottomTabNavigator({
   },
   Other:{
     screen: OtherSettingsComponent
+  }
+},{
+  swipeEnabled:false,
+  animationEnabled:true,
+  tabBarOptions: {
+  activeTintColor: '#000',
+  inactiveTintColor:'#000',
+  activeBackgroundColor:'#eee',
+  showLabel:true,
+  labelStyle: {
+    fontSize: 16,
+    paddingBottom:10,
+  },
+  style: {
+    backgroundColor: '#ccc',
+  },
+}
+})
+const getPriceNav = createBottomTabNavigator({
+  Lowest:{
+    screen: LowestPriceComponent
+  },
+  NearByStore:{
+    screen: NearByStoreComponent
+  },
+  MultiStore:{
+    screen: MultiStoreComponent
   }
 },{
   swipeEnabled:false,
@@ -143,6 +173,9 @@ const stack = createStackNavigator({
   },
   AccountSettings:{
     screen:accountSettingsNav
+  },
+  GetPrice:{
+    screen:getPriceNav
   }
 },
 {

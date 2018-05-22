@@ -8,6 +8,20 @@ import { DrawerActions } from 'react-navigation';
 import Carousel from 'react-native-snap-carousel';
 // import {FlatlistComponent} from '../../components/FlatlistComponent';
 const window= Dimensions.get('window');
+
+function wp (percentage) {
+    const value = (percentage * window.width) / 100;
+    return Math.round(value);
+}
+const slideHeight = window.height * 0.36;
+const slideWidth = wp(75);
+const itemHorizontalMargin = wp(2);
+
+const sliderWidth = window.width;
+const itemWidth = slideWidth + itemHorizontalMargin * 2;
+
+const entryBorderRadius = 8;
+
 export class CatalogItems extends PureComponent {
 	constructor(props){
 		super(props);
@@ -21,7 +35,7 @@ export class CatalogItems extends PureComponent {
 	_renderItem ({item, index}) {
         return (
             <View style={{}}>
-                <Image source={item.image}/>
+                <Image source={item.image} style={{width:'100%'}} resizeMode="contain"/>
             </View>
         );
     }
@@ -40,7 +54,11 @@ export class CatalogItems extends PureComponent {
 						<FlatList numColumns={2} removeClippedSubviews={true} data={[{id: '1',image:require("../../../assets/albumItem.jpg")}, {id: '2',image:require("../../../assets/albumItem.jpg")},{id: '3',image:require("../../../assets/albumItem.jpg")},{id: '4',image:require("../../../assets/albumItem.jpg")}]}
 			                renderItem={({item}) =>      
 			                    <View style={{width: '50%',padding:10}}>
-			                     <Modal
+			                     
+			                      <TouchableOpacity style={{alignItems:'center'}} onPress={() => {this.setModalVisible(true)}}>
+				                      <Image source={item.image} style={{height: window.height/4,width: '100%'}}/>
+			                      </TouchableOpacity>
+			                      <Modal
 							          animationType="slide"
 							          transparent={false}
 							          visible={this.state.modalVisible}
@@ -55,19 +73,24 @@ export class CatalogItems extends PureComponent {
 						                <Icon name="close" size={24} color="#fff" />
 						              </TouchableHighlight>
 							            <Carousel
-							              ref={'carousel'}
+							              ref={(c) => { this._carousel = c; }}
 							              data={[{id: '1',image:require("../../../assets/albumItem.jpg")}, {id: '2',image:require("../../../assets/albumItem.jpg")},{id: '3',image:require("../../../assets/albumItem.jpg")},{id: '4',image:require("../../../assets/albumItem.jpg")}]}
 							              renderItem={this._renderItem}
-							              sliderWidth={window.width*0.95}
-							              itemWidth={window.width}
-							              
+							              sliderWidth={sliderWidth}
+							              itemWidth={itemWidth}
+							              hasParallaxImages={true}
+							              inactiveSlideScale={0.94}
+                 						  inactiveSlideOpacity={0.7}
+                 						  containerCustomStyle={gstyles.slider}
+						                  contentContainerCustomStyle={gstyles.sliderContentContainer}
+						                  loop={true}
+						                  loopClonesPerSide={2}
+						                  autoplay={true}
+						                  autoplayDelay={500}
+						                  autoplayInterval={3000}
 							            />
 							          </View>
 							        </Modal>
-			                      <TouchableOpacity style={{alignItems:'center'}} onPress={() => {this.setModalVisible(true)}}>
-				                      <Image source={item.image} style={{height: window.height/4,width: '100%'}}/>
-			                      </TouchableOpacity>
-			                      
 			                    </View>                    
 			                    }
 			                keyExtractor={(item, index) => index.toString()}

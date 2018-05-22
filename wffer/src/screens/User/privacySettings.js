@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import CheckBox from 'react-native-checkbox';
 import { DrawerActions } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
+const window= Dimensions.get('window');
 export  class PrivacySettingsComponent extends Component {
 	constructor(props){
 		super(props);
@@ -45,8 +46,10 @@ export  class PrivacySettingsComponent extends Component {
 								<Text style={{marginBottom:10}}>Adding a person to your block list makes your profile (and all of your other content) unviewable to them and vice-versa. Blocked users will not be able to message you or view things you post. Any connections you have to the blocked person will be canceled. To add someone to your block list, visit that person/''s profile page.</Text>
 								<CheckBox
 								  label='Do not display me in searches, browsing members, or the "online members" list'
-								  labelStyle={{color:'#000',fontSize:16,width:'100%'}}
+								  labelStyle={{color:'#000',fontSize:16,padding:3}}
 								  onClick={() => this.setState({checked: !checked})}
+								  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
+								  labelLines={4}
 
 								/>
 							</View>
