@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, Dimension, TouchableOpacity, Image, FlatList, ScrollView } from 'react-native';
-import {gstyles} from '../../GlobalStyles';
+import { gstyles } from '../../GlobalStyles';
 
 export class SpecialOfferComponent extends React.Component{
 	Capitalize(str){

@@ -53,7 +53,7 @@ export  class PrivacySettingsComponent extends Component {
 
 								/>
 							</View>
-							<TouchableOpacity onPress={()=>alert('submit')} style={{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'}}><Text style={{color:'#fff',fontSize:16,fontWeight:'bold'}}>Save Changes</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Changes</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 			</View>

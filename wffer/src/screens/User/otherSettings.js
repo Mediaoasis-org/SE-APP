@@ -59,7 +59,7 @@ export  class OtherSettingsComponent extends Component {
 								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'95%'}}>Cancel</Text>
 								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'5%'}}/>
 							</TouchableOpacity>
-							<TouchableOpacity onPress={()=>alert('submit')} style={{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'}}><Text style={{color:'#fff',fontSize:16,fontWeight:'bold'}}>Save</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 			</View>

@@ -1,24 +1,11 @@
 import React, { Component } from 'react';
-import { withNavigation } from 'react-navigation';
-import {
-  Text,
-  TextInput,
-  View,
-  Dimension,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  ScrollView,
-
-} from 'react-native';
-import {Constants} from '../../common';
-import ModalDropdown from 'react-native-modal-dropdown';
-import {gstyles} from '../../GlobalStyles';
+import { Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Constants } from '../../common';
+import { ModalDropdownComponent } from '../../components/ModalDropdown';
+import { gstyles } from '../../GlobalStyles';
 import CheckBox from 'react-native-checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
-// import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
-// const window= Dimensions.get('window');
 
 export class SignupComponent extends Component {
 	constructor(props){
@@ -43,29 +30,15 @@ export class SignupComponent extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.Signup}</Text>
 					</View>
 					<ScrollView>
-						<View style={{width:'100%',alignItems:'center'}}><Text style={{padding:10,fontSize:20}}>Sign Up</Text></View>
+						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Sign Up</Text></View>
 						<View>
-							<TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'}}/>	
-							<TextInput name="password" placeholder="Password" secureTextEntry={true} underlineColorAndroid="#fff" style={{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'}}/>	
-							<TextInput name="confirm_password" placeholder="Confirm Password" secureTextEntry={true} underlineColorAndroid="#fff" style={{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'}}/>	
-							<View>
-									<ModalDropdown 
-					                	style={{borderWidth:1,borderColor:'#ccc',margin:10,padding:5}}
-					                	dropdownTextStyle={{fontSize: 18, color: '#000',padding:10}}
-		                				textStyle={{color: '#000', fontSize: 18,padding:10}}
-					                	dropdownStyle={{width:'100%',padding:5,}}
-					                	defaultValue='Select Time Zone'
-					                	options={['Saudi','India','America']}/>
-							</View>
-							<View>
-									<ModalDropdown 
-					                	style={{borderWidth:1,borderColor:'#ccc',margin:10,padding:5}}
-					                	dropdownTextStyle={{fontSize: 18, color: '#000',padding:10}}
-		                				textStyle={{color: '#000', fontSize: 18,padding:10}}
-					                	dropdownStyle={{width:'100%',padding:5}}
-					                	defaultValue='Select Language'
-					                	options={['English','Saudi Arabia Arabic']}/>
-							</View>
+							<TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
+							<TextInput name="password" placeholder="Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
+							<TextInput name="confirm_password" placeholder="Confirm Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
+							<ModalDropdownComponent defaultValue='Select Time Zone'
+				                	options={['(UTC+5:30) Bombay,Calcutta,New Delhi','(UTC+5:45) Nepal','(UTC+6) Dhaka','(UTC+9:30) Darwin']}/>	
+							<ModalDropdownComponent defaultValue='Select Language' options={['English','Saudi Arabia Arabic']}/>
+							
 							<View style={{flexDirection: 'row',padding: 15,width:'100%'}}>
 								<CheckBox
 								  label='I have read and agreed to the terms and services'
@@ -75,8 +48,8 @@ export class SignupComponent extends Component {
 								  labelLines={4}
 								/>
 				   			</View>
-				   			<View style={{flexDirection: 'row',justifyContent:'center',width:'100%'}}><TouchableOpacity><Text style={{color:'#62C462',fontSize:16}}>Click Here</Text></TouchableOpacity><Text style={{fontSize:16}}> to read the terms of service</Text></View>
-							<TouchableOpacity onPress={()=>alert('submit')} style={{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'}}><Text style={{color:'#fff',fontSize:16,fontWeight:'bold'}}>Submit</Text></TouchableOpacity>
+				   			<View style={gstyles.termsView}><TouchableOpacity><Text style={gstyles.termsLink}>Click Here</Text></TouchableOpacity><Text style={gstyles.fontSize18}> to read the terms of service</Text></View>
+							<TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
 							
 						</View>
 					</ScrollView>

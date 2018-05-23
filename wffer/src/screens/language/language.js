@@ -37,7 +37,7 @@ export class LanguageComponent extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.Language}</Text>
 					</View>
 					<View style={{padding:10}}>
-						<Text style={{fontWeight:'bold'}}>Choose Your Language</Text>
+						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Choose Your Language</Text></View>
 						<View style={{flexDirection:'row',width:'100%'}}>
 							<TouchableOpacity style={{flexDirection:'column',width:'40%',margin:'2%'}}>
 								<View style={{flexDirection:'row',paddingTop:10,paddingBottom:10,paddingLeft:10,paddingRight:10,borderWidth:1,borderColor:'#000'}}>

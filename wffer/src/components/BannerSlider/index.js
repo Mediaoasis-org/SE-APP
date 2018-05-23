@@ -23,7 +23,6 @@ const images = [
 export class BannerSliderComponent extends React.Component{
   constructor(props) {
       super(props);
-      
       // alert(JSON.stringify(this.props.navigation));
     }
     renderPage(image, index) {
@@ -38,14 +37,14 @@ export class BannerSliderComponent extends React.Component{
   render(){
       return(
         <View>
-                  <Carousel
-                      autoplay
-                      autoplayTimeout={5000}
-                      loop
-                      index={0}
-                      pageSize={BannerWidth} >
-                          {images.map((image, index) => this.renderPage(image, index))}
-                  </Carousel>
+            <Carousel
+                autoplay
+                autoplayTimeout={5000}
+                loop
+                index={0}
+                pageSize={BannerWidth} >
+                    {images.map((image, index) => this.renderPage(image, index))}
+            </Carousel>
         </View>
         )
       }

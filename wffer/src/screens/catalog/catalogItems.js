@@ -45,7 +45,7 @@ export class CatalogItems extends PureComponent {
 			<View style={gstyles.container}>
 				<View style={gstyles.headerMenu}>
 							<TouchableOpacity onPress={() =>this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
-								<Icon name="angle-left" size={24} color="#fff" />
+								<Icon name="angle-left" size={30} color="#fff" />
 		                    </TouchableOpacity>
 		                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
 				</View>

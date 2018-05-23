@@ -91,7 +91,7 @@ export class WishlistComponent extends Component {
 					              />
 						</View>
 							
-							<TouchableOpacity onPress={()=>this.props.navigation.navigate('GetPrice')} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}><Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Get Price</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>this.props.navigation.navigate('GetPrice')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Get Price</Text></TouchableOpacity>
 					</ScrollView>
 					{
 						(this.state.checked==true)?

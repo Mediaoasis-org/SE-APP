@@ -15,11 +15,10 @@ export class PromotionalOfferStoreComponent extends React.Component{
       super(props);
       // alert(JSON.stringify(this.props.navigation));
     }
-
   render(){
       return(
         <View>
-          <View style={{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#e9ebee'}}><Text style={{fontSize:18}}>Promotional Offers in Stores</Text></View>
+          <View style={gstyles.OfferHeadingsHome}><Text style={gstyles.fontSize18}>Promotional Offers in Stores</Text></View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={true} alwaysBounce={true} scrollEventThrottle={16}>
             <Image source={require("../../../assets/so-carrefour.png")}  />
             <Image source={require("../../../assets/so-danube.png")}  />

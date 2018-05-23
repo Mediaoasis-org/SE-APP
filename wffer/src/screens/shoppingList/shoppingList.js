@@ -78,10 +78,10 @@ export class ShoppingListComponent extends Component {
                           <Image source={require('../../../assets/nophoto.png')} resizeMode="contain" style={{width:'100%'}}/>
                       </View>
                       <View style={{flexDirection:'column',width:'80%'}}>
-                          <Text style={{fontSize:16,fontWeight:'bold',marginTop:5}}>{section.listname}</Text>
-                          <Text style={{marginTop:5}}>0 entries</Text>
-                          <Text style={{marginTop:5}}>Wed at 5:18 PM</Text>
-                          <Text style={{marginTop:5}}>list note</Text>
+                          <Text style={{fontSize:16,fontWeight:'bold',marginTop:5,color:'#000'}}>{section.listname}</Text>
+                          <Text style={{marginTop:5,color:'#000'}}>0 entries</Text>
+                          <Text style={{marginTop:5,color:'#000'}}>Wed at 5:18 PM</Text>
+                          <Text style={{marginTop:5,color:'#000'}}>list note</Text>
                       </View>
                   </View>
                 </TouchableOpacity>
