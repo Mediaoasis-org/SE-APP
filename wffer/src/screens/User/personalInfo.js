@@ -131,6 +131,19 @@ export  class PersonalInfoComponent extends Component {
 											</View>
 											)
 										}
+										if(item.type=='Select'){
+											var options = item.multiOptions;
+											var result = [];
+											for(var i in options)
+											    result.push([i, options [i]]);
+											return(
+											<View>
+												<ModalDropdownComponent defaultValue={item.type + item.label}
+				                					options={options}/>
+				                			</View>
+											)
+											
+										}
 										if(item.type=='Submit'){
 											return (
 											<View>
