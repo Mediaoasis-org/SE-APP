@@ -138,7 +138,7 @@ export  class PersonalInfoComponent extends Component {
 											    result.push([i, options [i]]);
 											return(
 											<View>
-												<ModalDropdownComponent defaultValue={item.type + item.label}
+												<ModalDropdownComponent defaultValue={item.type + ' ' + item.label}
 				                					options={options}/>
 				                			</View>
 											)

@@ -6,7 +6,8 @@ import {
 TouchableOpacity,
 Image,
 FlatList,
-ScrollView
+ScrollView,
+AsyncStorage
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import { SafeAreaView} from 'react-navigation';
@@ -18,11 +19,31 @@ export class DrawerTitle extends React.Component{
         open:false,
         activeIndex:0,
         dataSource:[],
+        LoggedIn:null
       }
       // alert(JSON.stringify(this.props.navigation));
+      this.getLoginValue();
+    }
+    async getLoginValue(){
+       var value = await AsyncStorage.getItem('userData');
+       // alert(value)
+        if(value.length>0){
+          // alert('entering');
+          // const data = JSON.parse(value)
+       
+        this.setState({LoggedIn:true})
+       // alert(this.state.LoggedIn)
+        // console.log(this.state.dataSource)
+        }
+        else
+        {
+          this.setState({LoggedIn:false})
+          
+        }
     }
 
   render(){
+
       return(
         <ScrollView style={{backgroundColor:'#fff',paddingTop:15,paddingBottom:15}}>
         	<SafeAreaView>
@@ -58,12 +79,19 @@ export class DrawerTitle extends React.Component{
         		</View>
 
         		<View style={{marginBottom:20}}>
+
   	      		<Text style={gstyles.drawertitleHeadingText}>Settings</Text>
-              <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('AccountSettings')} ><Icon name="cog" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Account Settings</Text></TouchableOpacity>
-              <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
-  	      		<TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign In</Text></TouchableOpacity>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPress={() => this.props.navigation.navigate('Signup')}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign Up</Text></TouchableOpacity>
-        		</View>
+               {
+                <View>
+                  (this.state.LoggedIn===true)?                    
+                    <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('AccountSettings')} ><Icon name="cog" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Account Settings</Text></TouchableOpacity>
+                    <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
+                  :
+                    <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign In</Text></TouchableOpacity>
+                  <TouchableOpacity style={gstyles.drawerView} onPress={() => this.props.navigation.navigate('Signup')}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign Up</Text></TouchableOpacity>
+        	       </View>
+               }
+          </View>
         	</SafeAreaView>
         </ScrollView>
         )
