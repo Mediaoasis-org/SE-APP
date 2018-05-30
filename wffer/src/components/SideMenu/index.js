@@ -19,37 +19,54 @@ export class DrawerTitle extends React.Component{
         open:false,
         activeIndex:0,
         dataSource:[],
-        LoggedIn:null
+        LoggedIn:0
       }
       // alert(JSON.stringify(this.props.navigation));
       this.getLoginValue();
     }
-    async getLoginValue(){
-       var value = await AsyncStorage.getItem('userData');
-       // alert(value)
-        if(value.length>0){
-          // alert('entering');
-          // const data = JSON.parse(value)
-       
-        this.setState({LoggedIn:true})
-       // alert(this.state.LoggedIn)
-        // console.log(this.state.dataSource)
-        }
-        else
-        {
-          this.setState({LoggedIn:false})
-          
-        }
+    logout = async() => {
+      await AsyncStorage.removeItem('userLoginAuthentication');
+       this.setState({LoggedIn:0})
+      this.props.navigation.navigate('Login');
     }
-
+    componentDidMount(){
+      this.getLoginValue()
+    }
+    getLoginValue(){
+       var value = AsyncStorage.getItem('userLoginAuthentication');
+       // alert(value)
+        if(value.length > 0 ){
+          this.setState({LoggedIn:1})
+        }
+        
+    }
+    
+    // logout(){
+     
+    //   AsyncStorage.removeItem('userLoginAuthentication');
+    //   this.setState({LoggedIn:0})
+    //   this.props.navigation.navigate('Login')
+    // }
+   
   render(){
-
+      AsyncStorage.getItem("userLoginAuthentication").then((value) => {
+          // alert(value);
+          if(value !== null){
+            this.setState({LoggedIn:1})
+          }
+          // this.setState({"myKey": value});
+      }).done();
       return(
         <ScrollView style={{backgroundColor:'#fff',paddingTop:15,paddingBottom:15}}>
         	<SafeAreaView>
         		<View>
   	      		<Text style={gstyles.drawertitleHeadingText}>Menu</Text>
-              <TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Profile')}><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Profile</Text></TouchableOpacity>
+              {
+                  (this.state.LoggedIn === 1) 
+                  ?<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Profile')}><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Profile</Text></TouchableOpacity>
+                  : null
+              }
+              
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Home')}><Icon name="home" size={24} color="#febe2b" style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Home</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.navigate('Language')}><Image source={require('../../../assets/switch_lang.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Language</Text></TouchableOpacity>
         		</View>
@@ -81,16 +98,21 @@ export class DrawerTitle extends React.Component{
         		<View style={{marginBottom:20}}>
 
   	      		<Text style={gstyles.drawertitleHeadingText}>Settings</Text>
-               {
-                <View>
-                  (this.state.LoggedIn===true)?                    
+               
+                {
+                  (this.state.LoggedIn === 1) 
+                  ?
+                  <View>
                     <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('AccountSettings')} ><Icon name="cog" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Account Settings</Text></TouchableOpacity>
-                    <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
+                    <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.logout() }><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
+                  </View>
                   :
+                  <View>
                     <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign In</Text></TouchableOpacity>
-                  <TouchableOpacity style={gstyles.drawerView} onPress={() => this.props.navigation.navigate('Signup')}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign Up</Text></TouchableOpacity>
+                     <TouchableOpacity style={gstyles.drawerView} onPress={() => this.props.navigation.navigate('Signup')}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign Up</Text></TouchableOpacity>
         	       </View>
                }
+               
           </View>
         	</SafeAreaView>
         </ScrollView>

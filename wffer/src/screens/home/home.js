@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withNavigation } from 'react-navigation';
-import { Text, View, Dimensions, TouchableOpacity, TextInput, Image, Platform, ScrollView } from 'react-native';
+import { Text, View, Dimensions, TouchableOpacity, TextInput, Image, Platform, ScrollView,AsyncStorage } from 'react-native';
 import Carousel from 'react-native-banner-carousel';
 import { gstyles } from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -16,8 +16,21 @@ export class HomeComponent extends Component {
     	super(props);
     	this.state={
     		search :'',
+    		 LoggedIn:0
     	}
+    	this.getLoginValue()
     }	
+    componentDidMount(){
+    	this.getLoginValue()
+    }
+
+    async getLoginValue(){
+       var value = await AsyncStorage.getItem('userLoginAuthentication')
+       // alert(value)
+        if(value.length > 0 ){
+          this.setState({LoggedIn:1})
+        }
+    }
 	render(){
 		return(
 				<View style={gstyles.container}>
@@ -29,6 +42,7 @@ export class HomeComponent extends Component {
 			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					<ScrollView>
+						
 						<SearchComponent />
 						<BannerSliderComponent />
 						<PromotionalOfferStoreComponent />

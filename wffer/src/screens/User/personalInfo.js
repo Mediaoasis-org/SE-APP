@@ -10,61 +10,33 @@ export  class PersonalInfoComponent extends Component {
 		this.state={
 			LoggedIn:null,
 			dataSource:[],
+			data:[]
 			// firstname:'',
 			// lastname:''
 		}
-		
-	}
-	componentDidMount(){
 		this._getStorageValue()
 	}
+	
 	async _getStorageValue(){
 	  var value = await AsyncStorage.getItem('fieldsPersonalInformation');
 	  // alert(value)
-	  if(value==null){
+	  if(value == null){
 	  	this.setState({LoggedIn:false})
 	  	this.fetchFields();	
 	  }
 	  else
 	  {
 	  	// alert('entering');
-	  	// const data = JSON.parse(value)
-	  const	data=  {
- 	"Personal_Information": [{
- 			"type": "Text",
- 			"name": "1_1_3_alias_first_name",
- 			"label": "First Name",
- 			"description": "",
- 			"hasValidator": true
- 		},
- 		{
- 			"type": "Text",
- 			"name": "1_1_4_alias_last_name",
- 			"label": "Last Name",
- 			"description": "",
- 			"hasValidator": true
- 		},
- 		{
- 			"type": "Select",
- 			"name": "1_1_5_alias_gender",
- 			"label": "Gender",
- 			"description": "",
- 			"multiOptions": {
- 				"2": "Male",
- 				"3": "Female",
- 				"": ""
- 			}
- 		}
- 	]
- };
+	  	const data = JSON.parse(value);
+	  	// alert(data)
 	  	this.setState({LoggedIn:true})
-		this.setState({dataSource:data.Personal_Information});
+		this.setState({dataSource:data});
 		// console.log(this.state.dataSource)
 	  }
 	}
 
 	fetchFields(){
-		const per = "Personal Information";
+		
 			 return fetch('https://wffer.com/se/api/rest/signup?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
 			       
 			        // headers:{
@@ -78,10 +50,11 @@ export  class PersonalInfoComponent extends Component {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 			          isLoading: false,
-			          dataSource: responseJson.body.fields.per,
+			          data: responseJson.body.fields,
 			        },async function(){
-			        await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify(this.state.dataSource));
-			        	alert(JSON.stringify(this.state.dataSource));   	
+			        		await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify( this.state.data["Personal Information"]));
+			        		// alert(JSON.stringify(this.state.data));  
+			        	
 			        });
 			      	}
 			      	else
@@ -94,7 +67,9 @@ export  class PersonalInfoComponent extends Component {
 			      });
 			
 	}
-
+	selected(index,value){
+      alert(value)
+    }
 	static navigationOptions = {
         title: 'Personal Info',
     };
@@ -116,7 +91,7 @@ export  class PersonalInfoComponent extends Component {
 									
 										if(item.type=='Text'){
 											return (
-											<View>
+											<View key={item.id}>
 													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff"/>
 													
 											</View>
@@ -125,7 +100,7 @@ export  class PersonalInfoComponent extends Component {
 										}
 										if(item.type=='Password'){
 											return (
-											<View>
+											<View key={item.id}>
 													<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"/>
 													
 											</View>
@@ -135,18 +110,18 @@ export  class PersonalInfoComponent extends Component {
 											var options = item.multiOptions;
 											var result = [];
 											for(var i in options)
-											    result.push([i, options [i]]);
+											     result.push([options [i]]);
 											return(
-											<View>
+											<View key={item.id}>
 												<ModalDropdownComponent defaultValue={item.type + ' ' + item.label}
-				                					options={options}/>
+				                					options={result}/>
 				                			</View>
 											)
 											
 										}
 										if(item.type=='Submit'){
 											return (
-											<View>
+											<View key={item.id}>
 													<TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}>
 														<Text style={gstyles.buttonText}>{item.label}</Text>
 													</TouchableOpacity>

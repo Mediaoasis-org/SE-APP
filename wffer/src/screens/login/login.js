@@ -22,12 +22,12 @@ export class LoginComponent extends Component {
 		this._getStorageValue()
 	}
 	async _getStorageValue(){
-	  var value = await AsyncStorage.getItem('fields');
+	  var fieldData = await AsyncStorage.getItem('fields');
 	  // alert(value)
-	  if(value!=null){
+	  if(fieldData !== null){
 	  	// alert('entering');
 	  	// const data = JSON.parse(value)
-	  const	data= JSON.parse(value);
+	  const	data= JSON.parse(fieldData);
 	  	this.setState({LoggedIn:true})
 		this.setState({dataSource:data});
 		// console.log(this.state.dataSource)
@@ -85,7 +85,7 @@ export class LoginComponent extends Component {
 		        body: formData,
 		        headers:{
 		          'Accept':'application/json',
-		          'Content-Type':'application/json',
+		         'Content-Type': 'multipart/form-data'
 		        },
 		        method:'POST'
 		      })
@@ -95,10 +95,12 @@ export class LoginComponent extends Component {
 		          if(responseJson.status_code=="200"){
 		            this.setState({
 		              isLoading: false,
-		              dataSource1: responseJson.body,
+		              dataSource1: responseJson.body.oauth_token,
 		            }, async function(){
-			        await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
+			        await AsyncStorage.setItem('userLoginAuthentication', responseJson.body.oauth_token);
 		              // alert(JSON.stringify(responseJson.body.user));
+		              // alert(this.state.dataSource1)
+		              alert("Logged In");
 		              this.props.navigation.navigate('Home');
 		            });
 		          }
@@ -116,15 +118,16 @@ export class LoginComponent extends Component {
 		       
 		        .catch((error) =>{
 		          console.error(error);
+		          alert('There was an error logging in.');
 		        });
   	}
-    
+    _keyExtractor = (item, index) => item.id;
     render_item = ({item}) => {
     		if(item.type=='Text'){
 											
 				return (
-				<View>
-						<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" value ={this.state[item.name]} onChangeText={(text) => this.setState({[item.name]: text})}/>
+				<View key={item.id}>
+						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
 						
 				</View>
 				
@@ -132,15 +135,15 @@ export class LoginComponent extends Component {
 			} 
 			if(item.type=='Password'){
 				return (
-				<View>
-						<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" value ={this.state[item.name]} onChangeText={(text) => this.setState({[item.name]: text})} />
+				<View key={item.id}>
+						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
 						
 				</View>
 				);
 			}
 			if(item.type=='Submit'){
 				return (
-				<View>
+				<View key={item.id}>
 						<TouchableOpacity onPress={()=>this.login()} style={gstyles.buttonView}>
 							<Text style={gstyles.buttonText}>{item.label}</Text>
 						</TouchableOpacity>
@@ -150,7 +153,7 @@ export class LoginComponent extends Component {
 			}
     }
 	render(){
-	
+
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -164,6 +167,7 @@ export class LoginComponent extends Component {
 							<FlatList extraData={this.state.dataSource}
 							  data={this.state.dataSource}
 							  renderItem={this.render_item}	
+							  keyExtractor={this._keyExtractor}
 							/>							
 							<View style={gstyles.newToView}><Text style={gstyles.newToText}>New to Wffer ?</Text></View>
 							<TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Signup')}>

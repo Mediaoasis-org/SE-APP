@@ -20,6 +20,7 @@ import { ShoppingListComponent } from './src/screens/shoppingList/shoppingList';
 import { StoreLocatorComponent } from './src/screens/storeLocality/storeLocator';
 import { PersonalInfoComponent } from './src/screens/User/personalInfo';
 import { UploadPhotoComponent } from './src/screens/User/photoUpload';
+import  LogoutComponent  from './src/screens/User/signOut';
 import { GeneralSettingsComponent } from './src/screens/User/generalSettings';
 import { PrivacySettingsComponent } from './src/screens/User/privacySettings';
 import { OtherSettingsComponent } from './src/screens/User/otherSettings';
@@ -176,6 +177,9 @@ const stack = createStackNavigator({
   },
   GetPrice:{
     screen:getPriceNav
+  },
+  Logout:{
+    screen:LogoutComponent
   }
 },
 {

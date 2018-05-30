@@ -8,6 +8,10 @@ export class ModalDropdownComponent extends React.Component{
       super(props);
       // alert(JSON.stringify(this.props.navigation));
     }
+    // selected(index,value){
+    //   alert(value)
+    //   return value;
+    // }
   render(){
       return(
         <View>
@@ -18,7 +22,9 @@ export class ModalDropdownComponent extends React.Component{
                       dropdownStyle={gstyles.dropdownStyles}
                       showsVerticalScrollIndicator={true}
                       defaultValue={this.props.defaultValue}
-                      options={this.props.options}/>
+                      options={this.props.options}
+                     
+                      />
         </View>
         )
       }
