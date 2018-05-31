@@ -7,6 +7,7 @@ import { HomeComponent } from './src/screens/home/home';
 import { LoginComponent } from './src/screens/login/login';
 import { SignupComponent } from './src/screens/signUp/signup';
 import { ForgetComponent } from './src/screens/forgetPassword/forgetPassword';
+import { ChangePasswordComponent } from './src/screens/changePassword/changePassword';
 import { HeaderComponent } from './src/screens/header';
 import { Catalog } from './src/screens/catalog/catalog';
 import { CatalogItems } from './src/screens/catalog/catalogItems';
@@ -138,6 +139,9 @@ const stack = createStackNavigator({
   },
   ForgetPassword : {
     screen : ForgetComponent
+  },
+  ChangePassword:{
+    screen: ChangePasswordComponent
   },
   Catalog:{
     screen:Catalog,

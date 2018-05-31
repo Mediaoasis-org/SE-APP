@@ -13,6 +13,7 @@ export class LoginComponent extends Component {
 			password:'',
 			dataSource:[],
 			dataSource1:[],
+			userData:[],
 			// email:'',
 			// password:'',
 			LoggedIn:null
@@ -96,8 +97,10 @@ export class LoginComponent extends Component {
 		            this.setState({
 		              isLoading: false,
 		              dataSource1: responseJson.body.oauth_token,
+		              userData: responseJson.body.user,
 		            }, async function(){
 			        await AsyncStorage.setItem('userLoginAuthentication', responseJson.body.oauth_token);
+			        await AsyncStorage.setItem('userData',JSON.stringify(responseJson.body));
 		              // alert(JSON.stringify(responseJson.body.user));
 		              // alert(this.state.dataSource1)
 		              alert("Logged In");

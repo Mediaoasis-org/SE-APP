@@ -47,7 +47,7 @@ export  class OtherSettingsComponent extends Component {
 								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'95%'}}>Hide Content Feed</Text>
 								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'5%'}}/>
 							</TouchableOpacity>
-							<TouchableOpacity onPress={()=>alert('Change Password')} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center',flexDirection:'row'}}>
+							<TouchableOpacity onPress={()=>this.props.navigation.navigate('ChangePassword')} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center',flexDirection:'row'}}>
 								<Text style={{color:'#000',fontSize:16,fontWeight:'bold',flexDirection:'column',width:'95%'}}>Change Password</Text>
 								<Icon name="angle-right" size={24} color="#000" style={{flexDirection:'column',width:'5%'}}/>
 							</TouchableOpacity>
