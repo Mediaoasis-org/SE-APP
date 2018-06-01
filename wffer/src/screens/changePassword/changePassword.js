@@ -29,7 +29,7 @@ export class ChangePasswordComponent extends Component {
 	  var userData = await AsyncStorage.getItem('userData');
 	  	 this.setState({userData:JSON.parse(userData)});
 		 this.setState({oauthToken:this.state.userData.oauth_token});
-		 this.setState({oauthToken:this.state.userData.oauth_token});
+		 this.setState({oauthSecret:this.state.userData.oauth_secret});
 	  // alert(value)
 	  if(value!=null){
 	    const data= JSON.parse(value);
@@ -44,7 +44,7 @@ export class ChangePasswordComponent extends Component {
 	}
 	fetchFields(){
 		
-			 return fetch('https://wffer.com/se/api/rest/members/settings/password?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token=nym0jbhdqmif0lokymx5exa83g68mbzb&oauth_secret=oogb4n0gv0c4a72lcejq04wnmfv8vaz4',{
+			 return fetch('https://wffer.com/se/api/rest/members/settings/password?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' + this.state.oauthSecret,{
 			       
 			        headers:{
 			          'Accept':'application/json',
@@ -94,13 +94,14 @@ export class ChangePasswordComponent extends Component {
 		        .then((response) => response.json())
 		        .then((responseJson) => {
 		        	if(responseJson.status_code=="204"){
-		        		let message = "Password Changed.";
+		        		let message = "Password Changed Successfully.";
 		        		this.setState({Message:message})
 		        		// this.props.navigation.navigate("Home");
-		        		api.logout().then(() => {
-					      this.setState({LoggedIn:0})
-					      this.props.navigation.navigate('Login')
-					    })
+		        		// api.logout().then((data) => {
+					      // this.setState({LoggedIn:0})
+					      // console.log(data)
+					      // this.props.navigation.navigate('ChangePassword')
+					    // })
 		        	}
 		        	else if(responseJson.status_code=="400"){
 		        		this.setState({Message:responseJson.message});
@@ -126,7 +127,7 @@ export class ChangePasswordComponent extends Component {
 		         //    this.setState({
 		         //      Message : responseJson.message,
 		         //    })
-		         	
+		         	this.textInput.clear()
 		            alert(this.state.Message)
 		          
 		         //  }
@@ -153,7 +154,7 @@ export class ChangePasswordComponent extends Component {
 			if(item.type=='Password'){
 				return (
 				<View key={item.id}>
-						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
+						<TextInput name={item.name} style={gstyles.textInputStyle} ref={input => { this.textInput = input }} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
 						
 				</View>
 				);

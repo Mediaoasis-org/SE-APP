@@ -12,6 +12,7 @@ AsyncStorage
 import {gstyles} from '../../GlobalStyles';
 import { SafeAreaView} from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import api from '../../api/auth';
 export class DrawerTitle extends React.Component{
   constructor(props) {
       super(props);
@@ -26,26 +27,76 @@ export class DrawerTitle extends React.Component{
     }
     logout = async() => {
       await AsyncStorage.removeItem('userLoginAuthentication');
+      var userData = await AsyncStorage.getItem('userData');
+       this.setState({userData:JSON.parse(userData)});
+       this.setState({oauthToken:this.state.userData.oauth_token});
+       this.setState({oauthSecret:this.state.userData.oauth_secret});
+        this.ApiLogout() 
+       
        this.setState({LoggedIn:0})
       this.props.navigation.navigate('Login');
     }
+    ApiLogout(){
+       var formData = new FormData;
+        formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
+        formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
+        formData.append('oauth_token',this.state.oauthToken);
+        formData.append('oauth_secret',this.state.oauthSecret);
+
+          return fetch('https://wffer.com/se/api/rest/logout',{
+            body: formData,
+            headers:{
+              'Accept':'application/json',
+            },
+            method:'POST'
+          })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              
+              if(responseJson.status_code=="204"){
+                this.setState({
+                  isLoading: false,
+                }, function(){
+              
+                });
+              }
+              else if(responseJson.status_code=="401")
+              {
+                this.setState({
+                  Message : responseJson.message,
+                })
+                alert(JSON.stringify(responseJson.message))
+              
+              }
+              
+
+            })
+           
+            .catch((error) =>{
+              console.error(error);
+            });
+    }
     componentDidMount(){
+    
       this.getLoginValue()
     }
     getLoginValue(){
        var value = AsyncStorage.getItem('userLoginAuthentication');
-       // alert(value)
+       // alert(value.length)
         if(value.length > 0 ){
           this.setState({LoggedIn:1})
         }
+       
         
     }
     
     // logout(){
      
-    //   AsyncStorage.removeItem('userLoginAuthentication');
-    //   this.setState({LoggedIn:0})
-    //   this.props.navigation.navigate('Login')
+    //   api.logout().then((data) => {
+    //             // this.setState({LoggedIn:0})
+    //             // console.log(data)
+    //             this.props.navigation.navigate('Login')
+    //           })
     // }
    
   render(){

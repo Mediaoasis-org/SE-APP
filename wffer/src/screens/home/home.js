@@ -27,7 +27,7 @@ export class HomeComponent extends Component {
     async getLoginValue(){
        var value = await AsyncStorage.getItem('userLoginAuthentication')
        // alert(value)
-        if(value.length > 0 ){
+        if(value !== null){
           this.setState({LoggedIn:1})
         }
     }

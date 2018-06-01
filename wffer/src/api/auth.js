@@ -2,7 +2,7 @@ import { Text, TextInput, View, Dimension, TouchableOpacity, Image, FlatList, Sc
 
 logout = async() => {
       await AsyncStorage.removeItem('userLoginAuthentication');
-       // this.setState({LoggedIn:0})
+      return 0;
       // this.props.navigation.navigate('Login');
     }
 

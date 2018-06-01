@@ -10,15 +10,18 @@ export  class PersonalInfoComponent extends Component {
 		this.state={
 			LoggedIn:null,
 			dataSource:[],
-			data:[]
-			// firstname:'',
+			data:[],
+			1_1_3_alias_first_name:'',
 			// lastname:''
 		}
 		this._getStorageValue()
 	}
 	
 	async _getStorageValue(){
+		// this.fetchFields()
 	  var value = await AsyncStorage.getItem('fieldsPersonalInformation');
+	   let PersonalInfo = await AsyncStorage.getItem('userData');
+	 	this.setState({name:PersonalInfo.display_name})
 	  // alert(value)
 	  if(value == null){
 	  	this.setState({LoggedIn:false})
@@ -37,7 +40,7 @@ export  class PersonalInfoComponent extends Component {
 
 	fetchFields(){
 		
-			 return fetch('https://wffer.com/se/api/rest/signup?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+			 return fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token=nym0jbhdqmif0lokymx5exa83g68mbzb&oauth_secret=oogb4n0gv0c4a72lcejq04wnmfv8vaz4',{
 			       
 			        // headers:{
 			        //   'Accept':'application/json',
@@ -50,7 +53,7 @@ export  class PersonalInfoComponent extends Component {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 			          isLoading: false,
-			          data: responseJson.body.fields,
+			          data: responseJson.body.form,
 			        },async function(){
 			        		await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify( this.state.data["Personal Information"]));
 			        		// alert(JSON.stringify(this.state.data));  
@@ -85,6 +88,7 @@ export  class PersonalInfoComponent extends Component {
 				 	<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Personal Information</Text></View>
 						<View>
+							<Text>{this.state.name}</Text>
 								{
 
 							    	this.state.dataSource.map((item)=>{
@@ -92,7 +96,7 @@ export  class PersonalInfoComponent extends Component {
 										if(item.type=='Text'){
 											return (
 											<View key={item.id}>
-													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff"/>
+													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff"/ value={this.state.item.name}>
 													
 											</View>
 											

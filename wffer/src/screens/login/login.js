@@ -28,14 +28,14 @@ export class LoginComponent extends Component {
 	  if(fieldData !== null){
 	  	// alert('entering');
 	  	// const data = JSON.parse(value)
-	  const	data= JSON.parse(fieldData);
-	  	this.setState({LoggedIn:true})
+	    const data= JSON.parse(fieldData);
+	  	this.setState({LoggedIn:1})
 		this.setState({dataSource:data});
 		// console.log(this.state.dataSource)
 	  }
 	  else
 	  {
-	  	this.setState({LoggedIn:false})
+	  	this.setState({LoggedIn:0})
 	  	this.fetchFields();
 	  }
 	}

@@ -3,12 +3,14 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  YellowBox
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import MyNavigation from './Navigation';
 import SplashScreen from './SplashScreen';
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props){
