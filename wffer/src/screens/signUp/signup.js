@@ -16,7 +16,7 @@ export class SignupComponent extends Component {
 			dataSourcePhoto:[],
 			email:'',
 			password:'',
-			passwordconf:'',
+			passconf:'',
 			timezone:'',
 			language:'',
 			ImageSource:null,
@@ -26,7 +26,7 @@ export class SignupComponent extends Component {
 			 LoggedIn:null,
 			 accountShow:true,
 			 personalInformationShow:false,
-			 photoUploadShow:false,
+			 // photoUploadShow:false,
 		}
 		// alert(JSON.stringify(this.props.navigation))
 		this._getStorageValue()
@@ -36,7 +36,7 @@ export class SignupComponent extends Component {
 		// this.fetchFields()
 	  var value = await AsyncStorage.getItem('fieldsSignup');
 	  var valuePersonal = await AsyncStorage.getItem('fieldsSignupPersonal');
-	  var valuePhoto = await AsyncStorage.getItem('fieldsSignupPhoto');
+	  // var valuePhoto = await AsyncStorage.getItem('fieldsSignupPhoto');
 	  // alert(value)
 	  if(value!=null){
 	  	// alert('entering');
@@ -45,7 +45,7 @@ export class SignupComponent extends Component {
 	  	this.setState({LoggedIn:true})
 		this.setState({dataSource:data});
 		this.setState({dataSourcePersonal:JSON.parse(valuePersonal)});
-		this.setState({dataSourcePhoto:JSON.parse(valuePhoto)});
+		// this.setState({dataSourcePhoto:JSON.parse(valuePhoto)});
 		// console.log(this.state.dataSource)
 	  }
 	  else
@@ -178,21 +178,28 @@ export class SignupComponent extends Component {
 		        });
     }
     
-     selected(index,value){
-      alert(value)
-      return value;
-    }
+    //  selected(index,value){
+    //   alert(value)
+    //   return value;
+    // }
+     // onTagSelect(idx, data){ console.log("======== on tag selected ==========="); console.log(idx); };
+     onHandleChange(idx,data){
+     	console.log(idx)
+     }
     continue(){
     	this.setState({personalInformationShow:true});
     	this.setState({accountShow:false});
-    	this.setState({photoUploadShow:false})
+    	// this.setState({photoUploadShow:false})
     }
     continuePhoto(){
     	this.setState({personalInformationShow:false});
     	this.setState({accountShow:false});
-    	this.setState({photoUploadShow:true})
+    	// this.setState({photoUploadShow:true})
     }
-
+    submit(){
+    	console.log(this.state);
+    	alert("all values")
+    }
     //renders account fields for user
     renderAccount(){
     	 if(this.state.accountShow) {
@@ -222,14 +229,15 @@ export class SignupComponent extends Component {
 				
 				if(item.type=='Select'){
 					var options = item.multiOptions;
+					console.log(item.multiOptions)
 					var result = [];
 					for(var i in options)
 					    result.push([options [i]]);
 					return(
 					<View>
 						<ModalDropdownComponent defaultValue={item.type + ' ' + item.label}
-        					options={result}
-        					onSelect={(index,value)=>this.selected(index,value)}
+        					options={item.multiOptions}
+        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
         					/>
         			</View>
 					)
@@ -242,7 +250,8 @@ export class SignupComponent extends Component {
 						  label={item.description}
 						  labelLines={4}
 						  labelStyle={{color:'#000',fontSize:16,padding:3}}
-						  onClick={() => this.setState({checked: !checked})}
+						 	checked={this.state.checked}
+  							onChange={() => this.setState({checked: !this.state.checked})}
 						  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
 						/>
 					</View>
@@ -251,6 +260,7 @@ export class SignupComponent extends Component {
 			})
 		
 		}
+
 		<View style={gstyles.termsView}><TouchableOpacity><Text style={gstyles.termsLink}>Click Here</Text></TouchableOpacity><Text style={gstyles.fontSize18}> to read the terms of service</Text></View>
 							<TouchableOpacity onPress={()=>this.continue()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Continue</Text></TouchableOpacity>
 		</View>
@@ -285,7 +295,7 @@ export class SignupComponent extends Component {
 					<View>
 						<ModalDropdownComponent defaultValue={item.type + ' ' + item.label}
         					options={result}
-        					onSelect={(index,value)=>this.selected(index,value)}
+        					onSelect={(idx, data)=>{this.onTagSelect(idx, data)}}
         					/>
         			</View>
 					)
@@ -295,7 +305,7 @@ export class SignupComponent extends Component {
 		
 		}
 	
-		<TouchableOpacity onPress={()=>this.continuePhoto()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Continue</Text></TouchableOpacity>
+		<TouchableOpacity onPress={()=>this.submit()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
 		</View>
 		)
 		}		
@@ -311,7 +321,7 @@ export class SignupComponent extends Component {
                                     <Image style={styles.image} source={this.state.ImageSource} />
                                   }
                     	</View>
-                    	<TouchableOpacity onPress={()=>this.props.navigation.navigate('Home')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
+                    	<TouchableOpacity onPress={()=>this.submit()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
 
                     </View>
 		    	

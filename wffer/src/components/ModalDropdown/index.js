@@ -80,9 +80,10 @@ export class ModalDropdownComponent extends React.Component{
     });
     // alert(this.state.buttonText)
   }
-  onTagSelect(idx, data){ console.log("======== on tag selected ==========="); console.log(idx, data); };
+  onTagSelect(idx, data){ console.log("======== on tag selected ===========");  return (idx,data)};
   render(){
      const {buttonText} = this.state;
+    // alert(this.props.options)  
       return(
         <View {...this.props}>
             <ModalDropdown 
@@ -97,7 +98,7 @@ export class ModalDropdownComponent extends React.Component{
                       ref={(ref) => this.select = ref}
                       // onSelected={()=>{return (this.state.buttonText)}}
                       // onSelect={(index) => this.setState({selectedValue: index})} 
-                      onSelect={(idx, data)=>{this.onTagSelect(idx, data)}} />
+                      onSelect={(idx, data)=>{ return this.onTagSelect(idx, data)}} />
                       />
                      
         </View>

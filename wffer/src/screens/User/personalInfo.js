@@ -11,7 +11,7 @@ export  class PersonalInfoComponent extends Component {
 			LoggedIn:null,
 			dataSource:[],
 			data:[],
-			1_1_3_alias_first_name:'',
+			// 1_1_3_alias_first_name:'',
 			// lastname:''
 		}
 		this._getStorageValue()
@@ -96,7 +96,7 @@ export  class PersonalInfoComponent extends Component {
 										if(item.type=='Text'){
 											return (
 											<View key={item.id}>
-													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff"/ value={this.state.item.name}>
+													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" />
 													
 											</View>
 											

@@ -6,7 +6,8 @@ import {
   Dimensions,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import ImagePicker from 'react-native-image-picker';
@@ -17,9 +18,62 @@ export  class UploadPhotoComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
-			ImageSource:null
+			ImageSource:null,
+      oauthToken:'',
+      oauthSecret:'',
+      userData:[]
 		}
+    this._getStorageValue();
 	}
+  async _getStorageValue(){
+     var userData = await AsyncStorage.getItem('userData');
+     this.setState({userData:JSON.parse(userData)});
+     this.setState({oauthToken:this.state.userData.oauth_token});
+     this.setState({oauthSecret:this.state.userData.oauth_secret});
+     // alert(this.state.oauthToken)
+  }
+  uploadPhoto(){
+      // alert(this.state.ImageSource);
+      // alert(this.state.oauthSecret);
+      // alert(this.state.oauthToken);
+      var formData = new FormData;
+        formData.append('photo',this.state.ImageSource);
+        // formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
+        // formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
+        // formData.append('ip','45.121.29.194');
+          return fetch('https://wffer.com/se/api/rest/members/edit/photo?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret ,{
+            body: formData,
+            headers:{
+              'Accept':'application/json',
+              'Content-Type': 'multipart/form-data'
+            },
+            method:'POST'
+          })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              
+              if(responseJson.status_code=="204"){
+                this.setState({
+                  Message : 'Photo Successfully Uploaded'
+                }, function(){})
+              }
+              else
+              {
+                this.setState({
+                  Message : responseJson.message,
+                })
+                alert(JSON.stringify(responseJson))
+              
+              }
+              
+
+            })
+           
+            .catch((error) =>{
+              console.error(error);
+            });
+    
+  }
 	static navigationOptions = {
         title: 'Edit My Photo',
         
@@ -52,6 +106,7 @@ export  class UploadPhotoComponent extends Component {
           // You can also display the image using data:
           // let source = { uri: 'data:image/jpeg;base64,' + response.data };
           console.log(response.fileName)
+          // console.log("source " + source)
           this.setState({
  
             ImageSource: source
@@ -77,7 +132,7 @@ export  class UploadPhotoComponent extends Component {
                                     <Image style={styles.image} source={this.state.ImageSource} />
                                   }
                     </View>
-                    <TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Photo</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.uploadPhoto()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Photo</Text></TouchableOpacity>
 			</View>
 		)
 	}
