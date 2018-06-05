@@ -11,17 +11,34 @@ export  class PersonalInfoComponent extends Component {
 			LoggedIn:null,
 			dataSource:[],
 			data:[],
+			'1_1_3_alias_first_name':'',
+			'1_1_4_alias_last_name':'',
+			'1_1_5_alias_gender':'',
+			oauthToken:'',
+			oauthSecret:'',
+			userData:[]
 			// 1_1_3_alias_first_name:'',
 			// lastname:''
 		}
+		this.handleInput = this.handleInput.bind(this);
 		this._getStorageValue()
+
+		
 	}
-	
+	componentDidMount(){
+		
+		
+	}
 	async _getStorageValue(){
 		// this.fetchFields()
 	  var value = await AsyncStorage.getItem('fieldsPersonalInformation');
-	   let PersonalInfo = await AsyncStorage.getItem('userData');
-	 	this.setState({name:PersonalInfo.display_name})
+	  var userData = await AsyncStorage.getItem('userData');
+     this.setState({userData:JSON.parse(userData)});
+     this.setState({oauthToken:this.state.userData.oauth_token});
+     this.setState({oauthSecret:this.state.userData.oauth_secret});
+     this.fetchValues();
+     // console.log(this.state.oauthToken);
+     // console.log(this.state.oauthSecret);
 	  // alert(value)
 	  if(value == null){
 	  	this.setState({LoggedIn:false})
@@ -37,10 +54,59 @@ export  class PersonalInfoComponent extends Component {
 		// console.log(this.state.dataSource)
 	  }
 	}
+	submit(){
+    	console.log(this.state);
+    	alert("all values")
+    }
+	SavePersonalInfo(){
+    	// this.submit();
+    	var formData = new FormData;
+		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
+		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
+		    formData.append('1_1_5_alias_gender',this.state['1_1_5_alias_gender']);
+		    formData.append('oauth_token',this.state.oauthToken);
+		    formData.append('oauth_secret',this.state.oauthSecret);
+		    formData.append('ip','45.121.29.194');
+		       fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+		        body: formData,
+		        headers:{
+		          'Accept':'application/json',
+		          // 'Content-Type': 'multipart/form-data'
+		        },
+		        method:'POST'
+		      })
+		        .then((response) => response.json())
+		        .then((responseJson) => {
+		        	
+		          if(responseJson.status_code=="204"){
+		            this.setState({
+		              isLoading: false,
+		              dataSource1: responseJson.body,
+		            }, async function(){
+			        await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
+		              alert('Data Updated');
+		              this.props.navigation.navigate('Profile');
+		            });
+		          }
+		          else
+		          {
+		            this.setState({
+		              Message : responseJson.message,
+		            })
+		            alert(JSON.stringify(responseJson))
+		          
+		          }
+		          
 
+		        })
+		       
+		        .catch((error) =>{
+		          console.error(error);
+		        });
+    }
 	fetchFields(){
-		
-			 return fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token=nym0jbhdqmif0lokymx5exa83g68mbzb&oauth_secret=oogb4n0gv0c4a72lcejq04wnmfv8vaz4',{
+				
+			  fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
 			       
 			        // headers:{
 			        //   'Accept':'application/json',
@@ -70,9 +136,55 @@ export  class PersonalInfoComponent extends Component {
 			      });
 			
 	}
-	selected(index,value){
-      alert(value)
-    }
+	fetchValues(){
+	
+		return fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
+			       
+			        // headers:{
+			        //   'Accept':'application/json',
+			        //   'Content-Type':'application/json',
+			        // },
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			    
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+			          isLoading: false,
+			          data: responseJson.body.formValues,
+			        },function(){
+			        		this.setState({'1_1_3_alias_first_name':this.state.data['1_1_3_alias_first_name']})
+			        		this.setState({'1_1_4_alias_last_name':this.state.data['1_1_4_alias_last_name']})
+			        		// console.log(this.state['1_1_3_alias_first_name'])
+			        		//  alert(JSON.stringify(this.state.data));  
+
+			        	
+			        });
+
+			      	}
+			      	else
+			      	{
+			      		// this.setState({Message:responseJson.Message});
+			      	}
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
+	}
+	handleInput(idx,data,value){
+     	var state = value;
+     	var val = idx;
+     	// console.log(state);
+     	// console.log(val);   
+     	var obj  = {}
+     	obj[state] = val;
+     	this.setState(obj);
+     	// console.log(obj)
+     	// console.log(this.state[state]);
+     	  	
+     	
+     }
 	static navigationOptions = {
         title: 'Personal Info',
     };
@@ -96,7 +208,7 @@ export  class PersonalInfoComponent extends Component {
 										if(item.type=='Text'){
 											return (
 											<View key={item.id}>
-													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" />
+													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} value={this.state[item.name].value}/>
 													
 											</View>
 											
@@ -110,32 +222,31 @@ export  class PersonalInfoComponent extends Component {
 											</View>
 											)
 										}
-										if(item.type=='Select'){
-											var options = item.multiOptions;
-											var result = [];
-											for(var i in options)
-											     result.push([options [i]]);
-											return(
-											<View key={item.id}>
-												<ModalDropdownComponent defaultValue={item.type + ' ' + item.label}
-				                					options={result}/>
-				                			</View>
-											)
+										// if(item.type=='Select'){
+										// 	return(
+										// 	<View key={item.id}>
+										// 		<ModalDropdownComponent defaultValue={item.label}
+						    //     					options={item.multiOptions}
+						    //     					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+						    //     					onChange={this.handleInput}
+						    //     				/>
+				      //           			</View>
+										// 	)
 											
-										}
-										if(item.type=='Submit'){
-											return (
-											<View key={item.id}>
-													<TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}>
-														<Text style={gstyles.buttonText}>{item.label}</Text>
-													</TouchableOpacity>
+										// }
+										// if(item.type=='Submit'){
+										// 	return (
+										// 	<View key={item.id}>
+										// 			<TouchableOpacity onPress={()=>this.SavePersonalInfo()} style={gstyles.buttonView}>
+										// 				<Text style={gstyles.buttonText}>{item.label}</Text>
+										// 			</TouchableOpacity>
 													
-											</View>
-											)
-										}
+										// 	</View>
+										// 	)
+										// }
 									})
 								}
-								<TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
+								<TouchableOpacity onPress={()=>this.SavePersonalInfo()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 			</View>

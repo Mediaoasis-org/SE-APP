@@ -17,9 +17,12 @@ export class SignupComponent extends Component {
 			email:'',
 			password:'',
 			passconf:'',
-			timezone:'',
-			language:'',
+			Timezone:null,
+			Language:null,
 			ImageSource:null,
+			'1_1_3_alias_first_name':'',
+			'1_1_4_alias_last_name':'',
+			Gender:'',
 			// email:'',
 			// password:'',
 			 checked: false,
@@ -29,6 +32,11 @@ export class SignupComponent extends Component {
 			 // photoUploadShow:false,
 		}
 		// alert(JSON.stringify(this.props.navigation))
+		this.handleInput = this.handleInput.bind(this);
+		
+	}
+	componentDidMount()
+	{
 		this._getStorageValue()
 	}
 	async _getStorageValue(){
@@ -46,7 +54,8 @@ export class SignupComponent extends Component {
 		this.setState({dataSource:data});
 		this.setState({dataSourcePersonal:JSON.parse(valuePersonal)});
 		// this.setState({dataSourcePhoto:JSON.parse(valuePhoto)});
-		// console.log(this.state.dataSource)
+		// alert(JSON.stringify(this.state.dataSourcePersonal))
+		// console.log(this.state.dataSource.length)
 	  }
 	  else
 	  {
@@ -130,16 +139,20 @@ export class SignupComponent extends Component {
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
     signup(){
+    	this.submit()
     	var formData = new FormData;
 		    formData.append('email',this.state.email);
 		    formData.append('password',this.state.password);
-		    formData.append('passconf',this.state.passwordconf);
-		    formData.append('timezone',this.state.timezone);
-		    formData.append('language',this.state.language);
+		    formData.append('passconf',this.state.passconf);
+		    formData.append('timezone',this.state.Timezone);
+		    formData.append('language',this.state.Language);
 		    formData.append('terms',this.state.checked);
+		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
+		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
+		    formData.append('1_1_5_alias_gender',this.state.Gender)
 		    formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
 		    formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
-		    // formData.append('ip','45.121.29.194');
+		    formData.append('ip','45.121.29.194');
 		      return fetch('https://wffer.com/se/api/rest/signup',{
 		        body: formData,
 		        headers:{
@@ -183,12 +196,61 @@ export class SignupComponent extends Component {
     //   return value;
     // }
      // onTagSelect(idx, data){ console.log("======== on tag selected ==========="); console.log(idx); };
-     onHandleChange(idx,data){
-     	console.log(idx)
+     handleInput(idx,data,value){
+     	var state = value;
+     	var val = idx;
+     	// console.log(state);
+     	// console.log(val);   
+     	var obj  = {}
+     	obj[state] = val;
+     	this.setState(obj);
+     	// console.log(obj)
+     	// console.log(this.state[state]);
+     	  	
+     	
      }
     continue(){
-    	this.setState({personalInformationShow:true});
-    	this.setState({accountShow:false});
+    	var formData = new FormData;
+	        formData.append('email',this.state.email);
+		    formData.append('password',this.state.password);
+		    formData.append('passconf',this.state.passconf);
+		    formData.append('timezone',this.state.Timezone);
+		    formData.append('language',this.state.Language);
+		    formData.append('terms',this.state.checked);
+		    formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
+		    formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
+    	 return fetch('https://wffer.com/se/api/rest/signup/validations',{
+		        body: formData,
+		        headers:{
+		          'Accept':'application/json',
+		          'Content-Type': 'multipart/form-data'
+		        },
+		        method:'POST'
+		      })
+		        .then((response) => response.json())
+		        .then((responseJson) => {
+		        	
+		          if(responseJson.status_code=="204"){
+		            this.setState({personalInformationShow:true});
+    				this.setState({accountShow:false});
+		          }
+		          else
+		          {
+		            this.setState({
+		              Message : responseJson.message,
+		            })
+		            alert(JSON.stringify(responseJson.message))
+		          
+		          }
+		          
+
+		        })
+		       
+		        .catch((error) =>{
+		          console.error(error);
+		        });
+    	
+
     	// this.setState({photoUploadShow:false})
     }
     continuePhoto(){
@@ -202,6 +264,7 @@ export class SignupComponent extends Component {
     }
     //renders account fields for user
     renderAccount(){
+    	// console.log(this.state.dataSource)
     	 if(this.state.accountShow) {
     	return(
     	<View>
@@ -235,9 +298,10 @@ export class SignupComponent extends Component {
 					    result.push([options [i]]);
 					return(
 					<View>
-						<ModalDropdownComponent defaultValue={item.type + ' ' + item.label}
+						<ModalDropdownComponent defaultValue={item.label}
         					options={item.multiOptions}
         					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+        					onChange={this.handleInput}
         					/>
         			</View>
 					)
@@ -293,9 +357,10 @@ export class SignupComponent extends Component {
 					    result.push([options [i]]);
 					return(
 					<View>
-						<ModalDropdownComponent defaultValue={item.type + ' ' + item.label}
-        					options={result}
-        					onSelect={(idx, data)=>{this.onTagSelect(idx, data)}}
+						<ModalDropdownComponent defaultValue={item.label}
+        					options={item.multiOptions}
+        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+        					onChange={this.handleInput}
         					/>
         			</View>
 					)
@@ -305,7 +370,7 @@ export class SignupComponent extends Component {
 		
 		}
 	
-		<TouchableOpacity onPress={()=>this.submit()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
+		<TouchableOpacity onPress={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
 		</View>
 		)
 		}		
@@ -321,7 +386,7 @@ export class SignupComponent extends Component {
                                     <Image style={styles.image} source={this.state.ImageSource} />
                                   }
                     	</View>
-                    	<TouchableOpacity onPress={()=>this.submit()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
+                    	<TouchableOpacity onPress={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
 
                     </View>
 		    	
@@ -330,6 +395,10 @@ export class SignupComponent extends Component {
     }
 
 	render(){
+
+		if (this.state.dataSource.length === 0) {
+		  return null
+		}
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>

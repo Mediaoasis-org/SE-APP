@@ -80,7 +80,11 @@ export class ModalDropdownComponent extends React.Component{
     });
     // alert(this.state.buttonText)
   }
-  onTagSelect(idx, data){ console.log("======== on tag selected ===========");  return (idx,data)};
+  onTagSelect(idx, data){ 
+      // console.log("======== on tag selected ==========="); 
+      // console.log(idx,data); 
+      this.props.onChange(idx,data,this.props.defaultValue)
+ };
   render(){
      const {buttonText} = this.state;
     // alert(this.props.options)  
@@ -88,18 +92,18 @@ export class ModalDropdownComponent extends React.Component{
         <View {...this.props}>
             <ModalDropdown 
                       style={gstyles.dropdownMainStyles}
-                      animated={"fade"}
+                      
                       dropdownTextStyle={gstyles.dropdownTextStyle}
                       textStyle={gstyles.textStyle}
                       dropdownStyle={gstyles.dropdownStyles}
                       showsVerticalScrollIndicator={true}
-                      defaultValue={buttonText}
+                      defaultValue={"Select " + this.props.defaultValue}
                       options={this.props.options}
                       ref={(ref) => this.select = ref}
                       // onSelected={()=>{return (this.state.buttonText)}}
                       // onSelect={(index) => this.setState({selectedValue: index})} 
-                      onSelect={(idx, data)=>{ return this.onTagSelect(idx, data)}} />
-                      />
+                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data)}} />
+                      
                      
         </View>
         )
