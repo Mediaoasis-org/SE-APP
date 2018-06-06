@@ -96,13 +96,16 @@ export class ModalDropdownComponent extends React.Component{
                       dropdownTextStyle={gstyles.dropdownTextStyle}
                       textStyle={gstyles.textStyle}
                       dropdownStyle={gstyles.dropdownStyles}
+                      defaultIndex={this.props.defaultIndex}
                       showsVerticalScrollIndicator={true}
-                      defaultValue={"Select " + this.props.defaultValue}
+                      defaultValue={this.state.buttonText}
                       options={this.props.options}
                       ref={(ref) => this.select = ref}
                       // onSelected={()=>{return (this.state.buttonText)}}
                       // onSelect={(index) => this.setState({selectedValue: index})} 
-                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data)}} />
+                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data)}} 
+                      select={(idx)=>{this.select(idx)}}
+                      />
                       
                      
         </View>

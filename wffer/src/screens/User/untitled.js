@@ -18,16 +18,16 @@ export  class UploadPhotoComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
-			ImageSource:null,
+			// ImageSource:'',
       oauthToken:'',
       oauthSecret:'',
       userData:[],
       dataSource:[],
       data:[]
 		}
-    // this._getStorageValue();
+    
 	}
-   componentDidMount(){
+  componentDidMount(){
     this._getStorageValue();
   }
   async _getStorageValue(){
@@ -37,6 +37,20 @@ export  class UploadPhotoComponent extends Component {
      this.setState({oauthSecret:this.state.userData.oauth_secret});
      // alert(this.state.oauthToken)
      this.fetchFields()
+     // if(value == null){
+     //  this.setState({LoggedIn:false})
+     //  this.fetchFields(); 
+     //  }
+     //  else
+     //  {
+     //    // alert('entering');
+     //    const data = JSON.parse(value);
+     //    // alert(data)
+     //  this.setState({LoggedIn:true})
+     //  this.setState({dataSource:data});
+     //  this.setState({ImageSource:this.state.dataSource.image_profile})
+     //  // console.log(this.state.dataSource)
+     //  }
   }
   fetchFields(){
         
@@ -54,7 +68,7 @@ export  class UploadPhotoComponent extends Component {
                  this.setState({
                 // isLoading: false,
                 data: responseJson.body,
-                ImageSource:{uri : responseJson.body.image_profile}
+                ImageSource:responseJson.body.image_profile
               },function(){
                  
                   // alert(JSON.stringify(this.state.data));  
@@ -116,49 +130,7 @@ export  class UploadPhotoComponent extends Component {
             });
     
   }
-  removePhoto(){
-   
-       // var formData = new FormData;
-        // formData.append('photo',this.state.ImageSource);
-        // formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
-        // formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
-        // formData.append('ip','45.121.29.194');
-          return fetch('https://wffer.com/se/api/rest/members/edit/remove-photo?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret ,{
-            // body: formData,
-            headers:{
-              'Accept':'application/json',
-              'Content-Type': 'multipart/form-data'
-            },
-            method:'DELETE'
-          })
-            .then((response) => response.json())
-            .then((responseJson) => {
-              
-              if(responseJson.status_code=="204"){
-                this.setState({
-                  Message : 'Photo Removed Successfully'
-                }, function(){
-                  // alert(JSON.stringify(responseJson))
-                    this.fetchFields()
-                })
-              }
-              else
-              {
-                this.setState({
-                  Message : responseJson.message,
-                })
-                alert(JSON.stringify(responseJson))
-              
-              }
-              
-
-            })
-           
-            .catch((error) =>{
-              console.error(error);
-            });
-  }
-  static navigationOptions = {
+	static navigationOptions = {
         title: 'Edit My Photo',
         
 
@@ -201,9 +173,9 @@ export  class UploadPhotoComponent extends Component {
       // console.log('work');
     }
 	render(){
-    // if (this.state.data.length === 0) {
-    //   return null
-    // }
+    if (this.state.data.length === 0) {
+      return null
+    }
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -215,9 +187,7 @@ export  class UploadPhotoComponent extends Component {
           <View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Edit Photo</Text></View>
 				 	<View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
                             <TouchableOpacity style={{position:'absolute',top:20,left:'61%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}><Image source={require('../../../assets/account_settings_camera.png')} style={{width:24,height:24}}/></TouchableOpacity>
-                               
-                                    <Image style={styles.image} source={this.state.ImageSource} />
-                                  
+                                    <Image style={styles.image} source={{uri:this.state.ImageSource}} />                                
                     </View>
                     <TouchableOpacity onPress={()=>this.uploadPhoto()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Photo</Text></TouchableOpacity>
                     <View style={gstyles.newToView}><Text style={gstyles.newToText}>OR</Text></View>

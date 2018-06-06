@@ -343,7 +343,7 @@ export class SignupComponent extends Component {
 				if(item.type=='Text'){
 					return (
 					<View key={item.id}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />
 							
 					</View>
 					

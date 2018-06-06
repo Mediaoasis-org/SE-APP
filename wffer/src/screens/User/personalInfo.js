@@ -11,8 +11,11 @@ export  class PersonalInfoComponent extends Component {
 			LoggedIn:null,
 			dataSource:[],
 			data:[],
+			fieldValues:[],
 			'1_1_3_alias_first_name':'',
 			'1_1_4_alias_last_name':'',
+			firstname:'',
+			lastname:'',
 			'1_1_5_alias_gender':'',
 			oauthToken:'',
 			oauthSecret:'',
@@ -26,7 +29,6 @@ export  class PersonalInfoComponent extends Component {
 		
 	}
 	componentDidMount(){
-		
 		
 	}
 	async _getStorageValue(){
@@ -63,7 +65,7 @@ export  class PersonalInfoComponent extends Component {
     	var formData = new FormData;
 		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
 		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
-		    formData.append('1_1_5_alias_gender',this.state['1_1_5_alias_gender']);
+		    // formData.append('1_1_5_alias_gender',this.state['1_1_5_alias_gender']);
 		    formData.append('oauth_token',this.state.oauthToken);
 		    formData.append('oauth_secret',this.state.oauthSecret);
 		    formData.append('ip','45.121.29.194');
@@ -83,7 +85,7 @@ export  class PersonalInfoComponent extends Component {
 		              isLoading: false,
 		              dataSource1: responseJson.body,
 		            }, async function(){
-			        await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
+			        // await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
 		              alert('Data Updated');
 		              this.props.navigation.navigate('Profile');
 		            });
@@ -152,12 +154,13 @@ export  class PersonalInfoComponent extends Component {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 			          isLoading: false,
-			          data: responseJson.body.formValues,
+			          fieldValues: responseJson.body.formValues,
 			        },function(){
-			        		this.setState({'1_1_3_alias_first_name':this.state.data['1_1_3_alias_first_name']})
-			        		this.setState({'1_1_4_alias_last_name':this.state.data['1_1_4_alias_last_name']})
+			        		this.setState({'1_1_3_alias_first_name':this.state.fieldValues['1_1_3_alias_first_name'].value})
+			        		this.setState({'1_1_4_alias_last_name':this.state.fieldValues['1_1_4_alias_last_name'].value})
+			        		this.setState({'1_1_5_alias_gender':this.state.fieldValues['1_1_5_alias_gender'].value})
 			        		// console.log(this.state['1_1_3_alias_first_name'])
-			        		//  alert(JSON.stringify(this.state.data));  
+			        		 // alert(JSON.stringify(this.state.fieldValues['1_1_3_alias_first_name'].value));  
 
 			        	
 			        });
@@ -185,10 +188,25 @@ export  class PersonalInfoComponent extends Component {
      	  	
      	
      }
+     onChange(text,name){
+     	var state = name;
+     	var val = text;
+     	// console.log(state);
+     	// console.log(val);   
+     	var obj1  = {}
+     	obj1[state] = val;
+     	console.log(obj1)
+     	this.setState(obj1);
+     	
+     }
+
 	static navigationOptions = {
         title: 'Personal Info',
     };
 	render(){
+		if (this.state.dataSource.length === 0) {
+		  return null
+		}
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -200,7 +218,7 @@ export  class PersonalInfoComponent extends Component {
 				 	<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Personal Information</Text></View>
 						<View>
-							<Text>{this.state.name}</Text>
+							
 								{
 
 							    	this.state.dataSource.map((item)=>{
@@ -208,7 +226,7 @@ export  class PersonalInfoComponent extends Component {
 										if(item.type=='Text'){
 											return (
 											<View key={item.id}>
-													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} value={this.state[item.name].value}/>
+													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text)=>this.onChange(text,item.name)}  value={this.state[item.name]} editable={true}/>
 													
 											</View>
 											
@@ -222,18 +240,21 @@ export  class PersonalInfoComponent extends Component {
 											</View>
 											)
 										}
-										// if(item.type=='Select'){
-										// 	return(
-										// 	<View key={item.id}>
-										// 		<ModalDropdownComponent defaultValue={item.label}
-						    //     					options={item.multiOptions}
-						    //     					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-						    //     					onChange={this.handleInput}
-						    //     				/>
-				      //           			</View>
-										// 	)
+										if(item.type=='Select'){
+											return(
+											<View key={item.id}>
+												<ModalDropdownComponent defaultValue={item.label}
+						        					options={item.multiOptions}
+						        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+						        					onChange={this.handleInput}
+						        					defaultIndex={parseInt(this.state[item.name])}
+						        				
+
+						        				/>
+				                			</View>
+											)
 											
-										// }
+										}
 										// if(item.type=='Submit'){
 										// 	return (
 										// 	<View key={item.id}>

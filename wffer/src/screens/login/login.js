@@ -103,7 +103,7 @@ export class LoginComponent extends Component {
 			        await AsyncStorage.setItem('userData',JSON.stringify(responseJson.body));
 		              // alert(JSON.stringify(responseJson.body.user));
 		              // alert(this.state.dataSource1)
-		              alert("Logged In");
+		              // alert("Logged In");
 		              this.props.navigation.navigate('Home');
 		            });
 		          }
