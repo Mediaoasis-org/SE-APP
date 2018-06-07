@@ -25,11 +25,11 @@ export  class PersonalInfoComponent extends Component {
 		}
 		this.handleInput = this.handleInput.bind(this);
 		
-
+		this._getStorageValue()
 		
 	}
 	componentDidMount(){
-		this._getStorageValue()
+		
 	}
 	async _getStorageValue(){
 		// this.fetchFields()
