@@ -8,6 +8,8 @@ export  class PersonalInfoComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
+			// ...initialState,
+   //    		errorStatus: false,
 			LoggedIn:null,
 			dataSource:[],
 			data:[],
@@ -24,10 +26,24 @@ export  class PersonalInfoComponent extends Component {
 			// lastname:''
 		}
 		this.handleInput = this.handleInput.bind(this);
+		this.onSummitTextInput = this.onSummitTextInput.bind(this)
 		
 
 		
 	}
+	getInitState(fields) {
+		  const state = {};
+		  _.forEach(fields, (field) => {
+		    const fieldObj = field;
+		    fieldObj.error = false;
+		    fieldObj.errorMsg = '';
+		    if (!field.hidden && field.type) {
+		      fieldObj.value = getDefaultValue(field);
+		      state[field.name] = fieldObj;
+		    }
+		  });
+		  return state;
+		}
 	componentDidMount(){
 		this._getStorageValue()
 	}
@@ -201,7 +217,15 @@ export  class PersonalInfoComponent extends Component {
      	this.setState(obj1);
      	
      }
-
+     onSummitTextInput(name) {
+	    const index = Object.keys(this.state).indexOf(name);
+	    if (index !== -1 && this[Object.keys(this.state)[index + 1]]
+	    && this[Object.keys(this.state)[index + 1]].textInput) {
+	      this[Object.keys(this.state)[index + 1]].textInput._root.focus();
+	    } else {
+	      Keyboard.dismiss();
+	    }
+	  }
 	static navigationOptions = {
         title: 'Personal Info',
     };
@@ -223,14 +247,23 @@ export  class PersonalInfoComponent extends Component {
 							
 								{
 
-							    	this.state.dataSource.map((item)=>{
-									
+							    	this.state.dataSource.map((item,index)=>{
+										nextIndex = index +1 ;
 										if(item.type=='Text'){
 											return (
-											<View key={item.id}>
-													<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text)=>this.onChange(text,item.name)}  value={this.state[item.name]} editable={true}/>
-													
+											<View key={index}>
+													<TextInput name={item.name} 
+															   returnKeyType="next"
+															   style={gstyles.textInputStyle} 
+															   ref={(input) => {this[item.name] = input; }}	    
+															   onSummitTextInput={this.onSummitTextInput}
+															   placeholder={item.label} 
+															   underlineColorAndroid="#fff" 
+															   onChangeText={(text)=>this.onChange(text,item.name)}  
+															   value={this.state[item.name]} 
+															   editable={true}/>
 											</View>
+
 											
 										);
 										}

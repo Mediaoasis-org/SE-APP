@@ -12,7 +12,7 @@ export class ModalDropdownComponent extends React.Component{
 
     static defaultProps = {
         defaultIndex: -1,
-        defaultValue: 'Please select...',
+        // defaultValue: 'Please select...',
      };
 
      constructor(props) {
@@ -25,61 +25,80 @@ export class ModalDropdownComponent extends React.Component{
         };
       }
      componentWillReceiveProps(nextProps) {
-        let {buttonText, selectedIndex} = this.state;
+        // let {buttonText, selectedIndex} = this.state;
         const {defaultIndex, defaultValue, options} = nextProps;
-        buttonText = this._nextValue == null ? buttonText : this._nextValue;
-        selectedIndex = this._nextIndex == null ? selectedIndex : this._nextIndex;
-        if (selectedIndex < 0) {
-          selectedIndex = defaultIndex;
-          if (selectedIndex < 0) {
-            buttonText = defaultValue;
-          }
-        }
-        this._nextValue = null;
-        this._nextIndex = null;
+        // buttonText = this._nextValue == null ? buttonText : this._nextValue;
+        // selectedIndex = this._nextIndex == null ? selectedIndex : this._nextIndex;
+        // if (selectedIndex < 0) {
+        //   selectedIndex = defaultIndex;
+        //   if (selectedIndex < 0) {
+        //     buttonText = defaultValue;
+        //   }
+        // }
+        // this._nextValue = null;
+        // this._nextIndex = null;
 
-        this.setState({
-          loading: !options,
-          buttonText,
-          selectedIndex
-        });
+          // console.log(nextProps.givenValue)
+          const optionsValue = this.props.options;
+          if(nextProps.givenValue !=='' || nextProps.givenValue != null){
+            Object.keys(optionsValue).forEach((key) => {
+              // console.log(key)  
+              //           console.log(optionsValue[key]) 
+                if(optionsValue[key].includes(this.props.givenValue)){
+                   console.log("work")
+                                   
+                    this.setState({buttonText : this.props.options[key]});
+                    this.setState({selectedIndex : key});
+                    
+                    // defaultValue = buttonText;
+                    // defaultIndex = selectedIndex;
+                }
+                
+            })  
+          }
+          // console.log(this.state)
+        // this.setState({
+        //   loading: !options,
+        //   buttonText,
+        //   selectedIndex
+        // });
       }
 
-      show() {
-    this._updatePosition(() => {
-      this.setState({
-        showDropdown: true
-      });
-    });
-  }
+  //     show() {
+  //   this._updatePosition(() => {
+  //     this.setState({
+  //       showDropdown: true
+  //     });
+  //   });
+  // }
 
-  hide() {
-    this.setState({
-      showDropdown: false
-    });
-  }
+  // hide() {
+  //   this.setState({
+  //     showDropdown: false
+  //   });
+  // }
 
-  select(idx) {
-    const {defaultValue, options, defaultIndex, renderButtonText} = this.props;
+  // select(idx) {
+  //   const {defaultValue, options, defaultIndex, renderButtonText} = this.props;
 
-    let value = defaultValue;
-    if (idx == null || !options || idx >= options.length) {
-      idx = defaultIndex;
-    }
+  //   let value = defaultValue;
+  //   if (idx == null || !options || idx >= options.length) {
+  //     idx = defaultIndex;
+  //   }
 
-    if (idx >= 0) {
-      value =  options[idx].toString();
-    }
+  //   if (idx >= 0) {
+  //     value =  options[idx].toString();
+  //   }
 
-    this._nextValue = value;
-    this._nextIndex = idx;
+  //   this._nextValue = value;
+  //   this._nextIndex = idx;
 
-    this.setState({
-      buttonText: value,
-      selectedIndex: idx
-    });
-    // alert(this.state.buttonText)
-  }
+  //   this.setState({
+  //     buttonText: value,
+  //     selectedIndex: idx
+  //   });
+  //   // alert(this.state.buttonText)
+  // }
   onTagSelect(idx, data){ 
       // console.log("======== on tag selected ==========="); 
       // console.log(idx,data); 
