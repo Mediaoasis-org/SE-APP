@@ -16,7 +16,7 @@ import { ProductDetails } from './src/screens/category/categoryItems';
 import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
 import { WishlistComponent } from './src/screens/wishlist/wishlist';
 import { CreateWishlistComponent } from './src/screens/newList/createNewList';
-import {MultipleWishlistComponent } from './src/screens/newList/wishlistMultiple';
+import { MultipleWishlistComponent } from './src/screens/newList/wishlistMultiple';
 import { ShoppingListComponent } from './src/screens/shoppingList/shoppingList';
 import { StoreLocatorComponent } from './src/screens/storeLocality/storeLocator';
 import { PersonalInfoComponent } from './src/screens/User/personalInfo';
@@ -29,7 +29,7 @@ import { LanguageComponent } from './src/screens/language/language';
 import { LowestPriceComponent } from './src/screens/getPrice/lowestPrice';
 import { NearByStoreComponent } from './src/screens/getPrice/NearByStore';
 import { MultiStoreComponent } from './src/screens/getPrice/multiStore';
-
+import { ContactUsComponent } from './src/screens/contactUs/contactUs';
 import { gstyles } from './src/GlobalStyles';
 
 import {DrawerTitle} from './src/components/SideMenu/index';
@@ -140,6 +140,9 @@ const stack = createStackNavigator({
   ForgetPassword : {
     screen : ForgetComponent
   },
+  Help:{
+    screen :ContactUsComponent,
+  },
   ChangePassword:{
     screen: ChangePasswordComponent
   },
@@ -206,21 +209,7 @@ const DrawerStack = createDrawerNavigator({
   contentComponent:({navigation}) => <DrawerTitle navigation={navigation}/>
 })
 
-// const defaultGetStateForAction = DrawerStack.router.getStateForAction;
 
-// DrawerStack.router.getStateForAction = (action, state) => {
-//     if(state && action.type === 'Navigation/NAVIGATE' && action.routeName === 'DrawerClose') {
-//         StatusBar.setHidden(false);
-//         <StatusBar barStyle = "light-content" backgroundColor="red" title="a"/>
-//     }
-
-//     if(state && action.type === 'Navigation/NAVIGATE' && action === 'DrawerOpen') {
-//         StatusBar.setHidden(true);
-//     }
-
-
-//     return defaultGetStateForAction(action, state);
-// };
 
 const MyNavigation = createStackNavigator({
    Home:{
@@ -238,3 +227,19 @@ const MyNavigation = createStackNavigator({
 })
 
 export default MyNavigation;
+
+//// const defaultGetStateForAction = DrawerStack.router.getStateForAction;
+
+// DrawerStack.router.getStateForAction = (action, state) => {
+//     if(state && action.type === 'Navigation/NAVIGATE' && action.routeName === 'DrawerClose') {
+//         StatusBar.setHidden(false);
+//         <StatusBar barStyle = "light-content" backgroundColor="red" title="a"/>
+//     }
+
+//     if(state && action.type === 'Navigation/NAVIGATE' && action === 'DrawerOpen') {
+//         StatusBar.setHidden(true);
+//     }
+
+
+//     return defaultGetStateForAction(action, state);
+// };

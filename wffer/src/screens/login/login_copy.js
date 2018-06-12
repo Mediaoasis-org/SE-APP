@@ -4,7 +4,7 @@ import { gstyles } from '../../GlobalStyles';
 import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
-  
+ import { TextInputComponent }  from '../../components/textInput'; 
 export class LoginComponent extends Component {
 	constructor(props){
 		super(props);
@@ -21,8 +21,10 @@ export class LoginComponent extends Component {
 		// alert(JSON.stringify(this.props.navigation))
 		
 		this._getStorageValue()
+
 	}
 	async _getStorageValue(){
+		// this.fetchFields();
 	  var fieldData = await AsyncStorage.getItem('fields');
 	  // alert(value)
 	  if(fieldData !== null){
@@ -31,7 +33,7 @@ export class LoginComponent extends Component {
 	    const data= JSON.parse(fieldData);
 	  	this.setState({LoggedIn:1})
 		this.setState({dataSource:data});
-		// console.log(this.state.dataSource)
+		console.log(this.state.dataSource)
 	  }
 	  else
 	  {
@@ -73,15 +75,36 @@ export class LoginComponent extends Component {
 	Capitalize(str){
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
-
+    onChange(text,name){
+    	alert("enter")
+     	var state = name;
+     	var val = text;
+     	// console.log(state);
+     	// console.log(val);   
+     	var obj1  = {}
+     	obj1[state] = val;
+     	// console.log(obj1)
+     	this.setState(obj1);
+     	
+     }
+     onSummitTextInput(name) {
+	    const index = Object.keys(this.state).indexOf(name);
+	    if (index !== -1 && this[Object.keys(this.state)[index + 1]]
+	    && this[Object.keys(this.state)[index + 1]].textInput) {
+	      this[Object.keys(this.state)[index + 1]].textInput._root.focus();
+	    } else {
+	      Keyboard.dismiss();
+	    }
+	  }
     login(){
-
+    	console.log(this.state)
 	     var formData = new FormData;
 		    formData.append('email',this.state.email);
 		    formData.append('password',this.state.password);
 		    formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
 		    formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
 		    formData.append('ip','45.121.29.194');
+		    alert(JSON.stringify(formData));
 		      return fetch('https://wffer.com/se/api/rest/login',{
 		        body: formData,
 		        headers:{
@@ -126,24 +149,34 @@ export class LoginComponent extends Component {
   	}
     _keyExtractor = (item, index) => item.id;
     render_item = ({item}) => {
-    		if(item.type=='Text'){
+    		if(item.type=='Text' || item.type == 'Textarea' || item.type=='Password'){
 											
 				return (
 				<View key={item.id}>
-						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-						
+						<TextInputComponent 
+							name={item.name} 
+							style={gstyles.textInputStyle} 
+						   	ref={(input) => {this[item.name] = input; }}	    
+						   	onSummitTextInput={this.onSummitTextInput}
+						    placeholder={item.label} 
+						    underlineColorAndroid="#fff" 
+						    onChangeText={(text)=>this.onChange(text,item.name)}  
+						    value={this.state[item.name]} 
+						    secureTextEntry={item.type}
+						    keyboardType={item.name}
+						/>
 				</View>
 				
 			);
 			} 
-			if(item.type=='Password'){
-				return (
-				<View key={item.id}>
-						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
+			// if(item.type=='Password'){
+			// 	return (
+			// 	<View key={item.id}>
+			// 			<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
 						
-				</View>
-				);
-			}
+			// 	</View>
+			// 	);
+			// }
 			if(item.type=='Submit'){
 				return (
 				<View key={item.id}>
@@ -155,6 +188,7 @@ export class LoginComponent extends Component {
 				);
 			}
     }
+
 	render(){
 
 		return(
@@ -190,9 +224,12 @@ export class LoginComponent extends Component {
 			);
 	}
 }
+//
 // <TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // <TextInput name="password" placeholder="Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // <TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}>
 // 	<Text style={gstyles.buttonText}>Submit</Text>
 // </TouchableOpacity>
 // ref={ref => {this._nameInput = ref}}
+
+	// <TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>

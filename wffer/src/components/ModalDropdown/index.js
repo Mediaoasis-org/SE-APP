@@ -25,6 +25,7 @@ export class ModalDropdownComponent extends React.Component{
         };
       }
      componentWillReceiveProps(nextProps) {
+
         // let {buttonText, selectedIndex} = this.state;
         const {defaultIndex, defaultValue, options} = nextProps;
         // buttonText = this._nextValue == null ? buttonText : this._nextValue;
@@ -40,22 +41,27 @@ export class ModalDropdownComponent extends React.Component{
 
           // console.log(nextProps.givenValue)
           const optionsValue = this.props.options;
-          if(nextProps.givenValue !=='' || nextProps.givenValue != null){
-            Object.keys(optionsValue).forEach((key) => {
-              // console.log(key)  
-              //           console.log(optionsValue[key]) 
-                if(optionsValue[key].includes(this.props.givenValue)){
-                   console.log("work")
-                                   
-                    this.setState({buttonText : this.props.options[key]});
-                    this.setState({selectedIndex : key});
+          if(this.props.givenValue){
+              if(this.props.givenValue !=='' || this.props.givenValue != null){
+                Object.keys(optionsValue).forEach((key,index) => {
+                  // console.log(key)  
+                  //           console.log(optionsValue[key]) 
+                    if(optionsValue[key].includes(this.props.givenValue)){
+                       // console.log("work")
+                                       
+                        this.setState({buttonText : this.props.options[index]});
+                        this.setState({selectedIndex : key});
+                        // this._nextValue = optionsValue[index];
+                        // this._nextIndex = index
+                        
+                        // defaultValue = optionsValue[key];
+                        // defaultIndex = key;
+                    }
                     
-                    // defaultValue = buttonText;
-                    // defaultIndex = selectedIndex;
-                }
-                
-            })  
+                })  
+              }
           }
+          
           // console.log(this.state)
         // this.setState({
         //   loading: !options,
@@ -132,5 +138,5 @@ export class ModalDropdownComponent extends React.Component{
       }
   }
 
-   // <Text>{this.state.selectedValue}</Text>
+ // // <Text>{this.state.selectedValue}</Text>
                       // <Text>{this.state.buttonText}</Text>

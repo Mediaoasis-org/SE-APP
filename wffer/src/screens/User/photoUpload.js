@@ -23,7 +23,9 @@ export  class UploadPhotoComponent extends Component {
       oauthSecret:'',
       userData:[],
       dataSource:[],
-      data:[]
+      data:[],
+      name:'',
+      dataType:'',
 		}
     // this._getStorageValue();
 	}
@@ -37,6 +39,19 @@ export  class UploadPhotoComponent extends Component {
      this.setState({oauthSecret:this.state.userData.oauth_secret});
      // alert(this.state.oauthToken)
      this.fetchFields()
+    //  if(userData == null){
+    //   this.setState({LoggedIn:0})
+    //   this.fetchFields(); 
+    // }
+    // else
+    // {
+    //   // alert('entering');
+    //   const data = JSON.parse(userData);
+      
+    //   this.setState({LoggedIn:1})
+    // this.setState({dataSource:data});
+    // // console.log(this.state.dataSource)
+    // }
   }
   fetchFields(){
         
@@ -79,11 +94,13 @@ export  class UploadPhotoComponent extends Component {
       // alert(this.state.oauthSecret);
       // alert(this.state.oauthToken);
       var formData = new FormData;
-        formData.append('photo',this.state.ImageSource);
+          // formData.append('photo',this.state.ImageSource.uri);
+          formData.append('photo',{uri: this.state.ImageSource.uri, name: this.state.name, type: 'multipart/form-data'})
+          // alert(JSON.stringify(formData))
         // formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
         // formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
         // formData.append('ip','45.121.29.194');
-          return fetch('https://wffer.com/se/api/rest/members/edit/photo?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret ,{
+           fetch('https://wffer.com/se/api/rest/members/edit/photo?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret ,{
             body: formData,
             headers:{
               'Accept':'application/json',
@@ -93,6 +110,7 @@ export  class UploadPhotoComponent extends Component {
           })
             .then((response) => response.json())
             .then((responseJson) => {
+              // alert(JSON.stringify(responseJson))
               
               if(responseJson.status_code=="204"){
                 this.setState({
@@ -104,8 +122,8 @@ export  class UploadPhotoComponent extends Component {
                 this.setState({
                   Message : responseJson.message,
                 })
-                alert(JSON.stringify(responseJson))
-              
+                // alert(JSON.stringify(responseJson))
+                alert(this.state.Message);
               }
               
 
@@ -186,19 +204,21 @@ export  class UploadPhotoComponent extends Component {
         }
         else {
           let source = { uri: response.uri };
-         
+          // let path = source.uri;
+          console.log(JSON.stringify(response.fileName))
+          // let path ={path : res}
           // You can also display the image using data:
           // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-          console.log(response.fileName)
-          // console.log("source " + source)
+          console.log(response.path)
+          console.log("source " + JSON.stringify(source.uri))
           this.setState({
  
-            ImageSource: source
- 
+            ImageSource: source,
+            name:response.fileName,
           });
         }
       });
-      // console.log('work');
+      // console.log(this.state.ImageSource.file);
     }
 	render(){
     // if (this.state.data.length === 0) {
@@ -212,11 +232,12 @@ export  class UploadPhotoComponent extends Component {
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
 					</View>
-          <View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Edit Photo</Text></View>
-				 	<View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
-                            <TouchableOpacity style={{position:'absolute',top:20,left:'61%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}><Image source={require('../../../assets/account_settings_camera.png')} style={{width:24,height:24}}/></TouchableOpacity>
-                               
-                                    <Image style={styles.image} source={this.state.ImageSource} />
+                    <View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Edit Photo</Text></View>
+				 	          <View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
+                            <TouchableOpacity style={{position:'absolute',top:22,left:'66%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}>
+                                <Image source={require('../../../assets/account_settings_camera.png')} style={{width:24,height:24}}/>
+                            </TouchableOpacity>       
+                            <Image style={styles.image} source={this.state.ImageSource} />
                                   
                     </View>
                     <TouchableOpacity onPress={()=>this.uploadPhoto()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Photo</Text></TouchableOpacity>

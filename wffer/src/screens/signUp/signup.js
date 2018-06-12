@@ -11,9 +11,11 @@ export class SignupComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
+			ImageSource:null,
+			name:'',
 			dataSource:[],
 			dataSourcePersonal:[],
-			dataSourcePhoto:[],
+			// dataSourcePhoto:[],
 			email:'',
 			password:'',
 			passconf:'',
@@ -23,12 +25,10 @@ export class SignupComponent extends Component {
 			'1_1_3_alias_first_name':'',
 			'1_1_4_alias_last_name':'',
 			Gender:'',
-			// email:'',
-			// password:'',
 			 checked: false,
 			 LoggedIn:null,
-			 accountShow:true,
-			 personalInformationShow:false,
+			 // accountShow:true,
+			 // personalInformationShow:true,
 			 // photoUploadShow:false,
 		}
 		// alert(JSON.stringify(this.props.navigation))
@@ -42,8 +42,9 @@ export class SignupComponent extends Component {
 	async _getStorageValue(){
 
 		// this.fetchFields()
+		var valuePersonal = await AsyncStorage.getItem('fieldsSignupPersonal');
 	  var value = await AsyncStorage.getItem('fieldsSignup');
-	  var valuePersonal = await AsyncStorage.getItem('fieldsSignupPersonal');
+	  
 	  // var valuePhoto = await AsyncStorage.getItem('fieldsSignupPhoto');
 	  // alert(value)
 	  if(value!=null){
@@ -51,8 +52,9 @@ export class SignupComponent extends Component {
 	  	// const data = JSON.parse(value)
 	  const	data= JSON.parse(value);
 	  	this.setState({LoggedIn:true})
+	  	this.setState({dataSourcePersonal:JSON.parse(valuePersonal)});
 		this.setState({dataSource:data});
-		this.setState({dataSourcePersonal:JSON.parse(valuePersonal)});
+		
 		// this.setState({dataSourcePhoto:JSON.parse(valuePhoto)});
 		// alert(JSON.stringify(this.state.dataSourcePersonal))
 		// console.log(this.state.dataSource.length)
@@ -92,7 +94,8 @@ export class SignupComponent extends Component {
           console.log(response.fileName)
           this.setState({
  
-            ImageSource: source
+            ImageSource: source,
+            name:response.fileName,
  
           });
         }
@@ -114,13 +117,13 @@ export class SignupComponent extends Component {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 			          isLoading: false,
-			          dataSource: responseJson.body.account,
+			          dataSource: responseJson.body,
 			          dataSourcePersonal: responseJson.body.fields,
-			          dataSourcePhoto:responseJson.body.photo,
+			          // dataSourcePhoto:responseJson.body.photo,
 			        },async function(){
 			       	  await AsyncStorage.setItem('fieldsSignup', JSON.stringify(this.state.dataSource));
 			       	  await AsyncStorage.setItem('fieldsSignupPersonal', JSON.stringify(this.state.dataSourcePersonal));
-			       	  await AsyncStorage.setItem('fieldsSignupPhoto', JSON.stringify(this.state.dataSourcePhoto));
+			       	  // await AsyncStorage.setItem('fieldsSignupPhoto', JSON.stringify(this.state.dataSourcePhoto));
 			       	  
 			        	// alert(JSON.stringify(this.state.dataSource));   	
 			        });
@@ -139,7 +142,8 @@ export class SignupComponent extends Component {
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
     signup(){
-    	this.submit()
+    	// this.submit()
+    	// this.continue()
     	var formData = new FormData;
 		    formData.append('email',this.state.email);
 		    formData.append('password',this.state.password);
@@ -149,7 +153,8 @@ export class SignupComponent extends Component {
 		    formData.append('terms',this.state.checked);
 		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
 		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
-		    formData.append('1_1_5_alias_gender',this.state.Gender)
+		    formData.append('1_1_5_alias_gender',this.state.Gender);
+		    formData.append('photo',{uri: this.state.ImageSource.uri, name: this.state.name, type: 'multipart/form-data'});
 		    formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
 		    formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
 		    formData.append('ip','45.121.29.194');
@@ -217,6 +222,8 @@ export class SignupComponent extends Component {
 		    formData.append('timezone',this.state.Timezone);
 		    formData.append('language',this.state.Language);
 		    formData.append('terms',this.state.checked);
+		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
+		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
 		    formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
 		    formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
     	 return fetch('https://wffer.com/se/api/rest/signup/validations',{
@@ -231,8 +238,7 @@ export class SignupComponent extends Component {
 		        .then((responseJson) => {
 		        	
 		          if(responseJson.status_code=="204"){
-		            this.setState({personalInformationShow:true});
-    				this.setState({accountShow:false});
+		          	this.submit()
 		          }
 		          else
 		          {
@@ -263,14 +269,12 @@ export class SignupComponent extends Component {
     	alert("all values")
     }
     //renders account fields for user
-    renderAccount(){
-    	// console.log(this.state.dataSource)
-    	 if(this.state.accountShow) {
+    renderAccount(){  	 
     	return(
     	<View>
     	{
 
-	    	this.state.dataSource.map((item)=>{
+	    	this.state.dataSource.account.map((item)=>{
 			
 				if(item.type=='Text'){
 					return (
@@ -291,14 +295,11 @@ export class SignupComponent extends Component {
 				}
 				
 				if(item.type=='Select'){
-					var options = item.multiOptions;
-					console.log(item.multiOptions)
-					var result = [];
-					for(var i in options)
-					    result.push([options [i]]);
 					return(
 					<View>
-						<ModalDropdownComponent defaultValue={item.label}
+						<ModalDropdownComponent 
+							defaultIndex={-1}
+							defaultValue={item.label}
         					options={item.multiOptions}
         					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
         					onChange={this.handleInput}
@@ -324,16 +325,14 @@ export class SignupComponent extends Component {
 			})
 		
 		}
-
-		<View style={gstyles.termsView}><TouchableOpacity><Text style={gstyles.termsLink}>Click Here</Text></TouchableOpacity><Text style={gstyles.fontSize18}> to read the terms of service</Text></View>
-							<TouchableOpacity onPress={()=>this.continue()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Continue</Text></TouchableOpacity>
 		</View>
+		
 		)
-		}		
+			
     }
-    //renders personal information fields for user
+  ////   //renders personal information fields for user
     renderPersonalInformation(){
-    	if(this.state.personalInformationShow) {
+    	
     	return(
     	<View>
     	{
@@ -350,52 +349,48 @@ export class SignupComponent extends Component {
 				);
 				}
 				
-				if(item.type=='Select'){
-					var options = item.multiOptions;
-					var result = [];
-					for(var i in options)
-					    result.push([options [i]]);
-					return(
-					<View>
-						<ModalDropdownComponent defaultValue={item.label}
-        					options={item.multiOptions}
-        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-        					onChange={this.handleInput}
-        					/>
-        			</View>
-					)
-					
-				}
+				
 			})
 		
 		}
 	
-		<TouchableOpacity onPress={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
+		
 		</View>
 		)
-		}		
+				
     }
-    //renders photo fields for user
+  //   //renders photo fields for user
     renderPhoto(){
-    	if(this.state.photoUploadShow) {
+    	
 	    	return(
 	    			<View>
 		    			<View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
-                            <TouchableOpacity style={{position:'absolute',top:20,left:'61%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}><Image source={require('../../../assets/account_settings_camera.png')} style={{width:24,height:24}}/></TouchableOpacity>
-                                 {this.state.ImageSource === null ? <Image source={require('../../../assets/nophoto_user_thumb_profile.png')} style={styles.image}/> :
+                            <TouchableOpacity style={{position:'absolute',top:22,left:'66%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}>
+                                <Image source={require('../../../assets/account_settings_camera.png')} style={{width:24,height:24}}/>
+                            </TouchableOpacity>       
+                            {this.state.ImageSource === null ? <Image source={require('../../../assets/nophoto_user_thumb_profile.png')} style={styles.image}/> :
                                     <Image style={styles.image} source={this.state.ImageSource} />
-                                  }
+                            }
                     	</View>
-                    	<TouchableOpacity onPress={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
 
                     </View>
 		    	
 		    );
-    	}
+    	
     }
-
+  	 onChange(text,name){
+     	var state = name;
+     	var val = text;
+     	// console.log(state);
+     	// console.log(val);   
+     	var obj1  = {}
+     	obj1[state] = val;
+     	// console.log(obj1)
+     	this.setState(obj1);
+     	
+     }
 	render(){
-
+		// console.log(this.state.dataSourcePersonal["Personal Information"]);
 		if (this.state.dataSource.length === 0) {
 		  return null
 		}
@@ -411,19 +406,11 @@ export class SignupComponent extends Component {
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Sign Up</Text></View>
 
 						<View>
-							{
-                      (this.state.dataSource.length > 0) ?  
-                 
-                      	<View>
-                            {this.renderAccount()}
-                            {this.renderPersonalInformation()}
-                            {this.renderPhoto()}
-                         </View>
-                       
-                    : null                
-                    }
-				   			
-							
+						{this.renderPhoto()}
+						{this.renderPersonalInformation()}
+						{this.renderAccount()}
+                        
+                     <TouchableOpacity onPress={()=>this.continue()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>      
 						</View>
 					</ScrollView>
 				</View>
@@ -438,9 +425,104 @@ const styles = StyleSheet.create({
 	  borderRadius: 100,
 	},
 })
+// {this.renderPhoto()}
 // <TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // 							<TextInput name="password" placeholder="Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // 							<TextInput name="confirm_password" placeholder="Confirm Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>
 	// <ModalDropdownComponent defaultValue='Select Time Zone'
 	// 			                	options={['(UTC+5:30) Bombay,Calcutta,New Delhi','(UTC+5:45) Nepal','(UTC+6) Dhaka','(UTC+9:30) Darwin']}/>	
 	// 						<ModalDropdownComponent defaultValue='Select Language' options={['English','Saudi Arabia Arabic']}/>
+
+// <View>
+// 						{
+// 							this.state.dataSourcePersonal["Personal Information"].map((item)=>{
+			
+								
+// 								if(item.type=='Text'){
+											
+// 									return (
+// 									<View key={item.id}>
+// 											<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+											
+// 									</View>
+									
+// 								);
+// 								} 
+// if(item.type=='Select'){
+// 					var options = item.multiOptions;
+// 					var result = [];
+// 					for(var i in options)
+// 					    result.push([options [i]]);
+// 					return(
+// 					<View>
+// 						<ModalDropdownComponent defaultValue={item.label}
+//         					options={item.multiOptions}
+//         					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+//         					onChange={this.handleInput}
+//         					/>
+//         			</View>
+// 					)
+					
+// 				}
+// 							})
+						
+// 						}
+
+//                         {
+
+// 					    	this.state.dataSource.account.map((item)=>{
+							
+// 								if(item.type=='Text'){
+// 									return (
+// 									<View key={item.id}>
+// 											<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+											
+// 									</View>
+									
+// 								);
+// 								}
+// 								if(item.type=='Password'){
+// 									return (
+// 									<View key={item.id}>
+// 											<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+											
+// 									</View>
+// 									)
+// 								}
+								
+// 								if(item.type=='Select'){
+// 									var options = item.multiOptions;
+									
+// 									var result = [];
+// 									for(var i in options)
+// 									    result.push([options [i]]);
+// 									return(
+// 									<View>
+// 										<ModalDropdownComponent defaultValue={item.label}
+// 				        					options={item.multiOptions}
+// 				        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+// 				        					onChange={this.handleInput}
+// 				        					/>
+// 				        			</View>
+// 									)
+									
+// 								}
+// 								if(item.type=='Checkbox'){
+// 									return(
+// 									<View style={{padding: 10}} key={item.id}>
+// 										<CheckBox
+// 										  label={item.description}
+// 										  labelLines={4}
+// 										  labelStyle={{color:'#000',fontSize:16,padding:3}}
+// 										 	checked={this.state.checked}
+// 				  							onChange={() => this.setState({checked: !this.state.checked})}
+// 										  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
+// 										/>
+// 									</View>
+// 									)
+// 								}
+// 							})
+						
+// 						}
+//                      <TouchableOpacity onPress={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>      
+// 						</View>

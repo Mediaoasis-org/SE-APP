@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, Dimensions, ScrollView, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Dimensions, ScrollView, TouchableOpacity, Image, AsyncStorage,Keyboard } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 import { ModalDropdownComponent } from '../../components/ModalDropdown';
+import { TextInputComponent }  from '../../components/textInput';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
 export  class PersonalInfoComponent extends Component {
@@ -26,10 +27,8 @@ export  class PersonalInfoComponent extends Component {
 			// lastname:''
 		}
 		this.handleInput = this.handleInput.bind(this);
-		this.onSummitTextInput = this.onSummitTextInput.bind(this)
-		
-
-		
+		this.onSummitTextInput = this.onSummitTextInput.bind(this)	
+		this._getStorageValue()
 	}
 	getInitState(fields) {
 		  const state = {};
@@ -44,33 +43,35 @@ export  class PersonalInfoComponent extends Component {
 		  });
 		  return state;
 		}
-	componentDidMount(){
-		this._getStorageValue()
-	}
+	// componentDidMount(){
+	// 	this._getStorageValue()
+	// }
 	async _getStorageValue(){
-		// this.fetchFields()
-	  var value = await AsyncStorage.getItem('fieldsPersonalInformation');
+		this.fetchFields()
+	  // var value = await AsyncStorage.getItem('fieldsPersonalInformation');
 	  var userData = await AsyncStorage.getItem('userData');
      this.setState({userData:JSON.parse(userData)});
      this.setState({oauthToken:this.state.userData.oauth_token});
      this.setState({oauthSecret:this.state.userData.oauth_secret});
+     console.log(this.state.oauthToken);
+     console.log(this.state.oauthSecret)
      this.fetchValues();
      // console.log(this.state.oauthToken);
      // console.log(this.state.oauthSecret);
 	  // alert(value)
-	  if(value == null){
-	  	this.setState({LoggedIn:false})
-	  	this.fetchFields();	
-	  }
-	  else
-	  {
-	  	// alert('entering');
-	  	const data = JSON.parse(value);
-	  	// alert(data)
-	  	this.setState({LoggedIn:true})
-		this.setState({dataSource:data});
-		// console.log(this.state.dataSource)
-	  }
+	 //  if(value == null){
+	 //  	this.setState({LoggedIn:0})
+	 //  	this.fetchFields();	
+	 //  }
+	 //  else
+	 //  {
+	 //  	// alert('entering');
+	 //  	const data = JSON.parse(value);
+	  	
+	 //  	this.setState({LoggedIn:1})
+		// this.setState({dataSource:data});
+		// // console.log(this.state.dataSource)
+	 //  }
 	}
 	// submit(){
  //    	console.log(this.state);
@@ -81,7 +82,7 @@ export  class PersonalInfoComponent extends Component {
     	var formData = new FormData;
 		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
 		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
-		    formData.append('1_1_5_alias_gender',this.state.Gender);
+		    // formData.append('1_1_5_alias_gender',this.state.Gender);
 		    formData.append('oauth_token',this.state.oauthToken);
 		    formData.append('oauth_secret',this.state.oauthSecret);
 		    formData.append('ip','45.121.29.194');
@@ -174,8 +175,8 @@ export  class PersonalInfoComponent extends Component {
 			        },function(){
 			        		this.setState({'1_1_3_alias_first_name':this.state.fieldValues['1_1_3_alias_first_name'].value})
 			        		this.setState({'1_1_4_alias_last_name':this.state.fieldValues['1_1_4_alias_last_name'].value})
-			        		this.setState({'1_1_5_alias_gender':this.state.fieldValues['1_1_5_alias_gender'].value})
-			        		// console.log(this.state['1_1_3_alias_first_name'])
+			        		// this.setState({'1_1_5_alias_gender':this.state.fieldValues['1_1_5_alias_gender'].value})
+			        		// alert(this.state['1_1_3_alias_first_name'])
 			        		 // alert(JSON.stringify(this.state.fieldValues['1_1_5_alias_gender'].value));  
 
 			        	
@@ -230,9 +231,9 @@ export  class PersonalInfoComponent extends Component {
         title: 'Personal Info',
     };
 	render(){
-		if (this.state.dataSource.length === 0) {
-		  return null
-		}
+		// if (this.state.dataSource.length === 0) {
+		//   return null
+		// }
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -249,50 +250,51 @@ export  class PersonalInfoComponent extends Component {
 
 							    	this.state.dataSource.map((item,index)=>{
 										nextIndex = index +1 ;
-										if(item.type=='Text'){
+										if(item.type=='Text' || item.type == 'Textarea' || item.type=='Password'){
 											return (
 											<View key={index}>
 													<TextInput name={item.name} 
-															   returnKeyType="next"
-															   style={gstyles.textInputStyle} 
-															   ref={(input) => {this[item.name] = input; }}	    
-															   onSummitTextInput={this.onSummitTextInput}
-															   placeholder={item.label} 
-															   underlineColorAndroid="#fff" 
-															   onChangeText={(text)=>this.onChange(text,item.name)}  
-															   value={this.state[item.name]} 
-															   editable={true}/>
+															returnKeyType="next"
+															style={gstyles.textInputStyle} 
+															ref={(input) => {this[item.name] = input; }}	    
+															onSummitTextInput={this.onSummitTextInput}
+															placeholder={item.label} 
+															underlineColorAndroid="#fff" 
+															onChangeText={(text)=>this.onChange(text,item.name)}  
+															value={this.state[item.name]} 
+															secureTextEntry={(item.type=='Password')?true:false}
+													/>
+													
+
 											</View>
 
 											
 										);
 										}
-										if(item.type=='Password'){
-											return (
-											<View key={item.id}>
-													<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"/>
+										// if(item.type=='Password'){
+										// 	return (
+										// 	<View key={item.id}>
+										// 			<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"/>
 													
-											</View>
-											)
-										}
-										if(item.type=='Select'){
-											return(
-											<View key={item.id}>
-												<ModalDropdownComponent 
-													defaultIndex={-1}
-												defaultValue={item.label}
-						        					options={item.multiOptions}
-						        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-						        					onChange={this.handleInput}
-						        					givenValue={this.state[item.name]}
-						        					
-
-						        				/>
+										// 	</View>
+										// 	)
+										// }
+										// if(item.type=='Select'){
+										// 	return(
+										// 	<View key={item.id}>
+										// 		<ModalDropdownComponent 
+										// 			defaultIndex={-1}
+										// 			defaultValue={item.label}
+						    //     					options={item.multiOptions}
+						    //     					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+						    //     					onChange={this.handleInput}
+						    //     					givenValue={this.state[item.name]}
+						    //     				/>
 						        				
-				                			</View>
-											)
+				      //           			</View>
+										// 	)
 											
-										}
+										// }
 										// if(item.type=='Submit'){
 										// 	return (
 										// 	<View key={item.id}>
@@ -316,3 +318,28 @@ export  class PersonalInfoComponent extends Component {
 // <TextInput name="lastname" placeholder="Last Name" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // <ModalDropdownComponent defaultValue='Select Gender' options={['Male','Female']}/>
 // <TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
+
+// <TextInput name={item.name} 
+// returnKeyType="next"
+// style={gstyles.textInputStyle} 
+// ref={(input) => {this[item.name] = input; }}	    
+// onSummitTextInput={this.onSummitTextInput}
+// placeholder={item.label} 
+// underlineColorAndroid="#fff" 
+// onChangeText={(text)=>this.onChange(text,item.name)}  
+// value={this.state[item.name]} 
+// secureTextEntry={(item.type=='Password')?true:false}
+// />
+
+// <TextInputComponent 
+// name={item.name} 
+// style={gstyles.textInputStyle} 
+// ref={(input) => {this[item.name] = input; }}	    
+// onSummitTextInput={this.onSummitTextInput}
+// placeholder={item.label} 
+// underlineColorAndroid="#fff" 
+// onChangeText={(text)=>this.onChange(text,item.name)}  
+// value={this.state[item.name]} 
+// secureTextEntry={item.type}
+// keyboardType={item.name}
+// />
