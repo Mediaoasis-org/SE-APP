@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import {
-  Text,
   View,
   Dimensions,
-TouchableOpacity,
-Image,
-FlatList,
-ScrollView
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles'; 
 import Carousel from 'react-native-banner-carousel';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 const BannerWidth = Dimensions.get('window').width;
 const BannerHeight = 260;

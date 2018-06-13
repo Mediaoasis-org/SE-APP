@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, View, TouchableOpacity, Platform } from 'react-native';
+import { TextInput, View, TouchableOpacity } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 

@@ -41,6 +41,7 @@ export class ModalDropdownComponent extends React.Component{
 
           // console.log(nextProps.givenValue)
           const optionsValue = this.props.options;
+          // alert(this.props.givenValue)
           if(this.props.givenValue){
               if(this.props.givenValue !=='' || this.props.givenValue != null){
                 Object.keys(optionsValue).forEach((key,index) => {
@@ -51,6 +52,7 @@ export class ModalDropdownComponent extends React.Component{
                                        
                         this.setState({buttonText : this.props.options[index]});
                         this.setState({selectedIndex : key});
+                        alert(this.state)
                         // this._nextValue = optionsValue[index];
                         // this._nextIndex = index
                         

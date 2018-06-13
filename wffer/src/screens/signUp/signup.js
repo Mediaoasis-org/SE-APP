@@ -15,36 +15,28 @@ export class SignupComponent extends Component {
 			name:'',
 			dataSource:[],
 			dataSourcePersonal:[],
-			// dataSourcePhoto:[],
 			email:'',
 			password:'',
 			passconf:'',
 			Timezone:null,
 			Language:null,
-			ImageSource:null,
 			'1_1_3_alias_first_name':'',
 			'1_1_4_alias_last_name':'',
 			Gender:'',
 			 checked: false,
 			 LoggedIn:null,
-			 // accountShow:true,
-			 // personalInformationShow:true,
-			 // photoUploadShow:false,
 		}
 		// alert(JSON.stringify(this.props.navigation))
 		this.handleInput = this.handleInput.bind(this);
-		
 	}
 	componentDidMount()
 	{
 		this._getStorageValue()
 	}
 	async _getStorageValue(){
-
 		// this.fetchFields()
 		var valuePersonal = await AsyncStorage.getItem('fieldsSignupPersonal');
 	  var value = await AsyncStorage.getItem('fieldsSignup');
-	  
 	  // var valuePhoto = await AsyncStorage.getItem('fieldsSignupPhoto');
 	  // alert(value)
 	  if(value!=null){
@@ -53,8 +45,7 @@ export class SignupComponent extends Component {
 	  const	data= JSON.parse(value);
 	  	this.setState({LoggedIn:true})
 	  	this.setState({dataSourcePersonal:JSON.parse(valuePersonal)});
-		this.setState({dataSource:data});
-		
+		this.setState({dataSource:data});		
 		// this.setState({dataSourcePhoto:JSON.parse(valuePhoto)});
 		// alert(JSON.stringify(this.state.dataSourcePersonal))
 		// console.log(this.state.dataSource.length)
@@ -75,8 +66,7 @@ export class SignupComponent extends Component {
         }
       };
       ImagePicker.showImagePicker(options, (response) => {
-        // console.log('Response = ', response);
-  
+        // console.log('Response = ', response); 
         if (response.didCancel) {
           // console.log('User cancelled photo picker');
         }
@@ -87,25 +77,20 @@ export class SignupComponent extends Component {
           // console.log('User tapped custom button: ', response.customButton);
         }
         else {
-          let source = { uri: response.uri };
-         
+          let source = { uri: response.uri };        
           // You can also display the image using data:
           // let source = { uri: 'data:image/jpeg;base64,' + response.data };
           console.log(response.fileName)
           this.setState({
- 
             ImageSource: source,
             name:response.fileName,
- 
           });
         }
       });
       // console.log('work');
     }
-	fetchFields(){
-		
-			 return fetch('https://wffer.com/se/api/rest/signup?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
-			       
+	fetchFields(){	
+			 return fetch('https://wffer.com/se/api/rest/signup?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{    
 			        // headers:{
 			        //   'Accept':'application/json',
 			        //   'Content-Type':'application/json',
@@ -274,13 +259,12 @@ export class SignupComponent extends Component {
     	<View>
     	{
 
-	    	this.state.dataSource.account.map((item)=>{
+	    	this.state.dataSource.account.map((item,index)=>{
 			
 				if(item.type=='Text'){
 					return (
-					<View key={item.id}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-							
+					<View key={index}>
+							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
 					</View>
 					
 				);
@@ -288,8 +272,7 @@ export class SignupComponent extends Component {
 				if(item.type=='Password'){
 					return (
 					<View key={item.id}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-							
+							<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>					
 					</View>
 					)
 				}
@@ -322,8 +305,9 @@ export class SignupComponent extends Component {
 					</View>
 					)
 				}
+
 			})
-		
+			
 		}
 		</View>
 		
@@ -337,11 +321,11 @@ export class SignupComponent extends Component {
     	<View>
     	{
 
-	    	this.state.dataSourcePersonal["Personal Information"].map((item)=>{
+	    	this.state.dataSourcePersonal["Personal Information"].map((item,index)=>{
 			
 				if(item.type=='Text'){
 					return (
-					<View key={item.id}>
+					<View key={index}>
 							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />
 							
 					</View>

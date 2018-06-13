@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  TextInput,
   View,
   TouchableOpacity,
   Platform,
@@ -9,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
+
 export class PromotionalOfferStoreComponent extends React.Component{
   constructor(props) {
       super(props);

@@ -2,47 +2,43 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  Dimension,
-TouchableOpacity,
-Image,
-FlatList,
-ScrollView,
-AsyncStorage
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  AsyncStorage
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import { SafeAreaView} from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import api from '../../api/auth';
+// import api from '../../api/auth';
 export class DrawerTitle extends React.Component{
   constructor(props) {
       super(props);
       this.state = {
-        open:false,
-        activeIndex:0,
-        dataSource:[],
+        // open:false,
+        // activeIndex:0,
+        // dataSource:[],
         LoggedIn:0
       }
       // alert(JSON.stringify(this.props.navigation));
-      this.getLoginValue();
+      // this.getLoginValue();
     }
     logout = async() => {
-      await AsyncStorage.removeItem('userLoginAuthentication');
-      var userData = await AsyncStorage.getItem('userData');
+       await AsyncStorage.removeItem('userLoginAuthentication');
+       var userData = await AsyncStorage.getItem('userData');
        this.setState({userData:JSON.parse(userData)});
        this.setState({oauthToken:this.state.userData.oauth_token});
        this.setState({oauthSecret:this.state.userData.oauth_secret});
-        this.ApiLogout() 
-       
+       this.ApiLogout() 
        this.setState({LoggedIn:0})
-      this.props.navigation.navigate('Login');
+       this.props.navigation.navigate('Login');
     }
     ApiLogout(){
-       var formData = new FormData;
+        var formData = new FormData;
         formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
         formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
         formData.append('oauth_token',this.state.oauthToken);
         formData.append('oauth_secret',this.state.oauthSecret);
-
           return fetch('https://wffer.com/se/api/rest/logout',{
             body: formData,
             headers:{
@@ -76,22 +72,18 @@ export class DrawerTitle extends React.Component{
               console.error(error);
             });
     }
-    componentDidMount(){
-    
-      this.getLoginValue()
-    }
-    getLoginValue(){
-       var value = AsyncStorage.getItem('userLoginAuthentication');
-       // alert(value.length)
-        if(value.length > 0 ){
-          this.setState({LoggedIn:1})
-        }
-       
-        
-    }
+    // componentDidMount(){
+    //   this.getLoginValue()
+    // }
+    // getLoginValue(){
+    //    var value = AsyncStorage.getItem('userLoginAuthentication');
+    //    // alert(value.length)
+    //     if(value.length > 0 ){
+    //       this.setState({LoggedIn:1})
+    //     }    
+    // }
     
     // logout(){
-     
     //   api.logout().then((data) => {
     //             // this.setState({LoggedIn:0})
     //             // console.log(data)

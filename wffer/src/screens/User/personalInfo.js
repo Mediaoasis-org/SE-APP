@@ -23,8 +23,6 @@ export  class PersonalInfoComponent extends Component {
 			oauthToken:'',
 			oauthSecret:'',
 			userData:[]
-			// 1_1_3_alias_first_name:'',
-			// lastname:''
 		}
 		this.handleInput = this.handleInput.bind(this);
 		this.onSummitTextInput = this.onSummitTextInput.bind(this)	
@@ -47,31 +45,30 @@ export  class PersonalInfoComponent extends Component {
 	// 	this._getStorageValue()
 	// }
 	async _getStorageValue(){
-		this.fetchFields()
-	  // var value = await AsyncStorage.getItem('fieldsPersonalInformation');
+		// this.fetchFields()
+	  var value = await AsyncStorage.getItem('fieldsPersonalInformation');
 	  var userData = await AsyncStorage.getItem('userData');
      this.setState({userData:JSON.parse(userData)});
      this.setState({oauthToken:this.state.userData.oauth_token});
      this.setState({oauthSecret:this.state.userData.oauth_secret});
-     console.log(this.state.oauthToken);
-     console.log(this.state.oauthSecret)
+     // console.log(this.state.oauthToken);
+     // console.log(this.state.oauthSecret)
      this.fetchValues();
      // console.log(this.state.oauthToken);
      // console.log(this.state.oauthSecret);
-	  // alert(value)
-	 //  if(value == null){
-	 //  	this.setState({LoggedIn:0})
-	 //  	this.fetchFields();	
-	 //  }
-	 //  else
-	 //  {
-	 //  	// alert('entering');
-	 //  	const data = JSON.parse(value);
-	  	
-	 //  	this.setState({LoggedIn:1})
-		// this.setState({dataSource:data});
-		// // console.log(this.state.dataSource)
-	 //  }
+	  // alert(value.length)
+	  if(value == null){
+	  	this.setState({LoggedIn:0})
+	  	this.fetchFields();	
+	  }
+	  else
+	  {
+	  	// alert('entering');
+	  	const data = JSON.parse(value);
+	  	this.setState({LoggedIn:1})
+		this.setState({dataSource:data});
+		// console.log(this.state.dataSource)
+	  }
 	}
 	// submit(){
  //    	console.log(this.state);
@@ -138,9 +135,9 @@ export  class PersonalInfoComponent extends Component {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 			          isLoading: false,
-			          data: responseJson.body.form,
+			          dataSource: responseJson.body.form,
 			        },async function(){
-			        		await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify( this.state.data["Personal Information"]));
+			        		await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify( this.state.dataSource["Personal Information"]));
 			        		// alert(JSON.stringify(this.state.data));  
 			        	
 			        });

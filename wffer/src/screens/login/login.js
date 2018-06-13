@@ -124,12 +124,12 @@ export class LoginComponent extends Component {
 		          alert('There was an error logging in.');
 		        });
   	}
-    _keyExtractor = (item, index) => item.id;
+    _keyExtractor = (item, index) => index.toString();
     render_item = ({item}) => {
     		if(item.type=='Text'){
 											
 				return (
-				<View key={item.id}>
+				<View>
 						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
 						
 				</View>
@@ -138,7 +138,7 @@ export class LoginComponent extends Component {
 			} 
 			if(item.type=='Password'){
 				return (
-				<View key={item.id}>
+				<View>
 						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
 						
 				</View>
@@ -146,7 +146,7 @@ export class LoginComponent extends Component {
 			}
 			if(item.type=='Submit'){
 				return (
-				<View key={item.id}>
+				<View>
 						<TouchableOpacity onPress={()=>this.login()} style={gstyles.buttonView}>
 							<Text style={gstyles.buttonText}>{item.label}</Text>
 						</TouchableOpacity>

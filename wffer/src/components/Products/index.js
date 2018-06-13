@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Dimension, TouchableOpacity,Image,FlatList,ScrollView,StyleSheet,TouchableHighlight} from 'react-native';
+import { Text, View, TouchableOpacity,Image,ScrollView,TouchableHighlight} from 'react-native';
 import {gstyles} from '../../GlobalStyles';
-import { SafeAreaView} from 'react-navigation';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 export class ProductDetail extends React.Component{
   constructor(props) {

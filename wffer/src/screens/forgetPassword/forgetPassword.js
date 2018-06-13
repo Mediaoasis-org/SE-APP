@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, Dimension, TouchableOpacity, Image, FlatList, ScrollView } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 import { DrawerActions } from 'react-navigation';
 import { Constants } from '../../common';
@@ -12,7 +12,6 @@ export class ForgetComponent extends Component {
 			email:'',
 			Message:''
 		}
-		// alert(JSON.stringify(this.props.navigation))
 	}
 	forget(){
 
@@ -41,33 +40,10 @@ export class ForgetComponent extends Component {
 		        	}
 		        	else if(responseJson.status_code=="401"){
 		        		this.setState({Message:responseJson.message})
-		        	}
-		         //  if(responseJson.status_code=="200"){
-		         //    this.setState({
-		         //      isLoading: false,
-		         //      // dataSource1: responseJson.body.oauth_token,
-		         //    }, async function(){
-			        // // await AsyncStorage.setItem('userLoginAuthentication', responseJson.body.oauth_token);
-		         //      // alert(JSON.stringify(responseJson.body.user));
-		         //      // alert(this.state.dataSource1)
-		         //      alert("Logged In");
-		         //      this.props.navigation.navigate('Home');
-		         //    });
-		         //  }
-		         //  else
-		         //  {
-		         //    this.setState({
-		         //      Message : responseJson.message,
-		         //    })
-		        
+		        	}		        
 		         	this.textInput.clear()
 		            alert(this.state.Message)
-		          
-		         //  }
-		          
-
-		        })
-		       
+		        })		       
 		        .catch((error) =>{
 		          console.error(error);
 		          alert('There was an error logging in.');
@@ -83,8 +59,7 @@ export class ForgetComponent extends Component {
 								<TouchableOpacity onPress={() =>this.props.navigation.goBack() } style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={30} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>{Constants.forgetPassword}</Text>
-			                    
+			                    <Text style={gstyles.headerProfileLabel}>{Constants.forgetPassword}</Text>           
 					</View>
 					<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Forget Password</Text></View>

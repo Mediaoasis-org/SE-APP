@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Dimension, TouchableOpacity, Image, FlatList, ScrollView, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 
 export class CategoryListComponent extends React.Component{
@@ -22,9 +22,7 @@ export class CategoryListComponent extends React.Component{
     } 
 	/// Capitalize(str){
  //    	return str.charAt(0).toUpperCase() + str.slice(1);
- //    }
-    
-	   			                   
+ //    }   			                   
 	render(){
 		return(
 			<View>

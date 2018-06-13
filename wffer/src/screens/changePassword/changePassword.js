@@ -74,7 +74,6 @@ export class ChangePasswordComponent extends Component {
 			
 	}
 	chagnePassword(){
-
 	        var formData = new FormData;
 		    formData.append('oldPassword',this.state.oldPassword);
 		    formData.append('password',this.state.password);
@@ -96,12 +95,6 @@ export class ChangePasswordComponent extends Component {
 		        	if(responseJson.status_code=="204"){
 		        		let message = "Password Changed Successfully.";
 		        		this.setState({Message:message})
-		        		// this.props.navigation.navigate("Home");
-		        		// api.logout().then((data) => {
-					      // this.setState({LoggedIn:0})
-					      // console.log(data)
-					      // this.props.navigation.navigate('ChangePassword')
-					    // })
 		        	}
 		        	else if(responseJson.status_code=="400"){
 		        		this.setState({Message:responseJson.message});
@@ -110,29 +103,8 @@ export class ChangePasswordComponent extends Component {
 		        	else if(responseJson.status_code=="401"){
 		        		this.setState({Message:responseJson.message})
 		        	}
-		         //  if(responseJson.status_code=="200"){
-		         //    this.setState({
-		         //      isLoading: false,
-		         //      // dataSource1: responseJson.body.oauth_token,
-		         //    }, async function(){
-			        // // await AsyncStorage.setItem('userLoginAuthentication', responseJson.body.oauth_token);
-		         //      // alert(JSON.stringify(responseJson.body.user));
-		         //      // alert(this.state.dataSource1)
-		         //      alert("Logged In");
-		         //      this.props.navigation.navigate('Home');
-		         //    });
-		         //  }
-		         //  else
-		         //  {
-		         //    this.setState({
-		         //      Message : responseJson.message,
-		         //    })
 		         	this.textInput.clear()
 		            alert(this.state.Message)
-		          
-		         //  }
-		          
-
 		        })
 		       
 		        .catch((error) =>{
@@ -140,15 +112,10 @@ export class ChangePasswordComponent extends Component {
 		          alert('There was an error logging in.');
 		        });
   	}
-  	// logout = async() => {
-   //    await AsyncStorage.removeItem('userLoginAuthentication');
-   //     this.setState({LoggedIn:0})
-   //    this.props.navigation.navigate('Login');
-   //  }
 	Capitalize(str){
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
-    _keyExtractor = (item, index) => item.id;
+    _keyExtractor = (item, index) => index.toString();
     render_item = ({item}) => {
     		 
 			if(item.type=='Password'){

@@ -3,8 +3,6 @@ import React, {Component} from "react";
 import {View, TextInput, Text, } from "react-native";
 import { gstyles } from '../../GlobalStyles';
 
-// import Color from "@common/Color";
-
 export class TextInputComponent extends Component {
 	static propTypes = {
 	    attributes: PropTypes.object,

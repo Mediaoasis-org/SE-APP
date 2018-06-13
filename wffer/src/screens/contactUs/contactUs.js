@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, Dimensions, ScrollView, TouchableOpacity, Image, AsyncStorage,Keyboard } from 'react-native';
+import { Text, TextInput, View, ScrollView, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 import { ModalDropdownComponent } from '../../components/ModalDropdown';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -12,10 +12,7 @@ export  class ContactUsComponent extends Component {
 			email:'',
 			body:'',
 			dataSource:[],
-			data:[]
-			// oauthToken:'',
-			// oauthSecret:'',
-			// userData:[]
+			// data:[]
 		}
 		this._getStorageValue();
 		this.handleInput = this.handleInput.bind(this);
@@ -26,21 +23,21 @@ export  class ContactUsComponent extends Component {
 	async _getStorageValue(){
 		// this.fetchFields()
 	  var value = await AsyncStorage.getItem('contactUsInformation');
-	  this.fetchFields()
-	 //  if(value !== null){
-	 //  		// alert('entering');
-	 //  	const data = JSON.parse(value);
-	 //  	// alert(data)
-	 //  	this.setState({LoggedIn:1})
-		// this.setState({dataSource:data});
-		// // console.log(this.state.dataSource)
-	 //  }
-	 //  else
-	 //  {
-	  
-		// this.setState({LoggedIn:0})
-	 //  	this.fetchFields();	
-	 //  }
+	  // this.fetchFields()
+	  // alert(value)
+	  if(value !== null){
+	  		// alert('entering');
+	  	const data = JSON.parse(value);
+	  	// alert(data)
+	  	this.setState({LoggedIn:1})
+		this.setState({dataSource:data});
+		// console.log(this.state.dataSource)
+	  }
+	  else
+	  {
+		this.setState({LoggedIn:0})
+	  	this.fetchFields();	
+	  }
 	}
 	SendMessage(){
     		var formData = new FormData;
