@@ -14,6 +14,7 @@ import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
 import { ModalDropdownComponent } from '../../components/ModalDropdown';
+import ModalDropdown from 'react-native-modal-dropdown';
 export  class GeneralSettingsComponent extends Component {
 	constructor(props){
 		super(props);
@@ -23,8 +24,8 @@ export  class GeneralSettingsComponent extends Component {
 			oauthSecret:'',
 			email:'',
 			username:'',
-			Timezone:null,
-			Locale:null,
+			timezone:'',
+			locale:'',
 			dataSource:[],
 			fieldValues:[],
 			userData:[]
@@ -111,7 +112,7 @@ export  class GeneralSettingsComponent extends Component {
 			        },function(){
 			        	this.setState({email:this.state.fieldValues.email});
 			        	this.setState({username:this.state.fieldValues.username});
-			        	this.setState({timezone:this.state.fieldValues	.timezone});
+			        	this.setState({timezone:this.state.fieldValues.timezone});
 			        	this.setState({locale:this.state.fieldValues.locale});
 			        });
 
@@ -156,6 +157,18 @@ handleInput(idx,data,value){
 	static navigationOptions = {
     		title: 'General',
     };
+    onTagSelect(idx, data){ 
+      // console.log("======== on tag selected ==========="); 
+      console.log(idx,data); 
+      this.onChange(idx,data)
+ };
+ select_dropdown(value,options){
+ 		console.log(value);
+ 		// console.log(options);
+ 		// options.map((item) =>{
+ 		// 	console.log(item.value)
+ 		// })
+ }
 	render(){
 		return(
 			<View style={gstyles.container}>
@@ -183,7 +196,6 @@ handleInput(idx,data,value){
 														onChangeText={(text)=>this.onChange(text,item.name)}  
 														value={this.state[item.name]} 
 														secureTextEntry={(item.type=='Password')?true:false}
-
 												/>
 												
 
@@ -196,14 +208,18 @@ handleInput(idx,data,value){
 									if(item.type=='Select'){
 										return(
 										<View>
-											<ModalDropdownComponent 
-												defaultIndex={-1}
-												defaultValue={item.label}
-						    					options={item.multiOptions}
-						    					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-						    					onChange={this.handleInput}
-						    					givenValue={this.state[item.name]}
-						    					/>
+											<Text>{this.state[item.name]}</Text>
+											<ModalDropdown 
+						                      style={gstyles.dropdownMainStyles}						                      
+						                      dropdownTextStyle={gstyles.dropdownTextStyle}
+						                      textStyle={gstyles.textStyle}
+						                      dropdownStyle={gstyles.dropdownStyles}
+						                      defaultIndex={this.props.defaultIndex}
+						                      showsVerticalScrollIndicator={true}
+						                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
+						                      options={item.multiOptions}						         
+						                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data)}} 						                       
+						                      />
 						    					
 						    			</View>
 										)
@@ -223,3 +239,13 @@ handleInput(idx,data,value){
 // 				                	options={['(UTC+5:30) Bombay,Calcutta,New Delhi','(UTC+5:45) Nepal','(UTC+6) Dhaka','(UTC+9:30) Darwin']}/>	
 // 							<ModalDropdownComponent defaultValue='Select Locale'
 // 				                	options={['English','English(United Status)','Hindi','Maxican','Persain','Greek','Spanish','Urdu']}/>
+
+// <ModalDropdownComponent 
+// 												defaultIndex={-1}
+// 												defaultValue={this.state[item.name]}
+// 						    					options={item.multiOptions}
+// 						    					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+// 						    					onChange={this.handleInput}
+// 						    					renderButtonText={(rowData) => this.renderButtonText(rowData)}
+//                              					renderRow={this.dropdownRenderRow.bind(this)}
+// 						    					/>
