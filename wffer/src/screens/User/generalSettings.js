@@ -80,7 +80,7 @@ export  class GeneralSettingsComponent extends Component {
 			          isLoading: false,
 			          dataSource: responseJson.body.form,
 			        },async function(){
-			        	alert(JSON.stringify(this.state.dataSource))
+			        	// alert(JSON.stringify(this.state.dataSource))
 			        		await AsyncStorage.setItem('generalSettingsInfo', JSON.stringify( this.state.dataSource));
 			        		// alert(JSON.stringify(this.state.data));  
 			        	
@@ -126,20 +126,20 @@ export  class GeneralSettingsComponent extends Component {
 			        console.error(error);
 			      });
 	}
-handleInput(idx,data,value){
+	handleInput(idx,data,value){
      	var state = value;
      	var val = idx;
-     	console.log(state);
-     	console.log(val);   
+     	// console.log(state);
+     	// console.log(val);   
      	var obj  = {}
      	obj[state] = val;
      	this.setState(obj);
-     	// console.log(obj)
+     	console.log(obj)
      	// console.log(this.state[state]);
      	  	
      	
      }
-     onChange(text,name){
+    onChange(text,name){
      	var state = name;
      	var val = text;
      	// console.log(state);
@@ -148,27 +148,82 @@ handleInput(idx,data,value){
      	obj1[state] = val;
      	// console.log(obj1)
      	this.setState(obj1);
+     	// console.log(obj1)
      	
-     }
+    }
     submit(){
     	console.log(this.state);
     	alert("all values")
     }
+    saveGeneralSetting(){
+    		var formData = new FormData;
+		    formData.append('username',this.state.username);
+		    formData.append('email',this.state.email);
+		    formData.append('timezone',this.state.timezone);
+		    formData.append('locale',this.state.locale);
+		       fetch('https://wffer.com/se/api/rest/members/settings/general?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
+		        body: formData,
+		        headers:{
+		          'Accept':'application/json',
+		          // 'Content-Type': 'multipart/form-data'
+		        },
+		        method:'POST'
+		      })
+		        .then((response) => response.json())
+		        .then((responseJson) => {
+		        	
+		          if(responseJson.status_code=="204"){
+		            this.setState({
+		              isLoading: false,
+		              dataSource1: responseJson.body,
+		            }, async function(){
+			        // await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
+		              alert('Data Updated');
+		              this.props.navigation.navigate('AccountSettings');
+		            });
+		          }
+		          else
+		          {
+		            this.setState({
+		              Message : responseJson.message,
+		            })
+		            alert(JSON.stringify(this.state.Message))
+		          
+		          }
+		          
+
+		        })
+		       
+		        .catch((error) =>{
+		          console.error(error);
+		        });
+    }
 	static navigationOptions = {
     		title: 'General',
     };
-    onTagSelect(idx, data){ 
-      // console.log("======== on tag selected ==========="); 
-      console.log(idx,data); 
-      this.onChange(idx,data)
- };
- select_dropdown(value,options){
- 		console.log(value);
- 		// console.log(options);
- 		// options.map((item) =>{
- 		// 	console.log(item.value)
- 		// })
- }
+    onTagSelect(idx, data,name){ 
+	      // console.log("======== on tag selected ==========="); 
+	      // console.log(idx,data,name); 
+	      this.handleInput(idx,data,name)
+	};
+	select_dropdown(value,options){
+	 	let data;
+	 		// console.log(value);
+	 		// return value
+	 		Object.keys(options).map(function(k){
+	 			// console.log(options[k],k);
+	 			if(k == value){
+	 				// return options[k]
+	 				// console.log(value);
+	 				// console.log(k)
+	 				// console.log(options[k])
+	 				data = options[k];
+	 			}
+
+
+	 		})
+	 		return data
+	}
 	render(){
 		return(
 			<View style={gstyles.container}>
@@ -208,7 +263,6 @@ handleInput(idx,data,value){
 									if(item.type=='Select'){
 										return(
 										<View>
-											<Text>{this.state[item.name]}</Text>
 											<ModalDropdown 
 						                      style={gstyles.dropdownMainStyles}						                      
 						                      dropdownTextStyle={gstyles.dropdownTextStyle}
@@ -218,16 +272,18 @@ handleInput(idx,data,value){
 						                      showsVerticalScrollIndicator={true}
 						                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
 						                      options={item.multiOptions}						         
-						                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data)}} 						                       
+						                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
 						                      />
 						    					
+
+						    				
 						    			</View>
 										)
 										
 									}
 								})
 							}
-							<TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Changes</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>this.saveGeneralSetting()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Changes</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 			</View>
@@ -249,3 +305,13 @@ handleInput(idx,data,value){
 // 						    					renderButtonText={(rowData) => this.renderButtonText(rowData)}
 //                              					renderRow={this.dropdownRenderRow.bind(this)}
 // 						    					/>
+
+
+
+	// <ModalDropdownComponent 
+	// defaultIndex={-1}
+	// defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
+	// options={item.multiOptions}
+	// onSelect={(idx,data)=>this.onHandleChange(idx,data)}
+	// onChange={this.handleInput}
+	// />

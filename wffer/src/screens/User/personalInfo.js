@@ -4,13 +4,12 @@ import { gstyles } from '../../GlobalStyles';
 import { ModalDropdownComponent } from '../../components/ModalDropdown';
 import { TextInputComponent }  from '../../components/textInput';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import ModalDropdown from 'react-native-modal-dropdown';
 import { DrawerActions } from 'react-navigation';
 export  class PersonalInfoComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
-			// ...initialState,
-   //    		errorStatus: false,
 			LoggedIn:null,
 			dataSource:[],
 			data:[],
@@ -25,25 +24,9 @@ export  class PersonalInfoComponent extends Component {
 			userData:[]
 		}
 		this.handleInput = this.handleInput.bind(this);
-		this.onSummitTextInput = this.onSummitTextInput.bind(this)	
+		
 		this._getStorageValue()
 	}
-	getInitState(fields) {
-		  const state = {};
-		  _.forEach(fields, (field) => {
-		    const fieldObj = field;
-		    fieldObj.error = false;
-		    fieldObj.errorMsg = '';
-		    if (!field.hidden && field.type) {
-		      fieldObj.value = getDefaultValue(field);
-		      state[field.name] = fieldObj;
-		    }
-		  });
-		  return state;
-		}
-	// componentDidMount(){
-	// 	this._getStorageValue()
-	// }
 	async _getStorageValue(){
 		// this.fetchFields()
 	  var value = await AsyncStorage.getItem('fieldsPersonalInformation');
@@ -79,7 +62,7 @@ export  class PersonalInfoComponent extends Component {
     	var formData = new FormData;
 		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
 		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
-		    // formData.append('1_1_5_alias_gender',this.state.Gender);
+		    formData.append('1_1_5_alias_gender',this.state['1_1_5_alias_gender']);
 		    formData.append('oauth_token',this.state.oauthToken);
 		    formData.append('oauth_secret',this.state.oauthSecret);
 		    formData.append('ip','45.121.29.194');
@@ -123,11 +106,6 @@ export  class PersonalInfoComponent extends Component {
 	fetchFields(){
 				
 			  fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
-			       
-			        // headers:{
-			        //   'Accept':'application/json',
-			        //   'Content-Type':'application/json',
-			        // },
 			        method:'GET'
 			      })
 			      .then((response) => response.json())
@@ -172,7 +150,7 @@ export  class PersonalInfoComponent extends Component {
 			        },function(){
 			        		this.setState({'1_1_3_alias_first_name':this.state.fieldValues['1_1_3_alias_first_name'].value})
 			        		this.setState({'1_1_4_alias_last_name':this.state.fieldValues['1_1_4_alias_last_name'].value})
-			        		// this.setState({'1_1_5_alias_gender':this.state.fieldValues['1_1_5_alias_gender'].value})
+			        		this.setState({'1_1_5_alias_gender':this.state.fieldValues['1_1_5_alias_gender'].value})
 			        		// alert(this.state['1_1_3_alias_first_name'])
 			        		 // alert(JSON.stringify(this.state.fieldValues['1_1_5_alias_gender'].value));  
 
@@ -215,18 +193,32 @@ export  class PersonalInfoComponent extends Component {
      	this.setState(obj1);
      	
      }
-     onSummitTextInput(name) {
-	    const index = Object.keys(this.state).indexOf(name);
-	    if (index !== -1 && this[Object.keys(this.state)[index + 1]]
-	    && this[Object.keys(this.state)[index + 1]].textInput) {
-	      this[Object.keys(this.state)[index + 1]].textInput._root.focus();
-	    } else {
-	      Keyboard.dismiss();
-	    }
-	  }
 	static navigationOptions = {
         title: 'Personal Info',
     };
+    onTagSelect(idx, data,name){ 
+	      // console.log("======== on tag selected ==========="); 
+	      // console.log(idx,data,name); 
+	      this.handleInput(idx,data,name)
+	};
+	select_dropdown(value,options){
+	 	let data;
+	 		// console.log(value);
+	 		// return value
+	 		Object.keys(options).map(function(k){
+	 			// console.log(options[k],k);
+	 			if(options[k] == value){
+	 				// return options[k]
+	 				// console.log(value);
+	 				// console.log(k)
+	 				// console.log(options[k])
+	 				data = options[k];
+	 			}
+
+
+	 		})
+	 		return data
+	}
 	render(){
 		// if (this.state.dataSource.length === 0) {
 		//   return null
@@ -261,47 +253,31 @@ export  class PersonalInfoComponent extends Component {
 															value={this.state[item.name]} 
 															secureTextEntry={(item.type=='Password')?true:false}
 													/>
-													
-
-											</View>
-
-											
+											</View>	
 										);
 										}
-										// if(item.type=='Password'){
-										// 	return (
-										// 	<View key={item.id}>
-										// 			<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"/>
-													
-										// 	</View>
-										// 	)
-										// }
-										// if(item.type=='Select'){
-										// 	return(
-										// 	<View key={item.id}>
-										// 		<ModalDropdownComponent 
-										// 			defaultIndex={-1}
-										// 			defaultValue={item.label}
-						    //     					options={item.multiOptions}
-						    //     					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-						    //     					onChange={this.handleInput}
-						    //     					givenValue={this.state[item.name]}
-						    //     				/>
-						        				
-				      //           			</View>
-										// 	)
+										if(item.type=='Select'){
+												return(
+												<View>
+													<ModalDropdown 
+								                      style={gstyles.dropdownMainStyles}						                      
+								                      dropdownTextStyle={gstyles.dropdownTextStyle}
+								                      textStyle={gstyles.textStyle}
+								                      dropdownStyle={gstyles.dropdownStyles}
+								                      defaultIndex={this.props.defaultIndex}
+								                      showsVerticalScrollIndicator={true}
+								                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
+								                      options={item.multiOptions}						         
+								                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
+								                      />
+								    					
+
+								    				
+								    			</View>
+												)
 											
-										// }
-										// if(item.type=='Submit'){
-										// 	return (
-										// 	<View key={item.id}>
-										// 			<TouchableOpacity onPress={()=>this.SavePersonalInfo()} style={gstyles.buttonView}>
-										// 				<Text style={gstyles.buttonText}>{item.label}</Text>
-										// 			</TouchableOpacity>
-													
-										// 	</View>
-										// 	)
-										// }
+										}
+										
 									})
 								}
 								<TouchableOpacity onPress={()=>this.SavePersonalInfo()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>

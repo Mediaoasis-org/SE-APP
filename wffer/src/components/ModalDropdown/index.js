@@ -140,7 +140,6 @@ export class ModalDropdownComponent extends React.Component{
         <View {...this.props}>
             <ModalDropdown 
                       style={gstyles.dropdownMainStyles}
-                      
                       dropdownTextStyle={gstyles.dropdownTextStyle}
                       textStyle={gstyles.textStyle}
                       dropdownStyle={gstyles.dropdownStyles}
