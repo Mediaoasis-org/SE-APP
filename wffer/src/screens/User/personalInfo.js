@@ -24,7 +24,6 @@ export  class PersonalInfoComponent extends Component {
 			userData:[]
 		}
 		this.handleInput = this.handleInput.bind(this);
-		
 		this._getStorageValue()
 	}
 	async _getStorageValue(){
@@ -80,7 +79,7 @@ export  class PersonalInfoComponent extends Component {
 		          if(responseJson.status_code=="204"){
 		            this.setState({
 		              isLoading: false,
-		              dataSource1: responseJson.body,
+		              // dataSource1: responseJson.body,
 		            }, async function(){
 			        // await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
 		              alert('Data Updated');
@@ -113,10 +112,11 @@ export  class PersonalInfoComponent extends Component {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 			          isLoading: false,
-			          dataSource: responseJson.body.form,
+			          data: responseJson.body.form,
 			        },async function(){
-			        		await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify( this.state.dataSource["Personal Information"]));
+			        		await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify( this.state.data["Personal Information"]));
 			        		// alert(JSON.stringify(this.state.data));  
+			        		this.setState({dataSource:this.state.data["Personal Information"]})
 			        	
 			        });
 			      	}
@@ -220,9 +220,9 @@ export  class PersonalInfoComponent extends Component {
 	 		return data
 	}
 	render(){
-		// if (this.state.dataSource.length === 0) {
-		//   return null
-		// }
+		if (this.state.dataSource.length === 0) {
+		  return null
+		}
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -236,9 +236,7 @@ export  class PersonalInfoComponent extends Component {
 						<View>
 							
 								{
-
 							    	this.state.dataSource.map((item,index)=>{
-										nextIndex = index +1 ;
 										if(item.type=='Text' || item.type == 'Textarea' || item.type=='Password'){
 											return (
 											<View key={index}>

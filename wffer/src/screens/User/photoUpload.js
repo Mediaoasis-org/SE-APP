@@ -38,7 +38,7 @@ export  class UploadPhotoComponent extends Component {
      this.setState({oauthToken:this.state.userData.oauth_token});
      this.setState({oauthSecret:this.state.userData.oauth_secret});
      // alert(this.state.oauthToken)
-     this.fetchFields()
+     this.fetchFields();
     //  if(userData == null){
     //   this.setState({LoggedIn:0})
     //   this.fetchFields(); 
@@ -83,6 +83,7 @@ export  class UploadPhotoComponent extends Component {
               {
                 // this.setState({Message:responseJson.Message});
               }
+              // alert(this.state.data)
             })
             .catch((error) =>{
               console.error(error);
@@ -110,11 +111,12 @@ export  class UploadPhotoComponent extends Component {
           })
             .then((response) => response.json())
             .then((responseJson) => {
-              // alert(JSON.stringify(responseJson))
+              
               
               if(responseJson.status_code=="204"){
+                // alert(JSON.stringify(responseJson))
                 this.setState({
-                  Message : 'Photo Successfully Uploaded'
+                  Message : 'Photo Successfully Uploaded',
                 }, function(){})
               }
               else
@@ -123,9 +125,9 @@ export  class UploadPhotoComponent extends Component {
                   Message : responseJson.message,
                 })
                 // alert(JSON.stringify(responseJson))
-                alert(this.state.Message);
+               
               }
-              
+               alert(this.state.Message);
 
             })
            
@@ -240,7 +242,7 @@ export  class UploadPhotoComponent extends Component {
                             <Image style={styles.image} source={this.state.ImageSource} />
                                   
                     </View>
-                    <TouchableOpacity onPress={()=>this.uploadPhoto()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Photo</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.uploadPhoto()} style={gstyles.buttonView} disabled={(this.state.name=='') ? true : false}><Text style={gstyles.buttonText}>Save Photo</Text></TouchableOpacity>
                     <View style={gstyles.newToView}><Text style={gstyles.newToText}>OR</Text></View>
                     <TouchableOpacity onPress={()=>this.removePhoto()} style={gstyles.createAccountView}><Text style={gstyles.createAccountText}>Remove Photo</Text></TouchableOpacity>
 			</View>

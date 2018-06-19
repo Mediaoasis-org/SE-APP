@@ -7,6 +7,7 @@ import CheckBox from 'react-native-checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { DrawerActions } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
+import ModalDropdown from 'react-native-modal-dropdown';
 export class SignupComponent extends Component {
 	constructor(props){
 		super(props);
@@ -186,19 +187,44 @@ export class SignupComponent extends Component {
     //   return value;
     // }
      // onTagSelect(idx, data){ console.log("======== on tag selected ==========="); console.log(idx); };
-     handleInput(idx,data,value){
+    handleInput(idx,data,value){
      	var state = value;
      	var val = idx;
      	// console.log(state);
-     	// console.log(val);   
+     	// console.log(val); 
+     	// console.log(data);  
      	var obj  = {}
-     	obj[state] = val;
+     	obj[state] = data;
+     	// obj.append(obj[])
      	this.setState(obj);
-     	// console.log(obj)
+     	console.log(obj)
      	// console.log(this.state[state]);
      	  	
      	
      }
+     onTagSelect(idx, data,name){ 
+	      // console.log("======== on tag selected ==========="); 
+	      // console.log(idx,data,name); 
+	      this.handleInput(idx,data,name)
+	};
+	select_dropdown(value,options){
+	 	let data;
+	 		// console.log(value);
+	 		// return value
+	 		Object.keys(options).map(function(k){
+	 			// console.log(options[k],k);
+	 			if(options[k] == value){
+	 				// return options[k]
+	 				// console.log(value);
+	 				// console.log(k)
+	 				// console.log(options[k])
+	 				data = options[k];
+	 			}
+
+
+	 		})
+	 		return data
+	}
     continue(){
     	var formData = new FormData;
 	        formData.append('email',this.state.email);
@@ -278,19 +304,26 @@ export class SignupComponent extends Component {
 				}
 				
 				if(item.type=='Select'){
-					return(
-					<View>
-						<ModalDropdownComponent 
-							defaultIndex={-1}
-							defaultValue={item.label}
-        					options={item.multiOptions}
-        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-        					onChange={this.handleInput}
-        					/>
-        			</View>
-					)
-					
-				}
+												return(
+												<View>
+													<ModalDropdown 
+								                      style={gstyles.dropdownMainStyles}						                      
+								                      dropdownTextStyle={gstyles.dropdownTextStyle}
+								                      textStyle={gstyles.textStyle}
+								                      dropdownStyle={gstyles.dropdownStyles}
+								                      defaultIndex={this.props.defaultIndex}
+								                      showsVerticalScrollIndicator={true}
+								                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
+								                      options={item.multiOptions}						         
+								                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
+								                      />
+								    					
+
+								    				
+								    			</View>
+												)
+											
+										}
 				if(item.type=='Checkbox'){
 					return(
 					<View style={{padding: 10}} key={item.id}>

@@ -33,7 +33,12 @@ export class Products extends Component {
             activeRow:'',
             search:'',
             checked: false,
+            fetchValues:[]
       }
+      this.fetchValues();
+    }
+    componentDidMount(){
+    	this.fetchValues()
     }
    //  removeCompleted = () => {
 	  //   const {dispatch} = this.props
@@ -54,6 +59,36 @@ export class Products extends Component {
 	   	// alert(qty)
 	   	this.setState({qty:qty});
 	 }
+	 fetchValues(){
+	
+		return fetch('https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
+			       
+			        // headers:{
+			        //   'Accept':'application/json',
+			        //   'Content-Type':'application/json',
+			        // },
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			    
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+				          isLoading: false,
+				          fieldValues: responseJson.body.response,
+				        });
+			      		 alert(JSON.stringify(this.state.fieldValues));
+			      	}
+			      	else
+			      	{
+			      		// 
+			      	}
+			      	this.setState({Message:responseJson.Message});
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
+	}
 	render(){
 		return(
 				<View style={gstyles.container}>
