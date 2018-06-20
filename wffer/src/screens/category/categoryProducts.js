@@ -11,7 +11,8 @@ Image,
 FlatList,
 ScrollView,
 StyleSheet,
-ListView
+ListView,
+ActivityIndicator
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {gstyles} from '../../GlobalStyles';
@@ -33,12 +34,53 @@ export class Products extends Component {
             activeRow:'',
             search:'',
             checked: false,
-            fetchValues:[]
+            fetchValues:[],
+            isLoading:true,
+            check:[],
       }
-      this.fetchValues();
+      // this.fetchValues();
     }
+    // componentWillReceiveProps(){
+    // 	alert('work');
+    // }
     componentDidMount(){
-    	this.fetchValues()
+    	let category_id = this.props.navigation.state.params.cat_id;
+    	let categoryUrl;
+    	if(category_id){
+    		// catParam = "category_id"=category_id;
+    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id;
+    	}
+    	else
+    	{
+    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2';
+    	}
+    	return fetch(categoryUrl,{
+			       
+			        // headers:{
+			        //   'Accept':'application/json',
+			        //   'Content-Type':'application/json',
+			        // },
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			    
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+				          isLoading: false,
+				          fieldValues: responseJson.body.response,
+				        });
+			      		 // console.log(JSON.stringify(this.state.fieldValues));
+			      	}
+			      	else
+			      	{
+			      		// 
+			      	}
+			      	this.setState({Message:responseJson.Message});
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
     }
    //  removeCompleted = () => {
 	  //   const {dispatch} = this.props
@@ -59,36 +101,6 @@ export class Products extends Component {
 	   	// alert(qty)
 	   	this.setState({qty:qty});
 	 }
-	 fetchValues(){
-	
-		return fetch('https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
-			       
-			        // headers:{
-			        //   'Accept':'application/json',
-			        //   'Content-Type':'application/json',
-			        // },
-			        method:'GET'
-			      })
-			      .then((response) => response.json())
-			      .then((responseJson) => {
-			    
-			      	if(responseJson.status_code=='200'){
-			      		 this.setState({
-				          isLoading: false,
-				          fieldValues: responseJson.body.response,
-				        });
-			      		 alert(JSON.stringify(this.state.fieldValues));
-			      	}
-			      	else
-			      	{
-			      		// 
-			      	}
-			      	this.setState({Message:responseJson.Message});
-			      })
-			      .catch((error) =>{
-			        console.error(error);
-			      });
-	}
 	render(){
 		return(
 				<View style={gstyles.container}>
@@ -100,35 +112,44 @@ export class Products extends Component {
 			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('MultipleWishlist')} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
 
 					</View>
+
 					<ScrollView>
 						<SearchComponent />
+						 	{ 
+                              this.state.isLoading ?   <View style={styles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : null
+                            }	
 						<View style={{width:'100%',flexDirection:'row'}}>
 
-							<FlatList data={[{id: '1',name:'Puck Cream Cheese Spread 500 g',discount:'40% Off',company:'Panda',category:'Dairy',price:'15.70 SAR',discountedPrice:'9.48 SAR',offerEnd:'16-5-18'},{id: '2',name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},{id: '3',name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'17-5-18'},{id: '4',name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},{id: '5',name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'17-5-18'}]}
+							<FlatList data={this.state.fieldValues}
 		                		renderItem={({item}) =>      
 					                    	<View style={styles.flatlist}>
 								          		<View style={{flexDirection: 'column',width:'30%'}}>
 								          			<View style={{width: '90%'}}>
 								          				<TouchableOpacity  onPress={()=>this.props.navigation.navigate('ProductDetails')}>
-								          					<Image source={require('../../../assets/product1.jpg')} style={styles.flatimage} />
+								          					<Image source={{uri:item.image}} style={styles.flatimage} />
 								          				</TouchableOpacity>
 								          			</View>
 								          		 </View>
 									            <View style={{flexDirection: 'column',width:'70%'}}>
-										          		<View style={{width: '80%'}}><Text style={styles.title}>{item.name}</Text></View>
+										          		<View style={{width: '80%'}}><Text style={styles.title}>{item.title}</Text></View>
+										          		<View style={{width: '80%'}}><Text>{this.props.navigation.state.params.cat_name}</Text></View>
 										          		<View style={{flexDirection:'row'}}>
 										          			<View style={{flexDirection:'column',width:'80%'}}>
 												          		<Text style={styles.discountDeal}>Best Deal</Text>
-												          		<Text style={styles.subtitle}>$ {item.discountedPrice}</Text>	
+												          		<Text style={styles.subtitle}>SAR</Text>	
+												          		<Text>{this.state.check}</Text>
 												          	</View>
 												          	<View style={{flexDirection:'column',width:'20%'}}>
-												          		
+												          		<TouchableOpacity onPress={()=>alert(item.listing_id)} >
 													          		<CheckBox
+													          		  name="abc"
 																	  label=' '
 																	  labelStyle={{color:'#000',fontSize:16}}
-																	  onClick={() => this.setState({checked: !checked})}
+																	  onClick={() =>this.setState({check:item.listing_id}) && this.setState({checked: !checked})}
+																	 
 																	  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
 																	/>	
+																</TouchableOpacity>
 																
 															</View>
 														</View>						               
@@ -146,7 +167,7 @@ export class Products extends Component {
 
 const styles  = StyleSheet.create({
 	  flatlist:{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1},
-	  flatimage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '100%', height: 115},
+	  flatimage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '80%', height: 100},
 	  title:{fontSize: 18, marginTop: '10%',color:'#000'},
 	  subtitle:{color: '#000', marginTop: '3%', fontSize: 18},
 	  discountDeal:{color: '#ff0000', marginTop: '3%', fontSize: 18},

@@ -168,7 +168,7 @@ export class DrawerTitle extends React.Component{
   	      		{
   	      			this.state.fieldValues.map((item,index)=>{
   	      				return(
-  	      				<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:item.category_name,cat_id:item.category_id})}}>
+  	      				<TouchableOpacity key={index} style={gstyles.drawerView} onPress={()=>{this.props.navigation.push('Products', {cat_name:item.category_name,cat_id:item.category_id})}}>
   	      					<Image source={{uri:item.image_icon}} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {item.category_name}</Text>
   	      				</TouchableOpacity>
   	      				)
