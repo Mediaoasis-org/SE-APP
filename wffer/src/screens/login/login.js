@@ -14,8 +14,6 @@ export class LoginComponent extends Component {
 			dataSource:[],
 			dataSource1:[],
 			userData:[],
-			// email:'',
-			// password:'',
 			LoggedIn:null
 		}
 		// alert(JSON.stringify(this.props.navigation))
@@ -190,7 +188,7 @@ export class LoginComponent extends Component {
 			);
 	}
 }
-// <TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
+/// <TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // <TextInput name="password" placeholder="Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // <TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}>
 // 	<Text style={gstyles.buttonText}>Submit</Text>

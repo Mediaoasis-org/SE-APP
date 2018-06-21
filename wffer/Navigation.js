@@ -22,9 +22,9 @@ import { StoreLocatorComponent } from './src/screens/storeLocality/storeLocator'
 import { PersonalInfoComponent } from './src/screens/User/personalInfo';
 import { UploadPhotoComponent } from './src/screens/User/photoUpload';
 import  LogoutComponent  from './src/screens/User/signOut';
-import { GeneralSettingsComponent } from './src/screens/User/generalSettings';
-import { PrivacySettingsComponent } from './src/screens/User/privacySettings';
-import { OtherSettingsComponent } from './src/screens/User/otherSettings';
+// import { GeneralSettingsComponent } from './src/screens/User/generalSettings';
+// import { PrivacySettingsComponent } from './src/screens/User/privacySettings';
+// import { OtherSettingsComponent } from './src/screens/User/otherSettings';
 import { LanguageComponent } from './src/screens/language/language';
 import { LowestPriceComponent } from './src/screens/getPrice/lowestPrice';
 import { NearByStoreComponent } from './src/screens/getPrice/NearByStore';
@@ -49,7 +49,10 @@ const profilenav = createBottomTabNavigator({
   },
   PhotoEdit:{
     screen: UploadPhotoComponent
-  }
+  },
+  ChangePassword:{
+    screen: ChangePasswordComponent
+  },
 },{
   swipeEnabled:false,
   animationEnabled:true,
@@ -67,33 +70,33 @@ const profilenav = createBottomTabNavigator({
   },
 }
 })
-const accountSettingsNav = createBottomTabNavigator({
-  General:{
-    screen: GeneralSettingsComponent
-  },
-  Privacy:{
-    screen: PrivacySettingsComponent
-  },
-  Other:{
-    screen: OtherSettingsComponent
-  }
-},{
-  swipeEnabled:false,
-  animationEnabled:true,
-  tabBarOptions: {
-  activeTintColor: '#000',
-  inactiveTintColor:'#000',
-  activeBackgroundColor:'#eee',
-  showLabel:true,
-  labelStyle: {
-    fontSize: 16,
-    paddingBottom:10,
-  },
-  style: {
-    backgroundColor: '#ccc',
-  },
-}
-})
+// const accountSettingsNav = createBottomTabNavigator({
+//   General:{
+//     screen: GeneralSettingsComponent
+//   },
+//   Privacy:{
+//     screen: PrivacySettingsComponent
+//   },
+//   Other:{
+//     screen: OtherSettingsComponent
+//   }
+// },{
+//   swipeEnabled:false,
+//   animationEnabled:true,
+//   tabBarOptions: {
+//   activeTintColor: '#000',
+//   inactiveTintColor:'#000',
+//   activeBackgroundColor:'#eee',
+//   showLabel:true,
+//   labelStyle: {
+//     fontSize: 16,
+//     paddingBottom:10,
+//   },
+//   style: {
+//     backgroundColor: '#ccc',
+//   },
+// }
+// })
 const getPriceNav = createBottomTabNavigator({
   Lowest:{
     screen: LowestPriceComponent
@@ -143,9 +146,7 @@ const stack = createStackNavigator({
   Help:{
     screen :ContactUsComponent,
   },
-  ChangePassword:{
-    screen: ChangePasswordComponent
-  },
+  
   Catalog:{
     screen:Catalog,
   },
@@ -179,9 +180,9 @@ const stack = createStackNavigator({
   Profile:{
     screen:profilenav
   },
-  AccountSettings:{
-    screen:accountSettingsNav
-  },
+  // AccountSettings:{
+  //   screen:accountSettingsNav
+  // },
   GetPrice:{
     screen:getPriceNav
   },

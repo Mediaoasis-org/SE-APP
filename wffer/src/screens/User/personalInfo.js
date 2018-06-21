@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, Dimensions, ScrollView, TouchableOpacity, Image, AsyncStorage,Keyboard } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Dimensions, ScrollView, TouchableOpacity, Image, AsyncStorage,Keyboard,ActivityIndicator } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 import { ModalDropdownComponent } from '../../components/ModalDropdown';
 import { TextInputComponent }  from '../../components/textInput';
@@ -11,6 +11,7 @@ export  class PersonalInfoComponent extends Component {
 		super(props);
 		this.state={
 			LoggedIn:null,
+			isDataLoading:true,
 			dataSource:[],
 			data:[],
 			fieldValues:[],
@@ -145,7 +146,7 @@ export  class PersonalInfoComponent extends Component {
 			    
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
-			          isLoading: false,
+			          isDataLoading: false,
 			          fieldValues: responseJson.body.formValues,
 			        },function(){
 			        		this.setState({'1_1_3_alias_first_name':this.state.fieldValues['1_1_3_alias_first_name'].value})
@@ -221,7 +222,17 @@ export  class PersonalInfoComponent extends Component {
 	}
 	render(){
 		if (this.state.dataSource.length === 0) {
-		  return null
+		  return (
+		  		<View style={gstyles.container}>
+					<View style={gstyles.headerMenu}>
+								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+									<Icon name="bars" size={24} color="#fff" />
+			                    </TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
+					</View>
+				</View>
+
+		  	)
 		}
 		return(
 			<View style={gstyles.container}>
@@ -233,6 +244,9 @@ export  class PersonalInfoComponent extends Component {
 					</View>
 				 	<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Personal Information</Text></View>
+						{ 
+                              this.state.isDataLoading ?   <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : 
+                       
 						<View>
 							
 								{
@@ -280,6 +294,7 @@ export  class PersonalInfoComponent extends Component {
 								}
 								<TouchableOpacity onPress={()=>this.SavePersonalInfo()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
 						</View>
+					}
 					</ScrollView>
 			</View>
 		)

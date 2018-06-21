@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, TouchableOpacity, ScrollView,AsyncStorage,StyleSheet,Image } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView,AsyncStorage,StyleSheet,Image,ActivityIndicator } from 'react-native';
 import { Constants } from '../../common';
 import { ModalDropdownComponent } from '../../components/ModalDropdown';
 import { gstyles } from '../../GlobalStyles';
@@ -26,6 +26,7 @@ export class SignupComponent extends Component {
 			Gender:'',
 			 checked: false,
 			 LoggedIn:null,
+			 isLoading:true,
 		}
 		// alert(JSON.stringify(this.props.navigation))
 		this.handleInput = this.handleInput.bind(this);
@@ -36,7 +37,7 @@ export class SignupComponent extends Component {
 	}
 	async _getStorageValue(){
 		// this.fetchFields()
-		var valuePersonal = await AsyncStorage.getItem('fieldsSignupPersonal');
+	  var valuePersonal = await AsyncStorage.getItem('fieldsSignupPersonal');
 	  var value = await AsyncStorage.getItem('fieldsSignup');
 	  // var valuePhoto = await AsyncStorage.getItem('fieldsSignupPhoto');
 	  // alert(value)
@@ -45,6 +46,7 @@ export class SignupComponent extends Component {
 	  	// const data = JSON.parse(value)
 	  const	data= JSON.parse(value);
 	  	this.setState({LoggedIn:true})
+	  	this.setState({isLoading: false})
 	  	this.setState({dataSourcePersonal:JSON.parse(valuePersonal)});
 		this.setState({dataSource:data});		
 		// this.setState({dataSourcePhoto:JSON.parse(valuePhoto)});
@@ -157,7 +159,7 @@ export class SignupComponent extends Component {
 		        	
 		          if(responseJson.status_code=="200"){
 		            this.setState({
-		              isLoading: false,
+		              // isLoading: false,
 		              dataSource1: responseJson.body,
 		            }, async function(){
 			        await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
@@ -303,41 +305,7 @@ export class SignupComponent extends Component {
 					)
 				}
 				
-				if(item.type=='Select'){
-												return(
-												<View>
-													<ModalDropdown 
-								                      style={gstyles.dropdownMainStyles}						                      
-								                      dropdownTextStyle={gstyles.dropdownTextStyle}
-								                      textStyle={gstyles.textStyle}
-								                      dropdownStyle={gstyles.dropdownStyles}
-								                      defaultIndex={this.props.defaultIndex}
-								                      showsVerticalScrollIndicator={true}
-								                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
-								                      options={item.multiOptions}						         
-								                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
-								                      />
-								    					
-
-								    				
-								    			</View>
-												)
-											
-										}
-				if(item.type=='Checkbox'){
-					return(
-					<View style={{padding: 10}} key={item.id}>
-						<CheckBox
-						  label={item.description}
-						  labelLines={4}
-						  labelStyle={{color:'#000',fontSize:16,padding:3}}
-						 	checked={this.state.checked}
-  							onChange={() => this.setState({checked: !this.state.checked})}
-						  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
-						/>
-					</View>
-					)
-				}
+				
 
 			})
 			
@@ -409,7 +377,16 @@ export class SignupComponent extends Component {
 	render(){
 		// console.log(this.state.dataSourcePersonal["Personal Information"]);
 		if (this.state.dataSource.length === 0) {
-		  return null
+		  return (
+		  		<View style={gstyles.container}>
+					<View style={gstyles.headerMenu}>
+								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+									<Icon name="bars" size={24} color="#fff" />
+			                    </TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>{Constants.Signup}</Text>
+					</View>
+				</View>
+		  	)
 		}
 		return(
 				<View style={gstyles.container}>
@@ -419,6 +396,9 @@ export class SignupComponent extends Component {
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.Signup}</Text>
 					</View>
+					{ 
+                              this.state.isLoading ?   <View style={styles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : null
+                            }
 					<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Sign Up</Text></View>
 
@@ -442,7 +422,7 @@ const styles = StyleSheet.create({
 	  borderRadius: 100,
 	},
 })
-// {this.renderPhoto()}
+
 // <TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // 							<TextInput name="password" placeholder="Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
 // 							<TextInput name="confirm_password" placeholder="Confirm Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>
@@ -451,95 +431,38 @@ const styles = StyleSheet.create({
 	// 						<ModalDropdownComponent defaultValue='Select Language' options={['English','Saudi Arabia Arabic']}/>
 
 // <View>
-// 						{
-// 							this.state.dataSourcePersonal["Personal Information"].map((item)=>{
-			
-								
-// 								if(item.type=='Text'){
-											
-// 									return (
-// 									<View key={item.id}>
-// 											<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-											
-// 									</View>
-									
-// 								);
-// 								} 
 // if(item.type=='Select'){
-// 					var options = item.multiOptions;
-// 					var result = [];
-// 					for(var i in options)
-// 					    result.push([options [i]]);
+// 												return(
+// 												<View>
+// 													<ModalDropdown 
+// 								                      style={gstyles.dropdownMainStyles}						                      
+// 								                      dropdownTextStyle={gstyles.dropdownTextStyle}
+// 								                      textStyle={gstyles.textStyle}
+// 								                      dropdownStyle={gstyles.dropdownStyles}
+// 								                      defaultIndex={this.props.defaultIndex}
+// 								                      showsVerticalScrollIndicator={true}
+// 								                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
+// 								                      options={item.multiOptions}						         
+// 								                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
+// 								                      />
+								    					
+
+								    				
+// 								    			</View>
+// 												)
+											
+// 										}
+// 				if(item.type=='Checkbox'){
 // 					return(
-// 					<View>
-// 						<ModalDropdownComponent defaultValue={item.label}
-//         					options={item.multiOptions}
-//         					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-//         					onChange={this.handleInput}
-//         					/>
-//         			</View>
+// 					<View style={{padding: 10}} key={item.id}>
+// 						<CheckBox
+// 						  label={item.description}
+// 						  labelLines={4}
+// 						  labelStyle={{color:'#000',fontSize:16,padding:3}}
+// 						 	checked={this.state.checked}
+//   							onChange={() => this.setState({checked: !this.state.checked})}
+// 						  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
+// 						/>
+// 					</View>
 // 					)
-					
 // 				}
-// 							})
-						
-// 						}
-
-//                         {
-
-// 					    	this.state.dataSource.account.map((item)=>{
-							
-// 								if(item.type=='Text'){
-// 									return (
-// 									<View key={item.id}>
-// 											<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-											
-// 									</View>
-									
-// 								);
-// 								}
-// 								if(item.type=='Password'){
-// 									return (
-// 									<View key={item.id}>
-// 											<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-											
-// 									</View>
-// 									)
-// 								}
-								
-// 								if(item.type=='Select'){
-// 									var options = item.multiOptions;
-									
-// 									var result = [];
-// 									for(var i in options)
-// 									    result.push([options [i]]);
-// 									return(
-// 									<View>
-// 										<ModalDropdownComponent defaultValue={item.label}
-// 				        					options={item.multiOptions}
-// 				        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-// 				        					onChange={this.handleInput}
-// 				        					/>
-// 				        			</View>
-// 									)
-									
-// 								}
-// 								if(item.type=='Checkbox'){
-// 									return(
-// 									<View style={{padding: 10}} key={item.id}>
-// 										<CheckBox
-// 										  label={item.description}
-// 										  labelLines={4}
-// 										  labelStyle={{color:'#000',fontSize:16,padding:3}}
-// 										 	checked={this.state.checked}
-// 				  							onChange={() => this.setState({checked: !this.state.checked})}
-// 										  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
-// 										/>
-// 									</View>
-// 									)
-// 								}
-// 							})
-						
-// 						}
-//                      <TouchableOpacity onPress={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>      
-// 						</View>

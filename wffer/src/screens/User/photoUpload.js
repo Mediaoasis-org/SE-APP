@@ -7,7 +7,8 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import ImagePicker from 'react-native-image-picker';
@@ -19,6 +20,8 @@ export  class UploadPhotoComponent extends Component {
 		super(props);
 		this.state={
 			ImageSource:null,
+      isLoading:true,
+      isDataLoading:true,
       oauthToken:'',
       oauthSecret:'',
       userData:[],
@@ -27,31 +30,31 @@ export  class UploadPhotoComponent extends Component {
       name:'',
       dataType:'',
 		}
-    // this._getStorageValue();
+    this._getStorageValue();
 	}
    componentDidMount(){
     this._getStorageValue();
   }
   async _getStorageValue(){
+    var value = await AsyncStorage.getItem('photoUploadInfo');
      var userData = await AsyncStorage.getItem('userData');
      this.setState({userData:JSON.parse(userData)});
      this.setState({oauthToken:this.state.userData.oauth_token});
      this.setState({oauthSecret:this.state.userData.oauth_secret});
      // alert(this.state.oauthToken)
-     this.fetchFields();
-    //  if(userData == null){
-    //   this.setState({LoggedIn:0})
-    //   this.fetchFields(); 
-    // }
-    // else
-    // {
-    //   // alert('entering');
-    //   const data = JSON.parse(userData);
-      
-    //   this.setState({LoggedIn:1})
-    // this.setState({dataSource:data});
-    // // console.log(this.state.dataSource)
-    // }
+     this.fetchValues();
+    if(value == null){
+      this.setState({LoggedIn:0})
+      this.fetchFields(); 
+    }
+    else
+    {
+      // alert('entering');
+      const data = JSON.parse(value);
+      this.setState({LoggedIn:1})
+    this.setState({data:data});
+    // console.log(this.state.dataSource)
+    }
   }
   fetchFields(){
         
@@ -67,11 +70,47 @@ export  class UploadPhotoComponent extends Component {
             .then((responseJson) => {
               if(responseJson.status_code=='200'){
                  this.setState({
-                // isLoading: false,
+                isLoading: false,
                 data: responseJson.body,
                 ImageSource:{uri : responseJson.body.image_profile}
+              },async function(){
+                  await AsyncStorage.setItem('photoUploadInfo', JSON.stringify( this.state.data));
+                  // alert(JSON.stringify(this.state.data));  
+                  // this.setState({ImageSource:this.state.data.image_profile})
+                  // alert(JSON.stringify(this.state.data.image_profile));
+
+                
+              });
+              }
+              else
+              {
+                // this.setState({Message:responseJson.Message});
+              }
+              // alert(this.state.data)
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+      
+  }
+  fetchValues(){
+        
+        fetch('https://wffer.com/se/api/rest/members/edit/photo?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
+             
+              // headers:{
+              //   'Accept':'application/json',
+              //   'Content-Type':'application/json',
+              // },
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                 this.setState({
+                isDataLoading: false,
+                
+                ImageSource:{uri : responseJson.body.image_profile}
               },function(){
-                 
                   // alert(JSON.stringify(this.state.data));  
                   // this.setState({ImageSource:this.state.data.image_profile})
                   // alert(JSON.stringify(this.state.data.image_profile));
@@ -223,9 +262,18 @@ export  class UploadPhotoComponent extends Component {
       // console.log(this.state.ImageSource.file);
     }
 	render(){
-    // if (this.state.data.length === 0) {
-    //   return null
-    // }
+    if (this.state.data.length === 0) {
+      return (
+            <View style={gstyles.container}>
+                <View style={gstyles.headerMenu}>
+                      <TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+                        <Icon name="bars" size={24} color="#fff" />
+                                </TouchableOpacity>
+                                <Text style={gstyles.headerProfileLabel}>Profile</Text>
+                </View>
+            </View>
+        );
+    }
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -234,8 +282,13 @@ export  class UploadPhotoComponent extends Component {
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
 					</View>
+          <ScrollView>
                     <View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Edit Photo</Text></View>
-				 	          <View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
+                    { 
+                              this.state.isDataLoading ?   <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> :
+
+				 	      <View>
+                    <View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
                             <TouchableOpacity style={{position:'absolute',top:22,left:'66%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}>
                                 <Image source={require('../../../assets/account_settings_camera.png')} style={{width:24,height:24}}/>
                             </TouchableOpacity>       
@@ -245,7 +298,10 @@ export  class UploadPhotoComponent extends Component {
                     <TouchableOpacity onPress={()=>this.uploadPhoto()} style={gstyles.buttonView} disabled={(this.state.name=='') ? true : false}><Text style={gstyles.buttonText}>Save Photo</Text></TouchableOpacity>
                     <View style={gstyles.newToView}><Text style={gstyles.newToText}>OR</Text></View>
                     <TouchableOpacity onPress={()=>this.removePhoto()} style={gstyles.createAccountView}><Text style={gstyles.createAccountText}>Remove Photo</Text></TouchableOpacity>
-			</View>
+			         </View>
+                   }
+          </ScrollView>
+      </View>
 		)
 	}
 }

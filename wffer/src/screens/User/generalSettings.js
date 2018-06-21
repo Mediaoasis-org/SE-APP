@@ -19,6 +19,8 @@ export  class GeneralSettingsComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
+			isLoading:true,
+			isDataLoading:true,
 			LoggedIn:null,
 			oauthToken:'',
 			oauthSecret:'',
@@ -108,6 +110,7 @@ export  class GeneralSettingsComponent extends Component {
 			      	if(responseJson.status_code=='200'){
 			      		
 			      		 this.setState({
+			      		 		isDataLoading:false,
 					          fieldValues: responseJson.body.formValues,
 			        },function(){
 			        	this.setState({email:this.state.fieldValues.email});

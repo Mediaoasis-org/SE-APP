@@ -59,7 +59,7 @@ export class ChangePasswordComponent extends Component {
 			          isLoading: false,
 			          dataSource: responseJson.body,
 			        },async function(){
-			        await AsyncStorage.setItem('changepasswordFields', JSON.stringify(this.state.dataSource));
+			        		await AsyncStorage.setItem('changepasswordFields', JSON.stringify(this.state.dataSource));
 			        	// alert(JSON.stringify(this.state.dataSource));   	
 			        });
 			      	}
@@ -129,11 +129,24 @@ export class ChangePasswordComponent extends Component {
 			
     }
 	render(){
+		if (this.state.dataSource.length === 0) {
+	      return (
+	            <View style={gstyles.container}>
+	                <View style={gstyles.headerMenu}>
+								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+									<Icon name="bars" size={24} color="#fff" />
+			                    </TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>Change Password</Text>
+			                    
+					</View>
+	            </View>
+	        );
+	    }
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() =>this.props.navigation.goBack() } style={gstyles.headerMenuButton}>
-									<Icon name="angle-left" size={30} color="#fff" />
+								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Change Password</Text>
 			                    
@@ -154,6 +167,6 @@ export class ChangePasswordComponent extends Component {
 			);
 	}
 }
-// <TextInput name="oldPassword" secureTextEntry={true} placeholder="Old Password" returnKeyType={"next"} underlineColorAndroid="#fff" style={gstyles.textInputStyle} onChangeText={(text) => this.setState({oldPassword: text})}/>
+/// <TextInput name="oldPassword" secureTextEntry={true} placeholder="Old Password" returnKeyType={"next"} underlineColorAndroid="#fff" style={gstyles.textInputStyle} onChangeText={(text) => this.setState({oldPassword: text})}/>
 // 							<TextInput name="password" secureTextEntry={true} placeholder="Old Password" returnKeyType={"next"} underlineColorAndroid="#fff" style={gstyles.textInputStyle} onChangeText={(text) => this.setState({password: text})}/>
 // 							<TextInput name="passwordConfirm" secureTextEntry={true} placeholder="Old Password" returnKeyType={"next"} underlineColorAndroid="#fff" style={gstyles.textInputStyle} onChangeText={(text) => this.setState({passwordConfirm: text})}/>

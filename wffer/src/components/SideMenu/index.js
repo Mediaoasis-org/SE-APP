@@ -127,9 +127,9 @@ export class DrawerTitle extends React.Component{
 	}
   render(){
   	// alert(this.state.fieldValues.length)
-  		if (this.state.fieldValues.length === 0) {
-		  return null
-		}
+  // 		if (this.state.fieldValues.length === 0) {
+		//   return null
+		// }
       AsyncStorage.getItem("userLoginAuthentication").then((value) => {
           // alert(value);
           if(value !== null){
@@ -185,7 +185,7 @@ export class DrawerTitle extends React.Component{
                   (this.state.LoggedIn === 1) 
                   ?
                   <View>
-                    <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('AccountSettings')} ><Icon name="cog" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Account Settings</Text></TouchableOpacity>
+                    
                     <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.logout() }><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
                   </View>
                   :
@@ -201,6 +201,8 @@ export class DrawerTitle extends React.Component{
         )
       }
   }
+
+// <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('AccountSettings')} ><Icon name="cog" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Account Settings</Text></TouchableOpacity>
   // <TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'All Food and Baker'})}}><Image source={require('../../../assets/bakery-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> All Food and Bakery</Text></TouchableOpacity>
   // 	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Beverages'})}}><Image source={require('../../../assets/beverages-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Beverages</Text></TouchableOpacity>
   // 	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.navigate('Products', {cat_name:'Canned and Jarred Food'})}}><Image source={require('../../../assets/canned-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Canned and Jarred Food</Text></TouchableOpacity>

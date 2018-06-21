@@ -31,7 +31,7 @@ export class CreateWishlistComponent extends Component {
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Create New Wishlist</Text></View>
 						<View>
 							<TextInput name="wishlist_name" placeholder="Wishlist Name" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
-							<TextInput name="wishlist_note" placeholder="Wishlist Note" underlineColorAndroid="#fff" style={gstyles.textInputStyle} />	
+							
 							<TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Create</Text></TouchableOpacity>
 							<View style={{width:'100%'}}><Text style={{textAlign:'center'}}>OR</Text></View>
 							<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}><Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text></TouchableOpacity>
@@ -41,3 +41,5 @@ export class CreateWishlistComponent extends Component {
 			);
 	}
 }
+
+/// <TextInput name="wishlist_note" placeholder="Wishlist Note" underlineColorAndroid="#fff" style={gstyles.textInputStyle} />	

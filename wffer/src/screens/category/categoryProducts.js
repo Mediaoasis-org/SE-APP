@@ -101,6 +101,12 @@ export class Products extends Component {
 	   	// alert(qty)
 	   	this.setState({qty:qty});
 	 }
+	 changeCheckboxState(chek){
+	 	this.setState({checked:!this.state.checked});
+	 	
+	 	alert(this.state.checked);
+	
+	 }
 	render(){
 		return(
 				<View style={gstyles.container}>
@@ -110,50 +116,58 @@ export class Products extends Component {
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.cat_name}</Text>
 			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('MultipleWishlist')} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
-
 					</View>
-
 					<ScrollView>
 						<SearchComponent />
 						 	{ 
                               this.state.isLoading ?   <View style={styles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : null
                             }	
-						<View style={{width:'100%',flexDirection:'row'}}>
+						<View style={{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'}}>
 
 							<FlatList data={this.state.fieldValues}
 		                		renderItem={({item}) =>      
 					                    	<View style={styles.flatlist}>
-								          		<View style={{flexDirection: 'column',width:'30%'}}>
-								          			<View style={{width: '90%'}}>
-								          				<TouchableOpacity  onPress={()=>this.props.navigation.navigate('ProductDetails')}>
-								          					<Image source={{uri:item.image}} style={styles.flatimage} />
-								          				</TouchableOpacity>
-								          			</View>
-								          		 </View>
-									            <View style={{flexDirection: 'column',width:'70%'}}>
-										          		<View style={{width: '80%'}}><Text style={styles.title}>{item.title}</Text></View>
-										          		<View style={{width: '80%'}}><Text>{this.props.navigation.state.params.cat_name}</Text></View>
-										          		<View style={{flexDirection:'row'}}>
-										          			<View style={{flexDirection:'column',width:'80%'}}>
-												          		<Text style={styles.discountDeal}>Best Deal</Text>
-												          		<Text style={styles.subtitle}>SAR</Text>	
-												          		<Text>{this.state.check}</Text>
-												          	</View>
-												          	<View style={{flexDirection:'column',width:'20%'}}>
-												          		<TouchableOpacity onPress={()=>alert(item.listing_id)} >
-													          		<CheckBox
-													          		  name="abc"
-																	  label=' '
-																	  labelStyle={{color:'#000',fontSize:16}}
-																	  onClick={() =>this.setState({check:item.listing_id}) && this.setState({checked: !checked})}
-																	 
-																	  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
-																	/>	
-																</TouchableOpacity>
-																
-															</View>
-														</View>						               
+					                    		<View style={{flexDirection:'row'}}>
+									          		<View style={{width:'90%',flexDirection:'row'}}>
+									          			<View style={{width:'17%',marginLeft:'3%',flexDirection:'column'}}>
+									          				<TouchableOpacity onPress={()=>this.props.navigation.navigate('ProductDetails')}>
+									          					<Image source={{uri:item.image}} style={styles.flatimage} />
+									          				</TouchableOpacity>
+									          			</View>
+									          			<View style={{width:'77%',marginLeft:'3%',flexDirection:'column'}}>
+									          				<View style={{width: '100%'}}><Text style={styles.title}>{item.title}</Text></View>
+											          		<View style={{width: '100%'}}><Text style={styles.catTitle}>{this.props.navigation.state.params.cat_name}</Text></View>
+											          		<View style={styles.qtyView}>   
+
+											          			  <Text style={styles.qtyText}>{this.state.qty}</Text> 
+				                                                  <TouchableHighlight 
+				                                                     onPress={() => this.decrease_qty()}
+				                                                     underlayColor='#BEBEBE' style={styles.qtybuttonDecrease}>
+				                                                     <Icon name="plus" size={20} color="green" style={{padding:8}}/>
+				                                                  </TouchableHighlight>
+				                                                  
+				                                                  <TouchableHighlight 
+				                                                     onPress={() => this.increase_qty()}
+				                                                     underlayColor='#BEBEBE' style={styles.qtybuttonIncrease}>
+				                                                     <Icon name="minus" size={20} color="red" style={{padding:8}} />
+				                                                  </TouchableHighlight>
+				                                            </View>
+									          			</View>
+									          		</View>
+									          		<View style={{width:'10%'}}><Icon color="#000" name="angle-right" size={30} style={{paddingTop:'100%',marginLeft:'5%',fontWeight:'bold'}} /></View>
 								          		</View>
+								          		<View style={{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5}}>
+								          			<View style={{width:'60%',padding:10}}>
+										          		<TouchableOpacity onPress={()=>this.changeCheckboxState(this)}>
+												          	{(this.state.checked==true) ? <Icon name="check-circle" size={30} color="green" /> : <Icon name="check-circle" size={24} color="#000" /> }
+												        </TouchableOpacity>
+												    </View>
+								          			<View style={{width:'40%',padding:10}}>
+						          						<Text style={styles.discountDeal}>Best Deal</Text>
+										          		<Text style={styles.subtitle}>Brand : Price</Text>
+										          	</View>
+								          		</View>
+									            
 								        	</View>
 					                    }
 					                keyExtractor={(item, index) => index.toString()}
@@ -166,15 +180,16 @@ export class Products extends Component {
 }
 
 const styles  = StyleSheet.create({
-	  flatlist:{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1},
-	  flatimage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '80%', height: 100},
-	  title:{fontSize: 18, marginTop: '10%',color:'#000'},
-	  subtitle:{color: '#000', marginTop: '3%', fontSize: 18},
-	  discountDeal:{color: '#ff0000', marginTop: '3%', fontSize: 18},
-	  qtyView:{flexDirection: 'row',borderWidth: 1,borderColor:'#adadad',width:100,height:30,},
-	  qtybuttonDecrease:{width:28,borderRightWidth:1,borderColor:'#adadad'},
-	  qtybuttonIncrease:{width:28,borderLeftWidth:1,borderColor:'#adadad'},
-	  qtyText:{width:40,textAlign:'center',fontSize: 14,textAlign:'center', color: 'rgb(147, 198, 87)', marginTop: '5%',borderColor:'#adadad'},
+	  flatlist:{backgroundColor: '#fff',  borderColor:'gray',borderWidth:1,margin:5},
+	  flatimage:{marginTop:'15%', marginBottom:'10%', width: '100%', height: 80},
+	  title:{fontSize: 18, marginTop: '5%',color:'#000',fontWeight:'bold'},
+	  catTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
+	  subtitle:{color: '#000', marginTop: '3%', fontSize: 18,textAlign:'center'},
+	  discountDeal:{color: '#ff0000', fontSize: 18,textAlign:'center'},
+	  qtyView:{flexDirection: 'row',padding:10,marginLeft:'30%'},
+	  qtybuttonDecrease:{borderWidth:1,borderColor:'#adadad',borderRadius:50,margin:5},
+	  qtybuttonIncrease:{borderWidth:1,borderColor:'#adadad',borderRadius:50,margin:5},
+	  qtyText:{backgroundColor:'#e9ebee',textAlign:'center',fontSize: 14, color: '#000', margin:5,paddingTop:8,paddingBottom:8,paddingLeft:15,paddingRight:15,borderColor:'#adadad',borderWidth:1},
 	  subTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'rgb(113,113,113)',paddingLeft:12},
 	  subTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'rgb(113,113,113)',fontWeight:'bold',paddingRight:10},
 	  itemTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'#000'},
@@ -204,3 +219,20 @@ const styles  = StyleSheet.create({
 							          		
 						          
 	// 					          		</View>
+
+
+	// 											          		<View style={{flexDirection:'column',width:'20%'}}>
+												   //        		<TouchableOpacity onPress={()=>alert(item.listing_id)} >
+													  //         		<CheckBox
+													  //         		  value={item.listing_id}
+															// 		  label=' '
+															// 		  labelStyle={{color:'#000',fontSize:16}}
+															// 		  onClick={() =>this.setState({checked: !checked})}
+																	 
+															// 		  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
+															// 		/>	
+															// 	</TouchableOpacity>
+																
+															// </View>
+																
+	// 														</View>
