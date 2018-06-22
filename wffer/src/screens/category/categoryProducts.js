@@ -33,26 +33,42 @@ export class Products extends Component {
             qty:1,
             activeRow:'',
             search:'',
-            checked: false,
+            page:1,
             fetchValues:[],
             isLoading:true,
-            check:[],
+            showLoadMore:false,
+            selectedCheckboxId:[],
       }
-      // this.fetchValues();
+      this.fetchValues();
     }
+    onCheckBoxPress(id) {
+    	// alert(id)
+	    let tmp = this.state.selectedCheckboxId;
+
+	    if ( tmp.includes( id ) ) {
+	      tmp.splice( tmp.indexOf(id), 1 );
+	    } else {
+	      tmp.push( id );
+	    }
+
+	    this.setState({
+	      selectedCheckboxId: tmp
+	    });
+	    alert(this.state.selectedCheckboxId)
+	  }
     // componentWillReceiveProps(){
     // 	alert('work');
     // }
-    componentDidMount(){
+    fetchValues(){
     	let category_id = this.props.navigation.state.params.cat_id;
     	let categoryUrl;
     	if(category_id){
     		// catParam = "category_id"=category_id;
-    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id;
+    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id + '&limit=20&page=' + this.state.page;
     	}
     	else
     	{
-    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2';
+    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=20&page=' + this.state.page;
     	}
     	return fetch(categoryUrl,{
 			       
@@ -68,9 +84,15 @@ export class Products extends Component {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 				          isLoading: false,
-				          fieldValues: responseJson.body.response,
+				          fieldValues:responseJson.body.response,
+				          
 				        });
-			      		 // console.log(JSON.stringify(this.state.fieldValues));
+			      		 let count = this.state.fieldValues.length;
+			      		 // alert(count);
+			      		 if(count >= 20){
+			      		 	this.setState({showLoadMore:true})
+			      		 }
+			      		 // alert(JSON.stringify(this.state.fieldValues));
 			      	}
 			      	else
 			      	{
@@ -107,6 +129,11 @@ export class Products extends Component {
 	 	alert(this.state.checked);
 	
 	 }
+	 showLoadMore(){
+	 	this.setState({page : this.state.page+1});
+	 	// alert(this.state.page);
+	 	this.fetchValues()
+	 }
 	render(){
 		return(
 				<View style={gstyles.container}>
@@ -129,7 +156,7 @@ export class Products extends Component {
 					                    	<View style={styles.flatlist}>
 					                    		<View style={{flexDirection:'row'}}>
 									          		<View style={{width:'90%',flexDirection:'row'}}>
-									          			<View style={{width:'17%',marginLeft:'3%',flexDirection:'column'}}>
+									          			<View style={{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3}}>
 									          				<TouchableOpacity onPress={()=>this.props.navigation.navigate('ProductDetails')}>
 									          					<Image source={{uri:item.image}} style={styles.flatimage} />
 									          				</TouchableOpacity>
@@ -143,13 +170,13 @@ export class Products extends Component {
 				                                                  <TouchableHighlight 
 				                                                     onPress={() => this.decrease_qty()}
 				                                                     underlayColor='#BEBEBE' style={styles.qtybuttonDecrease}>
-				                                                     <Icon name="plus" size={20} color="green" style={{padding:8}}/>
+				                                                     <Image source={require('../../../assets/plus.png')} style={{width:30,height:30}}/>
 				                                                  </TouchableHighlight>
 				                                                  
 				                                                  <TouchableHighlight 
 				                                                     onPress={() => this.increase_qty()}
 				                                                     underlayColor='#BEBEBE' style={styles.qtybuttonIncrease}>
-				                                                     <Icon name="minus" size={20} color="red" style={{padding:8}} />
+				                                                    <Image source={require('../../../assets/minus.png')} style={{width:30,height:30}}/>
 				                                                  </TouchableHighlight>
 				                                            </View>
 									          			</View>
@@ -158,11 +185,10 @@ export class Products extends Component {
 								          		</View>
 								          		<View style={{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5}}>
 								          			<View style={{width:'60%',padding:10}}>
-										          		<TouchableOpacity onPress={()=>this.changeCheckboxState(this)}>
-												          	{(this.state.checked==true) ? <Icon name="check-circle" size={30} color="green" /> : <Icon name="check-circle" size={24} color="#000" /> }
-												        </TouchableOpacity>
+													          	<CheckBox label=' '
+													          			  onChange={()=>this.onCheckBoxPress(item.listing_id)} /> 
 												    </View>
-								          			<View style={{width:'40%',padding:10}}>
+								          			<View style={{width:'40%',padding:3}}>
 						          						<Text style={styles.discountDeal}>Best Deal</Text>
 										          		<Text style={styles.subtitle}>Brand : Price</Text>
 										          	</View>
@@ -171,8 +197,11 @@ export class Products extends Component {
 								        	</View>
 					                    }
 					                keyExtractor={(item, index) => index.toString()}
-					              />
+					            />
+					            
 						</View>
+						
+						
 					</ScrollView>
 				</View>
 			);
@@ -185,10 +214,12 @@ const styles  = StyleSheet.create({
 	  title:{fontSize: 18, marginTop: '5%',color:'#000',fontWeight:'bold'},
 	  catTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
 	  subtitle:{color: '#000', marginTop: '3%', fontSize: 18,textAlign:'center'},
-	  discountDeal:{color: '#ff0000', fontSize: 18,textAlign:'center'},
-	  qtyView:{flexDirection: 'row',padding:10,marginLeft:'30%'},
-	  qtybuttonDecrease:{borderWidth:1,borderColor:'#adadad',borderRadius:50,margin:5},
-	  qtybuttonIncrease:{borderWidth:1,borderColor:'#adadad',borderRadius:50,margin:5},
+	  discountDeal:{color: '#ff0000', fontSize: 18,textAlign:'center',fontStyle:'italic'},
+	  qtyView:{flexDirection: 'row',padding:10,marginLeft:'40%'},
+	  qtybuttonDecrease:{margin:5},
+	  // borderWidth:1,borderColor:'#adadad',borderRadius:50,
+	  qtybuttonIncrease:{margin:5},
+	  // borderWidth:1,borderColor:'#adadad',borderRadius:50,
 	  qtyText:{backgroundColor:'#e9ebee',textAlign:'center',fontSize: 14, color: '#000', margin:5,paddingTop:8,paddingBottom:8,paddingLeft:15,paddingRight:15,borderColor:'#adadad',borderWidth:1},
 	  subTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'rgb(113,113,113)',paddingLeft:12},
 	  subTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'rgb(113,113,113)',fontWeight:'bold',paddingRight:10},
@@ -197,7 +228,9 @@ const styles  = StyleSheet.create({
 	  itemTotalRightIcon:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right'},
 	  orderTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000',fontWeight:'bold'}
 })
-
+// {
+// 							this.state.showLoadMore==true ? <TouchableOpacity style={{width:'100%',flexDirection:'row'}} onPress={()=>this.showLoadMore()}><Text>Load More</Text></TouchableOpacity> : null
+// 						}
 
  // <View style={{flexDirection: 'row',marginTop: '10%',}}>	
 	// 					          		   <Text style={{ fontSize: 15, color: '#000', paddingRight:10, paddingTop:3}}>Qty</Text>

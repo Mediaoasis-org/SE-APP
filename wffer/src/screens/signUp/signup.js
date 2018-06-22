@@ -304,7 +304,41 @@ export class SignupComponent extends Component {
 					</View>
 					)
 				}
-				
+				if(item.type=='Select'){
+						return(
+						<View>
+							<ModalDropdown 
+		                      style={gstyles.dropdownMainStyles}						                      
+		                      dropdownTextStyle={gstyles.dropdownTextStyle}
+		                      textStyle={gstyles.textStyle}
+		                      dropdownStyle={gstyles.dropdownStyles}
+		                      defaultIndex={this.props.defaultIndex}
+		                      showsVerticalScrollIndicator={true}
+		                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
+		                      options={item.multiOptions}						         
+		                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
+		                      />
+		    					
+
+		    				
+		    			</View>
+						)
+					
+				}
+				if(item.type=='Checkbox'){
+					return(
+					<View style={{padding: 10}} key={item.id}>
+						<CheckBox
+						  label={item.description}
+						  labelLines={4}
+						  labelStyle={{color:'#000',fontSize:16,padding:3}}
+						 	checked={this.state.checked}
+  							onChange={() => this.setState({checked: !this.state.checked})}
+						  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
+						/>
+					</View>
+					)
+				}
 				
 
 			})
@@ -351,7 +385,7 @@ export class SignupComponent extends Component {
 	    			<View>
 		    			<View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
                             <TouchableOpacity style={{position:'absolute',top:22,left:'66%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}>
-                                <Image source={require('../../../assets/account_settings_camera.png')} style={{width:24,height:24}}/>
+                                <Image source={require('../../../assets/account_settings_camera.png')} style={{width:30,height:30}}/>
                             </TouchableOpacity>       
                             {this.state.ImageSource === null ? <Image source={require('../../../assets/nophoto_user_thumb_profile.png')} style={styles.image}/> :
                                     <Image style={styles.image} source={this.state.ImageSource} />
@@ -431,38 +465,4 @@ const styles = StyleSheet.create({
 	// 						<ModalDropdownComponent defaultValue='Select Language' options={['English','Saudi Arabia Arabic']}/>
 
 // <View>
-// if(item.type=='Select'){
-// 												return(
-// 												<View>
-// 													<ModalDropdown 
-// 								                      style={gstyles.dropdownMainStyles}						                      
-// 								                      dropdownTextStyle={gstyles.dropdownTextStyle}
-// 								                      textStyle={gstyles.textStyle}
-// 								                      dropdownStyle={gstyles.dropdownStyles}
-// 								                      defaultIndex={this.props.defaultIndex}
-// 								                      showsVerticalScrollIndicator={true}
-// 								                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
-// 								                      options={item.multiOptions}						         
-// 								                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
-// 								                      />
-								    					
-
-								    				
-// 								    			</View>
-// 												)
-											
-// 										}
-// 				if(item.type=='Checkbox'){
-// 					return(
-// 					<View style={{padding: 10}} key={item.id}>
-// 						<CheckBox
-// 						  label={item.description}
-// 						  labelLines={4}
-// 						  labelStyle={{color:'#000',fontSize:16,padding:3}}
-// 						 	checked={this.state.checked}
-//   							onChange={() => this.setState({checked: !this.state.checked})}
-// 						  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
-// 						/>
-// 					</View>
-// 					)
-// 				}
+// 

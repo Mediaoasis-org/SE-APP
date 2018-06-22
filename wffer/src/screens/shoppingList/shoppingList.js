@@ -30,6 +30,14 @@ const SECTIONS = [
 
   },
   {
+    title: 'My Shopping List',
+    listname:'qwerty',
+    product:'oil',
+    product:'oil',
+    product:'oil'
+
+  },
+  {
     title: 'Recommended List',
      listname:''
   },

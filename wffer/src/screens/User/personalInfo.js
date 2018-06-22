@@ -229,7 +229,10 @@ export  class PersonalInfoComponent extends Component {
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
+			                    
 					</View>
+					{ 
+                              this.state.isDataLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : null }
 				</View>
 
 		  	)
@@ -241,6 +244,7 @@ export  class PersonalInfoComponent extends Component {
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
+			                    
 					</View>
 				 	<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Personal Information</Text></View>

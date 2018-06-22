@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, Dimension, TouchableOpacity, Image, FlatList,  ScrollView } from 'react-native';
+import { Text, TextInput, View, Dimension, TouchableOpacity, Image, FlatList,  ScrollView,AsyncStorage,ActivityIndicator } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -9,16 +9,126 @@ export class CreateWishlistComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
-			name:'',
-			note:''
+			title:'',
+			body:'',
+			dataSource:[],
+			isLoading:true,
 		}
+		this._getStorageValue()
 		// alert(JSON.stringify(this.props.navigation))
 	}
+	async _getStorageValue(){
+		// this.fetchFields()
+	  var value = await AsyncStorage.getItem('createListFields');
+	  var userData = await AsyncStorage.getItem('userData');
+     this.setState({userData:JSON.parse(userData)});
+     this.setState({oauthToken:this.state.userData.oauth_token});
+     this.setState({oauthSecret:this.state.userData.oauth_secret});
+	  if(value == null){
+	  	this.setState({LoggedIn:0})
+	  	this.fetchFields();	
+	  }
+	  else
+	  {
+	  	// alert('entering');
+	  	const data = JSON.parse(value);
+	  	this.setState({LoggedIn:1})
+		this.setState({dataSource:data});
+		// console.log(this.state.dataSource)
+	  }
+	}
+
+	fetchFields(){
+				
+			  fetch('https://wffer.com/se/api/rest/listings/wishlist/create?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret + '&listingtype_id=1',{
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+			          isLoading: false,
+			          dataSource: responseJson.body,
+			        },async function(){
+			        		await AsyncStorage.setItem('createListFields', JSON.stringify( this.state.dataSource));
+			        		// alert(JSON.stringify(this.state.data));  
+			        	
+			        });
+			      	}
+			      	else
+			      	{
+			      		// this.setState({Message:responseJson.Message});
+			      	}
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
+			
+	}
+
 	Capitalize(str){
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
+    createList(){
+    		var formData = new FormData;
+		    formData.append('title',this.state.title);
+		    // formData.append('body',this.state.body);
+		    formData.append('oauth_token',this.state.oauthToken);
+		    formData.append('oauth_secret',this.state.oauthSecret);
+		       fetch('https://wffer.com/se/api/rest/listings/wishlist/create?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
+		        body: formData,
+		        headers:{
+		          'Accept':'application/json',
+		          // 'Content-Type': 'multipart/form-data'
+		        },
+		        method:'POST'
+		      })
+		        .then((response) => response.json())
+		        .then((responseJson) => {
+		        	
+		          if(responseJson.status_code=="200"){
+		            this.setState({
+		              isLoading: false,
+		              // dataSource1: responseJson.body,
+		            }, async function(){
+			        // await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
+		              // alert('Data Updated');
+		              this.props.navigation.navigate('ShoppingList')
+		            });
+		          }
+		          else
+		          {
+		            this.setState({
+		              Message : responseJson.message,
+		            })
+		            
+		          
+		          }
+		          alert(JSON.stringify(this.state.Message))
+
+		        })
+		       
+		        .catch((error) =>{
+		          console.error(error);
+		        });
+    	
+    }
 	render(){
-		// const navigation = this.props.navigation;
+		if(this.state.dataSource.length===0){
+			return (
+				<View style={gstyles.container}>
+					<View style={gstyles.headerMenu}>
+								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+									<Icon name="bars" size={24} color="#fff" />
+			                    </TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>        
+					</View>
+								{
+			                    	this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> :null
+			                    }
+				</View>
+			);
+		}
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -30,16 +140,40 @@ export class CreateWishlistComponent extends Component {
 					<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Create New Wishlist</Text></View>
 						<View>
-							<TextInput name="wishlist_name" placeholder="Wishlist Name" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
-							
-							<TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Create</Text></TouchableOpacity>
+					    	{
+						    	this.state.dataSource.map((item,index)=>{
+									if(item.type=='Text'){
+										return (
+										<View key={index}>
+												<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
+										</View>
+										
+									);
+									}
+								})
+								
+							}
+							<TouchableOpacity onPress={()=>this.createList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Create</Text></TouchableOpacity>
 							<View style={{width:'100%'}}><Text style={{textAlign:'center'}}>OR</Text></View>
-							<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}><Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}>
+									<Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text>
+							</TouchableOpacity>
 						</View>
+
 					</ScrollView>
 				</View>
 			);
 	}
 }
 
+
+
+/// <View>
+
+// 							<TextInput name="wishlist_name" placeholder="Wishlist Name" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
+							
+// 							<TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Create</Text></TouchableOpacity>
+// 							<View style={{width:'100%'}}><Text style={{textAlign:'center'}}>OR</Text></View>
+// 							<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}><Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text></TouchableOpacity>
+// 						</View>
 /// <TextInput name="wishlist_note" placeholder="Wishlist Note" underlineColorAndroid="#fff" style={gstyles.textInputStyle} />	

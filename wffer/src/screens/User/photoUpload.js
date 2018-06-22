@@ -290,7 +290,7 @@ export  class UploadPhotoComponent extends Component {
 				 	      <View>
                     <View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
                             <TouchableOpacity style={{position:'absolute',top:22,left:'66%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}>
-                                <Image source={require('../../../assets/account_settings_camera.png')} style={{width:24,height:24}}/>
+                                <Image source={require('../../../assets/account_settings_camera.png')} style={{width:30,height:30}}/>
                             </TouchableOpacity>       
                             <Image style={styles.image} source={this.state.ImageSource} />
                                   

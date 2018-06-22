@@ -129,8 +129,8 @@ export const gstyles = StyleSheet.create({
     OfferHeadingsHome:{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#e9ebee'},
 
     //special offer 
-    specialOfferView:{width:'100%',flexDirection:'row'},
-
+    specialOfferView:{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'},
+    
     //modal dropdown or select list
     dropdownMainStyles:{borderWidth:1,borderColor:'#ccc',margin:10,padding:5},
     dropdownTextStyle:{fontSize: 18, color: '#000',padding:5},
@@ -147,7 +147,7 @@ export const gstyles = StyleSheet.create({
     newToView:{margin:10,padding:10,alignItems:'center'},
     newToText:{color:'#000',fontWeight:'bold',fontSize:16},
     forgetPasswordView:{margin:10,padding:10,justifyContent:'center',flexDirection:'row'},
-    forgetPasswordText:{fontSize:16,color:'#007F97'},
+    forgetPasswordText:{fontSize:16,color:'#5b9626'},
 
     //sign up
     termsView:{flexDirection: 'row',justifyContent:'center',width:'100%'},

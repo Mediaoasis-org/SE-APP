@@ -8,11 +8,11 @@ export class SpecialOfferComponent extends React.Component{
     }
 	render(){
 		return(
-			<View>
+			<View style={gstyles.specialofferBg}>
 	              <FlatList numColumns={this.props.numcols} data={this.props.data}
 	                renderItem={({item}) =>      
-	                    <TouchableOpacity style={{width: '50%',padding:15}}>
-	                    	<Text style={{width:'60%',marginTop:10,marginBottom:10,backgroundColor:'#c30000',padding:5,color:'#fff',fontSize:16}}>{item.discount} </Text>
+	                    <TouchableOpacity style={{width:'48%',paddingLeft:15,paddingRight:15,paddingBottom:15,margin:'1%',backgroundColor:'#fff'}}>
+	                    	<Text style={{width:'60%',marginBottom:5,marginLeft:-15,backgroundColor:'#c30000',padding:5,color:'#fff',fontSize:16}}>{item.discount} </Text>
 	                      <View style={{alignItems:'center'}}><Image source={require('../../../assets/product1.jpg')} style={gstyles.flatimage}/></View>
 	                          <View style={{flexDirection: 'column'}}>
 	                          	  
