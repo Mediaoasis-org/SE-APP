@@ -33,13 +33,17 @@ export class Products extends Component {
             qty:1,
             activeRow:'',
             search:'',
-            page:1,
             fetchValues:[],
             isLoading:true,
             showLoadMore:false,
             selectedCheckboxId:[],
+            fetching_Status: false,
+            categories:[],
+            // page:1,
       }
+      this.page=1;
       this.fetchValues();
+      this.categories_func();
     }
     onCheckBoxPress(id) {
     	// alert(id)
@@ -59,18 +63,9 @@ export class Products extends Component {
     // componentWillReceiveProps(){
     // 	alert('work');
     // }
-    fetchValues(){
-    	let category_id = this.props.navigation.state.params.cat_id;
-    	let categoryUrl;
-    	if(category_id){
-    		// catParam = "category_id"=category_id;
-    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id + '&limit=20&page=' + this.state.page;
-    	}
-    	else
-    	{
-    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=20&page=' + this.state.page;
-    	}
-    	return fetch(categoryUrl,{
+    categories_func(){
+	
+		return fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
 			       
 			        // headers:{
 			        //   'Accept':'application/json',
@@ -83,10 +78,56 @@ export class Products extends Component {
 			    
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
-				          isLoading: false,
-				          fieldValues:responseJson.body.response,
-				          
+				          // isLoading: false,
+				          categories: responseJson.body.categories,
 				        });
+			      		 // alert(JSON.stringify(this.state.fieldValues));
+			      	}
+			      	else
+			      	{
+			      		// 
+			      	}
+			      	this.setState({Message:responseJson.Message});
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
+	}
+    fetchValues(){
+    	
+    	// this.setState({page:1});
+    	// alert(this.state.page)
+    	let category_id = this.props.navigation.state.params.cat_id;
+    	// alert(category_id)
+    	let categoryUrl;
+    	if(category_id){
+    		// catParam = "category_id"=category_id;
+    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id + '&limit=20&page=' + this.page;
+    	}
+    	else
+    	{
+    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=20&page=' + this.page;
+    	}
+    	return fetch(categoryUrl,{
+			       
+			        // headers:{
+			        //   'Accept':'application/json',
+			        //   'Content-Type':'application/json',
+			        // },
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			    	let json_data = responseJson.body.response;
+			    	const arr = Object.keys(json_data).map((key) => [key, json_data[key]]);
+			    	// alert(arr)
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+				          
+				          fieldValues:responseJson.body.response,isLoading: false
+				          // [...this.state.fieldValues,...responseJson.body.response]
+				        });
+			      		 
 			      		 let count = this.state.fieldValues.length;
 			      		 // alert(count);
 			      		 if(count >= 20){
@@ -130,11 +171,52 @@ export class Products extends Component {
 	
 	 }
 	 showLoadMore(){
-	 	this.setState({page : this.state.page+1});
 	 	// alert(this.state.page);
-	 	this.fetchValues()
+	 	// let pageno = this.state.page+1;
+	 	// // alert(page);
+	 	// this.setState({page : pageno});
+	 	this.page = this.page + 1;
+	 	this.setState({ fetching_Status: true,showLoadMore:false });
+	 	
+	 	// alert(this.page);
+	 	let category_id = this.props.navigation.state.params.cat_id;
+    	let categoryUrl;
+    	if(category_id){
+    		// catParam = "category_id"=category_id;
+    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id + '&limit=20&page=' + this.page;
+    	}
+    	else
+    	{
+    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=20&page=' + this.page;
+    	}
+    	return fetch(categoryUrl,{
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+				          
+				          fieldValues:[...this.state.fieldValues,...responseJson.body.response],isLoading: false,fetching_Status:false
+				        });
+			      		 let count = responseJson.body.response.length;
+			      		 // alert(count);
+			      		 if(count >= 20){
+			      		 	this.setState({showLoadMore:true})
+			      		 }
+			      	}
+			      	else
+			      	{
+			      		// 
+			      	}
+			      	this.setState({Message:responseJson.Message});
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
 	 }
 	render(){
+		// alert(JSON.stringify(this.state.categories));
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -151,7 +233,7 @@ export class Products extends Component {
                             }	
 						<View style={{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'}}>
 
-							<FlatList data={this.state.fieldValues}
+							<FlatList data={this.state.fieldValues} extraData={this.state.fieldValues}
 		                		renderItem={({item}) =>      
 					                    	<View style={styles.flatlist}>
 					                    		<View style={{flexDirection:'row'}}>
@@ -163,7 +245,17 @@ export class Products extends Component {
 									          			</View>
 									          			<View style={{width:'77%',marginLeft:'3%',flexDirection:'column'}}>
 									          				<View style={{width: '100%'}}><Text style={styles.title}>{item.title}</Text></View>
-											          		<View style={{width: '100%'}}><Text style={styles.catTitle}>{this.props.navigation.state.params.cat_name}</Text></View>
+									          				<View>
+									          				{
+									          					this.state.categories.map((cat)=>{
+									          						if(cat.category_id==item.category_id){
+									          							return(
+									          							<View style={{width: '100%'}} key={cat.category_id}><Text style={styles.catTitle}>{cat.category_name}</Text></View>
+									          							);
+									          						}
+									          					})
+									          				}
+											          		</View>
 											          		<View style={styles.qtyView}>   
 
 											          			  <Text style={styles.qtyText}>{this.state.qty}</Text> 
@@ -200,8 +292,14 @@ export class Products extends Component {
 					            />
 					            
 						</View>
-						
-						
+				
+						{
+							this.state.showLoadMore==true ? <View><TouchableHighlight style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableHighlight></View>: null
+						}
+						{
+							this.state.fetching_Status==true ? <View style={{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'#fff'}}><ActivityIndicator color='#00ff00' size="large"/> </View>:null
+						}
+				
 					</ScrollView>
 				</View>
 			);
@@ -228,11 +326,9 @@ const styles  = StyleSheet.create({
 	  itemTotalRightIcon:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right'},
 	  orderTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000',fontWeight:'bold'}
 })
-// {
-// 							this.state.showLoadMore==true ? <TouchableOpacity style={{width:'100%',flexDirection:'row'}} onPress={()=>this.showLoadMore()}><Text>Load More</Text></TouchableOpacity> : null
-// 						}
 
- // <View style={{flexDirection: 'row',marginTop: '10%',}}>	
+
+//// <View style={{flexDirection: 'row',marginTop: '10%',}}>	
 	// 					          		   <Text style={{ fontSize: 15, color: '#000', paddingRight:10, paddingTop:3}}>Qty</Text>
 							          		
 	// 								  		<View style={styles.qtyView}>		 
