@@ -65,7 +65,7 @@ export class Products extends Component {
     // }
     categories_func(){
 	
-		return fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
+	 fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
 			       
 			        // headers:{
 			        //   'Accept':'application/json',
@@ -150,19 +150,26 @@ export class Products extends Component {
 	  //   dispatch(actionCreators.removeCompleted())
 	  // }
 
-	decrease_qty(id,qty){
-		// alert(qty)
-		if(parseInt(qty)!=1){
-		 qty=parseInt(qty)-1; 
-		}
-		this.setState({qty:qty});
+	decrease_qty(id){
+		// alert(id)
+		// if(parseInt(qty)!=1){
+		//  qty=parseInt(qty)-1; 
+		// }
+		// this.setState({qty:qty});
+		 if(this.state.qty!=1){
+	      this.setState({qty:this.state.qty-1})
+	      }
 	}
-	 increase_qty(id,qty){
+	 increase_qty(id){
 	   	// alert(id)
 	   	
-	   	qty=parseInt(qty)+1; 
-	   	// alert(qty)
-	   	this.setState({qty:qty});
+	   	// qty=parseInt(qty)+1; 
+	   	// // alert(qty)
+	   	// this.setState({qty:qty});
+
+        this.setState({qty:this.state.qty+1})
+        // alert(this.state.qty)
+      
 	 }
 	 changeCheckboxState(chek){
 	 	this.setState({checked:!this.state.checked});
@@ -171,49 +178,52 @@ export class Products extends Component {
 	
 	 }
 	 showLoadMore(){
+	 	// alert(this.state.showLoadMore)
 	 	// alert(this.state.page);
 	 	// let pageno = this.state.page+1;
 	 	// // alert(page);
 	 	// this.setState({page : pageno});
 	 	this.page = this.page + 1;
-	 	this.setState({ fetching_Status: true,showLoadMore:false });
-	 	
-	 	// alert(this.page);
-	 	let category_id = this.props.navigation.state.params.cat_id;
-    	let categoryUrl;
-    	if(category_id){
-    		// catParam = "category_id"=category_id;
-    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id + '&limit=20&page=' + this.page;
-    	}
-    	else
-    	{
-    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=20&page=' + this.page;
-    	}
-    	return fetch(categoryUrl,{
-			        method:'GET'
-			      })
-			      .then((response) => response.json())
-			      .then((responseJson) => {
-			      	if(responseJson.status_code=='200'){
-			      		 this.setState({
-				          
-				          fieldValues:[...this.state.fieldValues,...responseJson.body.response],isLoading: false,fetching_Status:false
-				        });
-			      		 let count = responseJson.body.response.length;
-			      		 // alert(count);
-			      		 if(count >= 20){
-			      		 	this.setState({showLoadMore:true})
-			      		 }
-			      	}
-			      	else
-			      	{
-			      		// 
-			      	}
-			      	this.setState({Message:responseJson.Message});
-			      })
-			      .catch((error) =>{
-			        console.error(error);
-			      });
+	 	this.setState({ fetching_Status: true,showLoadMore:false}, ()=>{
+		 	// alert(this.state.showLoadMore);
+		 	// alert(this.page);
+		 	let category_id = this.props.navigation.state.params.cat_id;
+	    	let categoryUrl;
+	    	if(category_id){
+	    		// catParam = "category_id"=category_id;
+	    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id + '&limit=20&page=' + this.page;
+	    	}
+	    	else
+	    	{
+	    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=20&page=' + this.page;
+	    	}
+	    	return fetch(categoryUrl,{
+				        method:'GET'
+				      })
+				      .then((response) => response.json())
+				      .then((responseJson) => {
+				      	if(responseJson.status_code=='200'){
+				      		 this.setState({
+					          
+					          fieldValues:[...this.state.fieldValues,...responseJson.body.response],isLoading: false,fetching_Status:false
+					        });
+				      		 let count = responseJson.body.response.length;
+				      		 // alert(count);
+				      		 if(count >= 20){
+				      		 	this.setState({showLoadMore:true})
+				      		 }
+				      		 // alert(this.state.showLoadMore)
+				      	}
+				      	else
+				      	{
+				      		// 
+				      	}
+				      	this.setState({Message:responseJson.Message});
+				      })
+				      .catch((error) =>{
+				        console.error(error);
+				      });
+				  })
 	 }
 	render(){
 		// alert(JSON.stringify(this.state.categories));
@@ -233,7 +243,8 @@ export class Products extends Component {
                             }	
 						<View style={{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'}}>
 
-							<FlatList data={this.state.fieldValues} extraData={this.state.fieldValues}
+							<FlatList data={this.state.fieldValues} 
+
 		                		renderItem={({item}) =>      
 					                    	<View style={styles.flatlist}>
 					                    		<View style={{flexDirection:'row'}}>
@@ -260,13 +271,13 @@ export class Products extends Component {
 
 											          			  <Text style={styles.qtyText}>{this.state.qty}</Text> 
 				                                                  <TouchableHighlight 
-				                                                     onPress={() => this.decrease_qty()}
+				                                                     onPress={() => this.increase_qty(item.listing_id)}
 				                                                     underlayColor='#BEBEBE' style={styles.qtybuttonDecrease}>
 				                                                     <Image source={require('../../../assets/plus.png')} style={{width:30,height:30}}/>
 				                                                  </TouchableHighlight>
 				                                                  
 				                                                  <TouchableHighlight 
-				                                                     onPress={() => this.increase_qty()}
+				                                                     onPress={() => this.decrease_qty(item.listing_id)}
 				                                                     underlayColor='#BEBEBE' style={styles.qtybuttonIncrease}>
 				                                                    <Image source={require('../../../assets/minus.png')} style={{width:30,height:30}}/>
 				                                                  </TouchableHighlight>
@@ -292,14 +303,15 @@ export class Products extends Component {
 					            />
 					            
 						</View>
-				
+						
 						{
-							this.state.showLoadMore==true ? <View><TouchableHighlight style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableHighlight></View>: null
+							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text>Load More</Text></TouchableOpacity> : null
 						}
-						{
-							this.state.fetching_Status==true ? <View style={{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'#fff'}}><ActivityIndicator color='#00ff00' size="large"/> </View>:null
+						{				
+							this.state.fetching_Status==true ? <View style={{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'#fff'}}><ActivityIndicator color='#00ff00' size="large"/></View>:<View />
 						}
-				
+						
+					
 					</ScrollView>
 				</View>
 			);
@@ -365,3 +377,9 @@ const styles  = StyleSheet.create({
 															// </View>
 																
 	// 														</View>
+
+
+
+	// {
+	// 						this.state.showLoadMore==true ? <TouchableHighlight style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableHighlight>: <View />
+	// 					}
