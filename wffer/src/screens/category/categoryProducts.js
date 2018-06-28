@@ -58,7 +58,7 @@ export class Products extends Component {
 	    this.setState({
 	      selectedCheckboxId: tmp
 	    });
-	    alert(this.state.selectedCheckboxId)
+	    // alert(this.state.selectedCheckboxId)
 	  }
     // componentWillReceiveProps(){
     // 	alert('work');
@@ -234,7 +234,7 @@ export class Products extends Component {
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.cat_name}</Text>
-			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('MultipleWishlist')} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
+			                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MultipleWishlist',{product_ids:this.state.selectedCheckboxId})}} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					<ScrollView>
 						<SearchComponent />
@@ -250,7 +250,7 @@ export class Products extends Component {
 					                    		<View style={{flexDirection:'row'}}>
 									          		<View style={{width:'90%',flexDirection:'row'}}>
 									          			<View style={{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3}}>
-									          				<TouchableOpacity onPress={()=>this.props.navigation.navigate('ProductDetails')}>
+									          				<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
 									          					<Image source={{uri:item.image}} style={styles.flatimage} />
 									          				</TouchableOpacity>
 									          			</View>

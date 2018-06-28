@@ -10,7 +10,7 @@ Image,
 FlatList,
 ScrollView,
 StyleSheet,
-ListView
+ListView,ActivityIndicator
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {gstyles} from '../../GlobalStyles';
@@ -27,8 +27,37 @@ export class ProductDetails extends Component {
     	super(props);
     	this.state = {
             qty:1,
+            isLoading:true,
+            fieldValues:[]
       
       }
+      this.fetchValues();
+    }
+    
+    fetchValues(){
+    	let product_id = this.props.navigation.state.params.product_id;
+    	return fetch('https://wffer.com/se/api/rest/listing/view/'+product_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+				          
+				          fieldValues:responseJson.body,isLoading: false
+				          
+				        });
+			      		 // alert(JSON.stringify(this.state.fieldValues));
+			      	}
+			      	else
+			      	{
+			      		// 
+			      	}
+			      	this.setState({Message:responseJson.Message});
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
     }
 	// decrease_qty(qty){
 	// 	// alert(qty)
@@ -54,26 +83,32 @@ export class ProductDetails extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>Product Details</Text>
 					</View>
 					<ScrollView>
-					<ProductDetail />
-					
-					<Text style={{fontSize:20,fontWeight:'bold',margin:10}}>Price Comparison</Text>
-					<FlatList data={[{id:'1',image:'require("../../../assets/companyLogo.jpg")',price:'30.45 SAR',company:'Danube',location:'Saudi Arabia'},{id:'3',image:'require("../../../assets/companyLogo.jpg")',price:'10.45 SAR',company:'Danube',location:'Saudi Arabia'},{id:'3',image:'require("../../../assets/companyLogo.jpg")',price:'20.45 SAR',company:'Danube',location:'Saudi Arabia'}]} 
-						renderItem={({item}) =>      
-	                    <View style={{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1,width:'100%'}} >
-				          		<View style={{flexDirection: 'column',width:'40%'}}>
-				          			<View style={{paddingTop:10,}}><Image source={require('../../../assets/so-carrefour.png')} resizeMode="contain" style={{height:50,width:'100%'}}/></View>
-				          		</View>
-					            <View style={{flexDirection: 'column',width:'60%'}}>
-						          		<View style={{width: '100%',padding:3}}><Text style={styles.title}>{item.price}</Text></View>
-						          		<View style={{width: '100%',padding:3}}><Text style={gstyles.title}>{item.company}</Text></View>
-						          		<View style={{width: '100%',padding:3}}><Text style={gstyles.title}>{item.location}</Text></View>
-						               
-				          		</View>
-				        </View>
-				                      
-	                    }
-	                keyExtractor={(item, index) => index.toString()}
-					/>
+							{
+                              this.state.isLoading==true ?  <View style={styles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : 
+							
+                            	<View>
+								<ProductDetail data={this.state.fieldValues} />
+								
+								<Text style={{fontSize:20,fontWeight:'bold',margin:10}}>Price Comparison</Text>
+								<FlatList data={[{id:'1',image:'require("../../../assets/companyLogo.jpg")',price:'30.45 SAR',company:'Danube',location:'Saudi Arabia'},{id:'3',image:'require("../../../assets/companyLogo.jpg")',price:'10.45 SAR',company:'Danube',location:'Saudi Arabia'},{id:'3',image:'require("../../../assets/companyLogo.jpg")',price:'20.45 SAR',company:'Danube',location:'Saudi Arabia'}]} 
+									renderItem={({item}) =>      
+				                    <View style={{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1,width:'100%'}} >
+							          		<View style={{flexDirection: 'column',width:'40%'}}>
+							          			<View style={{paddingTop:10,}}><Image source={require('../../../assets/so-carrefour.png')} resizeMode="contain" style={{height:50,width:'100%'}}/></View>
+							          		</View>
+								            <View style={{flexDirection: 'column',width:'60%'}}>
+									          		<View style={{width: '100%',padding:3}}><Text style={styles.title}>{item.price}</Text></View>
+									          		<View style={{width: '100%',padding:3}}><Text style={gstyles.title}>{item.company}</Text></View>
+									          		<View style={{width: '100%',padding:3}}><Text style={gstyles.title}>{item.location}</Text></View>
+									               
+							          		</View>
+							        </View>
+							                      
+				                    }
+				                keyExtractor={(item, index) => index.toString()}
+								/>
+								</View>
+					}
 					</ScrollView>
 				</View>
 			);

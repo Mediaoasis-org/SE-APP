@@ -46,18 +46,28 @@ export class ShoppingListComponent extends Component {
       collapsed: true,
        search :'',
        fieldValues:[],
-       totalItems:''
+       totalItems:'',
+       LoggedIn:null,
+       userData:[]
 		}
     this.getStorageValues()
     
 		// alert(JSON.stringify(this.props.navigation))
 	}
 	async getStorageValues(){
-         var userData = await AsyncStorage.getItem('userData');
-         this.setState({userData:JSON.parse(userData)});
-         this.setState({oauthToken:this.state.userData.oauth_token});
-         this.setState({oauthSecret:this.state.userData.oauth_secret});
-         this.fetchValues();
+         const userData = await AsyncStorage.getItem('userData');
+         // console.log(userData.length);
+          if(userData.length>0){
+            this.setState({LoggedIn:true});
+            this.setState({userData:JSON.parse(userData)});
+            this.setState({oauthToken:this.state.userData.oauth_token});
+            this.setState({oauthSecret:this.state.userData.oauth_secret});
+            this.fetchValues();
+          }
+          else
+          {
+            this.setState({LoggedIn:false})
+          }         
    }
 
 	 // _renderSectionTitle(section) {
@@ -112,16 +122,16 @@ export class ShoppingListComponent extends Component {
     return(
           this.state.fieldValues.map((item)=>{
             // alert(item.listing_images_1['image'])
-            let img = 'uri:listing_images_'+item.total_item;
-            // console.log(img);
-            // console.log('item.'+img);
+            let img = 'listing_images_'+item.total_item;
+            console.log(img);
+            console.log(item.listing_images_+''+item.total_item);
             return(
               <View style={styles.content} key={item.wishlist_id}>
                   <TouchableOpacity onPress={()=>this.handleNavigation()} >
                     <View style={{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,flexDirection:'row'}}>
                         <View style={{flexDirection:'column',width:'20%'}}>
                         
-                            <Image source={{uri:img}} resizeMode="contain" style={{width:'100%'}}/>
+                            <Image source={require('../../../assets/nophoto.png')} resizeMode="contain" style={{width:'100%'}}/>
                         </View>
                         <View style={{flexDirection:'column',width:'80%'}}>
                             <Text style={{fontSize:16,fontWeight:'bold',marginTop:5,color:'#000'}}>{item.title}</Text>
@@ -176,7 +186,25 @@ export class ShoppingListComponent extends Component {
  
 
 	render(){
-    
+    if(this.state.LoggedIn!=true){
+        return(
+          <View style={gstyles.container}>
+              <View style={gstyles.headerMenu}>
+                    <TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+                      <Text><Icon name="bars" size={24} color="#fff" /></Text>
+                    </TouchableOpacity>
+                    <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
+              </View>
+              <Text style={{padding:10,fontSize:18,margin:10,textAlign:'center'}}>To get Lists ,Please Sign In</Text>
+              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
+                  <Text style={gstyles.createAccountText}>Sign In</Text>
+              </TouchableOpacity>
+          </View>
+        )
+    }
+    else
+    {
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -210,6 +238,7 @@ export class ShoppingListComponent extends Component {
           </ScrollView>
 			</View>
 		);
+    }
 	}
 }
 const styles = StyleSheet.create({
