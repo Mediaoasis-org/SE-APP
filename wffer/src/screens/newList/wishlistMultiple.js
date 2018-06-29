@@ -33,19 +33,34 @@ export class MultipleWishlistComponent extends Component {
 			userData:[],
 			data:[],
 			oauthToken:'',
-			oauthSecret:''
+			oauthSecret:'',
+			LoggedIn:null
 		}
-		// alert(JSON.stringify(this.props.navigation))
 		this._getStorageValue();
 	}
+
 	async _getStorageValue(){
 		// alert(this.props.navigation.state.params.product_ids)
+
 		 var userData = await AsyncStorage.getItem('userData');
-	     this.setState({userData:JSON.parse(userData)});
-	     this.setState({oauthToken:this.state.userData.oauth_token});
-	     this.setState({oauthSecret:this.state.userData.oauth_secret});
-	     this.fetchFields();
+		 // alert(userData)
+		 if(userData.length>0){
+            this.setState({LoggedIn:true});
+            this.setState({userData:JSON.parse(userData)});
+            this.setState({oauthToken:this.state.userData.oauth_token});
+            this.setState({oauthSecret:this.state.userData.oauth_secret});
+            this.fetchFields();
+          }
+          else
+          {
+            this.setState({LoggedIn:false})
+          } 
+	     // this.setState({userData:JSON.parse(userData)});
+	     // this.setState({oauthToken:this.state.userData.oauth_token});
+	     // this.setState({oauthSecret:this.state.userData.oauth_secret});
+	     // this.fetchFields();
 	}
+
 	onCheckBoxPress(id) {
     	// alert(id)
 	    let tmp = this.state.selectedCheckboxId;
@@ -59,40 +74,107 @@ export class MultipleWishlistComponent extends Component {
 	    this.setState({
 	      selectedCheckboxId: tmp
 	    });
-	    alert(this.state.selectedCheckboxId)
-	  }
+	    // console.log(this.state.selectedCheckboxId)
+	}
 	fetchFields(){
-			let product_ids = this.props.navigation.state.params.product_ids;
-		// https://wffer.com/se/api/rest/listings/wishlist/add?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token=nym0jbhdqmif0lokymx5exa83g68mbzb&oauth_secret=oogb4n0gv0c4a72lcejq04wnmfv8vaz4&listing_id=1442,1631
+		let product_ids = this.props.navigation.state.params.product_ids;
+		// console.log(product_ids)
+		// product_ids = product_ids.toString();
+		// var res = product_ids.split(',').map(x=>{return parseInt(x)});
+		// console.log(res);
 		 return fetch('https://wffer.com/se/api/rest/listings/wishlist/add?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listing_id='+product_ids,{
 			        method:'GET'
-			      })
-			      .then((response) => response.json())
-			      .then((responseJson) => {
-			      	if(responseJson.status_code=='200'){
-			      		 this.setState({
-			          data: responseJson.body.form,
-			          isLoading: false,
-			          
-			        },function(){
-			        
-			        });
-			      	}
-			      	else
-			      	{
-			      		// this.setState({Message:responseJson.Message});
-			      	}
-			      })
-			      .catch((error) =>{
-			        console.error(error);
-			      });
+	      })
+	      .then((response) => response.json())
+	      .then((responseJson) => {
+	      	if(responseJson.status_code=='200'){
+	      		 this.setState({
+	          data: responseJson.body.form,
+	          isLoading: false,
+	          
+	        },function(){
+	        
+	        });
+	      	}
+	      	else
+	      	{
+	      		// this.setState({Message:responseJson.Message});
+	      	}
+	      })
+	      .catch((error) =>{
+	        console.error(error);
+	      });
 	}
+	SaveWishlist(){
+		let product_ids = this.props.navigation.state.params.product_ids;
+		// console.log(this.state.selectedCheckboxId);
+		// console.log('ids');
+		// console.log(this.props.navigation.state.params.product_ids);
+		product_ids.map((item)=>{
+			this.state.selectedCheckboxId.map((items)=>{
+				// console.log(item);
+				// console.log(items);
+					var formData = new FormData;
+		    		formData.append(items,1);
+		    		// console.log(formData);
+		    		// console.log('https://wffer.com/se/api/rest/listings/wishlist/add?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listingtype_id=1&listing_id='+item);
+					return fetch('https://wffer.com/se/api/rest/listings/wishlist/add?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listingtype_id=1&listing_id='+item,{
+						body: formData,
+						headers:{
+				          'Accept':'application/json',
+				          // 'Content-Type': 'multipart/form-data'
+				        },
+				        method:'POST'
+				      })
+				      .then((response) => response.json())
+				      .then((responseJson) => {
+				      	if(responseJson.status_code=='204'){
+				      		 this.setState({
+				          // data: responseJson.body.form,
+				          isLoading: false,
+				        },function(){
+				        	
+				        });
+				      	}
+				      	else
+				      	{
+				      		// this.setState({Message:responseJson.Message});
+				      	}
+				      })
+				      .catch((error) =>{
+				        console.error(error);
+				      });
+			})				  
+		})
+		this.props.navigation.push('ShoppingList');
+
+	}
+
 	Capitalize(str){
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
+
 	render(){
 		// alert(JSON.stringify(this.state.data))
 		// const navigation = this.props.navigation;
+		if(this.state.LoggedIn!=true){
+        return(
+          <View style={gstyles.container}>
+              <View style={gstyles.headerMenu}>
+                    <TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+                      <Text><Icon name="bars" size={24} color="#fff" /></Text>
+                    </TouchableOpacity>
+                    <Text style={gstyles.headerProfileLabel}>WishList</Text>
+              </View>
+              <Text style={{padding:10,fontSize:18,margin:10,textAlign:'center'}}>To Add Products to Wishlist ,Please Sign In</Text>
+              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
+                  <Text style={gstyles.createAccountText}>Sign In</Text>
+              </TouchableOpacity>
+          </View>
+        )
+    }
+    else
+    {
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -107,10 +189,10 @@ export class MultipleWishlistComponent extends Component {
 								 	<View style={styles.flatlist}>
 						          		
 						          			{
-						          				this.state.data.map((item)=>{
+						          				this.state.data.map((item,index)=>{
 						          					if(item.type==='Checkbox'){
 							          					return(
-							          					<View style={{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5}}>
+							          					<View style={{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5}} key={index}>
 							          						<CheckBox label={item.label}
 														        onChange={()=>this.onCheckBoxPress(item.name)} /> 
 														</View>   
@@ -118,14 +200,16 @@ export class MultipleWishlistComponent extends Component {
 						          					}
 						          				})
 						          			}
-						          		
+						          		<TouchableOpacity onPress={()=>this.SaveWishlist()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
 						        	</View>
 						      </View>
 				     }
 				</View>
 			);
+		}
 	}
 }
+
 const styles  = StyleSheet.create({
 	  flatlist:{backgroundColor: '#fff',  borderColor:'gray',borderWidth:1,margin:5},
 	  flatimage:{marginTop:'15%', marginBottom:'10%', width: '100%', height: 80},

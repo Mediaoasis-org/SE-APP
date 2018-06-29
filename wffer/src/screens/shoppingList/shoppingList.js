@@ -100,8 +100,8 @@ export class ShoppingListComponent extends Component {
               console.error(error);
             });
   }
-  handleNavigation(){
-    this.props.navigation.navigate('Wishlists');
+  handleNavigation(id){
+    this.props.navigation.push('Wishlists',{wishlist_id:id});
   }
   // _renderHeader(section) {
   //   return (
@@ -122,12 +122,12 @@ export class ShoppingListComponent extends Component {
     return(
           this.state.fieldValues.map((item)=>{
             // alert(item.listing_images_1['image'])
-            let img = 'listing_images_'+item.total_item;
-            console.log(img);
-            console.log(item.listing_images_+''+item.total_item);
+            // let img = 'listing_images_'+item.total_item;
+            // console.log(img);
+            // console.log(item.listing_images_+''+item.total_item);
             return(
               <View style={styles.content} key={item.wishlist_id}>
-                  <TouchableOpacity onPress={()=>this.handleNavigation()} >
+                  <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
                     <View style={{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,flexDirection:'row'}}>
                         <View style={{flexDirection:'column',width:'20%'}}>
                         

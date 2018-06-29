@@ -98,6 +98,7 @@ export class Products extends Component {
     	// this.setState({page:1});
     	// alert(this.state.page)
     	let category_id = this.props.navigation.state.params.cat_id;
+
     	// alert(category_id)
     	let categoryUrl;
     	if(category_id){
@@ -234,7 +235,7 @@ export class Products extends Component {
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.cat_name}</Text>
-			                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('MultipleWishlist',{product_ids:this.state.selectedCheckboxId})}} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
+			                    <TouchableOpacity onPress={()=>{this.props.navigation.push('MultipleWishlist',{product_ids:this.state.selectedCheckboxId})}} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					<ScrollView>
 						<SearchComponent />
