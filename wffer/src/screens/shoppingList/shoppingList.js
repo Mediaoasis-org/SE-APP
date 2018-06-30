@@ -11,7 +11,8 @@ import {
   AsyncStorage,
   FlatList,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  ActivityIndicator
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import {Constants} from '../../common';
@@ -48,6 +49,7 @@ export class ShoppingListComponent extends Component {
        fieldValues:[],
        totalItems:'',
        LoggedIn:null,
+       isLoading:true,
        userData:[]
 		}
     this.getStorageValues()
@@ -88,6 +90,7 @@ export class ShoppingListComponent extends Component {
                  this.setState({
                   fieldValues:responseJson.body.response,
                   totalItems: responseJson.body.totalItemCount,
+                  isLoading:false,
                 });
               }
               else
@@ -111,6 +114,7 @@ export class ShoppingListComponent extends Component {
   //   );
   // }
   renderMyList(){
+    
     if(this.state.fieldValues.length===0){
        return(
             <View style={styles.content}>
@@ -120,12 +124,14 @@ export class ShoppingListComponent extends Component {
     else
     {
     return(
+      
           this.state.fieldValues.map((item)=>{
             // alert(item.listing_images_1['image'])
             // let img = 'listing_images_'+item.total_item;
             // console.log(img);
             // console.log(item.listing_images_+''+item.total_item);
             return(
+              
               <View style={styles.content} key={item.wishlist_id}>
                   <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
                     <View style={{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,flexDirection:'row'}}>
@@ -186,7 +192,7 @@ export class ShoppingListComponent extends Component {
  
 
 	render(){
-    if(this.state.LoggedIn!=true){
+    if(this.state.LoggedIn==false){
         return(
           <View style={gstyles.container}>
               <View style={gstyles.headerMenu}>

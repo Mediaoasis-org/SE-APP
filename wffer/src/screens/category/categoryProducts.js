@@ -178,6 +178,16 @@ export class Products extends Component {
 	 	alert(this.state.checked);
 	
 	 }
+	 addToCart(){
+	 	if(this.state.selectedCheckboxId.length<=0){
+	 		alert("Select Atleast One Product");
+	 	}
+	 	else
+	 	{
+	 		this.props.navigation.push('MultipleWishlist',{product_ids:this.state.selectedCheckboxId});
+	 	}
+	 	
+	 }
 	 showLoadMore(){
 	 	// alert(this.state.showLoadMore)
 	 	// alert(this.state.page);
@@ -235,7 +245,7 @@ export class Products extends Component {
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.cat_name}</Text>
-			                    <TouchableOpacity onPress={()=>{this.props.navigation.push('MultipleWishlist',{product_ids:this.state.selectedCheckboxId})}} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
+			                    <TouchableOpacity onPress={()=>this.addToCart()} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					<ScrollView>
 						<SearchComponent />

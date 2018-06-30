@@ -274,7 +274,7 @@ export  class PersonalInfoComponent extends Component {
 										}
 										if(item.type=='Select'){
 												return(
-												<View>
+												<View key={index}>
 													<ModalDropdown 
 								                      style={gstyles.dropdownMainStyles}						                      
 								                      dropdownTextStyle={gstyles.dropdownTextStyle}

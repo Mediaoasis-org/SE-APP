@@ -56,7 +56,7 @@ export class ChangePasswordComponent extends Component {
 			      .then((responseJson) => {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
-			          isLoading: false,
+			          // isLoading: false,
 			          dataSource: responseJson.body,
 			        },async function(){
 			        		await AsyncStorage.setItem('changepasswordFields', JSON.stringify(this.state.dataSource));

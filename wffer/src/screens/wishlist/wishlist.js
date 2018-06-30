@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 // import { withNavigation } from 'react-navigation';
 import {
   Text,
@@ -11,6 +12,7 @@ import {
   FlatList,
   ScrollView,
   AsyncStorage,
+  ActivityIndicator,
   Platform,
   StyleSheet
 } from 'react-native';
@@ -37,6 +39,7 @@ export class WishlistComponent extends Component {
 			isLoading:true,
 			categories:[],
 			LoggedIn:null,
+			selectedCheckboxId:[],
 		}
 		// alert(JSON.stringify(this.props.navigation))
 		// alert(this.props.navigation.state.params.wishlist_id)
@@ -58,6 +61,23 @@ export class WishlistComponent extends Component {
 	        this.setState({LoggedIn:false})
 	    }    	
 	}
+
+	onCheckBoxPress(id) {
+    	// alert(id)
+	    let tmp = this.state.selectedCheckboxId;
+
+	    if ( tmp.includes( id ) ) {
+	      tmp.splice( tmp.indexOf(id), 1 );
+	    } else {
+	      tmp.push( id );
+	    }
+
+	    this.setState({
+	      selectedCheckboxId: tmp
+	    });
+	    // console.log(this.state.selectedCheckboxId)
+	}
+
 	categories_func(){
 	
 	 fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
@@ -66,14 +86,14 @@ export class WishlistComponent extends Component {
 			        //   'Accept':'application/json',
 			        //   'Content-Type':'application/json',
 			        // },
-			        method:'GET'
+			        method:'GET' 
 			      })
 			      .then((response) => response.json())
 			      .then((responseJson) => {
 			    
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
-				          isLoading: false,
+				          // isLoading: false,
 				          categories: responseJson.body.categories,
 				        });
 			      		 // alert(JSON.stringify(this.state.fieldValues));
@@ -115,13 +135,53 @@ export class WishlistComponent extends Component {
 	      });
 	}
 
+	deleteWishlistItems(){
+		let wish_id = this.props.navigation.state.params.wishlist_id;
+				this.state.selectedCheckboxId.map((items)=>{
+		// alert(this.state.selectedCheckboxId);
+					var formData = new FormData;
+		    		formData.append('wishlist_id',wish_id);
+		    		formData.append('listing_id',items);
+		    		// console.log(formData);
+		    		// console.log('https://wffer.com/se/api/rest/listings/wishlist/add?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listingtype_id=1&listing_id='+item);
+					return fetch('https://wffer.com/se/api/rest/listings/wishlist/remove?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listingtype_id=1',{
+						body: formData,
+						headers:{
+				          'Accept':'application/json',
+				          // 'Content-Type': 'multipart/form-data'
+				        },
+				        method:'POST'
+				      })
+				      .then((response) => response.json())
+				      .then((responseJson) => {
+				      	if(responseJson.status_code=='204'){
+				      		 this.setState({
+				          // data: responseJson.body.form,
+				          isLoading: false,
+				        },function(){
+				        	
+				        });
+				      	}
+				      	else
+				      	{
+				      		// this.setState({Message:responseJson.Message});
+				      	}
+				      	// alert(this.state.responseJson.Message)
+				      })
+				      .catch((error) =>{
+				        console.error(error);
+				      });
+				})
+				this.props.navigation.push('Wishlists',{wishlist_id:wish_id})
+	}
+
 	Capitalize(str){
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
 	render(){
 		// const navigation = this.props.navigation;
-	if(this.state.LoggedIn!=true){
+	if(this.state.LoggedIn==false){
     return(
       <View style={gstyles.container}>
           <View style={gstyles.headerMenu}>
@@ -139,6 +199,7 @@ export class WishlistComponent extends Component {
     }
     else
     {
+
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -151,13 +212,16 @@ export class WishlistComponent extends Component {
 			                    </TouchableOpacity>
 			                    
 					</View>
-					<ScrollView>
+					<ScrollView style={{marginBottom:30}}>
 						<SearchComponent/>
+						{
+							this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : 
+						<View>
 						<View style={{width:'100%',flexDirection:'row'}}> 
 								<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{padding:10,width:'10%',flexDirection:'column'}}>
 									<Icon name="angle-left" size={24} color="#000" />
 			                    </TouchableOpacity>
-			                    <Text style={{padding:10,fontSize:20,width:'90%',flexDirection:'column',textAlign:'center'}}>{this.state.data.title}</Text>
+			                    <Text style={{padding:10,fontSize:20,width:'90%',flexDirection:'column',color:'#000'}}>{this.state.data.title}</Text>
 			            </View>
 						
 						<View style={{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'}}>
@@ -199,12 +263,15 @@ export class WishlistComponent extends Component {
 					                keyExtractor={(item, index) => index.toString()}
 					            />
 						</View>
+							</View>
+							}
 							
-							<TouchableOpacity onPress={()=>this.props.navigation.navigate('GetPrice')} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Get Price</Text></TouchableOpacity>
+							
 					</ScrollView>
+					<TouchableOpacity onPress={()=>this.props.navigation.navigate('GetPrice')} style={gstyles.buttonViewFixed}><Text style={gstyles.buttonTextFixed}>Get Price</Text></TouchableOpacity>
 					{
-						(this.state.checked==true)?
-							<TouchableHighlight underlayColor="transparent" style={styles.delete} onPress={()=> alert('items deleted')}><Icon name="trash" color="#fff" size={30} style={{padding:22}}/></TouchableHighlight>
+						(this.state.selectedCheckboxId!='')?
+							<TouchableHighlight style={styles.delete} onPress={()=> this.deleteWishlistItems()}><Icon name="trash" color="#fff" size={30} style={{padding:10}}/></TouchableHighlight>
 						:
 						null
 					}
@@ -220,7 +287,7 @@ const styles  = StyleSheet.create({
 	  flatimage:{marginTop:'15%', marginBottom:'10%', width: '100%', height: 80},
 	  title:{fontSize: 18, marginTop: '5%',color:'#000',fontWeight:'bold'},
 	  catTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
-	  subtitle:{color: '#000', marginTop: '3%', fontSize: 18},
+	  subtitle:{color: '#000', marginTop: '3%', fontSize: 18,textAlign:'left'},
 	  discountDeal:{color: '#ff0000', fontSize: 18,textAlign:'center',fontStyle:'italic'},
 	  qtyView:{flexDirection: 'row',padding:10,marginLeft:'40%'},
 	  qtybuttonDecrease:{margin:5},
@@ -238,21 +305,21 @@ const styles  = StyleSheet.create({
 		...Platform.select({
 			ios:{
 				position:'absolute',
-				bottom:5,
+				bottom:25,
 				zIndex:1000,
 				right:7,
-				width:70,
-				height:70,
+				width:45,
+				height:45,
 				borderRadius:50,
 				backgroundColor:'#c74b4b'
 			},
 			android:{
 				position:'absolute',
-				bottom:5,
+				bottom:25,
 				zIndex:1000,
 				right:7,
-				width:70,
-				height:70,
+				width:45,
+				height:45,
 				borderRadius:50,
 				backgroundColor:'#c74b4b'
 			},

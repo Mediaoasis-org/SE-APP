@@ -10,6 +10,8 @@ export const gstyles = StyleSheet.create({
 	textInputStyle:{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'},
 	buttonView:{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'},
 	buttonText:{color:'#fff',fontSize:16,fontWeight:'bold'},
+	buttonViewFixed:{padding:10,backgroundColor:'#696969',alignItems:'center',position:'absolute',bottom:0,width:'100%'},
+	buttonTextFixed:{color:'#fff',fontSize:16,fontWeight:'bold'},
 	headerMenu:{
 	...Platform.select({
 		ios:{

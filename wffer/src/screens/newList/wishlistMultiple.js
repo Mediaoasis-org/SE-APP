@@ -157,7 +157,7 @@ export class MultipleWishlistComponent extends Component {
 	render(){
 		// alert(JSON.stringify(this.state.data))
 		// const navigation = this.props.navigation;
-		if(this.state.LoggedIn!=true){
+		if(this.state.LoggedIn==false){
         return(
           <View style={gstyles.container}>
               <View style={gstyles.headerMenu}>
@@ -186,22 +186,26 @@ export class MultipleWishlistComponent extends Component {
                               this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View>  :
                               <View>
 									<View style={{width:'100%',alignItems:'center'}}><Text style={{padding:10,fontSize:20}}>Add to Shopping List</Text></View>
-								 	<View style={styles.flatlist}>
+								 	
 						          		
 						          			{
 						          				this.state.data.map((item,index)=>{
 						          					if(item.type==='Checkbox'){
 							          					return(
-							          					<View style={{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5}} key={index}>
-							          						<CheckBox label={item.label}
-														        onChange={()=>this.onCheckBoxPress(item.name)} /> 
-														</View>   
+							          					<View style={styles.flatlist}>
+								          					<View style={{width:'100%',flexDirection:'row',padding:8}} key={index}>
+								          						<CheckBox label={item.label}
+															        onChange={()=>this.onCheckBoxPress(item.name)} labelStyle={{color:'#000',fontSize:15}}/> 
+															</View>   
+														</View>
 							          					);
 						          					}
 						          				})
 						          			}
 						          		<TouchableOpacity onPress={()=>this.SaveWishlist()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
-						        	</View>
+						          		<View style={gstyles.newToView}><Text style={gstyles.newToText}>OR</Text></View>
+                   						<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.createAccountView}><Text style={gstyles.createAccountText}>Cancel</Text></TouchableOpacity>
+						        	
 						      </View>
 				     }
 				</View>
@@ -211,7 +215,7 @@ export class MultipleWishlistComponent extends Component {
 }
 
 const styles  = StyleSheet.create({
-	  flatlist:{backgroundColor: '#fff',  borderColor:'gray',borderWidth:1,margin:5},
+	  flatlist:{backgroundColor: '#fff',margin:5,borderWidth:1,borderColor:'gray'},
 	  flatimage:{marginTop:'15%', marginBottom:'10%', width: '100%', height: 80},
 	  title:{fontSize: 18, marginTop: '5%',color:'#000',fontWeight:'bold'},
 	  catTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
