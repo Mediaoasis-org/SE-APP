@@ -38,13 +38,15 @@ export class MultipleWishlistComponent extends Component {
 		}
 		this._getStorageValue();
 	}
-
+	
 	async _getStorageValue(){
-		// alert(this.props.navigation.state.params.product_ids)
-
-		 var userData = await AsyncStorage.getItem('userData');
-		 // alert(userData)
-		 if(userData.length>0){
+		// alert("wishlist multiple")
+		console.log(await AsyncStorage.getItem('userData'))
+		 var userData = await AsyncStorage.getItem('userData')
+		 // alert(userData);
+		 //  alert(this.state.LoggedIn);
+		 // console.log(JSON.parse(userData).length)
+		 if(userData != null){
             this.setState({LoggedIn:true});
             this.setState({userData:JSON.parse(userData)});
             this.setState({oauthToken:this.state.userData.oauth_token});
@@ -55,10 +57,7 @@ export class MultipleWishlistComponent extends Component {
           {
             this.setState({LoggedIn:false})
           } 
-	     // this.setState({userData:JSON.parse(userData)});
-	     // this.setState({oauthToken:this.state.userData.oauth_token});
-	     // this.setState({oauthSecret:this.state.userData.oauth_secret});
-	     // this.fetchFields();
+         // alert(this.state.LoggedIn);
 	}
 
 	onCheckBoxPress(id) {

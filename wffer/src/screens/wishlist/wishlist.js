@@ -14,7 +14,7 @@ import {
   AsyncStorage,
   ActivityIndicator,
   Platform,
-  StyleSheet
+  StyleSheet,Modal
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import {Constants} from '../../common';
@@ -40,12 +40,16 @@ export class WishlistComponent extends Component {
 			categories:[],
 			LoggedIn:null,
 			selectedCheckboxId:[],
+			modalVisible: false,
 		}
+
 		// alert(JSON.stringify(this.props.navigation))
 		// alert(this.props.navigation.state.params.wishlist_id)
 		this._getStorageValue();
+		alert(this.state.modalVisible)
 		this.categories_func();
 	}
+	
 	async _getStorageValue(){
 		const userData = await AsyncStorage.getItem('userData');
 		// alert(userData);
@@ -122,7 +126,7 @@ export class WishlistComponent extends Component {
 			          isLoading: false,
 	          
 	        },function(){
-	        	console.log(JSON.stringify(this.state.data))
+	        	// console.log(JSON.stringify(this.state.data))
 	        });
 	      	}
 	      	else
@@ -179,6 +183,15 @@ export class WishlistComponent extends Component {
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+    setModalVisible(visible) {
+   		 this.setState({modalVisible: visible});
+  	}
+
+    handleNavigation(){
+    		
+            this.setModalVisible(true);
+   
+    }
 	render(){
 		// const navigation = this.props.navigation;
 	if(this.state.LoggedIn==false){
@@ -207,7 +220,7 @@ export class WishlistComponent extends Component {
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                   
-			                    <TouchableOpacity onPress={() =>{this.props.navigation.push('Products', {cat_name:'All Categories'})}} style={gstyles.headerRightButton}>
+			                    <TouchableOpacity onPress={() => this.handleNavigation()} style={gstyles.headerRightButton}>
 									<Icon name="ellipsis-v" size={26} color="#fff" />
 			                    </TouchableOpacity>
 			                    
@@ -225,6 +238,7 @@ export class WishlistComponent extends Component {
 			            </View>
 						
 						<View style={{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'}}>
+
 							<FlatList data={this.state.data.listing} 
 
 		                		renderItem={({item}) =>      
@@ -265,7 +279,26 @@ export class WishlistComponent extends Component {
 						</View>
 							</View>
 							}
-							
+						<Modal
+				          animationType="slide"
+				          transparent={true}
+				          visible={this.state.modalVisible}
+				          onRequestClose={() => {
+				            alert('Modal has been closed.');
+				          }}>
+				          <View style={{flex: 1,flexDirection: 'column', justifyContent: 'center',alignItems: 'center'}}>
+				            <View style={{backgroundColor:'#fff', width: 300, height: 300}}>
+				              <Text>Hello World!</Text>
+
+				              <TouchableHighlight
+				                onPress={() => {
+				                  this.setModalVisible(!this.state.modalVisible);
+				                }}>
+				                <Text>Hide Modal</Text>
+				              </TouchableHighlight>
+				            </View>
+				          </View>
+				        </Modal>	
 							
 					</ScrollView>
 					<TouchableOpacity onPress={()=>this.props.navigation.navigate('GetPrice')} style={gstyles.buttonViewFixed}><Text style={gstyles.buttonTextFixed}>Get Price</Text></TouchableOpacity>

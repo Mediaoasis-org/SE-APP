@@ -58,8 +58,8 @@ export class ShoppingListComponent extends Component {
 	}
 	async getStorageValues(){
          const userData = await AsyncStorage.getItem('userData');
-         // console.log(userData.length);
-          if(userData.length>0){
+         // alert(userData.length);
+          if(userData!=null){
             this.setState({LoggedIn:true});
             this.setState({userData:JSON.parse(userData)});
             this.setState({oauthToken:this.state.userData.oauth_token});
@@ -218,7 +218,7 @@ export class ShoppingListComponent extends Component {
 									<Text><Icon name="bars" size={24} color="#fff" /></Text>
                 </TouchableOpacity>
                 <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
 					</View>
           <SearchComponent />
 				  <ScrollView>

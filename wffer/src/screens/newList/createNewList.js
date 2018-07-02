@@ -13,27 +13,31 @@ export class CreateWishlistComponent extends Component {
 			body:'',
 			dataSource:[],
 			isLoading:true,
+			LoggedIn:null
 		}
 		this._getStorageValue()
 		// alert(JSON.stringify(this.props.navigation))
 	}
 	async _getStorageValue(){
 		// this.fetchFields()
-	  var value = await AsyncStorage.getItem('createListFields');
-	  var userData = await AsyncStorage.getItem('userData');
-     this.setState({userData:JSON.parse(userData)});
-     this.setState({oauthToken:this.state.userData.oauth_token});
-     this.setState({oauthSecret:this.state.userData.oauth_secret});
-	  if(value == null){
-	  	this.setState({LoggedIn:0})
+	 
+	  const userData = await AsyncStorage.getItem('userData');
+     
+	  if(userData != null){
+	  	this.setState({userData:JSON.parse(userData)});
+	  	var value = await AsyncStorage.getItem('createListFields');
+     	this.setState({oauthToken:this.state.userData.oauth_token});
+     	this.setState({oauthSecret:this.state.userData.oauth_secret});
+	  	const data = JSON.parse(value);
+	  	this.setState({LoggedIn:true})
+		this.setState({dataSource:data});
 	  	this.fetchFields();	
 	  }
 	  else
 	  {
 	  	// alert('entering');
-	  	const data = JSON.parse(value);
-	  	this.setState({LoggedIn:1})
-		this.setState({dataSource:data});
+	  	
+		this.setState({LoggedIn:false})
 		// console.log(this.state.dataSource)
 	  }
 	}
@@ -114,7 +118,7 @@ export class CreateWishlistComponent extends Component {
     	
     }
 	render(){
-		if(this.state.dataSource.length===0){
+		if(this.state.LoggedIn == false){
 			return (
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -123,9 +127,10 @@ export class CreateWishlistComponent extends Component {
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>        
 					</View>
-								{
-			                    	this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> :null
-			                    }
+					<Text style={{padding:10,fontSize:18,margin:10,textAlign:'center'}}>To Create Wishlist ,Please Sign In</Text>
+		              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
+		                  <Text style={gstyles.createAccountText}>Sign In</Text>
+		              </TouchableOpacity>
 				</View>
 			);
 		}
