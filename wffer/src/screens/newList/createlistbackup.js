@@ -10,35 +10,34 @@ export class CreateWishlistComponent extends Component {
 		super(props);
 		this.state={
 			title:'',
-			body:'',
-			dataSource:[],
+			body:'',	
 			isLoading:true,
-			LoggedIn:null
+			LoggedIn:null,
+			dataSource:[],
 		}
 		this._getStorageValue()
-		// alert(JSON.stringify(this.props.navigation))
 	}
 	async _getStorageValue(){
-		// this.fetchFields()
-	 
 	  const userData = await AsyncStorage.getItem('userData');
-     
 	  if(userData != null){
+	  	const value = await AsyncStorage.getItem('createListFields');
+	  	alert(value)
 	  	this.setState({userData:JSON.parse(userData)});
-	  	// var value = await AsyncStorage.getItem('createListFields');
      	this.setState({oauthToken:this.state.userData.oauth_token});
      	this.setState({oauthSecret:this.state.userData.oauth_secret});
-	  	// const data = JSON.parse(value);
 	  	this.setState({LoggedIn:true})
-		// this.setState({dataSource:data});
-	  	this.fetchFields();	
+	  	if(value == null){
+	  		this.fetchFields();	
+	  	}
+	  	else
+	  	{
+	  		this.setState({dataSource:value});
+	  		this.setState({isLoading:false})
+	  	}
 	  }
 	  else
-	  {
-	  	// alert('entering');
-	  	
+	  {	  	
 		this.setState({LoggedIn:false})
-		// console.log(this.state.dataSource)
 	  }
 	}
 
@@ -51,12 +50,10 @@ export class CreateWishlistComponent extends Component {
 			      .then((responseJson) => {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
-			          isLoading: false,
-			          dataSource: responseJson.body,
+				          isLoading: false,
+				          dataSource: responseJson.body,
 			        },async function(){
-			        		await AsyncStorage.setItem('createListFields', JSON.stringify( this.state.dataSource));
-			        		// alert(JSON.stringify(this.state.data));  
-			        	
+			        		await AsyncStorage.setItem('createListFields', this.state.dataSource);		
 			        });
 			      	}
 			      	else
@@ -92,7 +89,7 @@ export class CreateWishlistComponent extends Component {
 		        	
 		          if(responseJson.status_code=="200"){
 		            this.setState({
-		              isLoading: false,
+		              // isLoading: false,
 		              // dataSource1: responseJson.body,
 		            }, async function(){
 			        // await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
@@ -117,7 +114,26 @@ export class CreateWishlistComponent extends Component {
 		        });
     	
     }
+    renderData(){
+    	return(
+    		<View>
+		    	{
+		    		this.state.dataSource.map((item,index)=>{
+		    			if(item.type=='Text'){
+							return (
+							<View key={index}>
+									<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
+							</View>
+							
+							);
+						}
+		    		})
+		    	}
+		    </View>
+    		)	
+    }
 	render(){
+		// alert(this.state.dataSource)
 		if(this.state.LoggedIn == false){
 			return (
 				<View style={gstyles.container}>
@@ -132,9 +148,11 @@ export class CreateWishlistComponent extends Component {
 		                  <Text style={gstyles.createAccountText}>Sign In</Text>
 		              </TouchableOpacity>
 				</View>
-			);
+			)
 		}
-		return(
+		else
+		{
+			return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
 								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
@@ -143,35 +161,38 @@ export class CreateWishlistComponent extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>
 					</View>
 					<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Create New Wishlist</Text></View>
-						<View>
-					    	{
-						    	this.state.dataSource.map((item,index)=>{
-									if(item.type=='Text'){
-										return (
-										<View key={index}>
-												<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
-										</View>
-										
-									);
-									}
-								})
+						{
+							this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> :
+							<View>	
+								<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Create New Wishlist</Text></View>
+									{this.renderData()}
+									<TouchableOpacity onPress={()=>this.createList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Create</Text></TouchableOpacity>
+									<View style={{width:'100%'}}><Text style={{textAlign:'center'}}>OR</Text></View>
+									<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}>
+											<Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text>
+									</TouchableOpacity>
 								
-							}
-							<TouchableOpacity onPress={()=>this.createList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Create</Text></TouchableOpacity>
-							<View style={{width:'100%'}}><Text style={{textAlign:'center'}}>OR</Text></View>
-							<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}>
-									<Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text>
-							</TouchableOpacity>
-						</View>
-
+							</View>
+						}
 					</ScrollView>
 				</View>
 			);
+		}
 	}
 }
 
-
+/// {
+// 								    	this.state.dataSource.map((item,index)=>{
+// 											if(item.type=='Text'){
+// 												return (
+// 												<View key={index}>
+// 														<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
+// 												</View>
+												
+// 											);
+// 											}
+// 										})
+// 									}
 
 /// <View>
 

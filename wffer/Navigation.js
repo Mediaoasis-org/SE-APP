@@ -16,8 +16,10 @@ import { ProductDetails } from './src/screens/category/categoryItems';
 import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
 import { WishlistComponent } from './src/screens/wishlist/wishlist';
 import { CreateWishlistComponent } from './src/screens/newList/createNewList';
+import { EditWishlistComponent } from './src/screens/wishlist/EditWishlist';
 import { MultipleWishlistComponent } from './src/screens/newList/wishlistMultiple';
 import { ShoppingListComponent } from './src/screens/shoppingList/shoppingList';
+import { GetPriceComponent } from './src/screens/getPrice/GetPrice';
 import { StoreLocatorComponent } from './src/screens/storeLocality/storeLocator';
 import { PersonalInfoComponent } from './src/screens/User/personalInfo';
 import { UploadPhotoComponent } from './src/screens/User/photoUpload';
@@ -97,33 +99,33 @@ const profilenav = createBottomTabNavigator({
 //   },
 // }
 // })
-const getPriceNav = createBottomTabNavigator({
-  Lowest:{
-    screen: LowestPriceComponent
-  },
-  NearByStore:{
-    screen: NearByStoreComponent
-  },
-  MultiStore:{
-    screen: MultiStoreComponent
-  }
-},{
-  swipeEnabled:false,
-  animationEnabled:true,
-  tabBarOptions: {
-  activeTintColor: '#000',
-  inactiveTintColor:'#000',
-  activeBackgroundColor:'#eee',
-  showLabel:true,
-  labelStyle: {
-    fontSize: 16,
-    paddingBottom:10,
-  },
-  style: {
-    backgroundColor: '#ccc',
-  },
-}
-})
+// const getPriceNav = createBottomTabNavigator({
+//   Lowest:{
+//     screen: LowestPriceComponent
+//   },
+//   NearByStore:{
+//     screen: NearByStoreComponent
+//   },
+//   MultiStore:{
+//     screen: MultiStoreComponent
+//   }
+// },{
+//   swipeEnabled:false,
+//   animationEnabled:true,
+//   tabBarOptions: {
+//   activeTintColor: '#000',
+//   inactiveTintColor:'#000',
+//   activeBackgroundColor:'#eee',
+//   showLabel:true,
+//   labelStyle: {
+//     fontSize: 16,
+//     paddingBottom:10,
+//   },
+//   style: {
+//     backgroundColor: '#ccc',
+//   },
+// }
+// })
 const stack = createStackNavigator({
 	Home:{
 		screen: HomeComponent,
@@ -168,6 +170,9 @@ const stack = createStackNavigator({
   CreateWishlist:{
     screen:CreateWishlistComponent
   },
+  EditWishlist:{
+    screen:EditWishlistComponent
+  },
   MultipleWishlist:{
     screen:MultipleWishlistComponent
   },
@@ -184,7 +189,7 @@ const stack = createStackNavigator({
   //   screen:accountSettingsNav
   // },
   GetPrice:{
-    screen:getPriceNav
+    screen:GetPriceComponent
   },
   Logout:{
     screen:LogoutComponent

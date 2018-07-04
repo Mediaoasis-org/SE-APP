@@ -46,7 +46,7 @@ export class WishlistComponent extends Component {
 		// alert(JSON.stringify(this.props.navigation))
 		// alert(this.props.navigation.state.params.wishlist_id)
 		this._getStorageValue();
-		alert(this.state.modalVisible)
+		// alert(this.state.modalVisible)
 		this.categories_func();
 	}
 	
@@ -187,10 +187,17 @@ export class WishlistComponent extends Component {
    		 this.setState({modalVisible: visible});
   	}
 
-    handleNavigation(){
-    		
+    handleNavigation(){ 		
             this.setModalVisible(true);
-   
+    }
+    handleCreateWishlist(){
+    	this.setModalVisible(false);
+    	this.props.navigation.push('CreateWishlist')
+    }
+    handleEditWishlist(){
+    	let wish_id = this.props.navigation.state.params.wishlist_id;
+    	this.setModalVisible(false);
+    	this.props.navigation.push('EditWishlist',{wishlist_id:wish_id})
     }
 	render(){
 		// const navigation = this.props.navigation;
@@ -285,23 +292,31 @@ export class WishlistComponent extends Component {
 				          visible={this.state.modalVisible}
 				          onRequestClose={() => {
 				            alert('Modal has been closed.');
+				            this.setModalVisible(!this.state.modalVisible);
 				          }}>
 				          <View style={{flex: 1,flexDirection: 'column', justifyContent: 'center',alignItems: 'center'}}>
-				            <View style={{backgroundColor:'#fff', width: 300, height: 300}}>
-				              <Text>Hello World!</Text>
-
+				            <View style={{backgroundColor:'#fff', width: 300}}>
+				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText} onPress={()=>this.handleCreateWishlist()}>Create New Wishlist</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText} onPress={()=>this.handleEditWishlist()}>Edit</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText}>Delete</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText}>Report</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText}>Tell A Friend</Text></TouchableOpacity>
 				              <TouchableHighlight
 				                onPress={() => {
 				                  this.setModalVisible(!this.state.modalVisible);
-				                }}>
-				                <Text>Hide Modal</Text>
+				                }} style={gstyles.modalMenu}>
+				                <Text style={gstyles.modalMenuText}>Cancel</Text>
 				              </TouchableHighlight>
 				            </View>
 				          </View>
 				        </Modal>	
 							
 					</ScrollView>
-					<TouchableOpacity onPress={()=>this.props.navigation.navigate('GetPrice')} style={gstyles.buttonViewFixed}><Text style={gstyles.buttonTextFixed}>Get Price</Text></TouchableOpacity>
+					<View style={gstyles.buttonViewFixed}>
+							<TouchableOpacity onPress={()=>alert('share')} style={[gstyles.getPriceButton,{borderRightWidth:1,borderRightColor:'#bfbfbf'}]}><Text style={gstyles.buttonTextFixed}>Share</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>this.props.navigation.navigate('GetPrice')} style={gstyles.getPriceButton}><Text style={gstyles.buttonTextFixed}>Get Price</Text></TouchableOpacity>
+							
+					</View>
 					{
 						(this.state.selectedCheckboxId!='')?
 							<TouchableHighlight style={styles.delete} onPress={()=> this.deleteWishlistItems()}><Icon name="trash" color="#fff" size={30} style={{padding:10}}/></TouchableHighlight>

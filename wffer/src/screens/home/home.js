@@ -42,7 +42,7 @@ export class HomeComponent extends Component {
 			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					<ScrollView>
-						
+						flexDirection: 'column',
 						<SearchComponent />
 						<BannerSliderComponent />
 						<PromotionalOfferStoreComponent />
@@ -55,7 +55,9 @@ export class HomeComponent extends Component {
 															{id: 4,name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},
 															{id: 5,name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'16-5-18'}]}/>
 						</View>
+
 					</ScrollView>
+					
 				</View>
 			);
 	}

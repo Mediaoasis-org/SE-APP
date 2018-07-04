@@ -3,15 +3,17 @@ import { StyleSheet,Platform } from 'react-native';
 export const gstyles = StyleSheet.create({
     container:{
 		flex:1,
-		backgroundColor:'#fff'
+		backgroundColor:'#fff',
+
 	},	
 	flexDirectionColumn:{flexDirection:'column'},
 	fontSize18:{fontSize:18},
 	textInputStyle:{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'},
 	buttonView:{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'},
 	buttonText:{color:'#fff',fontSize:16,fontWeight:'bold'},
-	buttonViewFixed:{padding:10,backgroundColor:'#696969',alignItems:'center',position:'absolute',bottom:0,width:'100%'},
-	buttonTextFixed:{color:'#fff',fontSize:16,fontWeight:'bold'},
+	buttonViewFixed:{padding:2,backgroundColor:'#f2f2f2', alignSelf: 'center',width:'50%',position:'absolute',bottom:10,flexDirection:'row',flex: 0.2,borderRadius:50,borderColor:'#bfbfbf',borderWidth:2},
+	getPriceButton:{flexDirection:'column',padding:10,width:'50%',alignItems:'center'},
+	buttonTextFixed:{color:'#000',fontSize:18,fontWeight:'bold'},
 	headerMenu:{
 	...Platform.select({
 		ios:{
@@ -97,6 +99,8 @@ export const gstyles = StyleSheet.create({
 		android:{
 			position: 'absolute',
 		    paddingTop:8,
+		    paddingLeft:10,
+		    paddingRight:10,
 		    right: 10,
 		    top:5,
 		},
@@ -153,5 +157,7 @@ export const gstyles = StyleSheet.create({
 
     //sign up
     termsView:{flexDirection: 'row',justifyContent:'center',width:'100%'},
-    termsLink:{color:'#62C462',fontSize:18}
+    termsLink:{color:'#62C462',fontSize:18},
+    modalMenu:{width:'100%',backgroundColor:'#00BCD4',padding:15,borderBottomColor:'#fff',borderBottomWidth:1},
+    modalMenuText:{color:'#fff',fontSize:17,fontWeight:'bold'}
 })

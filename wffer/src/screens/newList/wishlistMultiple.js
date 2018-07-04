@@ -156,7 +156,7 @@ export class MultipleWishlistComponent extends Component {
 	render(){
 		// alert(JSON.stringify(this.state.data))
 		// const navigation = this.props.navigation;
-		if(this.state.LoggedIn==false){
+	if(this.state.LoggedIn==false){
         return(
           <View style={gstyles.container}>
               <View style={gstyles.headerMenu}>
