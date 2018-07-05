@@ -199,6 +199,44 @@ export class WishlistComponent extends Component {
     	this.setModalVisible(false);
     	this.props.navigation.push('EditWishlist',{wishlist_id:wish_id})
     }
+    handleDeleteWishlist(){
+    	let wish_id = this.props.navigation.state.params.wishlist_id;
+    	 fetch('https://wffer.com/se/api/rest/listings/wishlist/delete/'+wish_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listingtype_id=2',{
+			method:'DELETE',
+			headers:{
+				          'Accept':'application/json',
+				          // 'Content-Type': 'multipart/form-data'
+				        },
+	      })
+	      .then((response) => response.json())
+	      .then((responseJson) => {
+	      	// alert(JSON.stringify(responseJson));
+	      	if(responseJson.status_code=='204'){
+	      		this.setModalVisible(false);
+	    this.props.navigation.push('ShoppingList');
+	      	}
+	      	else
+	      	{
+	      		this.setState({Message:responseJson.Message});
+	      		alert(this.state.Message)
+	      	}
+	      })
+	      .catch((error) =>{
+	        console.error(error);
+	      });
+    	
+    }
+
+    handleTellFriend(){
+    	let wish_id = this.props.navigation.state.params.wishlist_id;
+    	this.setModalVisible(false);
+    	this.props.navigation.push('TellFriend',{wishlist_id:wish_id});
+    }
+    handleReport(){
+    	let wish_id = this.props.navigation.state.params.wishlist_id;
+    	this.setModalVisible(false);
+    	this.props.navigation.push('Report',{wishlist_id:wish_id});
+    }
 	render(){
 		// const navigation = this.props.navigation;
 	if(this.state.LoggedIn==false){
@@ -286,21 +324,21 @@ export class WishlistComponent extends Component {
 						</View>
 							</View>
 							}
-						<Modal
-				          animationType="slide"
-				          transparent={true}
-				          visible={this.state.modalVisible}
-				          onRequestClose={() => {
-				            alert('Modal has been closed.');
-				            this.setModalVisible(!this.state.modalVisible);
-				          }}>
+							<Modal
+					          animationType="slide"
+					          transparent={true}
+					          visible={this.state.modalVisible}
+					          onRequestClose={() => {
+					            alert('Modal has been closed.');
+					            this.setModalVisible(!this.state.modalVisible);
+					          }}>
 				          <View style={{flex: 1,flexDirection: 'column', justifyContent: 'center',alignItems: 'center'}}>
 				            <View style={{backgroundColor:'#fff', width: 300}}>
-				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText} onPress={()=>this.handleCreateWishlist()}>Create New Wishlist</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText} onPress={()=>this.handleEditWishlist()}>Edit</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText}>Delete</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText}>Report</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu}><Text style={gstyles.modalMenuText}>Tell A Friend</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleCreateWishlist()}><Text style={gstyles.modalMenuText}>Create New Wishlist</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleEditWishlist()}><Text style={gstyles.modalMenuText}>Edit</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleDeleteWishlist()}><Text style={gstyles.modalMenuText}>Delete</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleReport()}><Text style={gstyles.modalMenuText}>Report</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleTellFriend()}><Text style={gstyles.modalMenuText}>Tell A Friend</Text></TouchableOpacity>
 				              <TouchableHighlight
 				                onPress={() => {
 				                  this.setModalVisible(!this.state.modalVisible);
@@ -314,7 +352,7 @@ export class WishlistComponent extends Component {
 					</ScrollView>
 					<View style={gstyles.buttonViewFixed}>
 							<TouchableOpacity onPress={()=>alert('share')} style={[gstyles.getPriceButton,{borderRightWidth:1,borderRightColor:'#bfbfbf'}]}><Text style={gstyles.buttonTextFixed}>Share</Text></TouchableOpacity>
-							<TouchableOpacity onPress={()=>this.props.navigation.navigate('GetPrice')} style={gstyles.getPriceButton}><Text style={gstyles.buttonTextFixed}>Get Price</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>this.props.navigation.push('GetPrice')} style={gstyles.getPriceButton}><Text style={gstyles.buttonTextFixed}>Get Price</Text></TouchableOpacity>
 							
 					</View>
 					{

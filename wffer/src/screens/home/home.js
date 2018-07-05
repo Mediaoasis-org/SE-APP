@@ -42,7 +42,7 @@ export class HomeComponent extends Component {
 			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					<ScrollView>
-						flexDirection: 'column',
+						
 						<SearchComponent />
 						<BannerSliderComponent />
 						<PromotionalOfferStoreComponent />

@@ -159,5 +159,9 @@ export const gstyles = StyleSheet.create({
     termsView:{flexDirection: 'row',justifyContent:'center',width:'100%'},
     termsLink:{color:'#62C462',fontSize:18},
     modalMenu:{width:'100%',backgroundColor:'#00BCD4',padding:15,borderBottomColor:'#fff',borderBottomWidth:1},
-    modalMenuText:{color:'#fff',fontSize:17,fontWeight:'bold'}
+    modalMenuText:{color:'#fff',fontSize:17,fontWeight:'bold'},
+    flatlist:{backgroundColor: '#fff',borderBottomColor:'grey',borderBottomWidth:0.5,flexDirection:'row'},
+    tellfriend:{backgroundColor: '#fff',flexDirection:'row'},
+    title:{fontSize: 18,padding:20,color:'#000',fontWeight:'bold',width:'85%'},
+    rightButton:{padding:20,width:'15%'},
 })

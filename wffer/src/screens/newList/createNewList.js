@@ -97,7 +97,7 @@ export class CreateWishlistComponent extends Component {
 		            }, async function(){
 			        // await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
 		              // alert('Data Updated');
-		              this.props.navigation.navigate('ShoppingList')
+		              this.props.navigation.push('ShoppingList')
 		            });
 		          }
 		          else
@@ -105,10 +105,10 @@ export class CreateWishlistComponent extends Component {
 		            this.setState({
 		              Message : responseJson.message,
 		            })
-		            
+		            alert(JSON.stringify(this.state.Message))
 		          
 		          }
-		          alert(JSON.stringify(this.state.Message))
+		          
 
 		        })
 		       

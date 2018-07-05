@@ -14,7 +14,7 @@ import {gstyles} from '../../GlobalStyles';
 // import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import CheckBox from 'react-native-checkbox';
-// import { DrawerActions } from 'react-navigation';
+import { DrawerActions } from 'react-navigation';
 // import ModalDropdown from 'react-native-modal-dropdown';
 
 const window= Dimensions.get('window');
@@ -23,7 +23,10 @@ export  class GetPriceComponent extends Component {
     return(
       <View style={gstyles.container}>
           <View style={gstyles.headerMenu}>
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
+                <TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+                  <Icon name="bars" size={24} color="#fff" />
+                </TouchableOpacity>
+                 <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerBackButton}>
                   <Icon name="angle-left" size={24} color="#fff" />
                 </TouchableOpacity>
                 <Text style={gstyles.headerProfileLabel}>Get Price</Text>
@@ -31,7 +34,7 @@ export  class GetPriceComponent extends Component {
           <View>
                 <TouchableOpacity style={styles.flatlist}><Text style={styles.title}>Lowest Price</Text><Text style={styles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
                 <TouchableOpacity style={styles.flatlist}><Text style={styles.title}>NearBy Store</Text><Text style={styles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
-                <TouchableOpacity style={styles.flatlist}><Text style={styles.title}>Multiple Store</Text><Text style={styles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={styles.flatlist} onPress={()=>this.props.navigation.push('MultiStore')}><Text style={styles.title}>Multiple Store</Text><Text style={styles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
           </View>
       </View>
     );
@@ -39,21 +42,9 @@ export  class GetPriceComponent extends Component {
 }
 const styles  = StyleSheet.create({
     flatlist:{backgroundColor: '#fff',borderBottomColor:'grey',borderBottomWidth:0.5,flexDirection:'row'},
-    flatimage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '100%', height: 100},
-    title:{fontSize: 18,padding:15,color:'#000',fontWeight:'bold',width:'90%',flexDirection:'column'},
-    rightButton:{padding:15,width:'10%',flexDirection:'column'},
-    subtitle:{color: '#000', marginTop: '3%', fontSize: 18},
-    discountDeal:{color: '#ff0000', marginTop: '3%', fontSize: 18},
-    qtyView:{flexDirection: 'row',borderWidth: 1,borderColor:'#adadad',width:100,height:30,},
-    qtybuttonDecrease:{width:28,borderRightWidth:1,borderColor:'#adadad'},
-    qtybuttonIncrease:{width:28,borderLeftWidth:1,borderColor:'#adadad'},
-    qtyText:{width:40,textAlign:'center',fontSize: 14,textAlign:'center', color: 'rgb(147, 198, 87)', marginTop: '5%',borderColor:'#adadad'},
-    subTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'rgb(113,113,113)',paddingLeft:12},
-    subTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'rgb(113,113,113)',fontWeight:'bold',paddingRight:10},
-    itemTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'#000'},
-    itemTotalRight:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000'},
-    itemTotalRightIcon:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right'},
-    orderTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000',fontWeight:'bold'}
+    title:{fontSize: 18,padding:15,color:'#000',fontWeight:'bold',width:'90%'},
+    rightButton:{padding:15,width:'10%'},
+
 })
 
 

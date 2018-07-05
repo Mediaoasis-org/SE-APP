@@ -17,9 +17,9 @@ import { SpecialOffers } from './src/screens/specialOffer/specialOffers';
 import { WishlistComponent } from './src/screens/wishlist/wishlist';
 import { CreateWishlistComponent } from './src/screens/newList/createNewList';
 import { EditWishlistComponent } from './src/screens/wishlist/EditWishlist';
+import { TellFriendComponent } from './src/screens/wishlist/TellFriend';
 import { MultipleWishlistComponent } from './src/screens/newList/wishlistMultiple';
 import { ShoppingListComponent } from './src/screens/shoppingList/shoppingList';
-import { GetPriceComponent } from './src/screens/getPrice/GetPrice';
 import { StoreLocatorComponent } from './src/screens/storeLocality/storeLocator';
 import { PersonalInfoComponent } from './src/screens/User/personalInfo';
 import { UploadPhotoComponent } from './src/screens/User/photoUpload';
@@ -28,10 +28,12 @@ import  LogoutComponent  from './src/screens/User/signOut';
 // import { PrivacySettingsComponent } from './src/screens/User/privacySettings';
 // import { OtherSettingsComponent } from './src/screens/User/otherSettings';
 import { LanguageComponent } from './src/screens/language/language';
+import { GetPriceComponent } from './src/screens/getPrice/GetPrice';
 import { LowestPriceComponent } from './src/screens/getPrice/lowestPrice';
 import { NearByStoreComponent } from './src/screens/getPrice/NearByStore';
 import { MultiStoreComponent } from './src/screens/getPrice/multiStore';
 import { ContactUsComponent } from './src/screens/contactUs/contactUs';
+import { ReportComponent } from './src/screens/report/Report';
 import { gstyles } from './src/GlobalStyles';
 
 import {DrawerTitle} from './src/components/SideMenu/index';
@@ -173,6 +175,9 @@ const stack = createStackNavigator({
   EditWishlist:{
     screen:EditWishlistComponent
   },
+  TellFriend:{
+    screen:TellFriendComponent
+  },
   MultipleWishlist:{
     screen:MultipleWishlistComponent
   },
@@ -190,6 +195,12 @@ const stack = createStackNavigator({
   // },
   GetPrice:{
     screen:GetPriceComponent
+  },
+  MultiStore:{
+    screen:MultiStoreComponent,
+  },
+  Report:{
+    screen:ReportComponent
   },
   Logout:{
     screen:LogoutComponent
