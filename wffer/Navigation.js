@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { View,ScrollView,Text,Image,TouchableOpacity } from 'react-native';
+import { View,ScrollView,Text,Image,TouchableOpacity,Dimensions } from 'react-native';
 import { SwitchNavigator,SafeAreaView,createStackNavigator,createDrawerNavigator,createBottomTabNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { HomeComponent } from './src/screens/home/home';
@@ -30,6 +30,7 @@ import  LogoutComponent  from './src/screens/User/signOut';
 import { LanguageComponent } from './src/screens/language/language';
 import { GetPriceComponent } from './src/screens/getPrice/GetPrice';
 import { LowestPriceComponent } from './src/screens/getPrice/lowestPrice';
+import { StoreProfileComponent } from './src/screens/getPrice/storeProfile';
 import { NearByStoreComponent } from './src/screens/getPrice/NearByStore';
 import { MultiStoreComponent } from './src/screens/getPrice/multiStore';
 import { ContactUsComponent } from './src/screens/contactUs/contactUs';
@@ -37,7 +38,7 @@ import { ReportComponent } from './src/screens/report/Report';
 import { gstyles } from './src/GlobalStyles';
 
 import {DrawerTitle} from './src/components/SideMenu/index';
-
+const window = Dimensions.get('window');
 // const navigateOnce = (getStateForAction) => (action, state) => {
 //   const {type, routeName} = action;
 //   return (
@@ -196,6 +197,15 @@ const stack = createStackNavigator({
   GetPrice:{
     screen:GetPriceComponent
   },
+  Lowest:{
+    screen: LowestPriceComponent
+  },
+  StoreProfile:{
+    screen: StoreProfileComponent
+  },
+  NearByStore:{
+    screen: NearByStoreComponent
+  },
   MultiStore:{
     screen:MultiStoreComponent,
   },
@@ -217,10 +227,10 @@ const DrawerStack = createDrawerNavigator({
 },
 {
   drawerBackgroundColor:'#fff',
-  drawerWidth: 300,
-  drawerOpenRoute: 'DrawerOpen',
-        drawerCloseRoute: 'DrawerClose',
-        drawerToggleRoute: 'DrawerToggle',
+  drawerWidth: window.width*0.75,
+  // drawerOpenRoute: 'DrawerOpen',
+  // drawerCloseRoute: 'DrawerClose',
+  // drawerToggleRoute: 'DrawerToggle',
   // drawerPosition:'right',
   gesturesEnabled: false,
   contentComponent:({navigation}) => <DrawerTitle navigation={navigation}/>
@@ -236,11 +246,7 @@ const MyNavigation = createStackNavigator({
 },
 {
     headerMode: 'none',
-
-    // mode:'modal',
-    cardStyle: {
-      backgroundColor: '#ffffff'
-	}
+	
 })
 
 export default MyNavigation;

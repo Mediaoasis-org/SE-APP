@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
-import { DrawerActions } from 'react-navigation';
+// import { DrawerActions } from 'react-navigation';
 import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
@@ -14,7 +14,6 @@ export class ForgetComponent extends Component {
 		}
 	}
 	forget(){
-
 	     var formData = new FormData;
 		    formData.append('email',this.state.email);
 		    formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
@@ -49,17 +48,15 @@ export class ForgetComponent extends Component {
 		          alert('There was an error logging in.');
 		        });
   	}
-	Capitalize(str){
-    return str.charAt(0).toUpperCase() + str.slice(1);
-    }
 	render(){
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() =>this.props.navigation.goBack() } style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() =>this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={30} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>{Constants.forgetPassword}</Text>           
+			                    <Text style={gstyles.headerProfileLabel}>{Constants.forgetPassword}</Text>  
+			                    <Text style={gstyles.headerRightButton}></Text>         
 					</View>
 					<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Forget Password</Text></View>

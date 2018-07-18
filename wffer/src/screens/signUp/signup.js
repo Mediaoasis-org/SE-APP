@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, TouchableOpacity, ScrollView,AsyncStorage,StyleSheet,Image,ActivityIndicator } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView,AsyncStorage,Image,ActivityIndicator } from 'react-native';
 import { Constants } from '../../common';
-import { ModalDropdownComponent } from '../../components/ModalDropdown';
 import { gstyles } from '../../GlobalStyles';
 import CheckBox from 'react-native-checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { DrawerActions } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
 import ModalDropdown from 'react-native-modal-dropdown';
 export class SignupComponent extends Component {
@@ -19,39 +17,27 @@ export class SignupComponent extends Component {
 			email:'',
 			password:'',
 			passconf:'',
-			Timezone:null,
-			Language:null,
+			timezone:null,
+			language:null,
 			'1_1_3_alias_first_name':'',
 			'1_1_4_alias_last_name':'',
-			Gender:'',
 			 checked: false,
 			 LoggedIn:null,
 			 isLoading:true,
 		}
 		// alert(JSON.stringify(this.props.navigation))
+		this._getStorageValue()
 		this.handleInput = this.handleInput.bind(this);
 	}
-	componentDidMount()
-	{
-		this._getStorageValue()
-	}
 	async _getStorageValue(){
-		// this.fetchFields()
 	  var valuePersonal = await AsyncStorage.getItem('fieldsSignupPersonal');
 	  var value = await AsyncStorage.getItem('fieldsSignup');
-	  // var valuePhoto = await AsyncStorage.getItem('fieldsSignupPhoto');
-	  // alert(value)
 	  if(value!=null){
-	  	// alert('entering');
-	  	// const data = JSON.parse(value)
 	  const	data= JSON.parse(value);
 	  	this.setState({LoggedIn:true})
-	  	this.setState({isLoading: false})
 	  	this.setState({dataSourcePersonal:JSON.parse(valuePersonal)});
 		this.setState({dataSource:data});		
-		// this.setState({dataSourcePhoto:JSON.parse(valuePhoto)});
-		// alert(JSON.stringify(this.state.dataSourcePersonal))
-		// console.log(this.state.dataSource.length)
+		this.setState({isLoading: false})
 	  }
 	  else
 	  {
@@ -93,11 +79,7 @@ export class SignupComponent extends Component {
       // console.log('work');
     }
 	fetchFields(){	
-			 return fetch('https://wffer.com/se/api/rest/signup?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{    
-			        // headers:{
-			        //   'Accept':'application/json',
-			        //   'Content-Type':'application/json',
-			        // },
+			 return fetch('https://wffer.com/se/api/rest/signup?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
 			        method:'GET'
 			      })
 			      .then((response) => response.json())
@@ -107,13 +89,9 @@ export class SignupComponent extends Component {
 			          isLoading: false,
 			          dataSource: responseJson.body,
 			          dataSourcePersonal: responseJson.body.fields,
-			          // dataSourcePhoto:responseJson.body.photo,
 			        },async function(){
 			       	  await AsyncStorage.setItem('fieldsSignup', JSON.stringify(this.state.dataSource));
-			       	  await AsyncStorage.setItem('fieldsSignupPersonal', JSON.stringify(this.state.dataSourcePersonal));
-			       	  // await AsyncStorage.setItem('fieldsSignupPhoto', JSON.stringify(this.state.dataSourcePhoto));
-			       	  
-			        	// alert(JSON.stringify(this.state.dataSource));   	
+			       	  await AsyncStorage.setItem('fieldsSignupPersonal', JSON.stringify(this.state.dataSourcePersonal));  	
 			        });
 			      	}
 			      	else
@@ -124,24 +102,19 @@ export class SignupComponent extends Component {
 			      .catch((error) =>{
 			        console.error(error);
 			      });
-			
 	}
-	Capitalize(str){
-    return str.charAt(0).toUpperCase() + str.slice(1);
-    }
+
     signup(){
-    	// this.submit()
-    	// this.continue()
+    	this.continue()
     	var formData = new FormData;
 		    formData.append('email',this.state.email);
 		    formData.append('password',this.state.password);
 		    formData.append('passconf',this.state.passconf);
-		    formData.append('timezone',this.state.Timezone);
-		    formData.append('language',this.state.Language);
+		    formData.append('timezone',this.state.timezone);
+		    formData.append('language',this.state.language);
 		    formData.append('terms',this.state.checked);
 		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
 		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
-		    formData.append('1_1_5_alias_gender',this.state.Gender);
 		    formData.append('photo',{uri: this.state.ImageSource.uri, name: this.state.name, type: 'multipart/form-data'});
 		    formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
 		    formData.append('oauth_consumer_secret','aoxhigoa336wt5n26zid8k976v9pwipe');
@@ -159,12 +132,9 @@ export class SignupComponent extends Component {
 		        	
 		          if(responseJson.status_code=="200"){
 		            this.setState({
-		              // isLoading: false,
 		              dataSource1: responseJson.body,
 		            }, async function(){
-			        await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
-		              // alert(JSON.stringify(responseJson.body.user));
-		              this.props.navigation.navigate('Home');
+		              this.props.navigation.navigate('Login');
 		            });
 		          }
 		          else
@@ -183,12 +153,6 @@ export class SignupComponent extends Component {
 		          console.error(error);
 		        });
     }
-    
-    //  selected(index,value){
-    //   alert(value)
-    //   return value;
-    // }
-     // onTagSelect(idx, data){ console.log("======== on tag selected ==========="); console.log(idx); };
     handleInput(idx,data,value){
      	var state = value;
      	var val = idx;
@@ -196,13 +160,11 @@ export class SignupComponent extends Component {
      	// console.log(val); 
      	// console.log(data);  
      	var obj  = {}
-     	obj[state] = data;
+     	obj[state] = idx;
      	// obj.append(obj[])
      	this.setState(obj);
      	console.log(obj)
      	// console.log(this.state[state]);
-     	  	
-     	
      }
      onTagSelect(idx, data,name){ 
 	      // console.log("======== on tag selected ==========="); 
@@ -212,18 +174,14 @@ export class SignupComponent extends Component {
 	select_dropdown(value,options){
 	 	let data;
 	 		// console.log(value);
-	 		// return value
 	 		Object.keys(options).map(function(k){
 	 			// console.log(options[k],k);
 	 			if(options[k] == value){
-	 				// return options[k]
 	 				// console.log(value);
 	 				// console.log(k)
 	 				// console.log(options[k])
 	 				data = options[k];
 	 			}
-
-
 	 		})
 	 		return data
 	}
@@ -232,8 +190,8 @@ export class SignupComponent extends Component {
 	        formData.append('email',this.state.email);
 		    formData.append('password',this.state.password);
 		    formData.append('passconf',this.state.passconf);
-		    formData.append('timezone',this.state.Timezone);
-		    formData.append('language',this.state.Language);
+		    formData.append('timezone',this.state.timezone);
+		    formData.append('language',this.state.tanguage);
 		    formData.append('terms',this.state.checked);
 		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
 		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
@@ -251,7 +209,7 @@ export class SignupComponent extends Component {
 		        .then((responseJson) => {
 		        	
 		          if(responseJson.status_code=="204"){
-		          	this.submit()
+		          	// this.submit()
 		          }
 		          else
 		          {
@@ -259,42 +217,24 @@ export class SignupComponent extends Component {
 		              Message : responseJson.message,
 		            })
 		            alert(JSON.stringify(responseJson.message))
-		          
 		          }
-		          
-
 		        })
 		       
 		        .catch((error) =>{
 		          console.error(error);
 		        });
-    	
-
-    	// this.setState({photoUploadShow:false})
-    }
-    continuePhoto(){
-    	this.setState({personalInformationShow:false});
-    	this.setState({accountShow:false});
-    	// this.setState({photoUploadShow:true})
-    }
-    submit(){
-    	console.log(this.state);
-    	alert("all values")
     }
     //renders account fields for user
     renderAccount(){  	 
     	return(
     	<View>
     	{
-
 	    	this.state.dataSource.account.map((item,index)=>{
-			
 				if(item.type=='Text'){
 					return (
-					<View key={index}>
+					<View key={item.id}>
 							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
 					</View>
-					
 				);
 				}
 				if(item.type=='Password'){
@@ -306,7 +246,7 @@ export class SignupComponent extends Component {
 				}
 				if(item.type=='Select'){
 						return(
-						<View>
+						<View key={item.id}>
 							<ModalDropdown 
 		                      style={gstyles.dropdownMainStyles}						                      
 		                      dropdownTextStyle={gstyles.dropdownTextStyle}
@@ -317,13 +257,9 @@ export class SignupComponent extends Component {
 		                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
 		                      options={item.multiOptions}						         
 		                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
-		                      />
-		    					
-
-		    				
+		                      />	
 		    			</View>
 						)
-					
 				}
 				if(item.type=='Checkbox'){
 					return(
@@ -334,70 +270,50 @@ export class SignupComponent extends Component {
 						  labelStyle={{color:'#000',fontSize:16,padding:3}}
 						 	checked={this.state.checked}
   							onChange={() => this.setState({checked: !this.state.checked})}
-						  style={{color:'#ff0000',backgroundColor:'#00ff00'}}
+						  style={gstyles.checkboxStyle}
 						/>
 					</View>
 					)
 				}
-				
-
-			})
-			
+			})	
 		}
 		</View>
-		
-		)
-			
+		)	
     }
-  ////   //renders personal information fields for user
+  //renders personal information fields for user
     renderPersonalInformation(){
-    	
     	return(
     	<View>
     	{
-
 	    	this.state.dataSourcePersonal["Personal Information"].map((item,index)=>{
-			
 				if(item.type=='Text'){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />
-							
+							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />		
 					</View>
-					
 				);
-				}
-				
-				
+				}	
 			})
-		
 		}
-	
-		
 		</View>
-		)
-				
+		)		
     }
-  //   //renders photo fields for user
+  //renders photo fields for user
     renderPhoto(){
-    	
 	    	return(
 	    			<View>
-		    			<View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,}}>
-                            <TouchableOpacity style={{position:'absolute',top:22,left:'66%',zIndex:1000}} onPress={this.selectPhotoTapped.bind(this)}>
-                                <Image source={require('../../../assets/account_settings_camera.png')} style={{width:30,height:30}}/>
+		    			<View style={gstyles.userImageView}>
+                            <TouchableOpacity style={gstyles.cameraImageView} onPress={this.selectPhotoTapped.bind(this)}>
+                                <Image source={require('../../../assets/account_settings_camera.png')} style={gstyles.qtyIcon}/>
                             </TouchableOpacity>       
-                            {this.state.ImageSource === null ? <Image source={require('../../../assets/nophoto_user_thumb_profile.png')} style={styles.image}/> :
-                                    <Image style={styles.image} source={this.state.ImageSource} />
+                            {this.state.ImageSource === null ? <Image source={require('../../../assets/nophoto_user_thumb_profile.png')} style={gstyles.circledImage}/> :
+                                    <Image style={gstyles.circledImage} source={this.state.ImageSource} />
                             }
                     	</View>
-
-                    </View>
-		    	
+                    </View>	
 		    );
-    	
     }
-  	 onChange(text,name){
+  	onChange(text,name){
      	var state = name;
      	var val = text;
      	// console.log(state);
@@ -407,17 +323,18 @@ export class SignupComponent extends Component {
      	// console.log(obj1)
      	this.setState(obj1);
      	
-     }
+    }
 	render(){
 		// console.log(this.state.dataSourcePersonal["Personal Information"]);
 		if (this.state.dataSource.length === 0) {
 		  return (
 		  		<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.Signup}</Text>
+			                     <Text style={gstyles.headerRightButton}></Text>
 					</View>
 				</View>
 		  	)
@@ -425,14 +342,15 @@ export class SignupComponent extends Component {
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.Signup}</Text>
+			                     <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{ 
-                              this.state.isLoading ?   <View style={styles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : null
-                            }
+                      this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
+                           
 					<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Sign Up</Text></View>
 
@@ -441,28 +359,11 @@ export class SignupComponent extends Component {
 						{this.renderPersonalInformation()}
 						{this.renderAccount()}
                         
-                     <TouchableOpacity onPress={()=>this.continue()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>      
+                     <TouchableOpacity onPress={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>      
 						</View>
 					</ScrollView>
+					 }
 				</View>
 			);
 	}
 }
-const styles = StyleSheet.create({
-	image:{
-	  paddingTop: 10,
-	  width: 200,
-	  height: 200,
-	  borderRadius: 100,
-	},
-})
-
-// <TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
-// 							<TextInput name="password" placeholder="Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
-// 							<TextInput name="confirm_password" placeholder="Confirm Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>
-	// <ModalDropdownComponent defaultValue='Select Time Zone'
-	// 			                	options={['(UTC+5:30) Bombay,Calcutta,New Delhi','(UTC+5:45) Nepal','(UTC+6) Dhaka','(UTC+9:30) Darwin']}/>	
-	// 						<ModalDropdownComponent defaultValue='Select Language' options={['English','Saudi Arabia Arabic']}/>
-
-// <View>
-// 

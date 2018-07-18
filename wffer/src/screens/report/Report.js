@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, TouchableOpacity, ScrollView, AsyncStorage,FlatList,ActivityIndicator } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView, AsyncStorage,ActivityIndicator } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
-import { Constants } from '../../common';
+// import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import ModalDropdown from 'react-native-modal-dropdown';
-import { DrawerActions } from 'react-navigation';
+// import { DrawerActions } from 'react-navigation';
   
 export class ReportComponent extends Component {
 	constructor(props){
@@ -148,12 +148,14 @@ export class ReportComponent extends Component {
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-			                    <Text style={gstyles.headerProfileLabel}>Wffer</Text>      
+								<Text style={gstyles.headerMenuButton}></Text>
+			                    <Text style={gstyles.headerProfileLabel}>Wffer</Text>
+			                    <Text style={gstyles.headerRightButton}></Text>      
 					</View>
 					{ 
-                      this.state.isLoading ?   <View style={gstyles.container}><ActivityIndicator color='#00ff00' size="large"/></View> :
+                      this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
                       							<ScrollView>
-                      								<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Edit Shopping List</Text></View>
+                      								<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Submit a Report</Text></View>
                       									{	
                       										this.state.dataSource.map((item,index)=>{
                       											if(item.type=='Select'){
@@ -195,9 +197,9 @@ export class ReportComponent extends Component {
                       										})
                       									}
                       									<TouchableOpacity onPress={()=>this.SubmitReport()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit Report</Text></TouchableOpacity>
-														<View style={{width:'100%'}}><Text style={{textAlign:'center'}}>OR</Text></View>
-														<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}>
-																<Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text>
+														<View style={gstyles.width100}><Text style={gstyles.textCenter}>OR</Text></View>
+														<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.cancelButton}>
+																<Text style={gstyles.cancelButtonText}>Cancel</Text>
 														</TouchableOpacity>
                       							</ScrollView>
                     }

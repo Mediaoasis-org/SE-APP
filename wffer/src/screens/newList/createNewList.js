@@ -3,7 +3,7 @@ import { Text, TextInput, View, Dimension, TouchableOpacity, Image, FlatList,  S
 import { gstyles } from '../../GlobalStyles';
 import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { DrawerActions } from 'react-navigation';
+// import { DrawerActions } from 'react-navigation';
 
 export class CreateWishlistComponent extends Component {
 	constructor(props){
@@ -22,16 +22,24 @@ export class CreateWishlistComponent extends Component {
 		// this.fetchFields()
 	 
 	  const userData = await AsyncStorage.getItem('userData');
-     
+      var value = await AsyncStorage.getItem('createListFields');
+      // alert(value)
 	  if(userData != null){
 	  	this.setState({userData:JSON.parse(userData)});
-	  	// var value = await AsyncStorage.getItem('createListFields');
      	this.setState({oauthToken:this.state.userData.oauth_token});
      	this.setState({oauthSecret:this.state.userData.oauth_secret});
-	  	// const data = JSON.parse(value);
 	  	this.setState({LoggedIn:true})
-		// this.setState({dataSource:data});
-	  	this.fetchFields();	
+		  	if(value == null){
+			  	this.fetchFields();	
+		 	}
+		  	else
+		  	{
+		  		// alert('entering');
+			  	const data = JSON.parse(value);
+				this.setState({dataSource:data});
+				this.setState({isLoading:false})
+				// console.log(this.state.dataSource)
+		  	}
 	  }
 	  else
 	  {
@@ -122,12 +130,12 @@ export class CreateWishlistComponent extends Component {
 			return (
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>        
 					</View>
-					<Text style={{padding:10,fontSize:18,margin:10,textAlign:'center'}}>To Create Wishlist ,Please Sign In</Text>
+					<Text style={gstyles.signInButton}>To Create Wishlist ,Please Sign In</Text>
 		              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
 		                  <Text style={gstyles.createAccountText}>Sign In</Text>
 		              </TouchableOpacity>
@@ -137,11 +145,15 @@ export class CreateWishlistComponent extends Component {
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>
+			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
+					{
+						this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
+					
 					<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Create New Wishlist</Text></View>
 						<View>
@@ -159,13 +171,14 @@ export class CreateWishlistComponent extends Component {
 								
 							}
 							<TouchableOpacity onPress={()=>this.createList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Create</Text></TouchableOpacity>
-							<View style={{width:'100%'}}><Text style={{textAlign:'center'}}>OR</Text></View>
-							<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}>
-									<Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text>
+							<View style={gstyles.width100}><Text style={gstyles.textCenter}>OR</Text></View>
+							<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.cancelButton}>
+									<Text style={gstyles.cancelButtonText}>Cancel</Text>
 							</TouchableOpacity>
 						</View>
 
 					</ScrollView>
+				}
 				</View>
 			);
 	}

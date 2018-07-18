@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, ScrollView, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { Text, TextInput, View, ScrollView, TouchableOpacity, ActivityIndicator, AsyncStorage } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
-import { ModalDropdownComponent } from '../../components/ModalDropdown';
+// import { ModalDropdownComponent } from '../../components/ModalDropdown';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { DrawerActions } from 'react-navigation';
+// import { DrawerActions } from 'react-navigation';
 export  class ContactUsComponent extends Component {
 	constructor(props){
 		super(props);
@@ -12,12 +12,12 @@ export  class ContactUsComponent extends Component {
 			email:'',
 			body:'',
 			dataSource:[],
+			isLoading:true
 			// data:[]
 		}
 		this._getStorageValue();
 		this.handleInput = this.handleInput.bind(this);
-		this.onSummitTextInput = this.onSummitTextInput.bind(this)
-		
+		// this.onSummitTextInput = this.onSummitTextInput.bind(this)
 	}
 
 	async _getStorageValue(){
@@ -29,13 +29,14 @@ export  class ContactUsComponent extends Component {
 	  		// alert('entering');
 	  	const data = JSON.parse(value);
 	  	// alert(data)
-	  	this.setState({LoggedIn:1})
+	  	// this.setState({LoggedIn:1})
 		this.setState({dataSource:data});
+		this.setState({isLoading:false})
 		// console.log(this.state.dataSource)
 	  }
 	  else
 	  {
-		this.setState({LoggedIn:0})
+		// this.setState({LoggedIn:0})
 	  	this.fetchFields();	
 	  }
 	}
@@ -104,43 +105,6 @@ export  class ContactUsComponent extends Component {
 			      });
 			
 	}
-	// fetchValues(){
-	
-	// 	return fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
-			       
-	// 		        // headers:{
-	// 		        //   'Accept':'application/json',
-	// 		        //   'Content-Type':'application/json',
-	// 		        // },
-	// 		        method:'GET'
-	// 		      })
-	// 		      .then((response) => response.json())
-	// 		      .then((responseJson) => {
-			    
-	// 		      	if(responseJson.status_code=='200'){
-	// 		      		 this.setState({
-	// 		          isLoading: false,
-	// 		          fieldValues: responseJson.body.formValues,
-	// 		        },function(){
-	// 		        		this.setState({'1_1_3_alias_first_name':this.state.fieldValues['1_1_3_alias_first_name'].value})
-	// 		        		this.setState({'1_1_4_alias_last_name':this.state.fieldValues['1_1_4_alias_last_name'].value})
-	// 		        		this.setState({'1_1_5_alias_gender':this.state.fieldValues['1_1_5_alias_gender'].value})
-	// 		        		// console.log(this.state['1_1_3_alias_first_name'])
-	// 		        		 // alert(JSON.stringify(this.state.fieldValues['1_1_5_alias_gender'].value));  
-
-			        	
-	// 		        });
-
-	// 		      	}
-	// 		      	else
-	// 		      	{
-	// 		      		// this.setState({Message:responseJson.Message});
-	// 		      	}
-	// 		      })
-	// 		      .catch((error) =>{
-	// 		        console.error(error);
-	// 		      });
-	// }
 	handleInput(idx,data,value){
      	var state = value;
      	var val = idx;
@@ -167,28 +131,32 @@ export  class ContactUsComponent extends Component {
      	this.setState(obj1);
      	
      }
-     onSummitTextInput(name) {
-	    const index = Object.keys(this.state).indexOf(name);
-	    if (index !== -1 && this[Object.keys(this.state)[index + 1]]
-	    && this[Object.keys(this.state)[index + 1]].textInput) {
-	      this[Object.keys(this.state)[index + 1]].textInput._root.focus();
-	    } else {
-	      Keyboard.dismiss();
-	    }
-	  }
-	static navigationOptions = {
-        title: 'Personal Info',
-    };
+   //   onSummitTextInput(name) {
+	  //   const index = Object.keys(this.state).indexOf(name);
+	  //   if (index !== -1 && this[Object.keys(this.state)[index + 1]]
+	  //   && this[Object.keys(this.state)[index + 1]].textInput) {
+	  //     this[Object.keys(this.state)[index + 1]].textInput._root.focus();
+	  //   } else {
+	  //     Keyboard.dismiss();
+	  //   }
+	  // }
+	// static navigationOptions = {
+ //        title: 'Personal Info',
+ //    };
 	render(){
 		
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Contact Us</Text>
+			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
+					{
+						this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
+					
 				 	<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Contact Us</Text></View>
 						<View>
@@ -225,37 +193,12 @@ export  class ContactUsComponent extends Component {
 											</View>
 											)
 										}
-										if(item.type=='Select'){
-											return(
-											<View key={item.id}>
-												<ModalDropdownComponent 
-													defaultIndex={-1}
-												defaultValue={item.label}
-						        					options={item.multiOptions}
-						        					onSelect={(idx,data)=>this.onHandleChange(idx,data)}
-						        					onChange={this.handleInput}
-						        					givenValue={this.state[item.name]}
-						        				/>
-						        				
-				                			</View>
-											)
-											
-										}
-										// if(item.type=='Submit'){
-										// 	return (
-										// 	<View key={item.id}>
-										// 			<TouchableOpacity onPress={()=>this.SavePersonalInfo()} style={gstyles.buttonView}>
-										// 				<Text style={gstyles.buttonText}>{item.label}</Text>
-										// 			</TouchableOpacity>
-													
-										// 	</View>
-										// 	)
-										// }
 									})
 								}
 								<TouchableOpacity onPress={()=>this.SendMessage()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
+					}
 			</View>
 		)
 	}

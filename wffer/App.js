@@ -11,6 +11,7 @@ import { createStore } from 'redux';
 import MyNavigation from './Navigation';
 import SplashScreen from './SplashScreen';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
+YellowBox.ignoreWarnings(['Class RCTCxxModule']);
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props){

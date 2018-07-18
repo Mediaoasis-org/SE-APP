@@ -80,7 +80,7 @@ export  class StoreProfileComponent extends Component {
 							            <View style={gstyles.lowestPriceRightInner}>
 							            	<View style={gstyles.lowestPriceRightInnerBox}>
 								          				<Text style={gstyles.lowestPriceTitle}>{item.title}</Text>
-										          		<Text style={gstyles.lowestPriceSubTitle}>Qty {item.quantity} X {item.price1} SAR </Text><Text style={gstyles.textRed}>- {item.quantity*item.price1} SAR</Text>
+										          		<Text style={gstyles.lowestPriceSubTitle}>Qty {item.quantity} X {item.price1} SAR <Text style={[gstyles.fontSize18,gstyles.textRed]}>- {item.quantity*item.price1} SAR</Text></Text>
 										          			
 											</View>	
 											<View style={gstyles.lowestPriceLeftInnerBox}>

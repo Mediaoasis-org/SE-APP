@@ -13,7 +13,7 @@ import {gstyles} from '../../GlobalStyles';
 // import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import CheckBox from 'react-native-checkbox';
-import { DrawerActions } from 'react-navigation';
+// import { DrawerActions } from 'react-navigation';
 import ModalDropdown from 'react-native-modal-dropdown';
 const window= Dimensions.get('window');
 export  class PrivacySettingsComponent extends Component {
@@ -33,7 +33,7 @@ export  class PrivacySettingsComponent extends Component {
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>

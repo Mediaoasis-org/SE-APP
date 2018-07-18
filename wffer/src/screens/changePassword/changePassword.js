@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, Dimension, TouchableOpacity, Image, FlatList, ScrollView,AsyncStorage } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, FlatList, ScrollView,AsyncStorage,ActivityIndicator } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
-import { DrawerActions } from 'react-navigation';
-import { Constants } from '../../common';
+// import { DrawerActions } from 'react-navigation';
+// import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import api from '../../api/auth';
+// import api from '../../api/auth';
 export class ChangePasswordComponent extends Component {
 	constructor(props){
 		super(props);
 		this.state={
+			isLoading:true,
 			dataSource:[],
 			userData:[],
 			oldPassword:'',
@@ -35,6 +36,7 @@ export class ChangePasswordComponent extends Component {
 	    const data= JSON.parse(value);
 	  	this.setState({LoggedIn:1})
 		this.setState({dataSource:data});
+		this.setState({isLoading:false})
 	  }
 	  else
 	  {
@@ -56,7 +58,7 @@ export class ChangePasswordComponent extends Component {
 			      .then((responseJson) => {
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
-			          // isLoading: false,
+			          isLoading: false,
 			          dataSource: responseJson.body,
 			        },async function(){
 			        		await AsyncStorage.setItem('changepasswordFields', JSON.stringify(this.state.dataSource));
@@ -129,41 +131,36 @@ export class ChangePasswordComponent extends Component {
 			
     }
 	render(){
-		if (this.state.dataSource.length === 0) {
-	      return (
-	            <View style={gstyles.container}>
-	                <View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
-									<Icon name="bars" size={24} color="#fff" />
-			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Change Password</Text>
-			                    
-					</View>
-	            </View>
-	        );
-	    }
 		return(
-				<View style={gstyles.container}>
-					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
-									<Icon name="bars" size={24} color="#fff" />
-			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Change Password</Text>
-			                    
-					</View>
-					<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Change Password</Text></View>
-						<View>
-							<FlatList extraData={this.state.dataSource}
-								  data={this.state.dataSource}
-								  renderItem={this.render_item}	
-								  keyExtractor={this._keyExtractor}
-							/>	
+				
+						<View style={gstyles.container}>
 							
-							<TouchableOpacity onPress={()=>this.chagnePassword()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Change Password</Text></TouchableOpacity>
+									<View style={gstyles.headerMenu}>
+												<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+													<Icon name="bars" size={24} color="#fff" />
+							                    </TouchableOpacity>
+							                    <Text style={gstyles.headerProfileLabel}>Change Password</Text>
+							                    <Text style={gstyles.headerRightButton}></Text>
+									</View>
+							{ 
+		           				this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
+									<View>
+									<ScrollView>
+										<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Change Password</Text></View>
+										<View>
+											<FlatList extraData={this.state.dataSource}
+												  data={this.state.dataSource}
+												  renderItem={this.render_item}	
+												  keyExtractor={this._keyExtractor}
+											/>	
+											
+											<TouchableOpacity onPress={()=>this.chagnePassword()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Change Password</Text></TouchableOpacity>
+										</View>
+									</ScrollView>
+									</View>
+							}
 						</View>
-					</ScrollView>
-				</View>
+				
 			);
 	}
 }

@@ -3,25 +3,28 @@ import { Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 
 export class SpecialOfferComponent extends React.Component{
+	constructor(props){
+		super(props);
+	}
 	Capitalize(str){
     	return str.charAt(0).toUpperCase() + str.slice(1);
     }
 	render(){
 		return(
-			<View style={gstyles.specialofferBg}>
+			<View>
 	              <FlatList numColumns={this.props.numcols} data={this.props.data}
 	                renderItem={({item}) =>      
-	                    <TouchableOpacity style={{width:'48%',paddingLeft:15,paddingRight:15,paddingBottom:15,margin:'1%',backgroundColor:'#fff'}}>
-	                    	<Text style={{width:'60%',marginBottom:5,marginLeft:-15,backgroundColor:'#c30000',padding:5,color:'#fff',fontSize:16}}>{item.discount} </Text>
-	                      <View style={{alignItems:'center'}}><Image source={require('../../../assets/product1.jpg')} style={gstyles.flatimage}/></View>
-	                          <View style={{flexDirection: 'column'}}>
+	                    <TouchableOpacity style={gstyles.specialOfferView}>
+	                    	<Text style={gstyles.discountShow}>{item.discount} </Text>
+	                      <View style={gstyles.alignItemsCenter}><Image source={require('../../../assets/product1.jpg')} style={gstyles.flatimage}/></View>
+	                          <View style={gstyles.flexDirectionColumn}>
 	                          	  
-	                              <View style={{width: '90%',paddingTop:10}} ><Text numberOfLines={2}  style={gstyles.title}>{item.name}</Text></View>
-	                              <Text style={{color:'#808080',fontSize:16,fontWeight:'bold'}}>{item.category}</Text>
-	                              <Text style={{color:'#c40b00',fontSize:17}}>{item.company}</Text>
-	                              <Text style={{color:'#808080',fontSize:16,fontWeight:'bold',textDecorationLine: 'line-through', textDecorationStyle: 'solid'}}>{item.price}</Text>
-	                              <Text style={{color:'#808080',fontSize:16,fontWeight:'bold'}}>{item.discountedPrice}</Text>
-	                              <Text style={{color:'#808080',fontSize:16,fontWeight:'bold'}}>Offer Ends {item.offerEnd}</Text>
+	                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={gstyles.title}>{item.name}</Text></View>
+	                              <Text style={gstyles.specialOfferCategory}>{item.category}</Text>
+	                              <Text style={gstyles.specialOfferCompany}>{item.company}</Text>
+	                              <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}]}>{item.price}</Text>
+	                              <Text style={gstyles.specialOfferCategory}>{item.discountedPrice}</Text>
+	                              <Text style={gstyles.specialOfferCategory}>Offer Ends {item.offerEnd}</Text>
 	                          </View>
 	                    </TouchableOpacity>                    
 	                    }

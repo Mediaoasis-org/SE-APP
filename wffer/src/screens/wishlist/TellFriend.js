@@ -3,7 +3,7 @@ import { Text, TextInput, View, TouchableOpacity, ScrollView, AsyncStorage,FlatL
 import { gstyles } from '../../GlobalStyles';
 import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { DrawerActions } from 'react-navigation';
+// import { DrawerActions } from 'react-navigation';
 import CheckBox from 'react-native-checkbox';
 
 export class TellFriendComponent extends Component {
@@ -159,10 +159,12 @@ export class TellFriendComponent extends Component {
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-			                    <Text style={gstyles.headerProfileLabel}>Wffer</Text>      
+								<Text style={gstyles.headerMenuButton}></Text>
+			                    <Text style={gstyles.headerProfileLabel}>Wffer</Text> 
+			                    <Text style={gstyles.headerRightButton}></Text>     
 					</View>
 					{ 
-                      this.state.isLoading ?   <View style={gstyles.container}><ActivityIndicator color='#00ff00' size="large"/></View> :
+                      this.state.isLoading ?   <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>:
                       							<ScrollView>
                       								<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Tell A Friend</Text></View>
                       									{
@@ -183,7 +185,7 @@ export class TellFriendComponent extends Component {
 																					
 																			/>
 																			{
-																				(item.description) ? <Text style={{marginLeft:10,marginRight:10,marginTop:2,marginBottom:2}}>{item.description}</Text> : null
+																				(item.description) ? <Text style={gstyles.textfieldDescription}>{item.description}</Text> : null
 																			}
 																	</View>	
 																);
@@ -192,7 +194,7 @@ export class TellFriendComponent extends Component {
 																	return(
 																		<View>
 																				<View style={gstyles.tellfriend}>
-																	                  <Text style={gstyles.title}>{item.label}</Text>
+																	                  <Text style={gstyles.tellFriendTitle}>{item.label}</Text>
 																	                  <View style={gstyles.rightButton}><CheckBox  label=' ' onChange={()=>this.chagneState()} /></View>
 																	              </View>
 																				
@@ -203,9 +205,9 @@ export class TellFriendComponent extends Component {
                       										})
                       									}
                       									<TouchableOpacity onPress={()=>this.ShareList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Tell a Friend</Text></TouchableOpacity>
-														<View style={{width:'100%'}}><Text style={{textAlign:'center'}}>OR</Text></View>
-														<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={{margin:10,padding:10,borderColor:'#696969',borderWidth:1,alignItems:'center'}}>
-																<Text style={{color:'#000',fontSize:16,fontWeight:'bold'}}>Cancel</Text>
+														<View style={gstyles.width100}><Text style={gstyles.textCenter}>OR</Text></View>
+														<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.cancelButton}>
+																<Text style={gstyles.cancelButtonText}>Cancel</Text>
 														</TouchableOpacity>
                       							</ScrollView>
                     }

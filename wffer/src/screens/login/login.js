@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, TouchableOpacity, ScrollView, AsyncStorage,FlatList, } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView, AsyncStorage,FlatList, ActivityIndicator} from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { DrawerActions } from 'react-navigation';
+// import { DrawerActions } from 'react-navigation';
   
 export class LoginComponent extends Component {
 	constructor(props){
@@ -14,7 +14,8 @@ export class LoginComponent extends Component {
 			dataSource:[],
 			dataSource1:[],
 			userData:[],
-			LoggedIn:null
+			LoggedIn:null,
+			isLoading:true,
 		}
 		// alert(JSON.stringify(this.props.navigation))
 		
@@ -29,6 +30,7 @@ export class LoginComponent extends Component {
 	    const data= JSON.parse(fieldData);
 	  	this.setState({LoggedIn:1})
 		this.setState({dataSource:data});
+		this.setState({isLoading:false})
 		// console.log(this.state.dataSource)
 	  }
 	  else
@@ -38,13 +40,7 @@ export class LoginComponent extends Component {
 	  }
 	}
 	 fetchFields(){
-		
 			 return fetch('https://wffer.com/se/api/rest/login?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
-			       
-			        // headers:{
-			        //   'Accept':'application/json',
-			        //   'Content-Type':'application/json',
-			        // },
 			        method:'GET'
 			      })
 			      .then((response) => response.json())
@@ -68,13 +64,8 @@ export class LoginComponent extends Component {
 			      });
 			
 	}
-	Capitalize(str){
-    return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
     login(){
-
-	     var formData = new FormData;
+	     	var formData = new FormData;
 		    formData.append('email',this.state.email);
 		    formData.append('password',this.state.password);
 		    formData.append('oauth_consumer_key','mji82teif5e8aoloye09fqrq3sjpajkk');
@@ -93,15 +84,12 @@ export class LoginComponent extends Component {
 		        	
 		          if(responseJson.status_code=="200"){
 		            this.setState({
-		              isLoading: false,
+		              // isLoading: false,
 		              dataSource1: responseJson.body.oauth_token,
 		              userData: responseJson.body.user,
 		            }, async function(){
 			        await AsyncStorage.setItem('userLoginAuthentication', responseJson.body.oauth_token);
 			        await AsyncStorage.setItem('userData',JSON.stringify(responseJson.body));
-		              // alert(JSON.stringify(responseJson.body.user));
-		              // alert(this.state.dataSource1)
-		              // alert("Logged In");
 		              this.props.navigation.navigate('Home');
 		            });
 		          }
@@ -124,12 +112,10 @@ export class LoginComponent extends Component {
   	}
     _keyExtractor = (item, index) => index.toString();
     render_item = ({item}) => {
-    		if(item.type=='Text'){
-											
+    		if(item.type=='Text'){						
 				return (
 				<View>
-						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-						
+						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>	
 				</View>
 				
 			);
@@ -137,8 +123,7 @@ export class LoginComponent extends Component {
 			if(item.type=='Password'){
 				return (
 				<View>
-						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
-						
+						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />			
 				</View>
 				);
 			}
@@ -147,50 +132,46 @@ export class LoginComponent extends Component {
 				<View>
 						<TouchableOpacity onPress={()=>this.login()} style={gstyles.buttonView}>
 							<Text style={gstyles.buttonText}>{item.label}</Text>
-						</TouchableOpacity>
-						
+						</TouchableOpacity>	
 				</View>
 				);
 			}
     }
 	render(){
-
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.Login}</Text>
+			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
-					<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Sign In</Text></View>
-							<FlatList extraData={this.state.dataSource}
-							  data={this.state.dataSource}
-							  renderItem={this.render_item}	
-							  keyExtractor={this._keyExtractor}
-							/>							
-							<View style={gstyles.newToView}><Text style={gstyles.newToText}>New to Wffer ?</Text></View>
-							<TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Signup')}>
-								<Text style={gstyles.createAccountText}>Create New Account</Text>
-							</TouchableOpacity>
-							<View style={gstyles.forgetPasswordView}>
-								<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.navigate('ForgetPassword')}>
-									<Text style={gstyles.forgetPasswordText}>Forget Password ?</Text>
+					{
+						this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
+						<ScrollView>
+							<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Sign In</Text></View>
+								<FlatList extraData={this.state.dataSource}
+								  data={this.state.dataSource}
+								  renderItem={this.render_item}	
+								  keyExtractor={this._keyExtractor}
+								/>							
+								<View style={gstyles.newToView}><Text style={gstyles.newToText}>New to Wffer ?</Text></View>
+								<TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Signup')}>
+									<Text style={gstyles.createAccountText}>Create New Account</Text>
 								</TouchableOpacity>
-								<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.navigate('Help')}>
-									<Text style={gstyles.forgetPasswordText}>Help</Text>
-								</TouchableOpacity>
-							</View>
-						
-					</ScrollView>
+								<View style={gstyles.forgetPasswordView}>
+									<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.navigate('ForgetPassword')}>
+										<Text style={gstyles.forgetPasswordText}>Forget Password ?</Text>
+									</TouchableOpacity>
+									<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.navigate('Help')}>
+										<Text style={gstyles.forgetPasswordText}>Help</Text>
+									</TouchableOpacity>
+								</View>
+							
+						</ScrollView>
+					}
 				</View>
 			);
 	}
 }
-/// <TextInput name="email" keyboardType="email-address" placeholder="Email Address" returnKeyType="next" underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
-// <TextInput name="password" placeholder="Password" secureTextEntry={true} underlineColorAndroid="#fff" style={gstyles.textInputStyle}/>	
-// <TouchableOpacity onPress={()=>alert('submit')} style={gstyles.buttonView}>
-// 	<Text style={gstyles.buttonText}>Submit</Text>
-// </TouchableOpacity>
-// ref={ref => {this._nameInput = ref}}

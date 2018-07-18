@@ -1,51 +1,37 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   Text,
-  TextInput,
   View,
-  Dimensions,
-  FlatList,
-  ScrollView,
   TouchableOpacity,
-  Image
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
-// import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import CheckBox from 'react-native-checkbox';
-import { DrawerActions } from 'react-navigation';
-// import ModalDropdown from 'react-native-modal-dropdown';
-
-const window= Dimensions.get('window');
 export  class GetPriceComponent extends Component {
+  constructor(props){
+    super(props);
+
+  }
 	render(){
+    // alert(this.props.navigation.state.params.wishlist_id)
     return(
       <View style={gstyles.container}>
           <View style={gstyles.headerMenu}>
-                <TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
-                  <Icon name="bars" size={24} color="#fff" />
-                </TouchableOpacity>
-                 <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerBackButton}>
-                  <Icon name="angle-left" size={24} color="#fff" />
+                <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
+                  <Icon name="angle-left" size={26} color="#fff" />
                 </TouchableOpacity>
                 <Text style={gstyles.headerProfileLabel}>Get Price</Text>
+                <Text style={gstyles.headerRightButton}></Text>
           </View>
           <View>
-                <TouchableOpacity style={styles.flatlist}><Text style={styles.title}>Lowest Price</Text><Text style={styles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
-                <TouchableOpacity style={styles.flatlist}><Text style={styles.title}>NearBy Store</Text><Text style={styles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
-                <TouchableOpacity style={styles.flatlist} onPress={()=>this.props.navigation.push('MultiStore')}><Text style={styles.title}>Multiple Store</Text><Text style={styles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('Lowest',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>Lowest Price</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist}><Text style={gstyles.tellFriendTitle} onPress={()=>this.props.navigation.push('NearByStore')}>NearBy Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist} onPress={()=>this.props.navigation.push('MultiStore')}><Text style={gstyles.tellFriendTitle}>Multiple Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
           </View>
       </View>
     );
   }
 }
-const styles  = StyleSheet.create({
-    flatlist:{backgroundColor: '#fff',borderBottomColor:'grey',borderBottomWidth:0.5,flexDirection:'row'},
-    title:{fontSize: 18,padding:15,color:'#000',fontWeight:'bold',width:'90%'},
-    rightButton:{padding:15,width:'10%'},
 
-})
 
 
 

@@ -37,8 +37,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your camera</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This is the plist item for NSLocationAlwaysUsageDescription</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>This is the plist item for NSLocationAlwaysUsageDescription</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to your microphone (for videos)</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -58,6 +60,10 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

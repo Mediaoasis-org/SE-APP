@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, Dimensions, ScrollView, TouchableOpacity, Image, AsyncStorage,Keyboard,ActivityIndicator } from 'react-native';
+import {Text, TextInput, View, ScrollView, TouchableOpacity, Image, AsyncStorage,ActivityIndicator } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
-import { ModalDropdownComponent } from '../../components/ModalDropdown';
-import { TextInputComponent }  from '../../components/textInput';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import ModalDropdown from 'react-native-modal-dropdown';
-import { DrawerActions } from 'react-navigation';
+// import { DrawerActions } from 'react-navigation';
 export  class PersonalInfoComponent extends Component {
 	constructor(props){
 		super(props);
@@ -17,8 +15,6 @@ export  class PersonalInfoComponent extends Component {
 			fieldValues:[],
 			'1_1_3_alias_first_name':'',
 			'1_1_4_alias_last_name':'',
-			firstname:'',
-			lastname:'',
 			'1_1_5_alias_gender':'',
 			oauthToken:'',
 			oauthSecret:'',
@@ -41,14 +37,14 @@ export  class PersonalInfoComponent extends Component {
      // console.log(this.state.oauthSecret);
 	  // alert(value.length)
 	  if(value == null){
-	  	this.setState({LoggedIn:0})
+	  	// this.setState({LoggedIn:0})
 	  	this.fetchFields();	
 	  }
 	  else
 	  {
 	  	// alert('entering');
 	  	const data = JSON.parse(value);
-	  	this.setState({LoggedIn:1})
+	  	// this.setState({LoggedIn:1})
 		this.setState({dataSource:data});
 		// console.log(this.state.dataSource)
 	  }
@@ -58,7 +54,6 @@ export  class PersonalInfoComponent extends Component {
  //    	alert("all values")
  //    }
 	SavePersonalInfo(){
-    	// this.submit();
     	var formData = new FormData;
 		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
 		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
@@ -70,7 +65,6 @@ export  class PersonalInfoComponent extends Component {
 		        body: formData,
 		        headers:{
 		          'Accept':'application/json',
-		          // 'Content-Type': 'multipart/form-data'
 		        },
 		        method:'POST'
 		      })
@@ -80,9 +74,7 @@ export  class PersonalInfoComponent extends Component {
 		          if(responseJson.status_code=="204"){
 		            this.setState({
 		              isLoading: false,
-		              // dataSource1: responseJson.body,
 		            }, async function(){
-			        // await AsyncStorage.setItem('userData', JSON.stringify(this.state.dataSource1));
 		              alert('Data Updated');
 		              this.props.navigation.navigate('Profile');
 		            });
@@ -93,10 +85,7 @@ export  class PersonalInfoComponent extends Component {
 		              Message : responseJson.message,
 		            })
 		            alert(JSON.stringify(responseJson))
-		          
 		          }
-		          
-
 		        })
 		       
 		        .catch((error) =>{
@@ -104,7 +93,6 @@ export  class PersonalInfoComponent extends Component {
 		        });
     }
 	fetchFields(){
-				
 			  fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
 			        method:'GET'
 			      })
@@ -115,10 +103,8 @@ export  class PersonalInfoComponent extends Component {
 			          isLoading: false,
 			          data: responseJson.body.form,
 			        },async function(){
-			        		await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify( this.state.data["Personal Information"]));
-			        		// alert(JSON.stringify(this.state.data));  
+			        		await AsyncStorage.setItem('fieldsPersonalInformation', JSON.stringify( this.state.data["Personal Information"])); 
 			        		this.setState({dataSource:this.state.data["Personal Information"]})
-			        	
 			        });
 			      	}
 			      	else
@@ -134,11 +120,6 @@ export  class PersonalInfoComponent extends Component {
 	fetchValues(){
 	
 		return fetch('https://wffer.com/se/api/rest/members/edit/profile?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
-			       
-			        // headers:{
-			        //   'Accept':'application/json',
-			        //   'Content-Type':'application/json',
-			        // },
 			        method:'GET'
 			      })
 			      .then((response) => response.json())
@@ -149,13 +130,13 @@ export  class PersonalInfoComponent extends Component {
 			          isDataLoading: false,
 			          fieldValues: responseJson.body.formValues,
 			        },function(){
+			        	// alert(JSON.stringify(this.state.fieldValues));
 			        		this.setState({'1_1_3_alias_first_name':this.state.fieldValues['1_1_3_alias_first_name'].value})
-			        		this.setState({'1_1_4_alias_last_name':this.state.fieldValues['1_1_4_alias_last_name'].value})
-			        		this.setState({'1_1_5_alias_gender':this.state.fieldValues['1_1_5_alias_gender'].value})
-			        		// alert(this.state['1_1_3_alias_first_name'])
-			        		 // alert(JSON.stringify(this.state.fieldValues['1_1_5_alias_gender'].value));  
-
-			        	
+			        		this.setState({'1_1_4_alias_last_name':this.state.fieldValues['1_1_4_alias_last_name'].value});
+			        		if(this.state.fieldValues['1_1_5_alias_gender']){
+			        			this.setState({'1_1_5_alias_gender':this.state.fieldValues['1_1_5_alias_gender'].value})
+			        		}
+			        		
 			        });
 
 			      	}
@@ -221,75 +202,75 @@ export  class PersonalInfoComponent extends Component {
 	 		return data
 	}
 	render(){
-		if (this.state.dataSource.length === 0) {
-		  return (
-		  		<View style={gstyles.container}>
-					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
-									<Icon name="bars" size={24} color="#fff" />
-			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
+		// if (this.state.dataSource.length === 0) {
+		//   return (
+		//   		<View style={gstyles.container}>
+		// 			<View style={gstyles.headerMenu}>
+		// 						<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+		// 							<Icon name="bars" size={24} color="#fff" />
+		// 	                    </TouchableOpacity>
+		// 	                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
 			                    
-					</View>
-					{ 
-                              this.state.isDataLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : null }
-				</View>
+		// 			</View>
+		// 			{ 
+  //                             this.state.isDataLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : null }
+		// 		</View>
 
-		  	)
-		}
+		//   	)
+		// }
 		return(
 			<View style={gstyles.container}>
+			
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
-			                    
+			                    <Text style={gstyles.headerRightButton}></Text>                 
 					</View>
+					{ 
+                		this.state.isDataLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> : 
+                	<View>
 				 	<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Personal Information</Text></View>
-						{ 
-                              this.state.isDataLoading ?   <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : 
-                       
+						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Personal Information</Text></View>                 
 						<View>
-							
 								{
 							    	this.state.dataSource.map((item,index)=>{
 										if(item.type=='Text' || item.type == 'Textarea' || item.type=='Password'){
 											return (
-											<View key={index}>
-													<TextInput name={item.name} 
-															returnKeyType="next"
-															style={gstyles.textInputStyle} 
-															ref={(input) => {this[item.name] = input; }}	    
-															onSummitTextInput={this.onSummitTextInput}
-															placeholder={item.label} 
-															underlineColorAndroid="#fff" 
-															onChangeText={(text)=>this.onChange(text,item.name)}  
-															value={this.state[item.name]} 
-															secureTextEntry={(item.type=='Password')?true:false}
-													/>
-											</View>	
-										);
+												<View key={index}>
+														<TextInput name={item.name} 
+																returnKeyType="next"
+																style={gstyles.textInputStyle} 
+																ref={(input) => {this[item.name] = input; }}	    
+																onSummitTextInput={this.onSummitTextInput}
+																placeholder={item.label} 
+																underlineColorAndroid="#fff" 
+																onChangeText={(text)=>this.onChange(text,item.name)}  
+																value={this.state[item.name]} 
+																secureTextEntry={(item.type=='Password')?true:false}
+														/>
+												</View>	
+											);
 										}
 										if(item.type=='Select'){
 												return(
-												<View key={index}>
-													<ModalDropdown 
-								                      style={gstyles.dropdownMainStyles}						                      
-								                      dropdownTextStyle={gstyles.dropdownTextStyle}
-								                      textStyle={gstyles.textStyle}
-								                      dropdownStyle={gstyles.dropdownStyles}
-								                      defaultIndex={this.props.defaultIndex}
-								                      showsVerticalScrollIndicator={true}
-								                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
-								                      options={item.multiOptions}						         
-								                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
-								                      />
-								    					
+													<View key={index}>
+														<ModalDropdown 
+									                      style={gstyles.dropdownMainStyles}						                      
+									                      dropdownTextStyle={gstyles.dropdownTextStyle}
+									                      textStyle={gstyles.textStyle}
+									                      dropdownStyle={gstyles.dropdownStyles}
+									                      defaultIndex={this.props.defaultIndex}
+									                      showsVerticalScrollIndicator={true}
+									                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
+									                      options={item.multiOptions}						         
+									                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
+									                      />
+									    					
 
-								    				
-								    			</View>
+									    				
+									    			</View>
 												)
 											
 										}
@@ -298,8 +279,10 @@ export  class PersonalInfoComponent extends Component {
 								}
 								<TouchableOpacity onPress={()=>this.SavePersonalInfo()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
 						</View>
-					}
+					
 					</ScrollView>
+					</View>
+			}
 			</View>
 		)
 	}

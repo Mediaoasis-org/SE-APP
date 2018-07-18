@@ -9,12 +9,13 @@ export class SearchComponent extends React.Component{
       this.state={
         search :'',
       }
-      // alert(JSON.stringify(this.props.navigation));
     }
   render(){
       return(
         <View style={gstyles.searchView}>
-            <TouchableOpacity style={gstyles.searchViewLeft}><Icon name="search" size={24} color="#ccc" /></TouchableOpacity>
+            <TouchableOpacity style={gstyles.searchViewLeft}>
+                    <Icon name="search" size={24} color="#ccc" />
+            </TouchableOpacity>
             <TextInput style={gstyles.searchViewRight}
                 placeholder="Search Product"
                 underlineColorAndroid="transparent"

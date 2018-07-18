@@ -2,38 +2,33 @@ import React, { Component } from 'react';
 // import { withNavigation } from 'react-navigation';
 import {
   Text,
-  TextInput,
   View,
-  Dimension,
   TouchableOpacity,
   Image,
-  Platform,
   AsyncStorage,
-  FlatList,
   ScrollView,
-  StyleSheet,
   ActivityIndicator
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
-import {Constants} from '../../common';
+// import {Constants} from '../../common';
 import { SearchComponent } from '../../components/Search';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { DrawerActions } from 'react-navigation';
-import Accordion from 'react-native-collapsible/Accordion';
+// import { DrawerActions } from 'react-navigation';
+// import Accordion from 'react-native-collapsible/Accordion';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
 // const window= Dimensions.get('window');
 
-const SECTIONS = [
-  {
-    title: 'My Shopping List',
-    listname:'qwerty',
-  },
-  {
-    title: 'Recommended List',
-     listname:''
-  },
+// const SECTIONS = [
+//   {
+//     title: 'My Shopping List',
+//     listname:'qwerty',
+//   },
+//   {
+//     title: 'Recommended List',
+//      listname:''
+//   },
   
-];
+// ];
 
 export class ShoppingListComponent extends Component {
 	constructor(props){
@@ -50,7 +45,9 @@ export class ShoppingListComponent extends Component {
        totalItems:'',
        LoggedIn:null,
        isLoading:true,
-       userData:[]
+       userData:[],
+       recommendedFieldValues:[],
+       totalRecommendedItems:''
 		}
     this.getStorageValues()
     
@@ -65,6 +62,7 @@ export class ShoppingListComponent extends Component {
             this.setState({oauthToken:this.state.userData.oauth_token});
             this.setState({oauthSecret:this.state.userData.oauth_secret});
             this.fetchValues();
+            this.fetchRecommendedList();
           }
           else
           {
@@ -103,22 +101,46 @@ export class ShoppingListComponent extends Component {
               console.error(error);
             });
   }
+  fetchRecommendedList(){
+      return fetch('https://wffer.com/se/api/rest/listings/wishlist/browse?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret + '&search=&search_wishlist=my_wishlists&text=&orderby=wishlist_id&done=&viewType=grid&recommended=1',{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                // alert(JSON.stringify(responseJson.body));
+                 this.setState({
+                  recommendedFieldValues:responseJson.body.response,
+                  totalRecommendedItems: responseJson.body.totalItemCount,
+                  isLoading:false,
+                });
+              }
+              else
+              {
+                // 
+              }
+              this.setState({Message:responseJson.Message});
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+  }
   handleNavigation(id){
     this.props.navigation.push('Wishlists',{wishlist_id:id});
   }
   // _renderHeader(section) {
   //   return (
-  //     <View style={styles.header}>
-  //       <Text style={styles.headerText}><Icon name="angle-down" size={24} color="#000" style={{flexDirection:'column'}} />  {section.title}</Text>
+  //     <View style={styles.ShoppingButton}>
+  //       <Text style={styles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={{flexDirection:'column'}} />  {section.title}</Text>
   //     </View>
   //   );
   // }
   renderMyList(){
-    
-    if(this.state.fieldValues.length===0){
+    // const wish_image='';
+    if(this.state.totalItems==0){
        return(
-            <View style={styles.content}>
-              <Text style={styles.shoppingText}>No data found</Text>
+            <View style={gstyles.content}>
+              <Text style={gstyles.ShoppingText}>No data found</Text>
             </View>);
     }
     else
@@ -130,20 +152,27 @@ export class ShoppingListComponent extends Component {
             // let img = 'listing_images_'+item.total_item;
             // console.log(img);
             // console.log(item.listing_images_+''+item.total_item);
+            if(item.listing_images_1){
+              var wish_image = item.listing_images_1['image'];
+            }
+            else
+            {
+              var wish_image = item.listing_images_0['image'];
+            }
+            // console.log(wish_image);
             return(
               
-              <View style={styles.content} key={item.wishlist_id}>
+              <View style={gstyles.content} key={item.wishlist_id}>
                   <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
-                    <View style={{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,flexDirection:'row'}}>
-                        <View style={{flexDirection:'column',width:'20%'}}>
-                        
-                            <Image source={require('../../../assets/nophoto.png')} resizeMode="contain" style={{width:'100%'}}/>
+                    <View style={gstyles.ShoppingListItemsView}>
+                        <View style={gstyles.ShoppingListItemsViewImage}>
+                            <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:100}}/>
                         </View>
-                        <View style={{flexDirection:'column',width:'80%'}}>
-                            <Text style={{fontSize:16,fontWeight:'bold',marginTop:5,color:'#000'}}>{item.title}</Text>
-                            <Text style={{marginTop:5,color:'#000'}}>{item.total_item} entries</Text>
-                            <Text style={{marginTop:5,color:'#000'}}>{item.creation_date}</Text>
-                            <Text style={{marginTop:5,color:'#000'}}>{item.body}</Text>
+                        <View style={gstyles.ShoppingListItemsViewRightContent}>
+                            <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
+                            <Text style={gstyles.ShoppingWishlistText}>{item.total_item} entries</Text>
+                            <Text style={gstyles.ShoppingWishlistText}>{item.creation_date}</Text>
+                            <Text style={gstyles.ShoppingWishlistText}>{item.body}</Text>
                         </View>
                     </View>
                   </TouchableOpacity>
@@ -153,12 +182,45 @@ export class ShoppingListComponent extends Component {
         );
       }
   }
-
+  renderRecommendedList(){
+    
+    if(this.state.totalRecommendedItems==0){
+       return(
+            <View style={gstyles.content}>
+              <Text style={gstyles.ShoppingText}>No data found</Text>
+            </View>);
+    }
+    else
+    {
+        return(
+          this.state.recommendedFieldValues.map((item)=>{
+            return(
+              
+              <View style={gstyles.content} key={item.wishlist_id}>
+                  <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
+                    <View style={gstyles.ShoppingListItemsView}>
+                        <View style={gstyles.ShoppingListItemsViewImage}>
+                            <Image source={require('../../../assets/nophoto.png')} resizeMode="contain" style={gstyles.width100}/>
+                        </View>
+                        <View style={gstyles.ShoppingListItemsViewRightContent}>
+                            <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
+                            <Text style={gstyles.ShoppingWishlistText}>{item.total_item} entries</Text>
+                            <Text style={gstyles.ShoppingWishlistText}>{item.creation_date}</Text>
+                            <Text style={gstyles.ShoppingWishlistText}>{item.body}</Text>
+                        </View>
+                    </View>
+                  </TouchableOpacity>
+              </View>
+              );
+          })
+        );
+      }
+  }
   // _renderContent = (section) => {
      
   //       if(section.listname!=""){
   //           return (
-  //           <View style={styles.content}>
+  //           <View style={gstyles.content}>
   //               <TouchableOpacity onPress={()=>this.handleNavigation()} >
   //                 <Text style={styles.shoppingText}>shopping list found</Text>
   //                 <View style={{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,flexDirection:'row'}}>
@@ -179,7 +241,7 @@ export class ShoppingListComponent extends Component {
   //       else
   //       {
   //           return(
-  //               <View style={styles.content}>
+  //               <View style={gstyles.content}>
   //                 <Text style={styles.shoppingText}>No data found</Text>
   //               </View>
   //           );
@@ -196,13 +258,13 @@ export class ShoppingListComponent extends Component {
         return(
           <View style={gstyles.container}>
               <View style={gstyles.headerMenu}>
-                    <TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+                    <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
                       <Text><Icon name="bars" size={24} color="#fff" /></Text>
                     </TouchableOpacity>
                     <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
               </View>
-              <Text style={{padding:10,fontSize:18,margin:10,textAlign:'center'}}>To get Lists ,Please Sign In</Text>
+              <Text style={gstyles.signInButton}>To get Lists ,Please Sign In</Text>
               <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
                   <Text style={gstyles.createAccountText}>Sign In</Text>
               </TouchableOpacity>
@@ -213,97 +275,42 @@ export class ShoppingListComponent extends Component {
     {
 		return(
 			<View style={gstyles.container}>
-					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
-									<Text><Icon name="bars" size={24} color="#fff" /></Text>
-                </TouchableOpacity>
-                <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
-                <TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
-					</View>
-          <SearchComponent />
-				  <ScrollView>
-          <View>
-           <View style={styles.header}>
-            <TouchableOpacity onPress={()=>this.setState({mysection:!this.state.mysection,recommendedsection:false})}><Text style={styles.headerText}><Icon name="angle-down" size={24} color="#000" style={{flexDirection:'column'}} />  My Shopping List</Text></TouchableOpacity>
-             
+      
+  					<View style={gstyles.headerMenu}>
+  								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+  									<Text><Icon name="bars" size={24} color="#fff" /></Text>
+                  </TouchableOpacity>
+                  <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
+                  <TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
+  					</View>
+            { 
+        this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
+          <ScrollView>
+            <SearchComponent />
+  				  <View>
+            
+              <TouchableOpacity onPress={()=>this.setState({mysection:!this.state.mysection,recommendedsection:false})} style={gstyles.ShoppingButton}><Text style={gstyles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={gstyles.flexDirectionColumn} />  My Shopping List</Text></TouchableOpacity>
+              {
+                this.state.mysection==true ? <Text style={[gstyles.ShoppingText],{padding:10}}>{this.state.totalItems} shopping lists found</Text> : null
+              }
+              {
+                this.state.mysection==true ? this.renderMyList() : null
+              }
+            
+              <TouchableOpacity onPress={()=>this.setState({recommendedsection:!this.state.recommendedsection,mysection:false})} style={gstyles.ShoppingButton}><Text style={gstyles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={gstyles.flexDirectionColumn} />  Recommended List</Text>
+              </TouchableOpacity>
+               {
+                this.state.recommendedsection==true ? this.renderRecommendedList() : null
+              }
             </View>
-            {
-              this.state.mysection==true ? <Text style={[styles.shoppingText],{padding:10}}>{this.state.totalItems} shopping lists found</Text> : null
-            }
-            {
-              this.state.mysection==true ? this.renderMyList() : null
-            }
-          </View>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={()=>this.setState({recommendedsection:!this.state.recommendedsection,mysection:false})}><Text style={styles.headerText}><Icon name="angle-down" size={24} color="#000" style={{flexDirection:'column'}} />  Recommended List</Text></TouchableOpacity>
-
-            </View>
-             {
-              this.state.recommendedsection==true ? <View style={styles.content}><Text style={styles.shoppingText}>No data found</Text></View> : null
-            }
           </ScrollView>
+      }
 			</View>
 		);
     }
 	}
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#F5FCFF'
-  },
-  title: {
-    textAlign: 'left',
-    fontSize: 22,
-    fontWeight: '300',
-    marginBottom: 20
-  },
-  header: {
-    backgroundColor: '#F5FCCC',
-    padding: 10,
-    flexDirection:'row'
-  },
-  headerText: {
-    // textAlign: 'center',
-    flexDirection:'column',
-    fontSize: 18,
-    fontWeight: '500',
-    color:'#000'
-  },
-  shoppingText:{
-    fontSize:20
-  },
-  content: {
-    paddingLeft: 10,
-    paddingRight:10,
-    backgroundColor: '#fff',
 
-  },
-  active: {
-    backgroundColor: 'rgba(255,255,255,1)'
-  },
-  inactive: {
-    backgroundColor: 'rgba(245,252,255,1)'
-  },
-  selectors: {
-    marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  selector: {
-    backgroundColor: '#F5FCFF',
-    padding: 10
-  },
-  activeSelector: {
-    fontWeight: 'bold'
-  },
-  selectTitle: {
-    fontSize: 14,
-    fontWeight: '500',
-    padding: 10
-  }
-});
 // 
   // <Accordion
   //           sections={SECTIONS}

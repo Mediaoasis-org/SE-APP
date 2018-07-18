@@ -2,28 +2,23 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  TextInput,
-  Platform,
-  Dimension,
 TouchableOpacity,
 TouchableHighlight,
 Image,
 FlatList,
 ScrollView,
-StyleSheet,
-ListView,
-ActivityIndicator
+ActivityIndicator,
 } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+// import Carousel from 'react-native-snap-carousel';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { SearchComponent } from '../../components/Search';
-import {Constants} from '../../common';
-import { DrawerActions } from 'react-navigation';
+// import {Constants} from '../../common';
+// import { DrawerActions } from 'react-navigation';
 import CheckBox from 'react-native-checkbox';
 // import { CategoryListComponent } from '../../components/CategoryList';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
-// const window= Dimensions.get('window');
+
 
 export class Products extends Component {
 
@@ -35,6 +30,7 @@ export class Products extends Component {
             search:'',
             fetchValues:[],
             isLoading:true,
+            isCategoryLoading:true,
             showLoadMore:false,
             selectedCheckboxId:[],
             fetching_Status: false,
@@ -60,17 +56,8 @@ export class Products extends Component {
 	    });
 	    // alert(this.state.selectedCheckboxId)
 	  }
-    // componentWillReceiveProps(){
-    // 	alert('work');
-    // }
     categories_func(){
-	
 	 fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
-			       
-			        // headers:{
-			        //   'Accept':'application/json',
-			        //   'Content-Type':'application/json',
-			        // },
 			        method:'GET'
 			      })
 			      .then((response) => response.json())
@@ -78,7 +65,7 @@ export class Products extends Component {
 			    
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
-				          // isLoading: false,
+				          isCategoryLoading: false,
 				          categories: responseJson.body.categories,
 				        });
 			      		 // alert(JSON.stringify(this.state.fieldValues));
@@ -94,15 +81,9 @@ export class Products extends Component {
 			      });
 	}
     fetchValues(){
-    	
-    	// this.setState({page:1});
-    	// alert(this.state.page)
     	let category_id = this.props.navigation.state.params.cat_id;
-
-    	// alert(category_id)
     	let categoryUrl;
     	if(category_id){
-    		// catParam = "category_id"=category_id;
     		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id + '&limit=20&page=' + this.page;
     	}
     	else
@@ -110,18 +91,12 @@ export class Products extends Component {
     		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=20&page=' + this.page;
     	}
     	return fetch(categoryUrl,{
-			       
-			        // headers:{
-			        //   'Accept':'application/json',
-			        //   'Content-Type':'application/json',
-			        // },
 			        method:'GET'
 			      })
 			      .then((response) => response.json())
 			      .then((responseJson) => {
 			    	let json_data = responseJson.body.response;
 			    	const arr = Object.keys(json_data).map((key) => [key, json_data[key]]);
-			    	// alert(arr)
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 				          
@@ -146,10 +121,6 @@ export class Products extends Component {
 			        console.error(error);
 			      });
     }
-   //  removeCompleted = () => {
-	  //   const {dispatch} = this.props
-	  //   dispatch(actionCreators.removeCompleted())
-	  // }
 
 	decrease_qty(id){
 		// alert(id)
@@ -172,12 +143,12 @@ export class Products extends Component {
         // alert(this.state.qty)
       
 	 }
-	 changeCheckboxState(chek){
-	 	this.setState({checked:!this.state.checked});
+	 // changeCheckboxState(chek){
+	 // 	this.setState({checked:!this.state.checked});
 	 	
-	 	alert(this.state.checked);
+	 // 	alert(this.state.checked);
 	
-	 }
+	 // }
 	 addToCart(){
 	 	if(this.state.selectedCheckboxId.length<=0){
 	 		alert("Select Atleast One Product");
@@ -201,7 +172,6 @@ export class Products extends Component {
 		 	let category_id = this.props.navigation.state.params.cat_id;
 	    	let categoryUrl;
 	    	if(category_id){
-	    		// catParam = "category_id"=category_id;
 	    		categoryUrl='https://wffer.com/se/api/rest/listings/index?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&category_id='+category_id + '&limit=20&page=' + this.page;
 	    	}
 	    	else
@@ -215,15 +185,12 @@ export class Products extends Component {
 				      .then((responseJson) => {
 				      	if(responseJson.status_code=='200'){
 				      		 this.setState({
-					          
 					          fieldValues:[...this.state.fieldValues,...responseJson.body.response],isLoading: false,fetching_Status:false
 					        });
 				      		 let count = responseJson.body.response.length;
-				      		 // alert(count);
 				      		 if(count >= 20){
 				      		 	this.setState({showLoadMore:true})
 				      		 }
-				      		 // alert(this.state.showLoadMore)
 				      	}
 				      	else
 				      	{
@@ -237,74 +204,73 @@ export class Products extends Component {
 				  })
 	 }
 	render(){
-		// alert(JSON.stringify(this.state.categories));
 		return(
-				<View style={gstyles.container}>
+				<View style={gstyles.flexContainer}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() =>this.props.navigation.dispatch(DrawerActions.openDrawer())} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.cat_name}</Text>
 			                    <TouchableOpacity onPress={()=>this.addToCart()} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
 					</View>
-					<ScrollView>
-						<SearchComponent />
-						 	{ 
-                              this.state.isLoading ?   <View style={styles.loading}><ActivityIndicator color='#00ff00' size="large"/></View> : null
-                            }	
-						<View style={{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'}}>
-
-							<FlatList data={this.state.fieldValues} 
-
-		                		renderItem={({item}) =>      
-					                    	<View style={styles.flatlist}>
-					                    		<View style={{flexDirection:'row'}}>
-									          		<View style={{width:'90%',flexDirection:'row'}}>
-									          			<View style={{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3}}>
-									          				<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
-									          					<Image source={{uri:item.image}} style={styles.flatimage} />
-									          				</TouchableOpacity>
-									          			</View>
-									          			<View style={{width:'77%',marginLeft:'3%',flexDirection:'column'}}>
-									          				<View style={{width: '100%'}}><Text style={styles.title}>{item.title}</Text></View>
+					{ 
+                        this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
+					<ScrollView>					
+								<SearchComponent />
+								<FlatList data={this.state.fieldValues} 
+		                			renderItem={({item}) =>      
+					                    	<View style={gstyles.productsMain}>
+					                    		<TouchableOpacity style={gstyles.flexDirectionRow} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
+									          		<View style={gstyles.productsMainLeft}>
+									          			
+								          				<View style={gstyles.productImageView}>
+								          					<Image source={{uri:item.image}} style={gstyles.productImage} />
+								          				</View>
+									          			
+									          			<View style={gstyles.productViewRight}>
+									          				<View style={gstyles.width100}>
+									          					<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
+									          						<Text style={gstyles.productTitle}>{item.title}</Text>
+									          					</TouchableOpacity>
+									          				</View>
 									          				<View>
 									          				{
 									          					this.state.categories.map((cat)=>{
 									          						if(cat.category_id==item.category_id){
 									          							return(
-									          							<View style={{width: '100%'}} key={cat.category_id}><Text style={styles.catTitle}>{cat.category_name}</Text></View>
+									          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.productCatTitle}>{cat.category_name}</Text></View>
 									          							);
 									          						}
 									          					})
 									          				}
 											          		</View>
-											          		<View style={styles.qtyView}>   
+											          		<View style={gstyles.qtyView}>   
 
-											          			  <Text style={styles.qtyText}>{this.state.qty}</Text> 
+											          			  <Text style={gstyles.qtyText}>{this.state.qty}</Text> 
 				                                                  <TouchableHighlight 
 				                                                     onPress={() => this.increase_qty(item.listing_id)}
-				                                                     underlayColor='#BEBEBE' style={styles.qtybuttonDecrease}>
-				                                                     <Image source={require('../../../assets/plus.png')} style={{width:30,height:30}}/>
+				                                                     underlayColor='#BEBEBE' style={gstyles.qtybuttonDecrease}>
+				                                                     <Image source={require('../../../assets/plus.png')} style={gstyles.qtyIcon}/>
 				                                                  </TouchableHighlight>
 				                                                  
 				                                                  <TouchableHighlight 
 				                                                     onPress={() => this.decrease_qty(item.listing_id)}
-				                                                     underlayColor='#BEBEBE' style={styles.qtybuttonIncrease}>
-				                                                    <Image source={require('../../../assets/minus.png')} style={{width:30,height:30}}/>
+				                                                     underlayColor='#BEBEBE' style={gstyles.qtybuttonIncrease}>
+				                                                    <Image source={require('../../../assets/minus.png')} style={gstyles.qtyIcon}/>
 				                                                  </TouchableHighlight>
 				                                            </View>
 									          			</View>
 									          		</View>
-									          		<View style={{width:'10%'}}><Icon color="#000" name="angle-right" size={30} style={{paddingTop:'100%',marginLeft:'5%',fontWeight:'bold'}} /></View>
-								          		</View>
-								          		<View style={{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5}}>
-								          			<View style={{width:'60%',padding:10}}>
+									          		<View style={gstyles.productsMainRight}><Icon color="#000" name="angle-right" size={30} style={gstyles.productsMainRightIcon} /></View>
+								          		</TouchableOpacity>
+								          		<View style={gstyles.productBottomPart}>
+								          			<View style={gstyles.checkboxView}>
 													          	<CheckBox label=' '
 													          			  onChange={()=>this.onCheckBoxPress(item.listing_id)} /> 
 												    </View>
-								          			<View style={{width:'40%',padding:3}}>
-						          						<Text style={styles.discountDeal}>Best Deal</Text>
-										          		<Text style={styles.subtitle}>Brand : Price</Text>
+								          			<View style={gstyles.bestDealView}>
+						          						<Text style={gstyles.discountDeal}>Best Deal</Text>
+										          		<Text style={gstyles.bestDeal}>{item.best_deal_title} : {item.best_deal_price} {item.currency} </Text>
 										          	</View>
 								          		</View>
 									            
@@ -312,44 +278,18 @@ export class Products extends Component {
 					                    }
 					                keyExtractor={(item, index) => index.toString()}
 					            />
-					            
-						</View>
-						
 						{
-							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text>Load More</Text></TouchableOpacity> : null
+							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableOpacity> : null
 						}
 						{				
-							this.state.fetching_Status==true ? <View style={{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'#fff'}}><ActivityIndicator color='#00ff00' size="large"/></View>:<View />
+							this.state.fetching_Status==true ? <View style={gstyles.loadMoreActivity}><ActivityIndicator color='#333' size="large"/></View>:<View />
 						}
-						
-					
 					</ScrollView>
+					}
 				</View>
 			);
 	}
 }
-
-const styles  = StyleSheet.create({
-	  flatlist:{backgroundColor: '#fff',  borderColor:'gray',borderWidth:1,margin:5},
-	  flatimage:{marginTop:'15%', marginBottom:'10%', width: '100%', height: 80},
-	  title:{fontSize: 18, marginTop: '5%',color:'#000',fontWeight:'bold'},
-	  catTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
-	  subtitle:{color: '#000', marginTop: '3%', fontSize: 18,textAlign:'center'},
-	  discountDeal:{color: '#ff0000', fontSize: 18,textAlign:'center',fontStyle:'italic'},
-	  qtyView:{flexDirection: 'row',padding:10,marginLeft:'40%'},
-	  qtybuttonDecrease:{margin:5},
-	  // borderWidth:1,borderColor:'#adadad',borderRadius:50,
-	  qtybuttonIncrease:{margin:5},
-	  // borderWidth:1,borderColor:'#adadad',borderRadius:50,
-	  qtyText:{backgroundColor:'#e9ebee',textAlign:'center',fontSize: 14, color: '#000', margin:5,paddingTop:8,paddingBottom:8,paddingLeft:15,paddingRight:15,borderColor:'#adadad',borderWidth:1},
-	  subTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'rgb(113,113,113)',paddingLeft:12},
-	  subTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'rgb(113,113,113)',fontWeight:'bold',paddingRight:10},
-	  itemTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'#000'},
-	  itemTotalRight:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000'},
-	  itemTotalRightIcon:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right'},
-	  orderTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000',fontWeight:'bold'}
-})
-
 
 //// <View style={{flexDirection: 'row',marginTop: '10%',}}>	
 	// 					          		   <Text style={{ fontSize: 15, color: '#000', paddingRight:10, paddingTop:3}}>Qty</Text>
