@@ -157,14 +157,14 @@ export class LoginComponent extends Component {
 								  keyExtractor={this._keyExtractor}
 								/>							
 								<View style={gstyles.newToView}><Text style={gstyles.newToText}>New to Wffer ?</Text></View>
-								<TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Signup')}>
+								<TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.push('Signup')}>
 									<Text style={gstyles.createAccountText}>Create New Account</Text>
 								</TouchableOpacity>
 								<View style={gstyles.forgetPasswordView}>
-									<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.navigate('ForgetPassword')}>
+									<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.push('ForgetPassword')}>
 										<Text style={gstyles.forgetPasswordText}>Forget Password ?</Text>
 									</TouchableOpacity>
-									<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.navigate('Help')}>
+									<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.push('Help')}>
 										<Text style={gstyles.forgetPasswordText}>Help</Text>
 									</TouchableOpacity>
 								</View>

@@ -153,11 +153,11 @@ export class ShoppingListComponent extends Component {
             // console.log(img);
             // console.log(item.listing_images_+''+item.total_item);
             if(item.listing_images_1){
-              var wish_image = item.listing_images_1['image'];
+              var wish_image = item.listing_images_1['image_icon'];
             }
             else
             {
-              var wish_image = item.listing_images_0['image'];
+              var wish_image = item.listing_images_0['image_icon'];
             }
             // console.log(wish_image);
             return(
@@ -194,13 +194,20 @@ export class ShoppingListComponent extends Component {
     {
         return(
           this.state.recommendedFieldValues.map((item)=>{
+                if(item.listing_images_1){
+                  var wish_image = item.listing_images_1['image_icon'];
+                }
+                else
+                {
+                  var wish_image = item.listing_images_0['image_icon'];
+                }
             return(
               
               <View style={gstyles.content} key={item.wishlist_id}>
                   <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
                     <View style={gstyles.ShoppingListItemsView}>
-                        <View style={gstyles.ShoppingListItemsViewImage}>
-                            <Image source={require('../../../assets/nophoto.png')} resizeMode="contain" style={gstyles.width100}/>
+                       <View style={gstyles.ShoppingListItemsViewImage}>
+                            <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:100}}/>
                         </View>
                         <View style={gstyles.ShoppingListItemsViewRightContent}>
                             <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
@@ -284,7 +291,7 @@ export class ShoppingListComponent extends Component {
                   <TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
   					</View>
             { 
-        this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
+                this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
           <ScrollView>
             <SearchComponent />
   				  <View>

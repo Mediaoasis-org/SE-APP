@@ -34,7 +34,8 @@ export  class StoreLocatorComponent extends Component {
 			fieldValues:[],
 			latitude:null,
 			longitude:null,
-			error:null
+			error:null,
+			city:''
 
 		}
 		this.getStorageValues();
@@ -42,6 +43,9 @@ export  class StoreLocatorComponent extends Component {
 
 	async getStorageValues(){
          const userData = await AsyncStorage.getItem('userData');
+         const city = await AsyncStorage.getItem('cityInformation');
+         this.setState({city:city});
+         // alert(this.state.city)
          // alert(userData.length);
           if(userData!=null){
             this.setState({LoggedIn:true});
@@ -58,7 +62,7 @@ export  class StoreLocatorComponent extends Component {
    }
 
 	fetchValues(){
-      return fetch('https://wffer.com/se/api/rest/listings/wishlist/get-store-locator/143?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&city=Riyadh',{
+      return fetch('https://wffer.com/se/api/rest/listings/wishlist/get-store-locator/143?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&city='+this.state.city,{
               method:'GET'
             })
             .then((response) => response.json())
@@ -81,20 +85,26 @@ export  class StoreLocatorComponent extends Component {
             });
   	}
   	getLocation(){
-  		// alert('hjhj')
-	  		navigator.geolocation.getCurrentPosition(
+	  		 navigator.geolocation.getCurrentPosition(
 		       (position) => {
 		         console.log("wokeeey");
-		         console.log(position);
+		         // alert(position);
 		         this.setState({
 		           latitude: position.coords.latitude,
 		           longitude: position.coords.longitude,
 		           error: null,
+		           gpsLoading:false,
 		         });
+		         
+		          // this.fetchValues();
 		       },
-		       (error) => this.setState({ error: error.message }),
-		       { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 },
-		    );
+		       (error) => {this.setState({ error: error.message });
+		      
+		          // this.props.navigation.goBack();
+		     },
+		       { enableHighAccuracy: false, timeout: 50000, maximumAge: 1000 },
+
+     );
   	}
 	render(){
 		if(this.state.LoggedIn==false){
@@ -104,10 +114,10 @@ export  class StoreLocatorComponent extends Component {
                     <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
                       <Text><Icon name="bars" size={24} color="#fff" /></Text>
                     </TouchableOpacity>
-                    <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
+                    <Text style={gstyles.headerProfileLabel}>Store Locator</Text>
+                    <Text style={gstyles.headerRightButton}></Text>
               </View>
-              <Text style={gstyles.signInButton}>To get Lists ,Please Sign In</Text>
+              <Text style={gstyles.signInButton}>To View Stores ,Please Sign In</Text>
               <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
                   <Text style={gstyles.createAccountText}>Sign In</Text>
               </TouchableOpacity>
@@ -161,6 +171,10 @@ export  class StoreLocatorComponent extends Component {
 								  		
 								  	</Marker>
 							 	))}
+							 	{!!this.state.latitude && !!this.state.longitude && <Marker
+				                  coordinate={{"latitude":this.state.latitude,"longitude":this.state.longitude}}
+				                 title={"Your Location"}
+				               />}
 							</MapView>
 					} 
 				 	

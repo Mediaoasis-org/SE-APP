@@ -23,7 +23,7 @@ export default class App extends Component<Props> {
   componentDidMount() {
       setTimeout( () => {
           this.setTimePassed();
-      },500);
+      },1000);
 
   }
 

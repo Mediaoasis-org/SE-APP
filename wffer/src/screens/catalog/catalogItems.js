@@ -145,6 +145,8 @@ export class CatalogItems extends PureComponent {
 				</View>
 				
 				<ScrollView >
+				{ 
+        			this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={{height:100,width:'30%'}} color='#333' size="large"/></View> :
 					<View>
 					<FlatList numColumns={2} removeClippedSubviews={true} data={this.state.fieldValues} 
 		                renderItem={({item}) =>      
@@ -160,6 +162,7 @@ export class CatalogItems extends PureComponent {
 		                keyExtractor={(item, index) => index.toString()}
 		              />
 		              </View>
+		          }
 		              <Modal
 							          animationType="slide"
 							          transparent={false}
@@ -174,9 +177,9 @@ export class CatalogItems extends PureComponent {
 						                }}>
 						               <Text style={{textAlign:'right',color:'#fff'}}>Close</Text>
 						              </TouchableHighlight>
-						              
-						         	<Image source={{uri : this.state.ModalImage}} resizeMethod="auto" style={{borderColor:'#000',borderWidth:2,width:'100%',height:window.height}} resizeMode="cover"/>
-						             
+						              <ScrollView maximumZoomScale={2} minimumZoomScale={1} zoomScale={2}>
+						         			<Image source={{uri : this.state.ModalImage}} resizeMethod="auto" style={{borderColor:'#000',borderWidth:2,width:'100%',height:window.height}} resizeMode="contain"/>
+						             </ScrollView>
 							           
 							          </View>
 							        </Modal>

@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  // Dimension
+  Image,
+  Dimensions
 } from 'react-native';
-// const window= Dimensions.get('window');
+const window= Dimensions.get('window');
 export  default class SplashScreen extends Component {
 	render(){
 		return(
-				<View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+				<View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'#fff'}}>
 						
-						<Text style={{color:'#febe2b',fontSize:40}}>Wffer</Text>
+						<Image source={require('./assets/icon.png')} resizeMode="contain" style={{width:window.width/3,height:window.height/3}}/>
 				</View>
 			);
 	}

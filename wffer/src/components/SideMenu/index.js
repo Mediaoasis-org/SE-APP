@@ -5,9 +5,12 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  AsyncStorage
+  AsyncStorage,
+  Modal,
+
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
+import { DrawerActions } from 'react-navigation';
 import { SafeAreaView} from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 export class DrawerTitle extends React.Component{
@@ -18,9 +21,21 @@ export class DrawerTitle extends React.Component{
         LoggedIn:false,
         userData:[],
         oauthToken:'',
-        oauthSecret:''
+        oauthSecret:'',
+        modalVisible: false,
+        cities:[],
       }
       this.fetchValues();
+      this.fetchCities();
+    }
+
+    setModalVisible(visible) {
+       this.setState({modalVisible: visible});
+    }
+
+    handleNavigation(){     
+            this.props.navigation.dispatch(DrawerActions.closeDrawer());
+            this.setModalVisible(true);
     }
 
     logout = async() => {
@@ -71,7 +86,38 @@ export class DrawerTitle extends React.Component{
               console.error(error);
             });
     }
+    fetchCities(){
 
+    return fetch('https://wffer.com/se/api/rest/listings/get-cities?id=1&oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+          
+              if(responseJson.status_code=='200'){
+                 this.setState({
+                  // isLoading: false,
+                  cities: responseJson.body,
+                });
+              }
+              else
+              {
+                // 
+              }
+              this.setState({Message:responseJson.Message});
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+  }
+  async selectCity(city){
+      // alert(city)
+      AsyncStorage.setItem('cityInformation', city);
+      var value = await AsyncStorage.getItem('cityInformation');
+      console.log(value)
+      this.setModalVisible(!this.state.modalVisible);
+      this.props.navigation.push('Home');
+  }
    fetchValues(){
 		return fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
 			        method:'GET'
@@ -108,6 +154,7 @@ export class DrawerTitle extends React.Component{
       return(
         <ScrollView style={gstyles.sideMenuView}>
         	<SafeAreaView>
+          
         		<View>
   	      		<Text style={gstyles.drawertitleHeadingText}>Menu</Text>
               {
@@ -126,7 +173,8 @@ export class DrawerTitle extends React.Component{
   	      		<TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.drawerView}><Image source={require('../../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Create New List</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.push('SpecialOffers')}><Image source={require('../../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Special Offer</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.push('StoreLocator')}><Image source={require('../../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Store Locator</Text></TouchableOpacity>
-        		</View>
+        		  <TouchableOpacity style={gstyles.drawerView} onPress={()=>this.handleNavigation()}><Icon name="location-arrow" style={gstyles.drawerImage} size={24} color="#febe2b"/><Text style={gstyles.drawertitleNormalText}>Select City</Text></TouchableOpacity>
+            </View>
 
         		<View>
             	<Text style={gstyles.drawertitleHeadingText}>Categories</Text>
@@ -160,7 +208,32 @@ export class DrawerTitle extends React.Component{
                }
                
           </View>
+             <Modal
+              animationType="slide"
+              transparent={true}
+              style={{opacity:0.2}}
+              visible={this.state.modalVisible}
+              onRequestClose={() => {
+                alert('Modal has been closed.');
+                this.setModalVisible(!this.state.modalVisible);
+            }}>
+                <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)'}}>
+                  <View style={{flex:1,alignItems: 'center',backgroundColor:'#fff',margin:30,borderRadius:10}}>
+                      <Text style={[gstyles.lowestPriceTitle,{marginBottom:10}]}>Select City</Text>
+                      {
+                        this.state.cities.map((item,index)=>{
+                          return(
+                            <TouchableOpacity key={index} style={{width:'100%',padding:15,borderBottomColor:'#333',borderBottomWidth:1}} onPress={()=>{this.selectCity(item.title)}}><Text style={[gstyles.buttonTextFixed,gstyles.textRed]}>{item.title}</Text></TouchableOpacity>
+                          )
+                        })
+                      }
+                      
+                    
+                  </View>
+                </View>
+            </Modal>
         	</SafeAreaView>
+         
         </ScrollView>
         )
       }

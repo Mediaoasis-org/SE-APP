@@ -11,15 +11,17 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Alert
 
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 // import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import CheckBox from 'react-native-checkbox';
+import Permissions from 'react-native-permissions'
 // import { DrawerActions } from 'react-navigation';
 // import MapView, { ProviderPropType, Marker,Callout, AnimatedRegion } from 'react-native-maps';
-// import ModalDropdown from 'react-native-modal-dropdown';
+import ModalDropdown from 'react-native-modal-dropdown';
 const window= Dimensions.get('window');
 
 export  class NearByStoreComponent extends Component {
@@ -32,13 +34,14 @@ export  class NearByStoreComponent extends Component {
       error:null,
       fieldValues:[],
       isLoading:true,
-      gpsLoading:true,
+      // gpsLoading:true,
+      photoPermission:''
     };
    
   }
   fetchValues(){
     let wishlist_id = this.props.navigation.state.params.wishlist_id;
-     fetch('https://wffer.com/se/api/rest/listings/wishlist/get-nearby-store-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&latitude='+this.state.latitude+'&longitude='+this.state.longitude,{
+     fetch('wffer.com/se/api/rest/listings/wishlist/get-nearby-store-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&latitude='+this.state.latitude+'&longitude='+this.state.longitude,{
               method:'GET'
         })
         .then((response) => response.json())
@@ -61,8 +64,42 @@ export  class NearByStoreComponent extends Component {
           console.error(error);
         });
   }
-  componentDidMount() {
+   _alertForPhotosPermission() {
+    Alert.alert(
+          'Can we access your location?',
+          [
+            {
+              text: 'No way',
+              onPress: () => console.log('Permission denied'),
+              style: 'cancel',
+            },
+            this.state.photoPermission == 'undetermined'
+              ? { text: 'OK', onPress: this._requestPermission() }
+              : { text: 'Open Settings', onPress: Permissions.openSettings },
+          ],
+        )
+      }
 
+    _requestPermission = () => {
+          Permissions.request('location').then(response => {
+            // Returns once the user has chosen to 'allow' or to 'not allow' access
+            // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+            this.setState({ photoPermission: response })
+          })
+        }
+  componentDidMount() {
+    // navigator.geolocation.requestAuthorization()
+    Permissions.check('location', { type: 'always' }).then(response => {
+      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+      this.setState({ photoPermission: response })
+      if(this.state.photoPermission != 'authorized'){
+        alert('Permission');
+        this._alertForPhotosPermission()
+        
+      }
+    })
+  
+   
     navigator.geolocation.getCurrentPosition(
        (position) => {
          console.log("wokeeey");
@@ -71,7 +108,7 @@ export  class NearByStoreComponent extends Component {
            latitude: position.coords.latitude,
            longitude: position.coords.longitude,
            error: null,
-           gpsLoading:false,
+           // gpsLoading:false,
          });
          
           this.fetchValues();
@@ -88,7 +125,7 @@ export  class NearByStoreComponent extends Component {
     return Object.entries(this.state.fieldValues).map(([key, value]) => {  
     console.log(`${key} ${value.productAvailable}`);  
         return ( 
-                <TouchableOpacity onPress={()=>{this.props.navigation.push('StoreProfile',{wishlist_id:this.props.navigation.state.params.wishlist_id,store_id:value.wheretobuy_id,store_name:value.title})}} style={styles.flatlist} key={key}>
+                <TouchableOpacity onPress={()=>{this.props.navigation.push('StoreProfile',{wishlist_id:this.props.navigation.state.params.wishlist_id,store_id:value.wheretobuy_id,store_name:value.title})}} style={styles.flatlist}>
                   <View style={gstyles.lowestPriceLeftBox}>
                     <View style={gstyles.width90}>
                         <Image source={{uri : value.photoSrc}} style={gstyles.lowestPriceImage} resizeMode="contain"/>          
@@ -115,8 +152,8 @@ export  class NearByStoreComponent extends Component {
     return(
       <View style={gstyles.container}>
           <View style={gstyles.headerMenu}>
-                          <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
-                            <Icon name="angle-left" size={24} color="#fff" />
+                          <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+                            <Icon name="bars" size={24} color="#fff" />
                           </TouchableOpacity>
                           <Text style={gstyles.headerProfileLabel}>Price Comparison</Text>
                           <Text style={gstyles.headerRightButton}></Text>

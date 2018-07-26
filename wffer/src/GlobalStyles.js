@@ -55,44 +55,37 @@ export const gstyles = StyleSheet.create({
 		})
 	},
 	headerMenu:{
+		width:'100%',
+		flexDirection:'row',
+		// justifyContent:'center',
+		borderBottomColor:'#ccc',
+      	borderBottomWidth:1,
+      	backgroundColor:'#febe2b',
 
 		...Platform.select({
-			ios:{
-				width:'100%',
-				flexDirection:'row',
-				justifyContent:'center',
-				height:60,
+			ios:{	
+				height:65,
 				// marginTop:10,
-				borderBottomColor:'#ccc',
-	          	borderBottomWidth:1,
-	          	backgroundColor:'#febe2b'
-
 			},
 			android:{
-				width:'100%',
-				flexDirection:'row',
-				justifyContent:'center',
 				height:50,
 				// marginTop:15,
-				borderBottomColor:'#ccc',
-	          	borderBottomWidth:1,
-	          	backgroundColor:'#febe2b'
 			}
 		})
 	},
 	headerMenuButton:{
 		alignItems:'center',
+		width:'12%',
+		flexDirection:'column',
+			// borderRightWidth:1,
+   //    	borderRightColor:'#000',
 		...Platform.select({
 			ios:{
-				width:'10%',
 				paddingTop:25,
-				paddingLeft:10,
-				flexDirection:'column'
+				// paddingLeft:10,
 			},
 			android:{
-				width:'10%',
-				paddingLeft:10,
-				flexDirection:'column',
+				// paddingLeft:10,
 				paddingTop:15
 			}
 		})
@@ -102,35 +95,29 @@ export const gstyles = StyleSheet.create({
 	      	fontWeight:'bold',
 	      	letterSpacing: 3,
 	      	color: '#fff',
+	      	width:'76%',
+			flexDirection:'column',
+			textAlign:'center',
 		...Platform.select({
 			ios:{
-				width:'80%',
-				flexDirection:'column',
-				textAlign:'center',
 				paddingTop:27,
 			},
-			android:{
-				width:'80%',
+			android:{	
 				paddingTop:17,
-				flexDirection:'column',
-				textAlign:'center'
 			}
 		})
 	},
 	headerRightButton:{
 		alignItems:'center',
+		width:'12%',
+		flexDirection:'column',
+		paddingRight:10,
 		...Platform.select({
 			ios:{
-				width:'10%',
-				flexDirection:'column',
-				paddingTop:25,
-				paddingRight:10,
+				paddingTop:25,	
 			},
 			android:{
-				width:'10%',
-				flexDirection:'column',
 				paddingTop:15,
-				paddingRight:10,
 			}
 		})
 	},
@@ -352,8 +339,8 @@ export const gstyles = StyleSheet.create({
   	//wishlist
   	wishlistMultipleView:{width:'100%',flexDirection:'row',padding:8},
   	multipleCheckbox:{color:'#000',fontSize:15},
-  	wishlistBackButton:{padding:15,width:'10%',flexDirection:'column'},
-  	wishlistTitle:{padding:15,fontSize:20,width:'90%',flexDirection:'column',color:'#000',fontWeight:'bold',marginTop:2},
+  	wishlistBackButton:{padding:10,width:'10%',flexDirection:'column'},
+  	wishlistTitle:{padding:10,fontSize:20,width:'90%',flexDirection:'column',color:'#000',fontWeight:'bold',marginTop:2},
   	wishlistBox:{backgroundColor: '#fff',  borderColor:'gray',borderWidth:1,margin:5,flexDirection:'row'},
   	wishlistBoxLeft:{width:'90%',flexDirection:'row',marginBottom:10},
   	wishlistBoxRight:{width:'10%',marginTop:'10%'},
@@ -363,7 +350,7 @@ export const gstyles = StyleSheet.create({
   	wishlistInnerTitle:{fontSize: 18, marginTop: '5%',color:'#000',fontWeight:'bold'},
   	catTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
 	subtitle:{color: '#000', marginTop: '3%', fontSize: 18,textAlign:'left'},
-	wishlistCheckBox:{paddingTop:'100%',marginLeft:'5%'},
+	wishlistCheckBox:{paddingTop:'100%',paddingLeft:'10%'},
 	wishlistModalContainer:{flex: 1,flexDirection: 'column', justifyContent: 'center',alignItems: 'center'},
 	wishlistModalContainerBox:{backgroundColor:'#fff', width: 300},
 	modalMenu:{width:'100%',backgroundColor:'#00BCD4',padding:15,borderBottomColor:'#fff',borderBottomWidth:1},

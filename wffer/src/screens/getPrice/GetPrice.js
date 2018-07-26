@@ -24,8 +24,8 @@ export  class GetPriceComponent extends Component {
           </View>
           <View>
                 <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('Lowest',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>Lowest Price</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
-                <TouchableOpacity style={gstyles.flatlist}><Text style={gstyles.tellFriendTitle} onPress={()=>this.props.navigation.push('NearByStore')}>NearBy Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
-                <TouchableOpacity style={gstyles.flatlist} onPress={()=>this.props.navigation.push('MultiStore')}><Text style={gstyles.tellFriendTitle}>Multiple Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('NearByStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle} >NearBy Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('MultiStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>Multiple Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
           </View>
       </View>
     );

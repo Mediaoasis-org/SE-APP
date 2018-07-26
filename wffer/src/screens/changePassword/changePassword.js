@@ -23,6 +23,9 @@ export class ChangePasswordComponent extends Component {
 		// alert(JSON.stringify(this.props.navigation))
 		this._getStorageValue()
 	}
+	static navigationOptions = {
+        title: 'Chagne Password',
+    };
 	async _getStorageValue(){
 
 		// this.fetchFields()

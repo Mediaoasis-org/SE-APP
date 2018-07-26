@@ -29,12 +29,16 @@ export class Catalog extends Component {
     		fieldValues:[],
     		LoggedIn:null,
     		isLoading:true,
+    		city:''
     	}
     	this.getStorageValues()
 	}
 
 	async getStorageValues(){
          const userData = await AsyncStorage.getItem('userData');
+         const city = await AsyncStorage.getItem('cityInformation');
+         this.setState({city:city});
+
          // alert(userData.length);
           if(userData!=null){
             this.setState({LoggedIn:true});
@@ -50,7 +54,7 @@ export class Catalog extends Component {
    }
 
    fetchValues(){
-      return fetch('https://wffer.com/se/api/rest/albums?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
+      return fetch('https://wffer.com/se/api/rest/albums?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&city='+this.state.city,{
               method:'GET'
             })
             .then((response) => response.json())
@@ -72,6 +76,36 @@ export class Catalog extends Component {
             .catch((error) =>{
               console.error(error);
             });
+  	}
+  	catalogItems(){
+  		if(this.state.totalItems == 0){
+  			return(
+	            <View style={[gstyles.width100,gstyles.flexDirectionRow]}>
+	              <Text style={gstyles.ShoppingText}>No data found</Text>
+	            </View>
+	        );
+  		}
+  		else
+  		{
+  			return(
+  				<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
+							<FlatList data={this.state.fieldValues}
+				                renderItem={({item}) =>      
+				                    <View style={[gstyles.catalogView,{marginBottom:0}]}>
+				                     
+				                      <TouchableOpacity style={gstyles.alignItemsCenter} onPress={()=>{this.props.navigation.push('CatalogItems',{album_id:item.album_id})}}>
+					                      <Text style={gstyles.catalogPhotoCount}>{item.photo_count}</Text>
+					                      <Image source={{uri: item.image_profile}} style={gstyles.catalogPhoto}  />
+				                      </TouchableOpacity>
+				                      <View style={[gstyles.backgroundWhite,gstyles.padding10]}><Text style={gstyles.newToText}>{item.title}</Text></View> 
+				                    </View>                    
+				                    }
+				                keyExtractor={(item, index) => index.toString()}
+				              />
+						
+						</View>
+  			);
+  		}
   	}
 	render(){
 		if(this.state.LoggedIn==false){
@@ -106,22 +140,7 @@ export class Catalog extends Component {
         			this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
 					<ScrollView>
 						<SearchComponent />
-						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
-							<FlatList data={this.state.fieldValues}
-				                renderItem={({item}) =>      
-				                    <View style={[gstyles.catalogView,{marginBottom:0}]}>
-				                     
-				                      <TouchableOpacity style={gstyles.alignItemsCenter} onPress={()=>{this.props.navigation.push('CatalogItems',{album_id:item.album_id})}}>
-					                      <Text style={gstyles.catalogPhotoCount}>{item.photo_count}</Text>
-					                      <Image source={{uri: item.image}} style={gstyles.catalogPhoto}  />
-				                      </TouchableOpacity>
-				                      <View style={[gstyles.backgroundWhite,gstyles.padding10]}><Text style={gstyles.newToText}>{item.title}</Text></View> 
-				                    </View>                    
-				                    }
-				                keyExtractor={(item, index) => index.toString()}
-				              />
-						
-						</View>
+						{this.catalogItems()}
 					</ScrollView>
 				}
 			</View>

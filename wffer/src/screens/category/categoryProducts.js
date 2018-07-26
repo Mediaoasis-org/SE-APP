@@ -35,12 +35,24 @@ export class Products extends Component {
             selectedCheckboxId:[],
             fetching_Status: false,
             categories:[],
+            quantities:[]
             // page:1,
       }
       this.page=1;
       this.fetchValues();
       this.categories_func();
+      
     }
+    // selectQuantities(){
+    // 	let temp =[];
+    // 			this.state.fieldValues.map((item)=>{
+    // 				var obj={id: item.listing_id,qty: 1}
+			 // 		temp.push(obj);
+
+    // 			})
+    // 			this.setState({quantities:temp});
+    // 			console.log(this.state.quantities)
+    // }
     onCheckBoxPress(id) {
     	// alert(id)
 	    let tmp = this.state.selectedCheckboxId;
@@ -96,14 +108,15 @@ export class Products extends Component {
 			      .then((response) => response.json())
 			      .then((responseJson) => {
 			    	let json_data = responseJson.body.response;
-			    	const arr = Object.keys(json_data).map((key) => [key, json_data[key]]);
+			    	// const arr = Object.keys(json_data).map((key) => [key, json_data[key]]);
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
 				          
-				          fieldValues:responseJson.body.response,isLoading: false
+				          fieldValues:responseJson.body.response,isLoading: false,
+
 				          // [...this.state.fieldValues,...responseJson.body.response]
 				        });
-			      		 
+			      		 // this.selectQuantities();	
 			      		 let count = this.state.fieldValues.length;
 			      		 // alert(count);
 			      		 if(count >= 20){
@@ -123,32 +136,67 @@ export class Products extends Component {
     }
 
 	decrease_qty(id){
-		// alert(id)
-		// if(parseInt(qty)!=1){
-		//  qty=parseInt(qty)-1; 
-		// }
-		// this.setState({qty:qty});
-		 if(this.state.qty!=1){
-	      this.setState({qty:this.state.qty-1})
-	      }
+
+		let temp = this.state.quantities;
+	 	let index =temp.map(function(e) { return e.id; }).indexOf(id);
+	 	// console.log(index)
+	 	if (index == -1){
+	 				let qty = 1;
+	 				if(qty==1){
+	 					var obj={id: id,qty: qty}
+			 			temp.push(obj);
+	 				}
+			 		
+	 	}
+	 	else
+	 	{
+	 		Object.entries(temp).map(([key,value])=>{
+	 			if(value.id === id){
+	 				// alert(id);
+	 				// alert(value.id);
+	 				if(value.qty<=1){
+	 					return value.qty = value.qty;	
+	 				}
+	 				else
+	 				{
+	 					return value.qty = value.qty-1;	
+	 				}
+	 				
+	 			}
+		 	})
+	 	}
+	 	this.setState({
+	      quantities: temp
+	    });
+	 	 console.log(this.state.quantities);
+	 	 // this.state.quantities.map((items)=>{
+	 	 // 	console.log(items.id)
+	 	 // })
 	}
 	 increase_qty(id){
-	   	// alert(id)
-	   	
-	   	// qty=parseInt(qty)+1; 
-	   	// // alert(qty)
-	   	// this.setState({qty:qty});
-
-        this.setState({qty:this.state.qty+1})
-        // alert(this.state.qty)
-      
+	 	let temp = this.state.quantities;
+	 	let index =temp.map(function(e) { return e.id; }).indexOf(id);
+	 	// console.log(index)
+	 	if (index == -1){
+	 				let qty = 1;
+			 		var obj={id: id,qty: qty+1}
+			 		temp.push(obj);
+	 	}
+	 	else
+	 	{
+	 		Object.entries(temp).map(([key,value])=>{
+	 			if(value.id === id){
+	 				// alert(id);
+	 				// alert(value.id);
+	 				return value.qty = value.qty+1;	
+	 			}
+		 	})
+	 	}
+	 	this.setState({
+	      quantities: temp
+	    });
+	 	 console.log(this.state.quantities)
 	 }
-	 // changeCheckboxState(chek){
-	 // 	this.setState({checked:!this.state.checked});
-	 	
-	 // 	alert(this.state.checked);
-	
-	 // }
 	 addToCart(){
 	 	if(this.state.selectedCheckboxId.length<=0){
 	 		alert("Select Atleast One Product");
@@ -187,6 +235,7 @@ export class Products extends Component {
 				      		 this.setState({
 					          fieldValues:[...this.state.fieldValues,...responseJson.body.response],isLoading: false,fetching_Status:false
 					        });
+				      		 // this.selectQuantities();	
 				      		 let count = responseJson.body.response.length;
 				      		 if(count >= 20){
 				      		 	this.setState({showLoadMore:true})
@@ -203,7 +252,46 @@ export class Products extends Component {
 				      });
 				  })
 	 }
+	 renderText(qty){
+	 	return(
+	 	<Text style={gstyles.qtyText}>{qty}</Text>
+	 	)
+	 }
+	 renderQuantity(list_id)
+	 {
+	 	return(
+					<View style={gstyles.qtyView}>   
+	          					
+	          						
+	          						{
+	          							this.state.quantities.map((quan,index)=>{
+			          						if(quan.id === list_id){
+			          							return(
+			          								this.renderText(quan.qty)	
+		          								)
+		          							}
+		          							else
+		          								return(
+		          									this.renderText(1)
+		          								)
+		          						})  
+	          						}
+                          <TouchableHighlight 
+                             onPress={() => this.increase_qty(list_id)}
+                             underlayColor='#BEBEBE' style={gstyles.qtybuttonDecrease}>
+                             <Image source={require('../../../assets/plus.png')} style={gstyles.qtyIcon}/>
+                          </TouchableHighlight>
+                          
+                          <TouchableHighlight 
+                             onPress={() => this.decrease_qty(list_id)}
+                             underlayColor='#BEBEBE' style={gstyles.qtybuttonIncrease}>
+                            <Image source={require('../../../assets/minus.png')} style={gstyles.qtyIcon}/>
+                          </TouchableHighlight>
+                    </View>
+            );
+	 }
 	render(){
+		// alert("render");
 		return(
 				<View style={gstyles.flexContainer}>
 					<View style={gstyles.headerMenu}>
@@ -217,9 +305,11 @@ export class Products extends Component {
                         this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
 					<ScrollView>					
 								<SearchComponent />
-								<FlatList data={this.state.fieldValues} 
-		                			renderItem={({item}) =>      
-					                    	<View style={gstyles.productsMain}>
+								<View>
+								{
+									this.state.fieldValues.map((item)=>{
+										return(
+											<View style={gstyles.productsMain}>
 					                    		<TouchableOpacity style={gstyles.flexDirectionRow} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
 									          		<View style={gstyles.productsMainLeft}>
 									          			
@@ -244,21 +334,7 @@ export class Products extends Component {
 									          					})
 									          				}
 											          		</View>
-											          		<View style={gstyles.qtyView}>   
-
-											          			  <Text style={gstyles.qtyText}>{this.state.qty}</Text> 
-				                                                  <TouchableHighlight 
-				                                                     onPress={() => this.increase_qty(item.listing_id)}
-				                                                     underlayColor='#BEBEBE' style={gstyles.qtybuttonDecrease}>
-				                                                     <Image source={require('../../../assets/plus.png')} style={gstyles.qtyIcon}/>
-				                                                  </TouchableHighlight>
-				                                                  
-				                                                  <TouchableHighlight 
-				                                                     onPress={() => this.decrease_qty(item.listing_id)}
-				                                                     underlayColor='#BEBEBE' style={gstyles.qtybuttonIncrease}>
-				                                                    <Image source={require('../../../assets/minus.png')} style={gstyles.qtyIcon}/>
-				                                                  </TouchableHighlight>
-				                                            </View>
+											          		{this.renderQuantity(item.listing_id)}
 									          			</View>
 									          		</View>
 									          		<View style={gstyles.productsMainRight}><Icon color="#000" name="angle-right" size={30} style={gstyles.productsMainRightIcon} /></View>
@@ -275,9 +351,10 @@ export class Products extends Component {
 								          		</View>
 									            
 								        	</View>
-					                    }
-					                keyExtractor={(item, index) => index.toString()}
-					            />
+										);
+									})
+								}     
+					           </View>
 						{
 							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableOpacity> : null
 						}

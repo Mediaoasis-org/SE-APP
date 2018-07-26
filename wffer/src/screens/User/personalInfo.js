@@ -171,7 +171,7 @@ export  class PersonalInfoComponent extends Component {
      	// console.log(val);   
      	var obj1  = {}
      	obj1[state] = val;
-     	// console.log(obj1)
+     	console.log(obj1)
      	this.setState(obj1);
      	
      }
@@ -264,7 +264,7 @@ export  class PersonalInfoComponent extends Component {
 									                      defaultIndex={this.props.defaultIndex}
 									                      showsVerticalScrollIndicator={true}
 									                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
-									                      options={item.multiOptions}						         
+									                      options={Object.keys(item.multiOptions).map(key => item.multiOptions[key])}						         
 									                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}} 						                       
 									                      />
 									    					

@@ -282,7 +282,7 @@ export class WishlistComponent extends Component {
 						          		<View style={gstyles.wishlistBoxLeft}>
 						          			
 					          				<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}} style={gstyles.wishlistInnerLeft}>
-					          					<Image source={{uri:item.image}} style={gstyles.wishlistInnerLeftImage} />
+					          					<Image source={{uri:item.image_profile}} style={gstyles.wishlistInnerLeftImage} />
 					          				</TouchableOpacity>
 						          			
 						          			<View style={gstyles.wishlistInnerRight}>
