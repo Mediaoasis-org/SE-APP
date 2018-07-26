@@ -45,20 +45,21 @@ export  class StoreLocatorComponent extends Component {
          const userData = await AsyncStorage.getItem('userData');
          const city = await AsyncStorage.getItem('cityInformation');
          this.setState({city:city});
+         this.fetchValues();
          // alert(this.state.city)
          // alert(userData.length);
-          if(userData!=null){
-            this.setState({LoggedIn:true});
-            this.setState({userData:JSON.parse(userData)});
-            this.setState({oauthToken:this.state.userData.oauth_token});
-            this.setState({oauthSecret:this.state.userData.oauth_secret});
-            this.fetchValues();
+          // if(userData!=null){
+          //   this.setState({LoggedIn:true});
+          //   this.setState({userData:JSON.parse(userData)});
+          //   this.setState({oauthToken:this.state.userData.oauth_token});
+          //   this.setState({oauthSecret:this.state.userData.oauth_secret});
+          //   this.fetchValues();
             
-          }
-          else
-          {
-            this.setState({LoggedIn:false})
-          }         
+          // }
+          // else
+          // {
+          //   this.setState({LoggedIn:false})
+          // }         
    }
 
 	fetchValues(){
@@ -107,25 +108,7 @@ export  class StoreLocatorComponent extends Component {
      );
   	}
 	render(){
-		if(this.state.LoggedIn==false){
-        return(
-          <View style={gstyles.container}>
-              <View style={gstyles.headerMenu}>
-                    <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
-                      <Text><Icon name="bars" size={24} color="#fff" /></Text>
-                    </TouchableOpacity>
-                    <Text style={gstyles.headerProfileLabel}>Store Locator</Text>
-                    <Text style={gstyles.headerRightButton}></Text>
-              </View>
-              <Text style={gstyles.signInButton}>To View Stores ,Please Sign In</Text>
-              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
-                  <Text style={gstyles.createAccountText}>Sign In</Text>
-              </TouchableOpacity>
-          </View>
-        )
-	    }
-	    else
-	    {
+		
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -180,6 +163,25 @@ export  class StoreLocatorComponent extends Component {
 				 	
 			</View>
 		)
-		}
+		
 	}
 }
+// if(this.state.LoggedIn==false){
+//         return(
+//           <View style={gstyles.container}>
+//               <View style={gstyles.headerMenu}>
+//                     <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+//                       <Text><Icon name="bars" size={24} color="#fff" /></Text>
+//                     </TouchableOpacity>
+//                     <Text style={gstyles.headerProfileLabel}>Store Locator</Text>
+//                     <Text style={gstyles.headerRightButton}></Text>
+//               </View>
+//               <Text style={gstyles.signInButton}>To View Stores ,Please Sign In</Text>
+//               <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
+//                   <Text style={gstyles.createAccountText}>Sign In</Text>
+//               </TouchableOpacity>
+//           </View>
+//         )
+// 	    }
+// 	    else
+// 	    {

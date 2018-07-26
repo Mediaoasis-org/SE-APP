@@ -7,6 +7,7 @@ import {
   ScrollView,
   AsyncStorage,
   Modal,
+  ActivityIndicator
 
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
@@ -24,11 +25,26 @@ export class DrawerTitle extends React.Component{
         oauthSecret:'',
         modalVisible: false,
         cities:[],
+        
+        isLoading:true
       }
+      this.city ='';
       this.fetchValues();
       this.fetchCities();
+      this.getCity();
     }
-
+   async getCity(){
+      AsyncStorage.getItem('cityInformation');
+      var cityValue = await AsyncStorage.getItem('cityInformation');
+      this.city=cityValue;
+      // alert(this.state.city)
+      if(cityValue == null){
+        setTimeout( () => {
+            this.setModalVisible(true);
+        },1000);
+        
+      }
+    }
     setModalVisible(visible) {
        this.setState({modalVisible: visible});
     }
@@ -68,7 +84,7 @@ export class DrawerTitle extends React.Component{
               
               if(responseJson.status_code=="204"){
                 this.setState({
-                  isLoading: false,
+                  // isLoading: false,
                 }, function(){
               
                 });
@@ -86,7 +102,7 @@ export class DrawerTitle extends React.Component{
               console.error(error);
             });
     }
-    fetchCities(){
+  fetchCities(){
 
     return fetch('https://wffer.com/se/api/rest/listings/get-cities?id=1&oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
               method:'GET'
@@ -96,7 +112,7 @@ export class DrawerTitle extends React.Component{
           
               if(responseJson.status_code=='200'){
                  this.setState({
-                  // isLoading: false,
+                  isLoading: false,
                   cities: responseJson.body,
                 });
               }
@@ -127,7 +143,7 @@ export class DrawerTitle extends React.Component{
 			    
 			      	if(responseJson.status_code=='200'){
 			      		 this.setState({
-				          isLoading: false,
+				          // isLoading: false,
 				          fieldValues: responseJson.body.categories,
 				        });
 			      	}
@@ -208,8 +224,7 @@ export class DrawerTitle extends React.Component{
                }
                
           </View>
-             <Modal
-              animationType="slide"
+          <Modal animationType="slide"
               transparent={true}
               style={{opacity:0.2}}
               visible={this.state.modalVisible}
@@ -217,24 +232,62 @@ export class DrawerTitle extends React.Component{
                 alert('Modal has been closed.');
                 this.setModalVisible(!this.state.modalVisible);
             }}>
-                <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)'}}>
-                  <View style={{flex:1,alignItems: 'center',backgroundColor:'#fff',margin:30,borderRadius:10}}>
-                      <Text style={[gstyles.lowestPriceTitle,{marginBottom:10}]}>Select City</Text>
-                      {
-                        this.state.cities.map((item,index)=>{
-                          return(
-                            <TouchableOpacity key={index} style={{width:'100%',padding:15,borderBottomColor:'#333',borderBottomWidth:1}} onPress={()=>{this.selectCity(item.title)}}><Text style={[gstyles.buttonTextFixed,gstyles.textRed]}>{item.title}</Text></TouchableOpacity>
-                          )
-                        })
-                      }
-                      
-                    
-                  </View>
-                </View>
-            </Modal>
+              <View style={gstyles.container}>
+          <View style={gstyles.headerMenu}>
+                
+                  {this.city == null ? <Text style={gstyles.headerMenuButton}></Text> : <TouchableOpacity onPress={() =>this.setModalVisible(false)} style={gstyles.headerMenuButton}><Icon name="close" size={30} color="#fff" /></TouchableOpacity>}
+                          
+                          <Text style={gstyles.headerProfileLabel}>Select City</Text>
+                          <Text style={gstyles.headerRightButton}></Text>
+          </View>
+          {
+                              this.state.isLoading==true ?  <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :   
+          <ScrollView>              
+              <View style={[gstyles.profileHeadingView,gstyles.marginBottom10,gstyles.marginTop10]}><Text style={gstyles.profileHeadingText}>Choose City</Text></View>
+                     
+                          {
+                            this.state.cities.map((item,index)=>{
+                              return(
+                                <TouchableOpacity key={index} style={{width:'96%',padding:15,backgroundColor:'#febe2b',marginLeft:'2%',marginRight:'2%',marginTop:5,marginBottom:5}} onPress={()=>{this.selectCity(item.title)}}><Text style={{color:'#fff',fontSize:20,fontWeight:'bold'}}>{item.title}</Text></TouchableOpacity>
+                              )
+                            })
+                          }
+                        
+                
+                
+          </ScrollView>
+
+          }
+        </View>
+          </Modal>
         	</SafeAreaView>
          
         </ScrollView>
         )
       }
   }
+
+  // <Modal
+  //             animationType="slide"
+  //             transparent={true}
+  //             style={{opacity:0.2}}
+  //             visible={this.state.modalVisible}
+  //             onRequestClose={() => {
+  //               alert('Modal has been closed.');
+  //               this.setModalVisible(!this.state.modalVisible);
+  //           }}>
+  //               <View style={{flex:1,backgroundColor:'rgba(0,0,0,0.5)'}}>
+  //                 <View style={{flex:1,alignItems: 'center',backgroundColor:'#fff',margin:30,borderRadius:10}}>
+  //                     <Text style={[gstyles.lowestPriceTitle,{marginBottom:10}]}>Select City</Text>
+  //                     {
+  //                       this.state.cities.map((item,index)=>{
+  //                         return(
+  //                           <TouchableOpacity key={index} style={{width:'100%',padding:15,borderBottomColor:'#333',borderBottomWidth:1}} onPress={()=>{this.selectCity(item.title)}}><Text style={[gstyles.buttonTextFixed,gstyles.textRed]}>{item.title}</Text></TouchableOpacity>
+  //                         )
+  //                       })
+  //                     }
+                      
+                    
+  //                 </View>
+  //               </View>
+  //           </Modal>

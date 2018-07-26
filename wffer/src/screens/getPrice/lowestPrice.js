@@ -5,7 +5,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -18,12 +19,19 @@ export  class LowestPriceComponent extends Component {
 			wishlist_id:'',
 
 		}
-		this.fetchValues()
+		this.getStorageValue();
+		
 	}
-
+ 	async getStorageValue(){
+    	const city = await AsyncStorage.getItem('cityInformation');
+      	this.setState({city:city});
+      	this.fetchValues()
+      	// alert(this.state.city)
+    }
 	fetchValues(){
 		let wishlist_id = this.props.navigation.state.params.wishlist_id;
-		return fetch('https://wffer.com/se/api/rest/listings/wishlist/get-lowest-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+		// alert(wishlist_id)
+		return fetch('https://wffer.com/se/api/rest/listings/wishlist/get-lowest-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&city='+this.state.city,{
 			        method:'GET'
 	      })
 	      .then((response) => response.json())
@@ -47,6 +55,13 @@ export  class LowestPriceComponent extends Component {
 	      });
 	}
 	renderItems(){
+		if(this.state.data.length == 0){
+			return(
+			<Text style={[gstyles.ShoppingText,gstyles.padding10]}>no record found</Text>
+			)
+		}
+		else
+		{
 		return Object.entries(this.state.data).map(([key, value]) => {	
 		console.log(`${key} ${value.productAvailable}`);	
 				return ( 
@@ -73,7 +88,8 @@ export  class LowestPriceComponent extends Component {
 		          		</View>
 		        	</TouchableOpacity>
 		        )
-	    })	   
+	    })	
+	    }   
 	}
 	render(){
 		return(

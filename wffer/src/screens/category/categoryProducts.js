@@ -263,19 +263,7 @@ export class Products extends Component {
 					<View style={gstyles.qtyView}>   
 	          					
 	          						
-	          						{
-	          							this.state.quantities.map((quan,index)=>{
-			          						if(quan.id === list_id){
-			          							return(
-			          								this.renderText(quan.qty)	
-		          								)
-		          							}
-		          							else
-		          								return(
-		          									this.renderText(1)
-		          								)
-		          						})  
-	          						}
+	          						
                           <TouchableHighlight 
                              onPress={() => this.increase_qty(list_id)}
                              underlayColor='#BEBEBE' style={gstyles.qtybuttonDecrease}>
@@ -307,9 +295,9 @@ export class Products extends Component {
 								<SearchComponent />
 								<View>
 								{
-									this.state.fieldValues.map((item)=>{
+									this.state.fieldValues.map((item,index)=>{
 										return(
-											<View style={gstyles.productsMain}>
+											<View style={gstyles.productsMain} key={index}>
 					                    		<TouchableOpacity style={gstyles.flexDirectionRow} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
 									          		<View style={gstyles.productsMainLeft}>
 									          			

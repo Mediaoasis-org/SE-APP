@@ -35,6 +35,7 @@ import { NearByStoreComponent } from './src/screens/getPrice/NearByStore';
 import { MultiStoreComponent } from './src/screens/getPrice/multiStore';
 import { ContactUsComponent } from './src/screens/contactUs/contactUs';
 import { ReportComponent } from './src/screens/report/Report';
+import { CityScreen } from './src/screens/city/city';
 import { gstyles } from './src/GlobalStyles';
 
 import {DrawerTitle} from './src/components/SideMenu/index';
@@ -211,6 +212,9 @@ const stack = createStackNavigator({
   },
   Report:{
     screen:ReportComponent
+  },
+  City:{
+    screen:CityScreen
   },
   Logout:{
     screen:LogoutComponent

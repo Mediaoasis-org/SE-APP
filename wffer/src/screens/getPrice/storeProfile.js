@@ -15,11 +15,12 @@ export  class StoreProfileComponent extends Component {
 		this.state={
 			data:[],
 			isLoading:true,
+			total:'',
 
 		}
 		// alert(this.props.navigation.state.params.wishlist_id);
 		// alert(this.props.navigation.state.params.store_id)
-		this.fetchValues()
+		this.fetchValues();
 	}
 
 	fetchValues(){
@@ -38,6 +39,7 @@ export  class StoreProfileComponent extends Component {
 			          isLoading: false,
 	          
 	        },function(){
+	        	this.calculateTotalPrice();
 	        	// alert(this.state.data)
 	        });
 	      	}
@@ -50,8 +52,12 @@ export  class StoreProfileComponent extends Component {
 	        console.error(error);
 	      });
 	}
-	renderItems(){
-		
+	calculateTotalPrice(){
+		var tot = 0;
+		this.state.data.map((item,index)=>{
+			tot = tot + item.price1;
+		})
+		this.setState({total:parseFloat(Number(tot).toFixed(2))})
 	}
 	render(){
 		return(
@@ -63,7 +69,7 @@ export  class StoreProfileComponent extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.store_name}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
-					<ScrollView>
+					<ScrollView style={{marginBottom:30}}>
 					{	
 						this.state.isLoading ?  <View style={gstyles.loading}><ActivityIndicator color='#333' size="large" style={{height:100,width:'30%'}}/></View> :
 						<View>
@@ -95,6 +101,7 @@ export  class StoreProfileComponent extends Component {
 					    </View>
 					}
 					</ScrollView>
+					<TouchableOpacity style={{width:'100%',position:'absolute',bottom:2,alignItems:'center',backgroundColor:'#696969',padding:10}}><Text style={gstyles.buttonText}>Total Price {this.state.total}</Text></TouchableOpacity>
 			</View>
 		);
 	}

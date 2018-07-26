@@ -21,6 +21,7 @@ export const gstyles = StyleSheet.create({
 	fontSize18:{fontSize:18},
 
 	margin5:{margin:5},
+	marginTop10:{marginTop:10},
 	marginBottom10:{marginBottom:10},
 	marginTop40:{marginTop:40},
 	marginTop5per:{marginTop:'5%'},
@@ -121,6 +122,10 @@ export const gstyles = StyleSheet.create({
 			}
 		})
 	},
+
+	//city
+	cityMenu:{width:'96%',backgroundColor:'#00BCD4',padding:15,marginTop:5,marginBottom:5,marginLeft:'2%',marginRight:'2%'},
+    cityMenuText:{color:'#fff',fontSize:18,fontWeight:'bold',textAlign:'center'},
 	// headerMenu:{
 	// ...Platform.select({
 	// 	ios:{
@@ -322,7 +327,7 @@ export const gstyles = StyleSheet.create({
  	bestDealView:{width:'40%',padding:3},
  	discountDeal:{color: '#ff0000', fontSize: 18,textAlign:'center',fontStyle:'italic'},
  	bestDeal:{color: '#000', marginTop: '3%', fontSize: 18,textAlign:'center'},
- 	loadMoreActivity:{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'#fff'},
+ 	loadMoreActivity:{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'transparent'},
 
  	//product details 
  	productDetailsImage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '10%', width: '90%', height: 115},

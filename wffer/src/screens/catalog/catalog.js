@@ -27,7 +27,7 @@ export class Catalog extends Component {
       		userData:[],
     		search :'',
     		fieldValues:[],
-    		LoggedIn:null,
+    		// LoggedIn:null,
     		isLoading:true,
     		city:''
     	}
@@ -38,23 +38,23 @@ export class Catalog extends Component {
          const userData = await AsyncStorage.getItem('userData');
          const city = await AsyncStorage.getItem('cityInformation');
          this.setState({city:city});
-
+         this.fetchValues();
          // alert(userData.length);
-          if(userData!=null){
-            this.setState({LoggedIn:true});
-            this.setState({userData:JSON.parse(userData)});
-            this.setState({oauthToken:this.state.userData.oauth_token});
-            this.setState({oauthSecret:this.state.userData.oauth_secret});
-            this.fetchValues();
-          }
-          else
-          {
-            this.setState({LoggedIn:false})
-          }         
+          // if(userData!=null){
+          //   this.setState({LoggedIn:true});
+          //   this.setState({userData:JSON.parse(userData)});
+          //   this.setState({oauthToken:this.state.userData.oauth_token});
+          //   this.setState({oauthSecret:this.state.userData.oauth_secret});
+          //   this.fetchValues();
+          // }
+          // else
+          // {
+          //   this.setState({LoggedIn:false})
+          // }         
    }
 
    fetchValues(){
-      return fetch('https://wffer.com/se/api/rest/albums?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&city='+this.state.city,{
+      return fetch('https://wffer.com/se/api/rest/albums?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&city='+this.state.city,{
               method:'GET'
             })
             .then((response) => response.json())
@@ -79,16 +79,24 @@ export class Catalog extends Component {
   	}
   	catalogItems(){
   		if(this.state.totalItems == 0){
-  			return(
-	            <View style={[gstyles.width100,gstyles.flexDirectionRow]}>
-	              <Text style={gstyles.ShoppingText}>No data found</Text>
-	            </View>
-	        );
+  			
+  				
+	            	return(
+	            	<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
+			              <Text style={gstyles.ShoppingText}>No data found</Text>
+			              
+	            	</View>)
+	            
+	            
+	        
   		}
   		else
   		{
   			return(
-  				<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
+  				<View>
+  				<SearchComponent />
+  						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
+  							
 							<FlatList data={this.state.fieldValues}
 				                renderItem={({item}) =>      
 				                    <View style={[gstyles.catalogView,{marginBottom:0}]}>
@@ -104,29 +112,12 @@ export class Catalog extends Component {
 				              />
 						
 						</View>
+				</View>
   			);
   		}
   	}
 	render(){
-		if(this.state.LoggedIn==false){
-	        return(
-	          <View style={gstyles.container}>
-	              <View style={gstyles.headerMenu}>
-						<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
-							<Icon name="bars" size={24} color="#fff" />
-	                    </TouchableOpacity>
-	                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
-	                    <Text style={gstyles.headerRightButton}></Text>
-				</View>
-	              <Text style={gstyles.signInButton}>To get Lists ,Please Sign In</Text>
-	              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
-	                  <Text style={gstyles.createAccountText}>Sign In</Text>
-	              </TouchableOpacity>
-	          </View>
-	        )
-	    }
-	    else
-	    {
+		
 		return(
 			<View style={gstyles.flexContainer}>
 				<View style={gstyles.headerMenu}>
@@ -139,12 +130,32 @@ export class Catalog extends Component {
 				 { 
         			this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
 					<ScrollView>
-						<SearchComponent />
+						
 						{this.catalogItems()}
 					</ScrollView>
 				}
 			</View>
 		)
 		}
-	}
+	
 }
+
+// if(this.state.LoggedIn==false){
+// 	        return(
+// 	          <View style={gstyles.container}>
+// 	              <View style={gstyles.headerMenu}>
+// 						<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+// 							<Icon name="bars" size={24} color="#fff" />
+// 	                    </TouchableOpacity>
+// 	                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
+// 	                    <Text style={gstyles.headerRightButton}></Text>
+// 				</View>
+// 	              <Text style={gstyles.signInButton}>To get Lists ,Please Sign In</Text>
+// 	              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
+// 	                  <Text style={gstyles.createAccountText}>Sign In</Text>
+// 	              </TouchableOpacity>
+// 	          </View>
+// 	        )
+// 	    }
+// 	    else
+// 	    {
