@@ -31,11 +31,13 @@ export class MultipleWishlistComponent extends Component {
 			LoggedIn:null
 		}
 		this._getStorageValue();
+		// alert(JSON.stringify(this.props.navigation.state.params.quantities));
+
 	}
 	
 	async _getStorageValue(){
 		// alert("wishlist multiple")
-		console.log(await AsyncStorage.getItem('userData'))
+		// console.log(await AsyncStorage.getItem('userData'))
 		 var userData = await AsyncStorage.getItem('userData')
 		 // alert(userData);
 		 //  alert(this.state.LoggedIn);
@@ -64,6 +66,7 @@ export class MultipleWishlistComponent extends Component {
 	      tmp.push( id );
 	    }
 
+
 	    this.setState({
 	      selectedCheckboxId: tmp
 	    });
@@ -71,6 +74,8 @@ export class MultipleWishlistComponent extends Component {
 	}
 	fetchFields(){
 		let product_ids = this.props.navigation.state.params.product_ids;
+		// console.log(this.props.navigation.state.params.quantities);
+
 		 return fetch('https://wffer.com/se/api/rest/listings/wishlist/add?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listing_id='+product_ids,{
 			        method:'GET'
 	      })
@@ -94,17 +99,19 @@ export class MultipleWishlistComponent extends Component {
 	      });
 	}
 	SaveWishlist(){
-		let product_ids = this.props.navigation.state.params.product_ids;
+		let product_ids = this.props.navigation.state.params.quantities;
 		// console.log(this.state.selectedCheckboxId);
 		// console.log('ids');
-		// console.log(this.props.navigation.state.params.product_ids);
+		// console.log(this.props.navigation.state.params.product_ids);	
+	
 		product_ids.map((item)=>{
 			this.state.selectedCheckboxId.map((items)=>{
-				// console.log(item);
-				// console.log(items);
+				// console.log(item.quantity);
+				// console.log(item.id)
+				console.log(items);
 					var formData = new FormData;
 		    		formData.append(items,1);
-					return fetch('https://wffer.com/se/api/rest/listings/wishlist/add?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listingtype_id=1&listing_id='+item,{
+					return fetch('https://wffer.com/se/api/rest/listings/wishlist/add?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret+'&listingtype_id=1&listing_id='+item.id+'&quantity='+item.qty,{
 						body: formData,
 						headers:{
 				          'Accept':'application/json',
@@ -174,9 +181,9 @@ export class MultipleWishlistComponent extends Component {
 						          				this.state.data.map((item,index)=>{
 						          					if(item.type==='Checkbox'){
 							          					return(
-							          					<View style={gstyles.productsMain}>
+							          					<View style={gstyles.productsMain} key={index}>
 								          					<View style={gstyles.wishlistMultipleView} key={index}>
-								          						<CheckBox label={item.label}
+								          						<CheckBox label={item.label.toString()}
 															        onChange={()=>this.onCheckBoxPress(item.name)} labelStyle={gstyles.multipleCheckbox}/> 
 															</View>   
 														</View>

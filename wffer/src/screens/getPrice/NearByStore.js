@@ -33,12 +33,18 @@ export  class NearByStoreComponent extends Component {
       fieldValues:[],
       isLoading:true,
       gpsLoading:true,
+      city:''
     };
-   
+    this.getStorageValue();
+  }
+  async getStorageValue(){
+    const city = await AsyncStorage.getItem('cityInformation');
+      this.setState({city:city});
+      // alert(this.state.city)
   }
   fetchValues(){
     let wishlist_id = this.props.navigation.state.params.wishlist_id;
-     fetch('https://wffer.com/se/api/rest/listings/wishlist/get-nearby-store-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&latitude='+this.state.latitude+'&longitude='+this.state.longitude,{
+     fetch('https://wffer.com/se/api/rest/listings/wishlist/get-nearby-store-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&latitude='+this.state.latitude+'&longitude='+this.state.longitude+'&city='+this.state.city,{
               method:'GET'
         })
         .then((response) => response.json())

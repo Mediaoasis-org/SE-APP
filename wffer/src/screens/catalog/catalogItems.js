@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {Constants} from '../../common';
 import Carousel from 'react-native-snap-carousel';
 import Gallery,{ ImageGallery } from 'react-native-image-gallery';
+import PhotoView from 'react-native-photo-view';
 // import {FlatlistComponent} from '../../components/FlatlistComponent';
 const window= Dimensions.get('window');
 
@@ -163,24 +164,29 @@ export class CatalogItems extends PureComponent {
 		              />
 		              </View>
 		          }
-		              <Modal
+		             				<Modal
 							          animationType="slide"
 							          transparent={false}
 							          visible={this.state.modalVisible}
 							          onRequestClose={() => {
 							            alert('Modal has been closed.');
 							          }}>
-							          <View style={{marginBottom:10}}>
-							           <TouchableHighlight style={{backgroundColor:'#000', padding:10}}
-						                onPress={() => {
-						                  this.setModalVisible(!this.state.modalVisible);
-						                }}>
-						               <Text style={{textAlign:'right',color:'#fff'}}>Close</Text>
-						              </TouchableHighlight>
-						              <ScrollView maximumZoomScale={2} minimumZoomScale={1} zoomScale={2}>
-						         			<Image source={{uri : this.state.ModalImage}} resizeMethod="auto" style={{borderColor:'#000',borderWidth:2,width:'100%',height:window.height}} resizeMode="contain"/>
-						             </ScrollView>
-							           
+							          <View style={{marginBottom:10,backgroundColor:'#fff',width:window.width,height:window.height}}>
+								           <TouchableHighlight style={{backgroundColor:'#febe2b', padding:20}}
+							                onPress={() => {
+							                  this.setModalVisible(!this.state.modalVisible);
+							                }}>
+							               <Text style={{textAlign:'right',color:'#fff',fontSize:18}}>Close</Text>
+							              </TouchableHighlight>
+						            
+							             <PhotoView
+	  									  source={{uri: this.state.ModalImage}}
+	  									  
+										  minimumZoomScale={1}
+										  maximumZoomScale={3}
+										  androidScaleType="center"
+										  onLoad={() => console.log("Image loaded!")}
+										  style={{width: '96%', height: window.height,margin:'2%'}} />
 							          </View>
 							        </Modal>
 					{
@@ -195,6 +201,12 @@ export class CatalogItems extends PureComponent {
 		)
 	}
 }
+
+ // <ScrollView maximumZoomScale={2} minimumZoomScale={1} zoomScale={2}>
+	// 					         			<Image source={{uri : this.state.ModalImage}} resizeMethod="auto" style={{borderColor:'#000',borderWidth:2,width:'100%',height:window.height}} resizeMode="contain"/>
+	// 					             </ScrollView>
+
+
 	// <Gallery
 	// 									        style={{ flex: 1, backgroundColor: 'black' }}
 	// 											images={this.state.images_array}      

@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-photo-view')
 //    implementation 'com.google.android.gms:play-services-maps:15.0.1'
     compile project(':react-native-image-picker')
     compile project(':react-native-vector-icons')

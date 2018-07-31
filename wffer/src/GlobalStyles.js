@@ -233,7 +233,7 @@ export const gstyles = StyleSheet.create({
 	drawerImage:{marginTop:10,marginLeft:10,marginRight:0,width:24,height:24,flexDirection:'column'},
 	flatimage:{ height: 150, width: '100%' },
 	title:{  fontSize: 18, color: '#000' },
-	likeButton:{width:'45%',padding:10,backgroundColor:'#e9ebee',borderColor:'#ddd',borderWidth:1,margin:10,justifyContent:'center',flexDirection:'column'},
+	likeButton:{width:'90%',padding:10,backgroundColor:'#e9ebee',borderColor:'#ddd',borderWidth:1,marginLeft:'5%',marginRight:'5%',marginTop:5,marginBottom:10,justifyContent:'center',flexDirection:'column'},
 	slider: {
         // marginTop: 15,
         overflow: 'visible' // for custom animations
@@ -330,7 +330,7 @@ export const gstyles = StyleSheet.create({
  	loadMoreActivity:{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'transparent'},
 
  	//product details 
- 	productDetailsImage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '10%', width: '90%', height: 115},
+ 	productDetailsImage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '10%', width: '90%', height: 115,padding:5},
  	productDetailsTitle:{fontSize: 18, marginTop: '10%',color:'#000'},
  	priceComparisonText:{fontSize:20,fontWeight:'bold',margin:10},
  	priceComparisonView:{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1,width:'96%',marginLeft:'2%',marginRight:'2%',marginTop:'2%'},

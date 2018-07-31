@@ -6,7 +6,9 @@ import {
   ScrollView,
   TouchableOpacity,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
+  Linking,
+  Platform
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import MapView, { ProviderPropType, Marker,Callout, AnimatedRegion } from 'react-native-maps';
@@ -85,7 +87,8 @@ export  class StoreLocatorComponent extends Component {
               console.error(error);
             });
   	}
-  	getLocation(){
+  	getLocation(getlat,getlong){
+  		
 	  		 navigator.geolocation.getCurrentPosition(
 		       (position) => {
 		         console.log("wokeeey");
@@ -105,7 +108,26 @@ export  class StoreLocatorComponent extends Component {
 		     },
 		       { enableHighAccuracy: false, timeout: 50000, maximumAge: 1000 },
 
-     );
+    		);
+	  		 const scheme =Platform.select({ ios: 'maps://app?', android: 'geo:0,0?q=' });
+	  		 const latLng = '24.7136,39.1925';
+	  		 var getlatlng = getlat+','+getlong;
+	  		 const url = Platform.select({
+	  		 	ios:scheme+'saddr='+latLng+'&daddr='+getlatlng,
+	  		 	android:scheme+getlatlng
+	  		 })
+	  		 alert(url)
+	  		 Linking.openURL(url)
+	  		 // Platform.select({
+	  		 // 	ios: () => {
+	  		 // 		Linking.openURL('maps://app?saddr=24.7136+39.1925&daddr='+getlat+'+'+getlong)
+	  		 // 	},
+	  		 // 	android :() =>{
+	  		 // 		alert('opening url')
+	  		 // 		Linking.openURL('geo:24.7136,39.1925?z=8');
+	  		 // 	}
+	  		 // })
+	  		
   	}
 	render(){
 		
@@ -136,28 +158,24 @@ export  class StoreLocatorComponent extends Component {
 								    <Marker
 								      key={index}
 								      coordinate={{latitude:marker.latitude,longitude:marker.longitude}}
-								      calloutOffset={{ x: -8, y: 28 }}
-            						  calloutAnchor={{ x: 0.5, y: 0.4 }}
+								      
 								  	>
 								  		
-								  		<Callout tooltip  style={{alignItems:'center'}}>
+								  		<MapView.Callout tooltip style={{alignItems:'center'}} onPress={() => this.getLocation(marker.latitude,marker.longitude)}>
 									  		<View style={{alignSelf: 'flex-start',}}>
-									  		<View style={{width:window.width-40,flexDirection: 'row', alignSelf: 'flex-start',backgroundColor:'#fff',borderRadius: 6,borderColor: '#007a87',borderWidth: 0.5, padding:10}}>
-									  			<View  style={{flex:1}}>
-									  			<Text style={{color:'#000',fontSize:20,fontWeight:'bold',textAlign:'center',marginBottom:3}}>{marker.title}</Text>
-									     		<Text style={{color:'#000',fontSize:18,textAlign:'center',marginBottom:3}}>{marker.branch}</Text>
-									     		<TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.getLocation()}><Text style={{color:'#fff',paddingTop:5,paddingBottom:5,paddingLeft:15,paddingRight:15,backgroundColor:'#007a87',fontSize:18,margin:5}}>Directions</Text></TouchableOpacity>
-									     		</View>
+										  		<View style={{width:window.width-40,flexDirection: 'row', alignSelf: 'flex-start',backgroundColor:'#fff',borderRadius: 6,borderColor: '#007a87',borderWidth: 0.5, padding:10}}>
+										  			<View  style={{flex:1}}>
+											  			<Text style={{color:'#000',fontSize:20,fontWeight:'bold',textAlign:'center',marginBottom:3}}>{marker.title}</Text>
+											     		<Text style={{color:'#000',fontSize:18,textAlign:'center',marginBottom:3}}>{marker.branch}</Text>
+											     		<TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.getLocation(marker.latitude,marker.longitude)}><Text style={{color:'#fff',paddingTop:5,paddingBottom:5,paddingLeft:15,paddingRight:15,backgroundColor:'#007a87',fontSize:18,margin:5}}>Directions</Text></TouchableOpacity>
+										     		</View>
+										  		</View>
 									  		</View>
-									  		</View>
-								  		</Callout>
+								  		</MapView.Callout>
 								  		
 								  	</Marker>
 							 	))}
-							 	{!!this.state.latitude && !!this.state.longitude && <Marker
-				                  coordinate={{"latitude":this.state.latitude,"longitude":this.state.longitude}}
-				                 title={"Your Location"}
-				               />}
+							 	
 							</MapView>
 					} 
 				 	

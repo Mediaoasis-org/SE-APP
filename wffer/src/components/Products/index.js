@@ -11,20 +11,20 @@ export class ProductDetail extends React.Component{
       
       // alert(JSON.stringify(this.props.navigation));
     }
-  decrease_qty(qty){
-    // alert(qty)
-    if(parseInt(qty)!=1){
-     qty=parseInt(qty)-1; 
-    }
-    this.setState({qty:qty});
-  }
-   increase_qty(qty){
-      // alert(id)
+  // decrease_qty(qty){
+  //   // alert(qty)
+  //   if(parseInt(qty)!=1){
+  //    qty=parseInt(qty)-1; 
+  //   }
+  //   this.setState({qty:qty});
+  // }
+  //  increase_qty(qty){
+  //     // alert(id)
       
-      qty=parseInt(qty)+1; 
-      // alert(qty)
-      this.setState({qty:qty});
-   }
+  //     qty=parseInt(qty)+1; 
+  //     // alert(qty)
+  //     this.setState({qty:qty});
+  //  }
   render(){
     
       return(
@@ -43,10 +43,8 @@ export class ProductDetail extends React.Component{
 
           </View>
           <View style={[gstyles.width100,gstyles.flexDirectionRow]}>
-              <TouchableOpacity style={gstyles.likeButton}>
-                  <Text style={gstyles.textCenter}>Like</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={gstyles.likeButton}>
+             
+              <TouchableOpacity style={gstyles.likeButton} onPress={()=>this.props.navigation.push('MultipleWishlist',{product_ids:this.props.data.listing_id})}>
                   <Text style={gstyles.textCenter}>Add to Shopping List</Text>
               </TouchableOpacity>
           </View>
@@ -54,3 +52,7 @@ export class ProductDetail extends React.Component{
         )
       }
   }
+
+   // <TouchableOpacity style={gstyles.likeButton}>
+   //                <Text style={gstyles.textCenter}>Like</Text>
+   //            </TouchableOpacity>

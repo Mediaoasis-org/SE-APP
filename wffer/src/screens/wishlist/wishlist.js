@@ -9,7 +9,8 @@ import {
   ScrollView,
   AsyncStorage,
   ActivityIndicator,
-  Modal
+  Modal,
+  Share
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';

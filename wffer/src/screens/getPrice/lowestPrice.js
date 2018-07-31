@@ -17,6 +17,7 @@ export  class LowestPriceComponent extends Component {
 			data:[],
 			isLoading:true,
 			wishlist_id:'',
+			city:''
 
 		}
 		this.getStorageValue();

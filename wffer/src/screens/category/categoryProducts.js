@@ -25,7 +25,7 @@ export class Products extends Component {
     constructor(props){
     	super(props);
     	this.state = {
-            qty:1,
+            // qty:1,
             activeRow:'',
             search:'',
             fetchValues:[],
@@ -35,7 +35,8 @@ export class Products extends Component {
             selectedCheckboxId:[],
             fetching_Status: false,
             categories:[],
-            quantities:[]
+            quantities:[],
+            fieldValues:[]
             // page:1,
       }
       this.page=1;
@@ -43,31 +44,6 @@ export class Products extends Component {
       this.categories_func();
       
     }
-    // selectQuantities(){
-    // 	let temp =[];
-    // 			this.state.fieldValues.map((item)=>{
-    // 				var obj={id: item.listing_id,qty: 1}
-			 // 		temp.push(obj);
-
-    // 			})
-    // 			this.setState({quantities:temp});
-    // 			console.log(this.state.quantities)
-    // }
-    onCheckBoxPress(id) {
-    	// alert(id)
-	    let tmp = this.state.selectedCheckboxId;
-
-	    if ( tmp.includes( id ) ) {
-	      tmp.splice( tmp.indexOf(id), 1 );
-	    } else {
-	      tmp.push( id );
-	    }
-
-	    this.setState({
-	      selectedCheckboxId: tmp
-	    });
-	    // alert(this.state.selectedCheckboxId)
-	  }
     categories_func(){
 	 fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
 			        method:'GET'
@@ -93,6 +69,7 @@ export class Products extends Component {
 			      });
 	}
     fetchValues(){
+    	let json_data;
     	let category_id = this.props.navigation.state.params.cat_id;
     	let categoryUrl;
     	if(category_id){
@@ -107,26 +84,36 @@ export class Products extends Component {
 			      })
 			      .then((response) => response.json())
 			      .then((responseJson) => {
-			    	let json_data = responseJson.body.response;
+			    	// alert(responseJson.body.response)
+			    	// console.log(responseJson);
 			    	// const arr = Object.keys(json_data).map((key) => [key, json_data[key]]);
 			      	if(responseJson.status_code=='200'){
-			      		 this.setState({
+			      		if(responseJson.body.response){
+			      			json_data = responseJson.body.response;
+				      		json_data.map((item)=>{
+				      			item.quantity = 1;
+				      		});
+				      		this.setState({
 				          
-				          fieldValues:responseJson.body.response,isLoading: false,
+					          fieldValues:json_data,isLoading: false,
 
-				          // [...this.state.fieldValues,...responseJson.body.response]
-				        });
+					          // [...this.state.fieldValues,...responseJson.body.response]
+					        });
+			      		}
+			      		else{
+			      			this.setState({fieldValues:responseJson.body.response,isLoading:false})
+			      		}
 			      		 // this.selectQuantities();	
 			      		 let count = this.state.fieldValues.length;
 			      		 // alert(count);
 			      		 if(count >= 20){
 			      		 	this.setState({showLoadMore:true})
 			      		 }
-			      		 // alert(JSON.stringify(this.state.fieldValues));
+			      		 // console.log(JSON.stringify(this.state.fieldValues));
 			      	}
 			      	else
 			      	{
-			      		// 
+			      		alert("no data found")
 			      	}
 			      	this.setState({Message:responseJson.Message});
 			      })
@@ -134,76 +121,75 @@ export class Products extends Component {
 			        console.error(error);
 			      });
     }
-
-	decrease_qty(id){
-
-		let temp = this.state.quantities;
-	 	let index =temp.map(function(e) { return e.id; }).indexOf(id);
-	 	// console.log(index)
-	 	if (index == -1){
-	 				let qty = 1;
-	 				if(qty==1){
-	 					var obj={id: id,qty: qty}
-			 			temp.push(obj);
-	 				}
-			 		
-	 	}
-	 	else
-	 	{
-	 		Object.entries(temp).map(([key,value])=>{
-	 			if(value.id === id){
-	 				// alert(id);
-	 				// alert(value.id);
-	 				if(value.qty<=1){
-	 					return value.qty = value.qty;	
-	 				}
-	 				else
-	 				{
-	 					return value.qty = value.qty-1;	
-	 				}
-	 				
-	 			}
-		 	})
-	 	}
-	 	this.setState({
-	      quantities: temp
+	onCheckBoxPress(id) {
+    	// alert(id)
+	    let tmp = this.state.selectedCheckboxId;
+		
+	    if ( tmp.includes( id ) ) {
+	      tmp.splice( tmp.indexOf(id), 1 );
+	    } else {
+	      tmp.push( id );
+	    }
+	    this.setState({
+	      selectedCheckboxId: tmp
 	    });
-	 	 console.log(this.state.quantities);
-	 	 // this.state.quantities.map((items)=>{
-	 	 // 	console.log(items.id)
-	 	 // })
-	}
-	 increase_qty(id){
-	 	let temp = this.state.quantities;
-	 	let index =temp.map(function(e) { return e.id; }).indexOf(id);
-	 	// console.log(index)
-	 	if (index == -1){
-	 				let qty = 1;
-			 		var obj={id: id,qty: qty+1}
-			 		temp.push(obj);
-	 	}
-	 	else
-	 	{
-	 		Object.entries(temp).map(([key,value])=>{
-	 			if(value.id === id){
-	 				// alert(id);
-	 				// alert(value.id);
-	 				return value.qty = value.qty+1;	
-	 			}
-		 	})
-	 	}
+	    // alert(this.state.selectedCheckboxId)
+	  }
+	
+	 
+	 increase_qty(listing_id){
+	 	// let qty = 1;
+	 	let temp = this.state.fieldValues;
+	 	// let index = temp.findIndex(el => el.listing_id === listing_id);
+	 	temp.map((items)=>{
+	 		if(listing_id == items.listing_id){
+	 			return items.quantity = items.quantity + 1;
+	 		}
+	 	})
+	 	// console.log(temp)
 	 	this.setState({
-	      quantities: temp
+	      fieldValues: temp
 	    });
-	 	 console.log(this.state.quantities)
+	 	
 	 }
+	 decrease_qty(listing_id){
+	 	let temp = this.state.fieldValues;
+	 	// let index = temp.findIndex(el => el.listing_id === listing_id);
+	 	temp.map((items)=>{
+	 		if(listing_id == items.listing_id){
+	 			if(items.quantity <=1){
+	 				return items.quantity;
+	 			}
+	 			else{
+		 			return items.quantity = items.quantity - 1;
+		 		}
+	 		}
+	 	})
+	 	// console.log(temp)
+	 	this.setState({
+	      fieldValues: temp
+	    });
+	}
 	 addToCart(){
 	 	if(this.state.selectedCheckboxId.length<=0){
 	 		alert("Select Atleast One Product");
 	 	}
 	 	else
 	 	{
-	 		this.props.navigation.push('MultipleWishlist',{product_ids:this.state.selectedCheckboxId});
+	 		let tempquan = [];
+	 		this.state.selectedCheckboxId.map((selected)=>{
+	 			this.state.fieldValues.map((item)=>{
+
+			    	if(selected == item.listing_id){
+			    		tempquan.push({id : selected , qty : item.quantity});
+			    	}
+			    	
+			    })
+	 		})
+	 		  
+	 		   // this.setState({quantities : tempquan});
+
+	 		this.props.navigation.push('MultipleWishlist',{product_ids:this.state.selectedCheckboxId,quantities : tempquan});
 	 	}
 	 	
 	 }
@@ -213,6 +199,7 @@ export class Products extends Component {
 	 	// let pageno = this.state.page+1;
 	 	// // alert(page);
 	 	// this.setState({page : pageno});
+	 	let json_data;
 	 	this.page = this.page + 1;
 	 	this.setState({ fetching_Status: true,showLoadMore:false}, ()=>{
 		 	// alert(this.state.showLoadMore);
@@ -231,15 +218,22 @@ export class Products extends Component {
 				      })
 				      .then((response) => response.json())
 				      .then((responseJson) => {
+				      	
+
 				      	if(responseJson.status_code=='200'){
+				      		json_data = responseJson.body.response;
+				      		json_data.map((item)=>{
+				      			item.quantity = 1;
+				      		})
 				      		 this.setState({
-					          fieldValues:[...this.state.fieldValues,...responseJson.body.response],isLoading: false,fetching_Status:false
+					          fieldValues:[...this.state.fieldValues,...json_data],isLoading: false,fetching_Status:false
 					        });
 				      		 // this.selectQuantities();	
 				      		 let count = responseJson.body.response.length;
 				      		 if(count >= 20){
 				      		 	this.setState({showLoadMore:true})
 				      		 }
+				      		 // console.log(this.state.fieldValues)
 				      	}
 				      	else
 				      	{
@@ -252,32 +246,13 @@ export class Products extends Component {
 				      });
 				  })
 	 }
-	 renderText(qty){
-	 	return(
-	 	<Text style={gstyles.qtyText}>{qty}</Text>
-	 	)
-	 }
-	 renderQuantity(list_id)
-	 {
-	 	return(
-					<View style={gstyles.qtyView}>   
-	          					
-	          						
-	          						
-                          <TouchableHighlight 
-                             onPress={() => this.increase_qty(list_id)}
-                             underlayColor='#BEBEBE' style={gstyles.qtybuttonDecrease}>
-                             <Image source={require('../../../assets/plus.png')} style={gstyles.qtyIcon}/>
-                          </TouchableHighlight>
-                          
-                          <TouchableHighlight 
-                             onPress={() => this.decrease_qty(list_id)}
-                             underlayColor='#BEBEBE' style={gstyles.qtybuttonIncrease}>
-                            <Image source={require('../../../assets/minus.png')} style={gstyles.qtyIcon}/>
-                          </TouchableHighlight>
-                    </View>
-            );
-	 }
+	 
+	 // renderQuantity(list_id)
+	 // {
+	 // 	return(
+					
+  //           );
+	 // }
 	render(){
 		// alert("render");
 		return(
@@ -322,7 +297,22 @@ export class Products extends Component {
 									          					})
 									          				}
 											          		</View>
-											          		{this.renderQuantity(item.listing_id)}
+											          		<View style={gstyles.qtyView}>   
+	          					
+	          						
+											          			<Text style={gstyles.qtyText}>{item.quantity}</Text>		
+										                          <TouchableHighlight 
+										                             onPress={() => this.increase_qty(item.listing_id)}
+										                             underlayColor='#BEBEBE' style={gstyles.qtybuttonDecrease}>
+										                             <Image source={require('../../../assets/plus.png')} style={gstyles.qtyIcon}/>
+										                          </TouchableHighlight>
+										                          
+										                          <TouchableHighlight 
+										                             onPress={() => this.decrease_qty(item.listing_id)}
+										                             underlayColor='#BEBEBE' style={gstyles.qtybuttonIncrease}>
+										                            <Image source={require('../../../assets/minus.png')} style={gstyles.qtyIcon}/>
+										                          </TouchableHighlight>
+										                    </View>
 									          			</View>
 									          		</View>
 									          		<View style={gstyles.productsMainRight}><Icon color="#000" name="angle-right" size={30} style={gstyles.productsMainRightIcon} /></View>
