@@ -4,6 +4,7 @@ import {
   View,
 TouchableOpacity,
 TouchableHighlight,
+TextInput,
 Image,
 FlatList,
 ScrollView,
@@ -36,7 +37,8 @@ export class Products extends Component {
             fetching_Status: false,
             categories:[],
             quantities:[],
-            fieldValues:[]
+            fieldValues:[],
+            renderData:[],
             // page:1,
       }
       this.page=1;
@@ -99,6 +101,7 @@ export class Products extends Component {
 
 					          // [...this.state.fieldValues,...responseJson.body.response]
 					        });
+					        this.setState({renderData : this.state.fieldValues})
 			      		}
 			      		else{
 			      			this.setState({fieldValues:responseJson.body.response,isLoading:false})
@@ -228,6 +231,8 @@ export class Products extends Component {
 				      		 this.setState({
 					          fieldValues:[...this.state.fieldValues,...json_data],isLoading: false,fetching_Status:false
 					        });
+
+				      		  this.setState({renderData : this.state.fieldValues})
 				      		 // this.selectQuantities();	
 				      		 let count = responseJson.body.response.length;
 				      		 if(count >= 20){
@@ -246,7 +251,34 @@ export class Products extends Component {
 				      });
 				  })
 	 }
-	 
+	 handleSearchInput(e){
+	    let text = e.toLowerCase()
+	    this.setState({search : e})
+	    let fullList = this.state.fieldValues;
+
+	    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+	      if(item.title.toLowerCase().match(text))
+	        return item;
+	    })
+	    if (!text || text === '') {
+	      this.setState({
+	        renderData: fullList,
+	        noData:false,
+	      })
+	    } else if (!filteredList.length) {
+	     // set no data flag to true so as to render flatlist conditionally
+	       this.setState({
+	         noData: true
+	       })
+	    }
+	    else if (Array.isArray(filteredList)) {
+	      this.setState({
+	        noData: false,
+	        renderData: filteredList
+	      })
+	    }
+  }
+
 	 // renderQuantity(list_id)
 	 // {
 	 // 	return(
@@ -267,10 +299,24 @@ export class Products extends Component {
 					{ 
                         this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
 					<ScrollView>					
-								<SearchComponent />
+								<View style={gstyles.searchView}>
+						            <Text style={gstyles.searchViewLeft}>
+						                    <Icon name="search" size={24} color="#ccc" />
+						            </Text>
+						            <TextInput style={gstyles.searchViewRight}
+						                placeholder="Search Product"
+						                underlineColorAndroid="transparent"
+						                placeholderTextColor="rgb(158,145,140)"
+						                autoCorrect={true}
+						                value={this.state.search}
+						                onChangeText={this.handleSearchInput.bind(this)}
+						            />
+						        </View>
 								<View>
 								{
-									this.state.fieldValues.map((item,index)=>{
+									this.state.noData ? <Text>No Data Found</Text> :  <View>    
+								{
+									this.state.renderData.map((item,index)=>{
 										return(
 											<View style={gstyles.productsMain} key={index}>
 					                    		<TouchableOpacity style={gstyles.flexDirectionRow} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
@@ -331,7 +377,9 @@ export class Products extends Component {
 								        	</View>
 										);
 									})
-								}     
+								}  
+								</View>
+								}   
 					           </View>
 						{
 							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableOpacity> : null

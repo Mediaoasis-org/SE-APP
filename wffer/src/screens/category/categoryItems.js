@@ -170,7 +170,7 @@ export class ProductDetails extends Component {
 											renderItem={({item,index}) =>      
 						                    <View style={gstyles.priceComparisonView} >
 									          		<View style={gstyles.priceComparisonLeft}>
-									          			<View style={gstyles.paddingTop10}><Image source={require('../../../assets/so-carrefour.png')} resizeMode="contain" style={gstyles.priceCompanyImage}/></View>
+									          			<View style={gstyles.paddingTop10}><Image source={{uri : item.image}} resizeMode="contain" style={gstyles.priceCompanyImage}/></View>
 									          		</View>
 										            <View style={gstyles.priceComparisonRight}>
 											          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} SAR</Text></View>

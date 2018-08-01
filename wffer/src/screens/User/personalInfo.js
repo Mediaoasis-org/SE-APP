@@ -176,7 +176,9 @@ export  class PersonalInfoComponent extends Component {
      	
      }
 	static navigationOptions = {
-        title: 'Personal Info',
+        title: 'Profile',
+       
+        // tabBarLabel: <Text style={{ textAlign: 'center', width: 100,paddingBottom:10,fontSize:16 }}>Profile</Text>
     };
     onTagSelect(idx, data,name){ 
 	      // console.log("======== on tag selected ==========="); 

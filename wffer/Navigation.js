@@ -62,18 +62,28 @@ const profilenav = createBottomTabNavigator({
 },{
   swipeEnabled:false,
   animationEnabled:true,
+  lazy:true,
+  
   tabBarOptions: {
-  activeTintColor: '#000',
-  inactiveTintColor:'#000',
-  activeBackgroundColor:'#eee',
-  showLabel:true,
-  labelStyle: {
-    fontSize: 16,
-    paddingBottom:10,
-  },
-  style: {
-    backgroundColor: '#ccc',
-  },
+    activeTintColor: '#000',
+    inactiveTintColor:'#000',
+    activeBackgroundColor:'#eee',
+     allowFontScaling:false,
+
+    // showLabel:true,
+    labelStyle: {
+      fontSize: 14,
+      paddingBottom:10,
+      width:'auto'
+    },
+    style: {
+      backgroundColor: '#ccc',
+    
+    },
+    tabBarStyle:{
+          width:'auto'
+        }
+
 }
 })
 // const accountSettingsNav = createBottomTabNavigator({

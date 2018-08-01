@@ -7,7 +7,8 @@ import {
   Image,
   AsyncStorage,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 // import {Constants} from '../../common';
@@ -47,7 +48,8 @@ export class ShoppingListComponent extends Component {
        isLoading:true,
        userData:[],
        recommendedFieldValues:[],
-       totalRecommendedItems:''
+       totalRecommendedItems:'',
+       renderData:[]
 		}
     this.getStorageValues()
     
@@ -90,6 +92,7 @@ export class ShoppingListComponent extends Component {
                   totalItems: responseJson.body.totalItemCount,
                   isLoading:false,
                 });
+                 this.setState({renderData:this.state.fieldValues})
               }
               else
               {
@@ -128,6 +131,33 @@ export class ShoppingListComponent extends Component {
   handleNavigation(id){
     this.props.navigation.push('Wishlists',{wishlist_id:id});
   }
+  handleSearchInput(e){
+      let text = e.toLowerCase()
+      this.setState({search : e})
+      let fullList = this.state.fieldValues;
+
+      let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+        if(item.title.toLowerCase().match(text))
+          return item;
+      })
+      if (!text || text === '') {
+        this.setState({
+          renderData: fullList,
+          noData:false,
+        })
+      } else if (!filteredList.length) {
+       // set no data flag to true so as to render flatlist conditionally
+         this.setState({
+           noData: true
+         })
+      }
+      else if (Array.isArray(filteredList)) {
+        this.setState({
+          noData: false,
+          renderData: filteredList
+        })
+      }
+  }
   // _renderHeader(section) {
   //   return (
   //     <View style={styles.ShoppingButton}>
@@ -147,8 +177,8 @@ export class ShoppingListComponent extends Component {
     {
     return(
       
-          this.state.fieldValues.map((item)=>{
-            // alert(item.listing_images_1['image'])
+          this.state.renderData.map((item)=>{
+            alert(item.listing_images_1['image'])
             // let img = 'listing_images_'+item.total_item;
             // console.log(img);
             // console.log(item.listing_images_+''+item.total_item);
@@ -293,7 +323,19 @@ export class ShoppingListComponent extends Component {
             { 
                 this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
           <ScrollView>
-            <SearchComponent />
+            <View style={gstyles.searchView}>
+                <Text style={gstyles.searchViewLeft}>
+                        <Icon name="search" size={24} color="#ccc" />
+                </Text>
+                <TextInput style={gstyles.searchViewRight}
+                    placeholder="Search"
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="rgb(158,145,140)"
+                    autoCorrect={true}
+                    value={this.state.search}
+                    onChangeText={this.handleSearchInput.bind(this)}
+                />
+            </View>
   				  <View>
             
               <TouchableOpacity onPress={()=>this.setState({mysection:!this.state.mysection,recommendedsection:false})} style={gstyles.ShoppingButton}><Text style={gstyles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={gstyles.flexDirectionColumn} />  My Shopping List</Text></TouchableOpacity>

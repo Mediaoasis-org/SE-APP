@@ -189,9 +189,9 @@ export  class UploadPhotoComponent extends Component {
               console.error(error);
             });
   }
-  static navigationOptions = {
-        title: 'Edit My Photo',
-        
+    static navigationOptions = {
+        title: 'Edit Photo',
+         
 
     };
     selectPhotoTapped() {

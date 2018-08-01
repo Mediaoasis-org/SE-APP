@@ -5,6 +5,7 @@ import {
 	View,
 	Dimensions,
 	TouchableOpacity,
+  TextInput,
 	Image,
 	FlatList,
 	ScrollView,
@@ -29,7 +30,8 @@ export class Catalog extends Component {
     		fieldValues:[],
     		// LoggedIn:null,
     		isLoading:true,
-    		city:''
+    		city:'',
+        renderData:[],
     	}
     	this.getStorageValues()
 	}
@@ -66,6 +68,7 @@ export class Catalog extends Component {
                   totalItems: responseJson.body.totalItemCount,
                   isLoading:false,
                 });
+                 this.setState({renderData:this.state.fieldValues});
               }
               else
               {
@@ -77,6 +80,34 @@ export class Catalog extends Component {
               console.error(error);
             });
   	}
+     handleSearchInput(e){
+      let text = e.toLowerCase()
+      this.setState({search : e})
+      let fullList = this.state.fieldValues;
+
+      let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+        if(item.title.toLowerCase().match(text))
+          return item;
+      })
+      if (!text || text === '') {
+        this.setState({
+          renderData: fullList,
+          noData:false,
+        })
+      } else if (!filteredList.length) {
+       // set no data flag to true so as to render flatlist conditionally
+         this.setState({
+           noData: true
+         })
+      }
+      else if (Array.isArray(filteredList)) {
+        this.setState({
+          noData: false,
+          renderData: filteredList
+        })
+      }
+  }
+
   	catalogItems(){
   		if(this.state.totalItems == 0){
   			
@@ -94,10 +125,24 @@ export class Catalog extends Component {
   		{
   			return(
   				<View>
-  				<SearchComponent />
+  				<View style={gstyles.searchView}>
+                <Text style={gstyles.searchViewLeft}>
+                        <Icon name="search" size={24} color="#ccc" />
+                </Text>
+                <TextInput style={gstyles.searchViewRight}
+                    placeholder="Search Product"
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="rgb(158,145,140)"
+                    autoCorrect={true}
+                    value={this.state.search}
+                    onChangeText={this.handleSearchInput.bind(this)}
+                />
+          </View>
+          {
+                  this.state.noData ? <Text>No Data Found</Text> :  
   						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
   							
-							<FlatList data={this.state.fieldValues}
+							<FlatList data={this.state.renderData}
 				                renderItem={({item}) =>      
 				                    <View style={[gstyles.catalogView,{marginBottom:0}]}>
 				                     
@@ -112,6 +157,7 @@ export class Catalog extends Component {
 				              />
 						
 						</View>
+          }
 				</View>
   			);
   		}
