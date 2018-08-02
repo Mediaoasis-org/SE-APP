@@ -25,7 +25,7 @@ export  class GetPriceComponent extends Component {
           <View>
                 <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('Lowest',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>Lowest Price</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
                 <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('NearByStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle} >NearBy Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
-                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('MultiStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>Multiple Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                
           </View>
       </View>
     );
@@ -34,7 +34,7 @@ export  class GetPriceComponent extends Component {
 
 
 
-
+// <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('MultiStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>Multiple Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
 // // <FlatList data={[{id: '1',productsAvailable:'5/3',company:'Danube',totalPrice:'45.40 SAR',totalSave:'5.98 SAR',image:require('../../../assets/so-danube.png')},{id: '2',productsAvailable:'5/5',company:'Panda',totalPrice:'42.59 SAR',totalSave:'4.77 SAR',image:require('../../../assets/so-panda.png')},{id: '3',productsAvailable:'2/5',company:'Careefour',totalPrice:'41.70 SAR',totalSave:'3.12 SAR',image:require('../../../assets/so-carrefour.png')},{id: '4',productsAvailable:'5/5',company:'Tamimi',totalPrice:'49.40 SAR',totalSave:'5.98 SAR',image:require('../../../assets/so-tamimi.png')}]}
  //                        renderItem={({item}) =>      
  //                                <View style={styles.flatlist}>

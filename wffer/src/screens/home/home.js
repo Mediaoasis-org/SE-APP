@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, ScrollView,AsyncStorage } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView,AsyncStorage,ActivityIndicator } from 'react-native';
 // import Carousel from 'react-native-banner-carousel';
 import { gstyles } from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -15,17 +15,75 @@ export class HomeComponent extends Component {
     	super(props);
     	this.state={
     		search :'',
-    		 LoggedIn:false
+    		 LoggedIn:false,
+    		 isLoading:true,
+    		 stores:[],
+         specialOffers:[]
     	}
-    	this.getLoginValue()
+    	this.getLoginValue();
+
     }	
     async getLoginValue(){
-       var value = await AsyncStorage.getItem('userLoginAuthentication');
-       // alert(value)
+        var value = await AsyncStorage.getItem('userLoginAuthentication');
+        // alert(value)
         if(value !== null){
-          this.setState({LoggedIn:true})
+        	
+          this.setState({LoggedIn:true});
+          // 
         }
+        else
+        {
+        	
+        }
+        this.fetchStore();
+        this.getSpecialoffer();
     }
+    fetchStore(){
+		 return fetch('https://wffer.com/se/api/rest/listings/get-stores?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                // alert(JSON.stringify(responseJson.body));
+                 this.setState({
+                  stores:responseJson.body,
+                  isLoading:false,
+                });
+              }
+              else
+              {
+                // 
+              }
+              this.setState({Message:responseJson.Message});
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+	}
+  getSpecialoffer(){
+    return fetch('https://wffer.com/se/api/rest/listings/special-offer?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&city=Riyadh&limit=10',{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                // alert(JSON.stringify(responseJson.body));
+                 this.setState({
+                  specialOffers:responseJson.body.response,
+                  isLoading:false,
+                });
+              }
+              else
+              {
+                // 
+              }
+              this.setState({Message:responseJson.Message});
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+  }
 	render(){
 		return(
 				<View style={gstyles.flexContainer}>
@@ -39,16 +97,23 @@ export class HomeComponent extends Component {
 					<ScrollView>
 						
 						<SearchComponent />
-						<BannerSliderComponent />
-						<PromotionalOfferStoreComponent />
+            {
+              this.state.LoggedIn ? null : 
+              <View>
+    						<BannerSliderComponent />
+    						{ 
+                  this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
+      						  <PromotionalOfferStoreComponent data={this.state.stores}/>
+      					}
+              </View>
+            }
 						<View style={gstyles.SpecialOfferHeadingsHome}><Text style={gstyles.fontSize18}>Special Offers</Text></View>
 						<View style={gstyles.specialOfferViewHome}>
-
-							<SpecialOfferComponent numcols={2} data={[{id: 1,name:'Puck Cream Cheese Spread 500 g',discount:'40% Off',company:'Panda',category:'Dairy',price:'15.70 SAR',discountedPrice:'9.48 SAR',offerEnd:'16-5-18'}, 
-															{id: 2,name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},
-															{id: 3,name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'16-5-18'},
-															{id: 4,name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},
-															{id: 5,name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'16-5-18'}]}/>
+            { 
+              this.state.isLoading ? 
+                <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
+  						  <SpecialOfferComponent numcols={2} data={this.state.specialOffers}/>
+            }
 						</View>
 
 					</ScrollView>

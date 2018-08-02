@@ -300,15 +300,15 @@ export const gstyles = StyleSheet.create({
     ShoppingButton: { backgroundColor: '#F5FCCC',padding: 10, flexDirection:'row', width:'100%' },
   	ShoppingText: { flexDirection:'column', fontSize: 20, fontWeight: '500', color:'#000'},
   	ShoppingListItemsView:{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,marginBottom:10,flexDirection:'row'},
-  	ShoppingListItemsViewImage:{flexDirection:'column',width:'20%'},
-  	ShoppingListItemsViewRightContent:{flexDirection:'column',width:'80%'},
+  	ShoppingListItemsViewImage:{flexDirection:'column',width:'30%'},
+  	ShoppingListItemsViewRightContent:{flexDirection:'column',width:'70%'},
   	ShoppingWishlistTitle:{fontSize:16,fontWeight:'bold',marginTop:5,color:'#000'},
   	ShoppingWishlistText:{marginTop:5,color:'#000'},
   	content: { paddingLeft: 10, paddingRight:10, backgroundColor: '#fff'},
   	signInButton:{padding:10,fontSize:18,margin:10,textAlign:'center'},
 
   	// products css
-  	productsMain:{backgroundColor: '#fff',  borderColor:'gray',borderWidth:1,margin:5},
+  	productsMain:{backgroundColor: '#fff',marginTop:12,marginLeft:12,marginRight:12},
   	productsMainLeft:{width:'90%',flexDirection:'row'},
   	productsMainRight:{width:'10%'},
   	productImageView:{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3},

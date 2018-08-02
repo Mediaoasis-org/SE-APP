@@ -5,26 +5,65 @@ import { gstyles } from '../../GlobalStyles';
 export class SpecialOfferComponent extends React.Component{
 	constructor(props){
 		super(props);
+		this.state={
+			categories:[],
+		}
+		this.categories_func();
+		// alert(this.props.data)
 	}
 	Capitalize(str){
     	return str.charAt(0).toUpperCase() + str.slice(1);
     }
+    categories_func(){
+	 fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			    
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+				          isCategoryLoading: false,
+				          categories: responseJson.body.categories,
+				        });
+			      		 // alert(JSON.stringify(this.state.fieldValues));
+			      	}
+			      	else
+			      	{
+			      		// 
+			      	}
+			      	this.setState({Message:responseJson.Message});
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
+	}
 	render(){
 		return(
 			<View>
 	              <FlatList numColumns={this.props.numcols} data={this.props.data}
 	                renderItem={({item}) =>      
 	                    <TouchableOpacity style={gstyles.specialOfferView}>
-	                    	<Text style={gstyles.discountShow}>{item.discount} </Text>
-	                      <View style={gstyles.alignItemsCenter}><Image source={require('../../../assets/product1.jpg')} style={gstyles.flatimage}/></View>
+	                    	<Text style={gstyles.discountShow}>{item.percentageOff} Off </Text>
+	                      <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
 	                          <View style={gstyles.flexDirectionColumn}>
 	                          	  
-	                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={gstyles.title}>{item.name}</Text></View>
-	                              <Text style={gstyles.specialOfferCategory}>{item.category}</Text>
-	                              <Text style={gstyles.specialOfferCompany}>{item.company}</Text>
-	                              <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}]}>{item.price}</Text>
-	                              <Text style={gstyles.specialOfferCategory}>{item.discountedPrice}</Text>
-	                              <Text style={gstyles.specialOfferCategory}>Offer Ends {item.offerEnd}</Text>
+	                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={gstyles.title}>{item.title}</Text></View>
+	                              <View>	
+	                              	{
+			          					this.state.categories.map((cat)=>{
+			          						if(cat.category_id==item.category_id){
+			          							return(
+			          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.specialOfferCategory}>{cat.category_name}</Text></View>
+			          							);
+			          						}
+			          					})
+			          				}
+			          			  </View>
+	                              <Text style={gstyles.specialOfferCompany}>{item.store_title}</Text>
+	                              <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}]}>{item.listing_price} {item.currency}</Text>
+	                              <Text style={gstyles.specialOfferCategory}>{item.discountprice} {item.currency}</Text>
+	                              <Text style={gstyles.specialOfferCategory}>Offer Ends {item.end_time}</Text>
 	                          </View>
 	                    </TouchableOpacity>                    
 	                    }

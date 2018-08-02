@@ -14,6 +14,7 @@ import {gstyles} from '../../GlobalStyles';
 import MapView, { ProviderPropType, Marker,Callout, AnimatedRegion } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import CustomCallout from './CustomCallout';
+import ModalDropdown from 'react-native-modal-dropdown';
 // import { DrawerActions } from 'react-navigation';
 const window = Dimensions.get('window');
 
@@ -37,7 +38,9 @@ export  class StoreLocatorComponent extends Component {
 			latitude:null,
 			longitude:null,
 			error:null,
-			city:''
+			city:'',
+			stores:[],
+			renderData:[]
 
 		}
 		this.getStorageValues();
@@ -47,6 +50,7 @@ export  class StoreLocatorComponent extends Component {
          const userData = await AsyncStorage.getItem('userData');
          const city = await AsyncStorage.getItem('cityInformation');
          this.setState({city:city});
+         this.fetchStore();
          this.fetchValues();
          // alert(this.state.city)
          // alert(userData.length);
@@ -63,7 +67,37 @@ export  class StoreLocatorComponent extends Component {
           //   this.setState({LoggedIn:false})
           // }         
    }
-
+   fetchStore(){
+   		var store_title ;
+   		let temp = ["Select"];
+		 return fetch('https://wffer.com/se/api/rest/listings/get-stores?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                // alert(JSON.stringify(responseJson.body));
+                store_title = responseJson.body;
+                
+	                store_title.map((item)=>{
+	                	temp.push(item.title);
+	                })
+                 this.setState({
+                  stores:temp,
+                  isLoading:false,
+                });
+                 
+              }
+              else
+              {
+                // 0
+              }
+              this.setState({Message:responseJson.Message});
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+	}
 	fetchValues(){
       return fetch('https://wffer.com/se/api/rest/listings/wishlist/get-store-locator/143?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&city='+this.state.city,{
               method:'GET'
@@ -76,6 +110,7 @@ export  class StoreLocatorComponent extends Component {
                   fieldValues:responseJson.body,
                   isLoading:false,
                 });
+                 this.setState({renderData:this.state.fieldValues})
               }
               else
               {
@@ -129,6 +164,40 @@ export  class StoreLocatorComponent extends Component {
 	  		 // })
 	  		
   	}
+  	handleSearchList(e){
+	    let text = e.toLowerCase()
+	    console.log(text)
+	    // this.setState({search : e})
+	    let fullList = this.state.fieldValues;
+
+	    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+	      if(item.title.toLowerCase().match(text))
+	        return item;
+	    })
+	    if (!text || text === '' || text == "select") {
+	      this.setState({
+	        renderData: fullList,
+	        noData:false,
+	      })
+	    } else if (!filteredList.length) {
+	     // set no data flag to true so as to render flatlist conditionally
+	       this.setState({
+	         noData: true
+	       })
+	    }
+	    else if (Array.isArray(filteredList)) {
+	      this.setState({
+	        noData: false,
+	        renderData: filteredList
+	      })
+	    }
+  }
+  	onTagSelect(idx, data,name){ 
+	      // console.log("======== on tag selected ==========="); 
+	      // console.log(idx,data,name); 
+	      this.handleSearchList(data)
+	      // this.handleInput(idx,data,name)
+	};
 	render(){
 		
 		return(
@@ -143,7 +212,19 @@ export  class StoreLocatorComponent extends Component {
 					
 					{	
 						this.state.isLoading ?  <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
-							
+							<View>
+							 <ModalDropdown 
+			                      style={gstyles.dropdownMainStyles}						                      
+			                      dropdownTextStyle={gstyles.dropdownTextStyle}
+			                      textStyle={gstyles.textStyle}
+			                      dropdownStyle={gstyles.dropdownStyles}
+			                      defaultIndex={this.props.defaultIndex}
+			                      showsVerticalScrollIndicator={true}
+			                      defaultValue='Select Store'
+			                      options={this.state.stores}						         
+			                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,data)}}				
+	                		/>		
+
 							<MapView
 							    initialRegion={{
 							      latitude: 24.7136,
@@ -154,7 +235,7 @@ export  class StoreLocatorComponent extends Component {
 							    style={{width:'100%',height:window.height}}
 							>
 								{
-									this.state.fieldValues.map((marker,index) => (
+									this.state.renderData.map((marker,index) => (
 								    <Marker
 								      key={index}
 								      coordinate={{latitude:marker.latitude,longitude:marker.longitude}}
@@ -177,6 +258,7 @@ export  class StoreLocatorComponent extends Component {
 							 	))}
 							 	
 							</MapView>
+							</View>
 					} 
 				 	
 			</View>

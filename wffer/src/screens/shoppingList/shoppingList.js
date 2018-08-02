@@ -8,6 +8,7 @@ import {
   AsyncStorage,
   ScrollView,
   ActivityIndicator,
+  Dimensions,
   TextInput
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
@@ -17,7 +18,7 @@ import Icon from 'react-native-vector-icons/dist/FontAwesome';
 // import { DrawerActions } from 'react-navigation';
 // import Accordion from 'react-native-collapsible/Accordion';
 // import iconFont from 'react-native-vector-icons/Fonts/FontAwesome.ttf';
-// const window= Dimensions.get('window');
+const window= Dimensions.get('window');
 
 // const SECTIONS = [
 //   {
@@ -41,15 +42,16 @@ export class ShoppingListComponent extends Component {
       recommendedsection:false,
       activeSection: false,
       collapsed: true,
-       search :'',
-       fieldValues:[],
-       totalItems:'',
-       LoggedIn:null,
-       isLoading:true,
-       userData:[],
-       recommendedFieldValues:[],
-       totalRecommendedItems:'',
-       renderData:[]
+      search :'',
+      fieldValues:[],
+      totalItems:'',
+      LoggedIn:null,
+      isLoading:true,
+      userData:[],
+      recommendedFieldValues:[],
+      totalRecommendedItems:'',
+      renderData:[],
+      renderRecommendedData:[]
 		}
     this.getStorageValues()
     
@@ -93,6 +95,7 @@ export class ShoppingListComponent extends Component {
                   isLoading:false,
                 });
                  this.setState({renderData:this.state.fieldValues})
+                 // console.log(this.state.renderData)
               }
               else
               {
@@ -117,6 +120,7 @@ export class ShoppingListComponent extends Component {
                   totalRecommendedItems: responseJson.body.totalItemCount,
                   isLoading:false,
                 });
+                 this.setState({renderRecommendedData:this.state.recommendedFieldValues})
               }
               else
               {
@@ -135,9 +139,11 @@ export class ShoppingListComponent extends Component {
       let text = e.toLowerCase()
       this.setState({search : e})
       let fullList = this.state.fieldValues;
-
+      let fullRecommendedlist = this.state.renderRecommendedData;
+      this.setState({mysection:true,recommendedsection:true})
       let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-        if(item.title.toLowerCase().match(text))
+        
+        if(item.title.toString().toLowerCase().match(text))
           return item;
       })
       if (!text || text === '') {
@@ -155,6 +161,29 @@ export class ShoppingListComponent extends Component {
         this.setState({
           noData: false,
           renderData: filteredList
+        })
+      }
+
+      let filteredRList = fullRecommendedlist.filter((item) => { // search from a full list, and not from a previous search results list
+        
+        if(item.title.toString().toLowerCase().match(text))
+          return item;
+      })
+      if (!text || text === '') {
+        this.setState({
+          renderRecommendedData: fullRecommendedlist,
+          noData:false,
+        })
+      } else if (!filteredRList.length) {
+       // set no data flag to true so as to render flatlist conditionally
+         this.setState({
+           noRData: true
+         })
+      }
+      else if (Array.isArray(filteredRList)) {
+        this.setState({
+          noRData: false,
+          renderRecommendedData: filteredRList
         })
       }
   }
@@ -176,9 +205,9 @@ export class ShoppingListComponent extends Component {
     else
     {
     return(
-      
+      this.state.noData == true ? <Text>No Data Found</Text> :<View>{
           this.state.renderData.map((item)=>{
-            alert(item.listing_images_1['image'])
+            // alert(item.listing_images_1['image'])
             // let img = 'listing_images_'+item.total_item;
             // console.log(img);
             // console.log(item.listing_images_+''+item.total_item);
@@ -196,7 +225,7 @@ export class ShoppingListComponent extends Component {
                   <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
                     <View style={gstyles.ShoppingListItemsView}>
                         <View style={gstyles.ShoppingListItemsViewImage}>
-                            <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:100}}/>
+                            <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:window.height/6,margin:5}}/>
                         </View>
                         <View style={gstyles.ShoppingListItemsViewRightContent}>
                             <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
@@ -209,6 +238,8 @@ export class ShoppingListComponent extends Component {
               </View>
               );
           })
+        }
+        </View>
         );
       }
   }
@@ -223,33 +254,36 @@ export class ShoppingListComponent extends Component {
     else
     {
         return(
-          this.state.recommendedFieldValues.map((item)=>{
-                if(item.listing_images_1){
-                  var wish_image = item.listing_images_1['image_icon'];
-                }
-                else
-                {
-                  var wish_image = item.listing_images_0['image_icon'];
-                }
-            return(
-              
-              <View style={gstyles.content} key={item.wishlist_id}>
-                  <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
-                    <View style={gstyles.ShoppingListItemsView}>
-                       <View style={gstyles.ShoppingListItemsViewImage}>
-                            <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:100}}/>
+          this.state.noRData == true ? <Text>No Data Found</Text> :<View>{
+              this.state.renderRecommendedData.map((item)=>{
+                    if(item.listing_images_1){
+                      var wish_image = item.listing_images_1['image_icon'];
+                    }
+                    else
+                    {
+                      var wish_image = item.listing_images_0['image_icon'];
+                    }
+                return(
+                  
+                  <View style={gstyles.content} key={item.wishlist_id}>
+                      <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
+                        <View style={gstyles.ShoppingListItemsView}>
+                           <View style={gstyles.ShoppingListItemsViewImage}>
+                                <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:100}}/>
+                            </View>
+                            <View style={gstyles.ShoppingListItemsViewRightContent}>
+                                <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
+                                <Text style={gstyles.ShoppingWishlistText}>{item.total_item} entries</Text>
+                                <Text style={gstyles.ShoppingWishlistText}>{item.creation_date}</Text>
+                                <Text style={gstyles.ShoppingWishlistText}>{item.body}</Text>
+                            </View>
                         </View>
-                        <View style={gstyles.ShoppingListItemsViewRightContent}>
-                            <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
-                            <Text style={gstyles.ShoppingWishlistText}>{item.total_item} entries</Text>
-                            <Text style={gstyles.ShoppingWishlistText}>{item.creation_date}</Text>
-                            <Text style={gstyles.ShoppingWishlistText}>{item.body}</Text>
-                        </View>
-                    </View>
-                  </TouchableOpacity>
-              </View>
-              );
-          })
+                      </TouchableOpacity>
+                  </View>
+                  );
+              })
+            }
+            </View>
         );
       }
   }

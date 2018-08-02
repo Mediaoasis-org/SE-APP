@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView,AsyncStorage,ActivityIndicator,TextInput,FlatList,Image } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { Constants } from '../../common';
@@ -12,48 +12,251 @@ export class SpecialOffers extends Component {
     constructor(props){
     	super(props);
     	this.state={
-    		search:''
+    		search:'',
+    		city:'',
+    		specialOffers:[],
+    		renderData:[],
+    		stores:[],
+    		isLoading:true,
+    		showLoadMore:false,
     	}
+    	this.page=1;
+    	this.getStorageValues()
     }
+    async getStorageValues(){
+         // const userData = await AsyncStorage.getItem('userData');
+         const city = await AsyncStorage.getItem('cityInformation');
+         this.setState({city:city});
+         this.categories_func();
+         this.fetchStore();
+    	 this.getSpecialoffer(); 
 
-    handleInput(idx,data,value){
-     	var state = value;
-     	var val = idx;
-     	// console.log(state);
-     	// console.log(val); 
-     	// console.log(data);  
-     	var obj  = {}
-     	obj[state] = data;
-     	// obj.append(obj[])
-     	this.setState(obj);
-     	console.log(obj)
-     	// console.log(this.state[state]);
-    }
+   }
+   categories_func(){
+	 fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
+			        method:'GET'
+			      })
+			      .then((response) => response.json())
+			      .then((responseJson) => {
+			    
+			      	if(responseJson.status_code=='200'){
+			      		 this.setState({
+				          isCategoryLoading: false,
+				          categories: responseJson.body.categories,
+				        });
+			      		 // alert(JSON.stringify(this.state.fieldValues));
+			      	}
+			      	else
+			      	{
+			      		// 
+			      	}
+			      	this.setState({Message:responseJson.Message});
+			      })
+			      .catch((error) =>{
+			        console.error(error);
+			      });
+	}
+   fetchStore(){
+   		var store_title ;
+   		let temp = ["Select"];
+		 return fetch('https://wffer.com/se/api/rest/listings/get-stores?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                // alert(JSON.stringify(responseJson.body));
+                store_title = responseJson.body;
+                
+	                store_title.map((item)=>{
+	                	temp.push(item.title);
+	                })
+                 this.setState({
+                  stores:temp,
+                  isLoading:false,
+                });
+                 
+              }
+              else
+              {
+                // 0
+              }
+              this.setState({Message:responseJson.Message});
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+	}
+    getSpecialoffer(){
+    	let URL = 'https://wffer.com/se/api/rest/listings/special-offer?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&city='+this.state.city + '&page=' + this.page;
 
+    return fetch(URL,{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                // alert(JSON.stringify(responseJson.body));
+                 this.setState({
+                  specialOffers:responseJson.body.response,
+                  isLoading:false,
+                });
+                 this.setState({renderData : this.state.specialOffers})
+                 let count = this.state.specialOffers.length;
+			      		 // alert(count);
+			      		 if(count >= 20){
+			      		 	this.setState({showLoadMore:true})
+			      		 }
+              }
+              else
+              {
+                // 
+              }
+              this.setState({Message:responseJson.Message});
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+  }
+  showLoadMore(){
+	 	// alert(this.state.showLoadMore)
+	 	// alert(this.state.page);
+	 	// let pageno = this.state.page+1;
+	 	// // alert(page);
+	 	// this.setState({page : pageno});
+	 	let json_data;
+	 	this.setState({search : ''})
+	 	this.page = this.page + 1;
+	 	this.setState({ fetching_Status: true,showLoadMore:false}, ()=>{
+		 	// alert(this.state.showLoadMore);
+		 	// alert(this.page);
+		 	let URL = 'https://wffer.com/se/api/rest/listings/special-offer?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&city='+this.state.city + '&page=' + this.page;
+	    	return fetch(URL,{
+				        method:'GET'
+				      })
+				      .then((response) => response.json())
+				      .then((responseJson) => {
+				      	
+
+				      	if(responseJson.status_code=='200'){
+				      		json_data = responseJson.body.response;
+				      		 this.setState({
+					          specialOffers:[...this.state.specialOffers,...json_data],isLoading: false,fetching_Status:false
+					        });
+
+				      		  this.setState({renderData : this.state.specialOffers})
+				      		 // this.selectQuantities();	
+				      		 let count = responseJson.body.response.length;
+				      		 if(count >= 20){
+				      		 	this.setState({showLoadMore:true})
+				      		 }
+				      		 // console.log(this.state.fieldValues)
+				      	}
+				      	else
+				      	{
+				      		// 
+				      	}
+				      	this.setState({Message:responseJson.Message});
+				      })
+				      .catch((error) =>{
+				        console.error(error);
+				      });
+				  })
+	 }
+  handleSearchInput(e){
+	    let text = e.toLowerCase()
+	    this.setState({search : e})
+	    let fullList = this.state.specialOffers;
+
+	    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+	      if(item.title.toLowerCase().match(text))
+	        return item;
+	    })
+	    if (!text || text === '') {
+	      this.setState({
+	        renderData: fullList,
+	        noData:false,
+	      })
+	    } else if (!filteredList.length) {
+	     // set no data flag to true so as to render flatlist conditionally
+	       this.setState({
+	         noData: true
+	       })
+	    }
+	    else if (Array.isArray(filteredList)) {
+	      this.setState({
+	        noData: false,
+	        renderData: filteredList
+	      })
+	    }
+  }
+
+  handleSearchList(e){
+	    let text = e.toLowerCase()
+	    console.log(text)
+	    // this.setState({search : e})
+	    let fullList = this.state.specialOffers;
+
+	    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+	      if(item.store_title.toLowerCase().match(text))
+	        return item;
+	    })
+	    if (!text || text === '' || text == "select") {
+	      this.setState({
+	        renderData: fullList,
+	        noData:false,
+	      })
+	    } else if (!filteredList.length) {
+	     // set no data flag to true so as to render flatlist conditionally
+	       this.setState({
+	         noData: true
+	       })
+	    }
+	    else if (Array.isArray(filteredList)) {
+	      this.setState({
+	        noData: false,
+	        renderData: filteredList
+	      })
+	    }
+  }
+    // handleInput(idx,data,value){
+    //  	var state = value;
+    //  	var val = idx;
+    //  	// console.log(state);
+    //  	// console.log(val); 
+    //  	// console.log(data);  
+    //  	var obj  = {}
+    //  	obj[state] = data;
+    //  	// obj.append(obj[])
+    //  	this.setState(obj);
+    //  	console.log(obj)
+    //  	// console.log(this.state[state]);
+    // }
 	onTagSelect(idx, data,name){ 
 	      // console.log("======== on tag selected ==========="); 
 	      // console.log(idx,data,name); 
-	      this.handleInput(idx,data,name)
+	      this.handleSearchList(data)
+	      // this.handleInput(idx,data,name)
 	};
 
-	select_dropdown(value,options){
-	 	let data;
-	 		// console.log(value);
-	 		// return value
-	 		Object.keys(options).map(function(k){
-	 			// console.log(options[k],k);
-	 			if(options[k] == value){
-	 				// return options[k]
-	 				// console.log(value);
-	 				// console.log(k)
-	 				// console.log(options[k])
-	 				data = options[k];
-	 			}
+	// select_dropdown(value,options){
+	//  	let data;
+	//  		// console.log(value);
+	//  		// return value
+	//  		Object.keys(options).map(function(k){
+	//  			// console.log(options[k],k);
+	//  			if(options[k] == value){
+	//  				// return options[k]
+	//  				// console.log(value);
+	//  				// console.log(k)
+	//  				// console.log(options[k])
+	//  				data = options[k];
+	//  			}
 
 
-	 		})
-	 		return data
-	}
+	//  		})
+	//  		return data
+	// }
 
     removeCompleted = () => {
 	    const {dispatch} = this.props
@@ -69,8 +272,22 @@ export class SpecialOffers extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.specialOffer}</Text>
 			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
 					</View>
-					<ScrollView>
-					<SearchComponent />	
+					{ 
+                        this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
+						<ScrollView>					
+								<View style={gstyles.searchView}>
+						            <Text style={gstyles.searchViewLeft}>
+						                    <Icon name="search" size={24} color="#ccc" />
+						            </Text>
+						            <TextInput style={gstyles.searchViewRight}
+						                placeholder="Search Product"
+						                underlineColorAndroid="transparent"
+						                placeholderTextColor="rgb(158,145,140)"
+						                autoCorrect={true}
+						                value={this.state.search}
+						                onChangeText={this.handleSearchInput.bind(this)}
+						            />
+						        </View>
 						    <ModalDropdown 
 			                      style={gstyles.dropdownMainStyles}						                      
 			                      dropdownTextStyle={gstyles.dropdownTextStyle}
@@ -79,17 +296,49 @@ export class SpecialOffers extends Component {
 			                      defaultIndex={this.props.defaultIndex}
 			                      showsVerticalScrollIndicator={true}
 			                      defaultValue='Select Store'
-			                      options={['Store1','Store2','Store3','Store4','Store5','Store6']}						         
+			                      options={this.state.stores}						         
 			                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,data)}}				
-	                		/>								
+	                		/>		
+
 						<View style={gstyles.specialOfferViewHome}>
-							<SpecialOfferComponent numcols={2} data={[{id: 1,name:'Puck Cream Cheese Spread 500 g',discount:'40% Off',company:'Panda',category:'Dairy',price:'15.70 SAR',discountedPrice:'9.48 SAR',offerEnd:'16-5-18'}, 
-															{id: 2,name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},
-															{id: 3,name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'16-5-18'},
-															{id: 4,name:'Almarai Mozzarella Shredded Cheese 200 g  ',discount:'36% Off',company:'Panda',category:'Dairy',price:'9.40 SAR',discountedPrice:'5.98 SAR',offerEnd:'16-5-18'},
-															{id: 5,name:'Golden Crown Cream 155 g ',discount:'34% Off',company:'Panda',category:'Dairy',price:'4.70 SAR',discountedPrice:'3.12 SAR',offerEnd:'16-5-18'}]}/>
+							<FlatList numColumns={2} data={this.state.renderData}
+				                renderItem={({item}) =>      
+				                    <TouchableOpacity style={gstyles.specialOfferView}>
+				                    	<Text style={gstyles.discountShow}>{item.percentageOff} Off </Text>
+				                      <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
+				                          <View style={gstyles.flexDirectionColumn}>
+				                          	  
+				                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={gstyles.title}>{item.title}</Text></View>
+				                              <View>	
+				                              	{
+						          					this.state.categories.map((cat)=>{
+						          						if(cat.category_id==item.category_id){
+						          							return(
+						          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.specialOfferCategory}>{cat.category_name}</Text></View>
+						          							);
+						          						}
+						          					})
+						          				}
+						          			  </View>
+				                              <Text style={gstyles.specialOfferCompany}>{item.store_title}</Text>
+				                              <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}]}>{item.listing_price} {item.currency}</Text>
+				                              <Text style={gstyles.specialOfferCategory}>{item.discountprice} {item.currency}</Text>
+				                              <Text style={gstyles.specialOfferCategory}>Offer Ends {item.end_time}</Text>
+				                          </View>
+				                    </TouchableOpacity>                    
+				                    }
+				                keyExtractor={(item, index) => index}
+				              />
+							
 						</View>
+						{
+							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableOpacity> : null
+							}
+							{				
+								this.state.fetching_Status==true ? <View style={gstyles.loadMoreActivity}><ActivityIndicator color='#333' size="large"/></View>:<View />
+							}
 					</ScrollView>
+				}
 				</View>
 			);
 	}

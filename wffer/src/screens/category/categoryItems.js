@@ -122,7 +122,7 @@ export class ProductDetails extends Component {
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{
-                              this.state.isLoading==true ?  <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :  	
+                        this.state.isLoading==true ?  <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :  	
 					<ScrollView>							
 							
 								<View style={gstyles.backgroundWhite}>
