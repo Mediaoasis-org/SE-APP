@@ -98,7 +98,10 @@ export class LoginComponent extends Component {
 		            this.setState({
 		              Message : responseJson.message,
 		            })
-		            alert(JSON.stringify(responseJson.message))
+		            Object.entries(this.state.Message).map(([key, value]) => {
+		            	// console.log(`${value}`);
+		            	alert(value)
+		            })
 		          
 		          }
 		          

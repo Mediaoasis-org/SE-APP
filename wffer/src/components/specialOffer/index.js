@@ -5,10 +5,11 @@ import { gstyles } from '../../GlobalStyles';
 export class SpecialOfferComponent extends React.Component{
 	constructor(props){
 		super(props);
+		this.categories_func();
 		this.state={
 			categories:[],
 		}
-		this.categories_func();
+		
 		// alert(this.props.data)
 	}
 	Capitalize(str){
@@ -49,17 +50,18 @@ export class SpecialOfferComponent extends React.Component{
 	                          <View style={gstyles.flexDirectionColumn}>
 	                          	  
 	                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={gstyles.title}>{item.title}</Text></View>
+	                             
 	                              <View>	
-	                              	{
-			          					this.state.categories.map((cat)=>{
-			          						if(cat.category_id==item.category_id){
-			          							return(
-			          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.specialOfferCategory}>{cat.category_name}</Text></View>
-			          							);
-			          						}
-			          					})
-			          				}
-			          			  </View>
+				                              	{
+						          					this.state.categories.map((cat)=>{
+						          						if(cat.category_id==item.category_id){
+						          							return(
+						          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.specialOfferCategory}>{cat.category_name}</Text></View>
+						          							);
+						          						}
+						          					})
+						          				}
+						          </View>
 	                              <Text style={gstyles.specialOfferCompany}>{item.store_title}</Text>
 	                              <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}]}>{item.listing_price} {item.currency}</Text>
 	                              <Text style={gstyles.specialOfferCategory}>{item.discountprice} {item.currency}</Text>

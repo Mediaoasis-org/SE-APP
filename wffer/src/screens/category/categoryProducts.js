@@ -336,16 +336,16 @@ export class Products extends Component {
 							          					this.state.categories.map((cat)=>{
 							          						if(cat.category_id==item.category_id){
 							          							return(
-							          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.productCatTitle,{color:'#727272',paddingTop:7,fontSize:18,fontWeight:'bold'}}>{cat.category_name}</Text></View>
+							          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.productCatTitle,{color:'#727272',paddingTop:7,fontSize:16,fontWeight:'bold'}}>{cat.category_name}</Text></View>
 							          							);
 							          						}
 							          					})
 							          				}
 								          		</View>
-									          	<Text style={{fontSize:18,color:'#727272',paddingTop:7}}>{item.best_deal_title}</Text>
+									          	<Text style={{fontSize:16,color:'#727272',paddingTop:7}}>{item.best_deal_title}</Text>
 								          		<View style={gstyles.bestDealView,{flexDirection:'row',paddingTop:7}}>
-					          						<Text style={{fontSize:18}}>Best Deal</Text>
-									          		<Text style={{fontSize:18,color:'#ff0000'}}> : {item.best_deal_price} {item.currency} </Text>
+					          						<Text style={{fontSize:16}}>Best Deal</Text>
+									          		<Text style={{fontSize:16,color:'#ff0000'}}> : {item.best_deal_price} {item.currency} </Text>
 									          	</View>												          	 	
 								          	</View>
 								            <View style={{width:'15%',flexDirection:'column',borderLeftWidth:1,borderLeftColor:'#EAEAEA',}}>
@@ -355,7 +355,7 @@ export class Products extends Component {
 						                             <Image source={require('../../../assets/aditionsign.png')} style={{width:24,height:24}}/>
 						                          </TouchableHighlight>										                      
 						                          <View style={{justifyContent:'center',alignItems:'center',height:50}}>
-						                          		<Text style={{color:'#727272',paddingLeft:5,textAlign:'center',fontSize:22}}>{item.quantity}</Text>
+						                          		<Text style={{color:'#727272',paddingLeft:5,textAlign:'center',fontSize:18}}>{item.quantity}</Text>
 						                          </View>										                          
 						                          <TouchableHighlight 
 						                             onPress={() => this.decrease_qty(item.listing_id)}

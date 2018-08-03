@@ -225,7 +225,7 @@ export class ShoppingListComponent extends Component {
                   <TouchableOpacity onPress={()=>this.handleNavigation(item.wishlist_id)} >
                     <View style={gstyles.ShoppingListItemsView}>
                         <View style={gstyles.ShoppingListItemsViewImage}>
-                            <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:window.height/6,margin:5}}/>
+                            <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:window.height/6}}/>
                         </View>
                         <View style={gstyles.ShoppingListItemsViewRightContent}>
                             <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
@@ -345,7 +345,7 @@ export class ShoppingListComponent extends Component {
     else
     {
 		return(
-			<View style={gstyles.container}>
+			<View style={gstyles.flexContainer}>
       
   					<View style={gstyles.headerMenu}>
   								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>

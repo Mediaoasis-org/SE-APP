@@ -36,12 +36,13 @@ export class ProductDetails extends Component {
       
       }
       this.getStorageValue();
-      this.fetchValues();
-      this.priceComparision();
+      
     }
     async getStorageValue(){
     	const city = await AsyncStorage.getItem('cityInformation');
       	this.setState({city:city});
+      	this.fetchValues();
+      this.priceComparision();
     }
     fetchValues(){
     	let product_id = this.props.navigation.state.params.product_id;
@@ -125,68 +126,71 @@ export class ProductDetails extends Component {
                         this.state.isLoading==true ?  <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :  	
 					<ScrollView>							
 							
-								<View style={gstyles.backgroundWhite}>
+								<View style={[gstyles.backgroundWhite,{marginTop:15,width:'94%',marginLeft:'3%',marginRight:'3%'}]}>
 							          <View style={[gstyles.width100,gstyles.flexDirectionRow]}>
-							                <View style={gstyles.lowestPriceLeftBox}>
-							                    
-							                      <Image source={{uri:this.state.fieldValues.image}} style={gstyles.productDetailsImage}/>
-							                    
-							                </View>
-							                <View style={gstyles.lowestPriceRightBox}>
-							                    <View style={gstyles.width80}><Text style={gstyles.productDetailsTitle}>{this.state.fieldValues.title}</Text></View>
-							                    
-							                    <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text>{this.state.fieldValues.like_count} likes</Text><Text> - </Text><Text>{this.state.fieldValues.view_count} Views</Text><Text> - </Text><Text>{this.state.fieldValues.comment_count} Comments</Text></View>
-							              		<View style={[gstyles.flexDirectionRow,gstyles.padding10,{width:'50%',marginLeft:'5%'}]}>   
-								          			<Text style={gstyles.qtyText}>{this.state.qty}</Text>		
-							                          <TouchableHighlight 
-							                             onPress={() => this.increase_qty(this.state.qty)}
-							                             underlayColor='#BEBEBE' style={gstyles.qtybuttonDecrease}>
-							                             <Image source={require('../../../assets/plus.png')} style={gstyles.qtyIcon}/>
-							                          </TouchableHighlight>
-							                          
-							                          <TouchableHighlight 
-							                             onPress={() => this.decrease_qty(this.state.qty)}
-							                             underlayColor='#BEBEBE' style={gstyles.qtybuttonIncrease}>
-							                            <Image source={require('../../../assets/minus.png')} style={gstyles.qtyIcon}/>
-							                          </TouchableHighlight>
-							                    </View>
-							              	</View>
+							                <View style={{flexDirection:'column',width:'30%',justifyContent:'center',alignItems:'center'}}>
+									             <Image source={{uri:this.state.fieldValues.image}} style={[gstyles.productDetailsImage,{padding:10}]}/>
+											</View>
+							                <View style={{flexDirection:'column',width:'55%'}}>
+
+												<View style={gstyles.width80}><Text style={gstyles.productDetailsTitle,{paddingTop:25,fontSize:18}}>{this.state.fieldValues.title}</Text></View>						                    
+									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{fontSize:14,color:'#727272'}}>{this.state.fieldValues.like_count} likes</Text><Text style={{fontSize:14,color:'#727272'}}> - </Text><Text style={{fontSize:14,color:'#727272'}}>{this.state.fieldValues.view_count} Views</Text><Text style={{fontSize:14,color:'#727272'}}> - </Text><Text style={{fontSize:14,color:'#727272'}}>{this.state.fieldValues.comment_count} Comments</Text></View>
+									      	</View>
+
+											<View style={{width:'15%',flexDirection:'column',borderLeftWidth:1,borderLeftColor:'#EAEAEA',paddingTop:10}}>   
+										          					
+									                          <TouchableHighlight 
+									                             onPress={() => this.increase_qty(this.state.qty)}
+									                             underlayColor='transparent' style={[gstyles.qtybuttonDecrease,{justifyContent:'center',alignItems:'center'}]}>
+									                             <Image source={require('../../../assets/aditionsign.png')} style={{width:24,height:24}}/>
+									                          </TouchableHighlight>
+									                      <View style={{justifyContent:'center',height:50}}>
+									                          <Text style={{color:'#727272',paddingLeft:5,textAlign:'center',fontSize:22}}>{this.state.qty}</Text>
+									                       </View>
+									                          <TouchableHighlight 
+									                             onPress={() => this.decrease_qty(this.state.qty)}
+									                             underlayColor='transparent' style={[gstyles.qtybuttonIncrease,{justifyContent:'center',alignItems:'center'}]}>
+									                            <Image source={require('../../../assets/subsign.png')} style={{width:24,height:24}}/>
+									                          </TouchableHighlight>
+									          </View>
 
 
 							          </View>
 							          <View style={[gstyles.width100,gstyles.flexDirectionRow]}>
-							             	
-							              <TouchableOpacity style={gstyles.likeButton} onPress={()=>this.props.navigation.push('MultipleWishlist',{product_ids:[this.state.fieldValues.listing_id],quantities:[{id : this.state.fieldValues.listing_id,qty : this.state.qty}]})}>
-							                  <Text style={gstyles.textCenter}>Add to Shopping List</Text>
-							              </TouchableOpacity>
+							             	<TouchableOpacity style={gstyles.likeButton} onPress={()=>alert('liked')}>
+							                  	<Text style={gstyles.textCenter}>Like</Text>
+							              	</TouchableOpacity>
+							             	<TouchableOpacity style={gstyles.likeButton} onPress={()=>this.props.navigation.push('MultipleWishlist',{product_ids:[this.state.fieldValues.listing_id],quantities:[{id : this.state.fieldValues.listing_id,qty : this.state.qty}]})}>
+							                  	<Text style={gstyles.textCenter}>Add to Shopping List</Text>
+							             	 </TouchableOpacity>
 							          </View>
 						        </View>
-								<Text style={gstyles.priceComparisonText}>Price Comparison</Text>
-								
+						        {(this.state.priceValues.length > 0) ? 
+						        		<View>
+											<Text style={gstyles.priceComparisonText}>Price Comparison</Text>
+											<View style={gstyles.backgroundWhite}>
+												<FlatList data={this.state.priceValues} 
+													renderItem={({item,index}) =>      
+								                    <View style={gstyles.priceComparisonView} >
+											          		<View style={gstyles.priceComparisonLeft}>
+											          			<View style={gstyles.paddingTop10}><Image source={{uri : item.image}} resizeMode="contain" style={gstyles.priceCompanyImage}/></View>
+											          		</View>
+												            <View style={gstyles.priceComparisonRight}>
+													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} SAR</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.wheretobuy_title}</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.city}</Text></View>
+													               
+											          		</View>
+											        </View>
+											                      
+								                    }
+								                keyExtractor={(item, index) => index.toString()}
+												/>
+											</View>						
+										</View>
+								: null
+								}
 									
-									{(this.state.priceValues.length > 0) ? 
-										<View style={gstyles.backgroundWhite}>
-										<FlatList data={this.state.priceValues} 
-											renderItem={({item,index}) =>      
-						                    <View style={gstyles.priceComparisonView} >
-									          		<View style={gstyles.priceComparisonLeft}>
-									          			<View style={gstyles.paddingTop10}><Image source={{uri : item.image}} resizeMode="contain" style={gstyles.priceCompanyImage}/></View>
-									          		</View>
-										            <View style={gstyles.priceComparisonRight}>
-											          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} SAR</Text></View>
-											          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.wheretobuy_title}</Text></View>
-											          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.city}</Text></View>
-											               
-									          		</View>
-									        </View>
-									                      
-						                    }
-						                keyExtractor={(item, index) => index.toString()}
-										/>
-									</View>
-									:
-										<View style={gstyles.backgroundWhite}><Text style={[gstyles.ShoppingText,gstyles.padding10]}>{this.state.priceMessage}</Text></View>
-									}
 								
 								
 								

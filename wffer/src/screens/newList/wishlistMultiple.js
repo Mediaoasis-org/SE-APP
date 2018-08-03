@@ -173,7 +173,7 @@ export class MultipleWishlistComponent extends Component {
 					</View>
 					{ 
                               this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View>  :
-                              <View>
+                              <ScrollView>
 									<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Add to Shopping List</Text></View>
 								 	
 						          		
@@ -195,7 +195,7 @@ export class MultipleWishlistComponent extends Component {
 						          		<View style={gstyles.newToView}><Text style={gstyles.newToText}>OR</Text></View>
                    						<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.createAccountView}><Text style={gstyles.createAccountText}>Cancel</Text></TouchableOpacity>
 						        	
-						      </View>
+						      </ScrollView>
 				     }
 				</View>
 			);

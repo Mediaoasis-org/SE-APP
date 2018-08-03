@@ -62,7 +62,7 @@ const profilenav = createBottomTabNavigator({
 },{
   swipeEnabled:false,
   animationEnabled:true,
-  lazy:true,
+  // lazy:true,
   
   tabBarOptions: {
     activeTintColor: '#000',

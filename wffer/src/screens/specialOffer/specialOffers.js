@@ -73,7 +73,7 @@ export class SpecialOffers extends Component {
 	                })
                  this.setState({
                   stores:temp,
-                  isLoading:false,
+                  // isLoading:false,
                 });
                  
               }
@@ -264,7 +264,7 @@ export class SpecialOffers extends Component {
 	}
 	render(){
 		return(
-				<View style={gstyles.container}>
+				<View style={gstyles.flexContainer}>
 					<View style={gstyles.headerMenu}>
 								<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />

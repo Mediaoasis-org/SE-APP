@@ -18,7 +18,7 @@ export const gstyles = StyleSheet.create({
 	flexDirectionRow:{flexDirection:'row'},
 	flexDirectionColumn:{flexDirection:'column'},
 
-	fontSize18:{fontSize:18},
+	fontSize18:{fontSize:16},
 
 	margin5:{margin:5},
 	marginTop10:{marginTop:10},
@@ -29,6 +29,7 @@ export const gstyles = StyleSheet.create({
 	padding10:{padding:10},
 	textCenter:{textAlign:'center'},
 	textRed:{color:'#ff0000'},
+	textBlack:{color:'#000'},
 	
 	loading:{alignItems:'center',justifyContent:'center',flex:1},
 	loadingActivity:{backgroundColor:'#febe2b',padding:20,borderRadius:20},
@@ -40,7 +41,7 @@ export const gstyles = StyleSheet.create({
 	buttonView:{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'},
 	buttonText:{color:'#fff',fontSize:16,fontWeight:'bold'},
 	buttonViewFixed:{padding:2,backgroundColor:'#f2f2f2', alignSelf: 'center',width:'50%',position:'absolute',bottom:15,flexDirection:'row',flex: 0.2,borderRadius:50,borderColor:'#bfbfbf',borderWidth:2},
-	buttonTextFixed:{color:'#000',fontSize:18,fontWeight:'bold'},
+	buttonTextFixed:{color:'#000',fontSize:16,fontWeight:'bold'},
 	getPriceButton:{flexDirection:'column',padding:5,width:'50%',alignItems:'center'},
 
 	sideMenuView:
@@ -78,6 +79,7 @@ export const gstyles = StyleSheet.create({
 		alignItems:'center',
 		width:'12%',
 		flexDirection:'column',
+		
 			// borderRightWidth:1,
    //    	borderRightColor:'#000',
 		...Platform.select({
@@ -92,7 +94,7 @@ export const gstyles = StyleSheet.create({
 		})
 	},
 	headerProfileLabel:{
-			fontSize:18,
+			fontSize:16,
 	      	fontWeight:'bold',
 	      	letterSpacing: 3,
 	      	color: '#fff',
@@ -125,7 +127,7 @@ export const gstyles = StyleSheet.create({
 
 	//city
 	cityMenu:{width:'96%',backgroundColor:'#00BCD4',padding:15,marginTop:5,marginBottom:5,marginLeft:'2%',marginRight:'2%'},
-    cityMenuText:{color:'#fff',fontSize:18,fontWeight:'bold',textAlign:'center'},
+    cityMenuText:{color:'#fff',fontSize:16,fontWeight:'bold',textAlign:'center'},
 	// headerMenu:{
 	// ...Platform.select({
 	// 	ios:{
@@ -228,12 +230,12 @@ export const gstyles = StyleSheet.create({
 	// },
 	menuicon:{height:24,width:24},
 	drawerView:{width:'100%',flexDirection:'row',padding:3},
-	drawertitleHeadingText:{backgroundColor:'#eee',padding:10,color:'#333',borderBottomColor:'#dedede',borderBottomWidth:1,fontSize:16,fontWeight:'bold'},
-	drawertitleNormalText:{padding:10,color:'#333',fontSize:16,width:'100%'},
+	drawertitleHeadingText:{backgroundColor:'#eee',padding:10,color:'#333',borderBottomColor:'#dedede',borderBottomWidth:1,fontSize:14,fontWeight:'bold'},
+	drawertitleNormalText:{padding:10,color:'#333',fontSize:14,width:'100%'},
 	drawerImage:{marginTop:10,marginLeft:10,marginRight:0,width:24,height:24,flexDirection:'column'},
 	flatimage:{ height: 150, width: '100%' },
-	title:{  fontSize: 18, color: '#000' },
-	likeButton:{width:'90%',padding:10,backgroundColor:'#e9ebee',borderColor:'#ddd',borderWidth:1,marginLeft:'5%',marginRight:'5%',marginTop:5,marginBottom:10,justifyContent:'center',flexDirection:'column'},
+	title:{  fontSize: 16, color: '#000' },
+	likeButton:{width:'46%',padding:10,backgroundColor:'#e9ebee',borderColor:'#ddd',borderWidth:1,marginLeft:'2%',marginRight:'2%',marginTop:5,marginBottom:10,justifyContent:'center',flexDirection:'column'},
 	slider: {
         // marginTop: 15,
         overflow: 'visible' // for custom animations
@@ -245,9 +247,9 @@ export const gstyles = StyleSheet.create({
     swiperflatlist:{height:350,top:-35},
 
     //language 
-    languageView:{flexDirection:'column',width:'40%',margin:'2%'},
+    languageView:{flexDirection:'column',width:'46%',margin:'2%'},
     languageImageView:{flexDirection:'row',paddingTop:10,paddingBottom:10,paddingLeft:10,paddingRight:10,borderWidth:1,borderColor:'#000'},
-    languageImage:{flexDirection:'column',marginRight:10},
+    languageImage:{flexDirection:'column',marginRight:10,width:50,height:50},
     languageText:{flexDirection:'column',paddingTop:15},
 
     //promotional offer store
@@ -264,21 +266,21 @@ export const gstyles = StyleSheet.create({
     //special offer 
     SpecialOfferHeadingsHome:{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#fff'},
     specialOfferViewHome:{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'},
-    specialOfferView:{width:'46%',paddingLeft:20,paddingRight:20,paddingBottom:15,margin:'2%',backgroundColor:'#fff'},
-    discountShow:{width:'60%',marginBottom:5,marginLeft:-15,backgroundColor:'#c30000',padding:5,color:'#fff',fontSize:16},
+    specialOfferView:{width:'46%',paddingLeft:15,paddingRight:15,paddingBottom:15,margin:'2%',backgroundColor:'#fff'},
+    discountShow:{width:'60%',marginBottom:5,marginLeft:-20,backgroundColor:'#c30000',padding:5,color:'#fff',fontSize:14},
     specialOfferTitle:{width: '90%',paddingTop:10},
-    specialOfferCategory:{color:'#333',fontSize:16,fontWeight:'bold'},
-    specialOfferCompany:{color:'#c40b00',fontSize:17},
+    specialOfferCategory:{color:'gray',fontSize:14,fontWeight:'bold'},
+    specialOfferCompany:{color:'#c40b00',fontSize:14},
     
     //modal dropdown or select list
     dropdownMainStyles:{borderWidth:1,borderColor:'#ccc',margin:10,padding:5},
-    dropdownTextStyle:{fontSize: 18, color: '#000',padding:5},
-    textStyle:{color: '#000', fontSize: 18,padding:5},
-    dropdownStyles:{width:'90%',padding:5,margin:5},
+    dropdownTextStyle:{fontSize: 16, color: '#000',padding:8},
+    textStyle:{color: '#000', fontSize: 16,padding:5},
+    dropdownStyles:{width:'90%',padding:5,margin:5,height:window.height/3},
 
     //profile
     profileHeadingView:{width:'100%',alignItems:'center'},
-    profileHeadingText:{padding:10,fontSize:20,color:'#000'},
+    profileHeadingText:{padding:10,fontSize:16,color:'#000'},
     circledImage:{paddingTop: 10,width: 200,height: 200,borderRadius: 100},
     
     //sign in
@@ -298,14 +300,14 @@ export const gstyles = StyleSheet.create({
 
     //shopping list
     ShoppingButton: { backgroundColor: '#F5FCCC',padding: 10, flexDirection:'row', width:'100%' },
-  	ShoppingText: { flexDirection:'column', fontSize: 20, fontWeight: '500', color:'#000'},
-  	ShoppingListItemsView:{borderColor:'#000',borderWidth:1,padding:10,marginTop:8,marginBottom:10,flexDirection:'row'},
-  	ShoppingListItemsViewImage:{flexDirection:'column',width:'30%'},
-  	ShoppingListItemsViewRightContent:{flexDirection:'column',width:'70%'},
+  	ShoppingText: { flexDirection:'column', fontSize: 16, fontWeight: '500', color:'#000'},
+  	ShoppingListItemsView:{padding:10,flexDirection:'row'},
+  	ShoppingListItemsViewImage:{flexDirection:'column',width:'40%',padding:10},
+  	ShoppingListItemsViewRightContent:{flexDirection:'column',width:'60%',padding:10},
   	ShoppingWishlistTitle:{fontSize:16,fontWeight:'bold',marginTop:5,color:'#000'},
   	ShoppingWishlistText:{marginTop:5,color:'#000'},
-  	content: { paddingLeft: 10, paddingRight:10, backgroundColor: '#fff'},
-  	signInButton:{padding:10,fontSize:18,margin:10,textAlign:'center'},
+  	content: { marginLeft: '3%', marginRight:'3%',marginTop:5,marginBottom:10, backgroundColor: '#fff',width:'94%'},
+  	signInButton:{padding:10,fontSize:16,margin:10,textAlign:'center'},
 
   	// products css
   	productsMain:{backgroundColor: '#fff',marginTop:12,marginLeft:12,marginRight:12},
@@ -314,7 +316,7 @@ export const gstyles = StyleSheet.create({
   	productImageView:{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3},
   	productImage:{marginTop:'15%', marginBottom:'10%', width: '100%', height: 80},
   	productViewRight:{width:'77%',marginLeft:'3%',flexDirection:'column'},
-  	productTitle:{fontSize: 18, marginTop: '5%',color:'#000',fontWeight:'bold'},
+  	productTitle:{fontSize: 16, marginTop: '5%',color:'#000',fontWeight:'bold'},
   	productCatTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
   	qtyView:{flexDirection: 'row',padding:10,marginLeft:'40%'},
   	qtybuttonDecrease:{margin:5},
@@ -325,41 +327,41 @@ export const gstyles = StyleSheet.create({
  	productBottomPart:{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5},
  	checkboxView:{width:'60%',padding:10},
  	bestDealView:{width:'40%',padding:3},
- 	discountDeal:{color: '#ff0000', fontSize: 18,textAlign:'center',fontStyle:'italic'},
- 	bestDeal:{color: '#000', marginTop: '3%', fontSize: 18,textAlign:'center'},
+ 	discountDeal:{color: '#ff0000', fontSize: 16,textAlign:'center',fontStyle:'italic'},
+ 	bestDeal:{color: '#000', marginTop: '3%', fontSize: 16,textAlign:'center'},
  	loadMoreActivity:{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'transparent'},
 
  	//product details 
- 	productDetailsImage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '10%', width: '90%', height: 115,padding:5},
- 	productDetailsTitle:{fontSize: 18, marginTop: '10%',color:'#000'},
- 	priceComparisonText:{fontSize:20,fontWeight:'bold',margin:10},
+ 	productDetailsImage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%',  width: '90%', height: window.height/6,padding:5},
+ 	productDetailsTitle:{fontSize: 16, marginTop: '10%',color:'#000'},
+ 	priceComparisonText:{fontSize:16,fontWeight:'bold',margin:10},
  	priceComparisonView:{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1,width:'96%',marginLeft:'2%',marginRight:'2%',marginTop:'2%'},
- 	priceComparisonLeft:{flexDirection: 'column',width:'40%'},
+ 	priceComparisonLeft:{flexDirection: 'column',width:'40%',padding:10},
  	priceComparisonRight:{flexDirection: 'column',width:'60%',marginBottom:5},
  	priceCompanyImage:{height:50,width:'100%'},
  	priceTitleTextView:{width: '100%',padding:3},
- 	priceTitleText:{fontSize: 18, marginTop: 5,color:'#000',fontWeight:'bold'},
-	priceSubtitleText:{color: '#000', marginTop: 1, fontSize: 18},
+ 	priceTitleText:{fontSize: 16, marginTop: 5,color:'#000',fontWeight:'bold'},
+	priceSubtitleText:{color: '#000', marginTop: 1, fontSize: 16},
 
   	//wishlist
   	wishlistMultipleView:{width:'100%',flexDirection:'row',padding:8},
-  	multipleCheckbox:{color:'#000',fontSize:15},
+  	multipleCheckbox:{color:'#000',fontSize:16},
   	wishlistBackButton:{padding:10,width:'10%',flexDirection:'column'},
-  	wishlistTitle:{padding:10,fontSize:20,width:'90%',flexDirection:'column',color:'#000',fontWeight:'bold',marginTop:2},
+  	wishlistTitle:{padding:10,fontSize:16,width:'90%',flexDirection:'column',color:'#000',fontWeight:'bold',marginTop:2},
   	wishlistBox:{backgroundColor: '#fff',  borderColor:'gray',borderWidth:1,margin:5,flexDirection:'row'},
   	wishlistBoxLeft:{width:'90%',flexDirection:'row',marginBottom:10},
   	wishlistBoxRight:{width:'10%',marginTop:'10%'},
   	wishlistInnerLeft:{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3},
   	wishlistInnerLeftImage:{marginTop:'15%', marginBottom:'10%', width: '100%', height: 80},
   	wishlistInnerRight:{width:'77%',marginLeft:'3%',flexDirection:'column'},
-  	wishlistInnerTitle:{fontSize: 18, marginTop: '5%',color:'#000',fontWeight:'bold'},
+  	wishlistInnerTitle:{fontSize: 16, marginTop: '5%',color:'#000',fontWeight:'bold'},
   	catTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
-	subtitle:{color: '#000', marginTop: '3%', fontSize: 18,textAlign:'left'},
+	subtitle:{color: '#000', marginTop: '3%', fontSize: 16,textAlign:'left'},
 	wishlistCheckBox:{paddingTop:'100%',paddingLeft:'10%'},
 	wishlistModalContainer:{flex: 1,flexDirection: 'column', justifyContent: 'center',alignItems: 'center'},
 	wishlistModalContainerBox:{backgroundColor:'#fff', width: 300},
 	modalMenu:{width:'100%',backgroundColor:'#00BCD4',padding:15,borderBottomColor:'#fff',borderBottomWidth:1},
-    modalMenuText:{color:'#fff',fontSize:17,fontWeight:'bold'},
+    modalMenuText:{color:'#fff',fontSize:16,fontWeight:'bold'},
     deleteButton:{
 		...Platform.select({
 			ios:{
@@ -396,15 +398,15 @@ export const gstyles = StyleSheet.create({
 	lowestPriceLeftInnerBox:{flexDirection: 'column',width:'10%'},
 	lowestPriceRightInner:{flexDirection:'row',width:'100%'},
 	lowestPriceRightInnerBox:{flexDirection: 'column',width:'90%'},
-	lowestPriceTitle:{fontSize: 18, marginTop: '10%',color:'#000',fontWeight:'bold'},
-	lowestPriceSubTitle:{color: '#000', marginTop: '3%', fontSize: 18},
+	lowestPriceTitle:{fontSize: 16, marginTop: '10%',color:'#000',fontWeight:'bold'},
+	lowestPriceSubTitle:{color: '#000', marginTop: '3%', fontSize: 16},
 
 	//multistore 
 	multistoreView:{backgroundColor: '#fff',borderBottomColor:'grey',borderBottomWidth:0.5,flexDirection:'row',margin:5,padding:5},
 	multistoreLeftView:{width:'90%',flexDirection:'column'},
 	multistoreRightInnerView:{width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'center'},
-	multistoreTitle:{fontSize:18,fontWeight:'bold',padding:5},
-	multistoreAddress:{fontSize:18,padding:5},
+	multistoreTitle:{fontSize:16,fontWeight:'bold',padding:5},
+	multistoreAddress:{fontSize:16,padding:5},
 	multistoreRightView:{width:'10%',flexDirection:'column',alignItems:'center',justifyContent:'center'},
 
 	//tell a friend
@@ -412,11 +414,11 @@ export const gstyles = StyleSheet.create({
 
     //sign up
     termsView:{flexDirection: 'row',justifyContent:'center',width:'100%'},
-    termsLink:{color:'#62C462',fontSize:18},
+    termsLink:{color:'#62C462',fontSize:16},
 
    	//tell a friend
     flatlist:{backgroundColor: '#fff',borderBottomColor:'grey',borderBottomWidth:0.5,flexDirection:'row'},
     tellfriend:{backgroundColor: '#fff',flexDirection:'row',width:'100%'},
-    tellFriendTitle:{fontSize: 18,padding:20,color:'#000',fontWeight:'bold',width:'85%'},
+    tellFriendTitle:{fontSize: 16,padding:20,color:'#000',fontWeight:'bold',width:'85%'},
     rightButton:{paddingTop:20,paddingBottom:20,paddingRight:10,width:'15%'},
 })

@@ -25,7 +25,7 @@ export class DrawerTitle extends React.Component{
         oauthSecret:'',
         modalVisible: false,
         cities:[],
-        
+        isButtonDisabled:false,
         isLoading:true
       }
       this.city ='';
@@ -157,6 +157,9 @@ export class DrawerTitle extends React.Component{
 			        console.error(error);
 			      });
 	}
+  disable(){
+      this.setState({isButtonDisabled: true});setTimeout(() => this.setState({ isButtonDisabled: false }), 5000);
+  }
   render(){
   	// alert(this.state.fieldValues.length)
   // 		if (this.state.fieldValues.length === 0) {
@@ -168,38 +171,38 @@ export class DrawerTitle extends React.Component{
           }
       }).done();
       return(
-        <ScrollView style={gstyles.sideMenuView}>
+        <ScrollView style={gstyles.sideMenuView} decelerationRate="normal">
         	<SafeAreaView>
           
         		<View>
   	      		<Text style={gstyles.drawertitleHeadingText}>Menu</Text>
               {
                   (this.state.LoggedIn === true) 
-                  ?<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.push('Profile')}><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Profile</Text></TouchableOpacity>
+                  ?<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Profile')}}><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Profile</Text></TouchableOpacity>
                   : null
               }
-  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.push('Home')}><Icon name="home" size={24} color="#febe2b" style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Home</Text></TouchableOpacity>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.push('Language')}><Image source={require('../../../assets/switch_lang.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Language</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Home')}} disabled={this.state.isButtonDisabled}><Icon name="home" size={24} color="#febe2b" style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Home</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Language')}}><Image source={require('../../../assets/switch_lang.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Language</Text></TouchableOpacity>
         		</View>
 
         		<View>
   	      		<Text style={gstyles.drawertitleHeadingText}> Shopping</Text>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.push('Catalog')}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Catalog</Text></TouchableOpacity>
-  	      		<TouchableOpacity onPress={()=>this.props.navigation.push('ShoppingList')} style={gstyles.drawerView}><Image source={require('../../../assets/shopping-basket.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> My Shopping List</Text></TouchableOpacity>
-  	      		<TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.drawerView}><Image source={require('../../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Create New List</Text></TouchableOpacity>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.push('SpecialOffers')}><Image source={require('../../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Special Offer</Text></TouchableOpacity>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>this.props.navigation.push('StoreLocator')}><Image source={require('../../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Store Locator</Text></TouchableOpacity>
-        		  <TouchableOpacity style={gstyles.drawerView} onPress={()=>this.handleNavigation()}><Icon name="location-arrow" style={gstyles.drawerImage} size={24} color="#febe2b"/><Text style={gstyles.drawertitleNormalText}>Select City</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Catalog')}}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Catalog</Text></TouchableOpacity>
+  	      		<TouchableOpacity onPress={()=>{this.disable();this.props.navigation.push('ShoppingList')}} style={gstyles.drawerView}><Image source={require('../../../assets/shopping-basket.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> My Shopping List</Text></TouchableOpacity>
+  	      		<TouchableOpacity onPress={()=>{this.disable();this.props.navigation.push('CreateWishlist')}} style={gstyles.drawerView}><Image source={require('../../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Create New List</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('SpecialOffers')}}><Image source={require('../../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Special Offer</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('StoreLocator')}}><Image source={require('../../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Store Locator</Text></TouchableOpacity>
+        		  <TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.handleNavigation()}}><Icon name="location-arrow" style={gstyles.drawerImage} size={24} color="#febe2b"/><Text style={gstyles.drawertitleNormalText}>Select City</Text></TouchableOpacity>
             </View>
 
         		<View>
             	<Text style={gstyles.drawertitleHeadingText}>Categories</Text>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.props.navigation.push('Products', {cat_name:'All Categories'})}}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> All Categories</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Products', {cat_name:'All Categories'})}}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> All Categories</Text></TouchableOpacity>
   	      		<View>
   	      		{
   	      			this.state.fieldValues.map((item,index)=>{
   	      				return(
-  	      				<TouchableOpacity key={index} style={gstyles.drawerView} onPress={()=>{this.props.navigation.push('Products', {cat_name:item.category_name,cat_id:item.category_id})}}>
+  	      				<TouchableOpacity key={index} style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Products', {cat_name:item.category_name,cat_id:item.category_id})}}>
   	      					<Image source={{uri:item.image_icon}} style={[gstyles.drawerImage,{tintColor:'#febe2b'}]}/><Text style={gstyles.drawertitleNormalText}> {item.category_name}</Text>
   	      				</TouchableOpacity>
   	      				)
@@ -214,12 +217,12 @@ export class DrawerTitle extends React.Component{
                   (this.state.LoggedIn === true) 
                   ?
                   <View>
-                    <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.logout() }><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
+                    <TouchableOpacity style={gstyles.drawerView}  onPress={() =>{this.disable(); this.logout() }}><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
                   </View>
                   :
                   <View>
-                    <TouchableOpacity style={gstyles.drawerView}  onPress={() => this.props.navigation.navigate('Login')} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign In</Text></TouchableOpacity>
-                     <TouchableOpacity style={gstyles.drawerView} onPress={() => this.props.navigation.navigate('Signup')}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign Up</Text></TouchableOpacity>
+                    <TouchableOpacity style={gstyles.drawerView}  onPress={() =>{this.disable();this.props.navigation.navigate('Login')}} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign In</Text></TouchableOpacity>
+                     <TouchableOpacity style={gstyles.drawerView} onPress={() => {this.disable();this.props.navigation.navigate('Signup')}}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign Up</Text></TouchableOpacity>
         	       </View>
                }
                

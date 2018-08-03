@@ -151,7 +151,7 @@ export  class StoreLocatorComponent extends Component {
 	  		 	ios:scheme+'saddr='+latLng+'&daddr='+getlatlng,
 	  		 	android:scheme+getlatlng
 	  		 })
-	  		 alert(url)
+	  		 // alert(url)
 	  		 Linking.openURL(url)
 	  		 // Platform.select({
 	  		 // 	ios: () => {
@@ -182,7 +182,8 @@ export  class StoreLocatorComponent extends Component {
 	    } else if (!filteredList.length) {
 	     // set no data flag to true so as to render flatlist conditionally
 	       this.setState({
-	         noData: true
+	         noData: true,
+	         renderData:filteredList
 	       })
 	    }
 	    else if (Array.isArray(filteredList)) {

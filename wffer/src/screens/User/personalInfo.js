@@ -18,9 +18,11 @@ export  class PersonalInfoComponent extends Component {
 			'1_1_5_alias_gender':'',
 			oauthToken:'',
 			oauthSecret:'',
-			userData:[]
+			userData:[],
+			
 		}
 		this.handleInput = this.handleInput.bind(this);
+		this.isButtonDisabled=false;
 		this._getStorageValue()
 	}
 	async _getStorageValue(){
@@ -53,7 +55,11 @@ export  class PersonalInfoComponent extends Component {
  //    	console.log(this.state);
  //    	alert("all values")
  //    }
+	 disable(){
+	     
+	  }
 	SavePersonalInfo(){
+		this.isButtonDisabled= true; setTimeout(() => this.isButtonDisabled = false , 3000);
     	var formData = new FormData;
 		    formData.append('1_1_3_alias_first_name',this.state['1_1_3_alias_first_name']);
 		    formData.append('1_1_4_alias_last_name',this.state['1_1_4_alias_last_name']);
@@ -75,7 +81,7 @@ export  class PersonalInfoComponent extends Component {
 		            this.setState({
 		              isLoading: false,
 		            }, async function(){
-		              alert('Data Updated');
+		              // alert('Data Updated');
 		              this.props.navigation.navigate('Profile');
 		            });
 		          }
@@ -279,7 +285,7 @@ export  class PersonalInfoComponent extends Component {
 										
 									})
 								}
-								<TouchableOpacity onPress={()=>this.SavePersonalInfo()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
+								<TouchableOpacity onPress={()=>{this.disable();this.SavePersonalInfo();}} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
 						</View>
 					
 					</ScrollView>

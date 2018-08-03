@@ -170,7 +170,7 @@ export class Catalog extends Component {
 							<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 								<Icon name="bars" size={24} color="#fff" />
 		                    </TouchableOpacity>
-		                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
+		                    <Text style={gstyles.headerProfileLabel}>Catalog</Text>
 		                    <Text style={gstyles.headerRightButton}></Text>
 				</View>
 				 { 

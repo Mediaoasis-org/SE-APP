@@ -20,6 +20,7 @@ export class ChangePasswordComponent extends Component {
 			oauthSecret:''
 
 		}
+		// this.isButtonDisabled=false;
 		// alert(JSON.stringify(this.props.navigation))
 		this._getStorageValue()
 	}
@@ -109,7 +110,11 @@ export class ChangePasswordComponent extends Component {
 		        		this.setState({Message:responseJson.message})
 		        	}
 		         	this.textInput.clear()
-		            alert(this.state.Message)
+		            Object.entries(this.state.Message).map(([key, value]) => {
+		            	// console.log(`${value}`);
+
+		            	alert(key +', '+ value)
+		            })
 		        })
 		       
 		        .catch((error) =>{
@@ -120,6 +125,9 @@ export class ChangePasswordComponent extends Component {
 	Capitalize(str){
     return str.charAt(0).toUpperCase() + str.slice(1);
     }
+     disable(){
+	     // this.isButtonDisabled= true; setTimeout(() => this.isButtonDisabled = false , 1000);
+	  }
     _keyExtractor = (item, index) => index.toString();
     render_item = ({item}) => {
     		 
@@ -133,6 +141,7 @@ export class ChangePasswordComponent extends Component {
 			}
 			
     }
+   
 	render(){
 		return(
 				
@@ -145,10 +154,11 @@ export class ChangePasswordComponent extends Component {
 							                    <Text style={gstyles.headerProfileLabel}>Change Password</Text>
 							                    <Text style={gstyles.headerRightButton}></Text>
 									</View>
+									<ScrollView>
 							{ 
 		           				this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
 									<View>
-									<ScrollView>
+									
 										<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Change Password</Text></View>
 										<View>
 											<FlatList extraData={this.state.dataSource}
@@ -157,11 +167,12 @@ export class ChangePasswordComponent extends Component {
 												  keyExtractor={this._keyExtractor}
 											/>	
 											
-											<TouchableOpacity onPress={()=>this.chagnePassword()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Change Password</Text></TouchableOpacity>
+											<TouchableOpacity onPress={()=>{ this.disable();this.chagnePassword()}}  style={gstyles.buttonView}><Text style={gstyles.buttonText}>Change Password</Text></TouchableOpacity>
 										</View>
-									</ScrollView>
+									
 									</View>
 							}
+							</ScrollView>
 						</View>
 				
 			);
