@@ -80,7 +80,7 @@ export  class LowestPriceComponent extends Component {
 					          				<Text style={gstyles.lowestPriceTitle}>{value.title}</Text>
 							          		<Text style={gstyles.lowestPriceSubTitle}>Products Available {value.productAvailable}</Text>
 							          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed]}>Total Price : {value.indivisualSum}</Text>	
-							          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,gstyles.marginBottom10]}>Total Save : {value.totalSave}</Text>	
+							          		
 								</View>	
 								<View style={gstyles.lowestPriceLeftInnerBox}>
 										<Icon name="angle-right" size={40} color='#000' style={gstyles.marginTop40} />
@@ -114,3 +114,5 @@ export  class LowestPriceComponent extends Component {
 		);
 	}
 }
+
+// <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,gstyles.marginBottom10]}>Total Save : {value.totalSave}</Text>

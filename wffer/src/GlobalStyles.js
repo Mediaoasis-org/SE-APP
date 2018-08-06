@@ -40,7 +40,7 @@ export const gstyles = StyleSheet.create({
 	cameraImageView:{position:'absolute',top:22,left:'66%',zIndex:1000},
 	buttonView:{margin:10,padding:10,backgroundColor:'#696969',alignItems:'center'},
 	buttonText:{color:'#fff',fontSize:16,fontWeight:'bold'},
-	buttonViewFixed:{padding:2,backgroundColor:'#f2f2f2', alignSelf: 'center',width:'50%',position:'absolute',bottom:15,flexDirection:'row',flex: 0.2,borderRadius:50,borderColor:'#bfbfbf',borderWidth:2},
+	buttonViewFixed:{padding:2,backgroundColor:'#f2f2f2', alignSelf: 'center',width:'50%',position:'absolute',bottom:15,flexDirection:'row',flex: 0.2,borderRadius:50,borderColor:'#bfbfbf',borderWidth:2,zIndex:1000},
 	buttonTextFixed:{color:'#000',fontSize:16,fontWeight:'bold'},
 	getPriceButton:{flexDirection:'column',padding:5,width:'50%',alignItems:'center'},
 
@@ -273,10 +273,10 @@ export const gstyles = StyleSheet.create({
     specialOfferCompany:{color:'#c40b00',fontSize:14},
     
     //modal dropdown or select list
-    dropdownMainStyles:{borderWidth:1,borderColor:'#ccc',margin:10,padding:5},
+    dropdownMainStyles:{borderWidth:1,borderColor:'#ccc',marginLeft:'3%',marginRight:'3%',padding:5,width:'94%',marginTop:10,marginBottom:10},
     dropdownTextStyle:{fontSize: 16, color: '#000',padding:8},
-    textStyle:{color: '#000', fontSize: 16,padding:5},
-    dropdownStyles:{width:'90%',padding:5,margin:5,height:window.height/3},
+    textStyle:{color: '#000', fontSize: 16,padding:10},
+    dropdownStyles:{width:'92%',height:window.height/3},
 
     //profile
     profileHeadingView:{width:'100%',alignItems:'center'},
@@ -346,9 +346,9 @@ export const gstyles = StyleSheet.create({
   	//wishlist
   	wishlistMultipleView:{width:'100%',flexDirection:'row',padding:8},
   	multipleCheckbox:{color:'#000',fontSize:16},
-  	wishlistBackButton:{padding:10,width:'10%',flexDirection:'column'},
+  	wishlistBackButton:{padding:10,width:'30%',flexDirection:'column'},
   	wishlistTitle:{padding:10,fontSize:16,width:'90%',flexDirection:'column',color:'#000',fontWeight:'bold',marginTop:2},
-  	wishlistBox:{backgroundColor: '#fff',  borderColor:'gray',borderWidth:1,margin:5,flexDirection:'row'},
+  	wishlistBox:{backgroundColor: '#fff', margin:5,flexDirection:'row',width:'96%',marginLeft:'2%',marginRight:'2%'},
   	wishlistBoxLeft:{width:'90%',flexDirection:'row',marginBottom:10},
   	wishlistBoxRight:{width:'10%',marginTop:'10%'},
   	wishlistInnerLeft:{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3},
@@ -417,7 +417,7 @@ export const gstyles = StyleSheet.create({
     termsLink:{color:'#62C462',fontSize:16},
 
    	//tell a friend
-    flatlist:{backgroundColor: '#fff',borderBottomColor:'grey',borderBottomWidth:0.5,flexDirection:'row'},
+    flatlist:{backgroundColor: '#fff',borderBottomColor:'grey',borderBottomWidth:0.5,flexDirection:'row',width:'100%'},
     tellfriend:{backgroundColor: '#fff',flexDirection:'row',width:'100%'},
     tellFriendTitle:{fontSize: 16,padding:20,color:'#000',fontWeight:'bold',width:'85%'},
     rightButton:{paddingTop:20,paddingBottom:20,paddingRight:10,width:'15%'},

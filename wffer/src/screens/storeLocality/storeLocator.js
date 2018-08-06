@@ -15,6 +15,7 @@ import MapView, { ProviderPropType, Marker,Callout, AnimatedRegion } from 'react
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import CustomCallout from './CustomCallout';
 import ModalDropdown from 'react-native-modal-dropdown';
+import { Dropdown } from 'react-native-material-dropdown';
 // import { DrawerActions } from 'react-navigation';
 const window = Dimensions.get('window');
 
@@ -40,9 +41,11 @@ export  class StoreLocatorComponent extends Component {
 			error:null,
 			city:'',
 			stores:[],
+			stores1:[],
 			renderData:[]
 
 		}
+		
 		this.getStorageValues();
 	}
 
@@ -70,6 +73,7 @@ export  class StoreLocatorComponent extends Component {
    fetchStore(){
    		var store_title ;
    		let temp = ["Select"];
+   		let temp1 = [{value : "Select"}];
 		 return fetch('https://wffer.com/se/api/rest/listings/get-stores?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
               method:'GET'
             })
@@ -81,12 +85,14 @@ export  class StoreLocatorComponent extends Component {
                 
 	                store_title.map((item)=>{
 	                	temp.push(item.title);
+	                	temp1.push({value : item.title});
 	                })
                  this.setState({
+                 stores1:temp1,
                   stores:temp,
                   isLoading:false,
                 });
-                 
+                 console.log(this.state.stores1)
               }
               else
               {
@@ -195,7 +201,7 @@ export  class StoreLocatorComponent extends Component {
   }
   	onTagSelect(idx, data,name){ 
 	      // console.log("======== on tag selected ==========="); 
-	      // console.log(idx,data,name); 
+	      console.log(idx,data,name); 
 	      this.handleSearchList(data)
 	      // this.handleInput(idx,data,name)
 	};
@@ -221,11 +227,12 @@ export  class StoreLocatorComponent extends Component {
 			                      dropdownStyle={gstyles.dropdownStyles}
 			                      defaultIndex={this.props.defaultIndex}
 			                      showsVerticalScrollIndicator={true}
+			                      animated={false}
 			                      defaultValue='Select Store'
 			                      options={this.state.stores}						         
 			                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,data)}}				
 	                		/>		
-
+	                		
 							<MapView
 							    initialRegion={{
 							      latitude: 24.7136,
@@ -267,6 +274,15 @@ export  class StoreLocatorComponent extends Component {
 		
 	}
 }
+
+// <Dropdown
+// 						        label='Select Store'
+// 						        data={this.state.stores1}
+// 						        onChangeText={(idx, data)=>{ this.onTagSelect(idx, data,data)}}
+// 						        containerStyle={gstyles.dropdownMainStyles}
+// 						        animationDuration={5}
+// 						        rippleDuration={0}
+// 						      />
 // if(this.state.LoggedIn==false){
 //         return(
 //           <View style={gstyles.container}>

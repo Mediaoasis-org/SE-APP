@@ -254,7 +254,7 @@ export class WishlistComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                   	<Text style={gstyles.headerProfileLabel}></Text>
+			                   	<Text style={gstyles.headerProfileLabel}>{this.state.data.title}</Text>
 			                    <TouchableOpacity onPress={() => this.handleNavigation()} style={gstyles.headerRightButton}>
 									<Icon name="ellipsis-h" size={30} color="#fff" />
 			                    </TouchableOpacity>
@@ -270,7 +270,7 @@ export class WishlistComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.wishlistBackButton}>
 									<Icon name="angle-left" size={30} color="#000" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.wishlistTitle}>{this.state.data.title}</Text>
+			                    
 			            </View>
 						
 						<View style={gstyles.specialOfferViewHome}>
@@ -278,11 +278,11 @@ export class WishlistComponent extends Component {
 							<FlatList data={this.state.data.listing} 
 
 		                		renderItem={({item}) =>      
-			                    	<View style={gstyles.wishlistBox}>
+			                    	<TouchableOpacity style={gstyles.wishlistBox} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
 			                    		
 						          		<View style={gstyles.wishlistBoxLeft}>
 						          			
-					          				<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}} style={gstyles.wishlistInnerLeft}>
+					          				<TouchableOpacity style={gstyles.wishlistInnerLeft}>
 					          					<Image source={{uri:item.image_profile}} style={gstyles.wishlistInnerLeftImage} />
 					          				</TouchableOpacity>
 						          			
@@ -308,7 +308,7 @@ export class WishlistComponent extends Component {
 										          			  onChange={()=>this.onCheckBoxPress(item.listing_id)} /> 
 						          		</View>
 						          									            
-						        	</View>
+						        	</TouchableOpacity>
 			                    }
 					                keyExtractor={(item, index) => index.toString()}
 					            />
@@ -325,11 +325,10 @@ export class WishlistComponent extends Component {
 					          }}>
 				          <View style={gstyles.wishlistModalContainer}>
 				            <View style={gstyles.wishlistModalContainerBox}>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleCreateWishlist()}><Text style={gstyles.modalMenuText}>Create New Wishlist</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>{this.setModalVisible(false);this.props.navigation.push('Products', {cat_name:'All Categories'})}}><Text style={gstyles.modalMenuText}>Add Product</Text></TouchableOpacity>
 				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleEditWishlist()}><Text style={gstyles.modalMenuText}>Edit</Text></TouchableOpacity>
 				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleDeleteWishlist()}><Text style={gstyles.modalMenuText}>Delete</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleReport()}><Text style={gstyles.modalMenuText}>Report</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleTellFriend()}><Text style={gstyles.modalMenuText}>Tell A Friend</Text></TouchableOpacity>
+				              
 				              <TouchableHighlight
 				                onPress={() => {
 				                  this.setModalVisible(!this.state.modalVisible);
@@ -342,7 +341,18 @@ export class WishlistComponent extends Component {
 							
 					</ScrollView>
 					<View style={gstyles.buttonViewFixed}>
-							<TouchableOpacity onPress={()=>alert('share')} style={[gstyles.getPriceButton,{borderRightWidth:1,borderRightColor:'#bfbfbf'}]}><Text style={gstyles.buttonTextFixed}>Share</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>Share.share({
+	url: 'https://wffer.com/se/wishlist/'+ this.props.navigation.state.params.wishlist_id,
+    message: 'Here is My Wishlist, Please click on following link to view Wishlist : ' + ' https://wffer.com/se/wishlist/' + this.props.navigation.state.params.wishlist_id ,
+    title: 'Share Your Wishlist ' + this.state.data.title,
+  }, {
+    // Android only:
+    dialogTitle: 'Share BdAppManiac goodness',
+    // iOS only:
+    excludedActivityTypes: [
+      'com.apple.UIKit.activity.PostToTwitter'
+    ]
+  })} style={[gstyles.getPriceButton,{borderRightWidth:1,borderRightColor:'#bfbfbf'}]}><Text style={gstyles.buttonTextFixed}>Share</Text></TouchableOpacity>
 							<TouchableOpacity onPress={()=>{this.props.navigation.push('GetPrice',{wishlist_id:this.props.navigation.state.params.wishlist_id})}} style={gstyles.getPriceButton}><Text style={gstyles.buttonTextFixed}>Get Price</Text></TouchableOpacity>
 							
 					</View>
@@ -359,8 +369,9 @@ export class WishlistComponent extends Component {
 	}
 }
 
-
-
+// <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleCreateWishlist()}><Text style={gstyles.modalMenuText}>Create New Wishlist</Text></TouchableOpacity>
+// <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleReport()}><Text style={gstyles.modalMenuText}>Report</Text></TouchableOpacity>
+// <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleTellFriend()}><Text style={gstyles.modalMenuText}>Tell A Friend</Text></TouchableOpacity>
 // <FlatList data={this.state.data.listing}
 // 		                		renderItem={({item}) =>      
 // 					                    	<View style={styles.flatlist}>

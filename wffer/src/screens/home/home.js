@@ -19,6 +19,7 @@ export class HomeComponent extends Component {
     		 isLoading:true,
     		 stores:[],
          specialOffers:[],
+         city:'',
       
     	}
       // this.isButtonDisabled=false;
@@ -27,6 +28,8 @@ export class HomeComponent extends Component {
     }	
     async getLoginValue(){
         var value = await AsyncStorage.getItem('userLoginAuthentication');
+        const city = await AsyncStorage.getItem('cityInformation');
+        this.setState({city:city});
         // alert(value)
         if(value !== null){
         	
@@ -89,7 +92,7 @@ export class HomeComponent extends Component {
             });
 	}
   getSpecialoffer(){
-    return fetch('https://wffer.com/se/api/rest/listings/special-offer?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&city=Riyadh&limit=10',{
+    return fetch('https://wffer.com/se/api/rest/listings/special-offer?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=10&city='+this.state.city,{
               method:'GET'
             })
             .then((response) => response.json())
@@ -145,7 +148,7 @@ export class HomeComponent extends Component {
   						  <View style={gstyles.specialOfferViewHome}>
                   <FlatList numColumns={2} data={this.state.specialOffers}
                             renderItem={({item}) =>      
-                                <TouchableOpacity style={gstyles.specialOfferView}>
+                                <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
                                   <Text style={gstyles.discountShow}>{item.percentageOff} Off </Text>
                                   <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
                                       <View style={gstyles.flexDirectionColumn}>

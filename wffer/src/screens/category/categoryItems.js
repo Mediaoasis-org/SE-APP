@@ -133,8 +133,9 @@ export class ProductDetails extends Component {
 											</View>
 							                <View style={{flexDirection:'column',width:'55%'}}>
 
-												<View style={gstyles.width80}><Text style={gstyles.productDetailsTitle,{paddingTop:25,fontSize:18}}>{this.state.fieldValues.title}</Text></View>						                    
-									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{fontSize:14,color:'#727272'}}>{this.state.fieldValues.like_count} likes</Text><Text style={{fontSize:14,color:'#727272'}}> - </Text><Text style={{fontSize:14,color:'#727272'}}>{this.state.fieldValues.view_count} Views</Text><Text style={{fontSize:14,color:'#727272'}}> - </Text><Text style={{fontSize:14,color:'#727272'}}>{this.state.fieldValues.comment_count} Comments</Text></View>
+												<View style={gstyles.width80}><Text style={gstyles.productDetailsTitle,{paddingTop:25,fontSize:16,color:'#000'}}>{this.state.fieldValues.title}</Text></View>						                    
+									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{fontSize:14,color:'#727272'}}>{this.state.fieldValues.like_count} likes</Text></View>
+									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{fontSize:14,color:'#727272'}}>Location - {this.state.fieldValues.location} </Text></View>
 									      	</View>
 
 											<View style={{width:'15%',flexDirection:'column',borderLeftWidth:1,borderLeftColor:'#EAEAEA',paddingTop:10}}>   

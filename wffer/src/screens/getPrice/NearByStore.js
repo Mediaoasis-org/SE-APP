@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  AsyncStorage
 
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
@@ -106,7 +107,7 @@ export  class NearByStoreComponent extends Component {
                                 <Text style={gstyles.lowestPriceTitle}>{value.title}</Text>
                                 <Text style={gstyles.lowestPriceSubTitle}>Products Available {value.productAvailable}</Text>
                                 <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed]}>Total Price : {value.indivisualSum}</Text>  
-                                <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,gstyles.marginBottom10]}>Total Save : {value.totalSave}</Text>  
+                                
                           </View> 
                           <View style={gstyles.lowestPriceLeftInnerBox}>
                               <Icon name="angle-right" size={40} color='#000' style={gstyles.marginTop40} />
@@ -180,6 +181,8 @@ const styles  = StyleSheet.create({
     orderTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000',fontWeight:'bold'}
 })
 
+
+ // <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,gstyles.marginBottom10]}>Total Save : {value.totalSave}</Text> 
 // <MapView style={styles.map} initialRegion={{
 //                latitude: 24.7136,
 //                 longitude: 46.6753,

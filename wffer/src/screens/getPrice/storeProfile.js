@@ -76,25 +76,22 @@ export  class StoreProfileComponent extends Component {
 							{
 							this.state.data.map((item,index)=>{
 								return(
-								<View style={gstyles.flatlist} key={index}>
+								<TouchableOpacity style={gstyles.flatlist} key={index} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
 					          		<View style={gstyles.lowestPriceLeftBox}>
 					          			<View style={gstyles.width90}>
 					          					<Image source={{uri : item.image}} style={gstyles.lowestPriceImage} resizeMode="contain"/>
 					          			</View>
 					          		 </View>
 						            <View style={gstyles.lowestPriceRightBox}>
-							            <View style={gstyles.lowestPriceRightInner}>
-							            	<View style={gstyles.lowestPriceRightInnerBox}>
+							            
+
 								          				<Text style={gstyles.lowestPriceTitle}>{item.title}</Text>
 										          		<Text style={gstyles.lowestPriceSubTitle}>Qty {item.quantity} X {item.price1} SAR <Text style={[gstyles.fontSize18,gstyles.textRed]}>- {item.quantity*item.price1} SAR</Text></Text>
 										          			
-											</View>	
-											<View style={gstyles.lowestPriceLeftInnerBox}>
-													<Icon name="angle-right" size={40} color='#000' style={gstyles.marginTop40} />
-											</View>
-										</View>				               
+
+											               
 					          		</View>
-					        	</View>
+					        	</TouchableOpacity>
 					        	)
 							})
 							}   

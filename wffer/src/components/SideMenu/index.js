@@ -26,18 +26,21 @@ export class DrawerTitle extends React.Component{
         modalVisible: false,
         cities:[],
         isButtonDisabled:false,
-        isLoading:true
+        isLoading:true,
+        city:'',
       }
-      this.city ='';
+      // this.city ='';
       this.fetchValues();
       this.fetchCities();
       this.getCity();
+      // alert(this.city)
     }
    async getCity(){
       AsyncStorage.getItem('cityInformation');
       var cityValue = await AsyncStorage.getItem('cityInformation');
-      this.city=cityValue;
-      // alert(this.state.city)
+      // this.city=cityValue;
+      this.setState({city:cityValue});
+      
       if(cityValue == null){
         setTimeout( () => {
             this.setModalVisible(true);
@@ -130,7 +133,8 @@ export class DrawerTitle extends React.Component{
       // alert(city)
       AsyncStorage.setItem('cityInformation', city);
       var value = await AsyncStorage.getItem('cityInformation');
-      console.log(value)
+      console.log(value);
+      this.setState({city:value})
       this.setModalVisible(!this.state.modalVisible);
       this.props.navigation.push('Home');
   }
@@ -192,7 +196,7 @@ export class DrawerTitle extends React.Component{
   	      		<TouchableOpacity onPress={()=>{this.disable();this.props.navigation.push('CreateWishlist')}} style={gstyles.drawerView}><Image source={require('../../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Create New List</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('SpecialOffers')}}><Image source={require('../../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Special Offer</Text></TouchableOpacity>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('StoreLocator')}}><Image source={require('../../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Store Locator</Text></TouchableOpacity>
-        		  <TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.handleNavigation()}}><Icon name="location-arrow" style={gstyles.drawerImage} size={24} color="#febe2b"/><Text style={gstyles.drawertitleNormalText}>Select City</Text></TouchableOpacity>
+        		  <TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.handleNavigation()}}><Icon name="location-arrow" style={gstyles.drawerImage} size={24} color="#febe2b"/><Text style={gstyles.drawertitleNormalText}>{this.state.city == null ? 'Select City' : this.state.city } </Text></TouchableOpacity>
             </View>
 
         		<View>

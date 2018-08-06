@@ -168,6 +168,7 @@ export class ReportComponent extends Component {
 														                      dropdownStyle={gstyles.dropdownStyles}
 														                      defaultIndex={this.props.defaultIndex}
 														                      showsVerticalScrollIndicator={true}
+														                      animated={false}
 														                      defaultValue={this.state[item.name]=='' ? item.label : this.select_dropdown(this.state[item.name],item.multiOptions)}
 														                      options={Object.keys(item.multiOptions).map(key => item.multiOptions[key])}						         
 														                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,item.name)}}				

@@ -268,6 +268,7 @@ export  class PersonalInfoComponent extends Component {
 									                      style={gstyles.dropdownMainStyles}						                      
 									                      dropdownTextStyle={gstyles.dropdownTextStyle}
 									                      textStyle={gstyles.textStyle}
+									                      animated={false}
 									                      dropdownStyle={gstyles.dropdownStyles}
 									                      defaultIndex={this.props.defaultIndex}
 									                      showsVerticalScrollIndicator={true}

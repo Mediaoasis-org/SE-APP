@@ -125,19 +125,7 @@ export class Catalog extends Component {
   		{
   			return(
   				<View>
-  				<View style={gstyles.searchView}>
-                <Text style={gstyles.searchViewLeft}>
-                        <Icon name="search" size={24} color="#ccc" />
-                </Text>
-                <TextInput style={gstyles.searchViewRight}
-                    placeholder="Search Product"
-                    underlineColorAndroid="transparent"
-                    placeholderTextColor="rgb(158,145,140)"
-                    autoCorrect={true}
-                    value={this.state.search}
-                    onChangeText={this.handleSearchInput.bind(this)}
-                />
-          </View>
+  				
           {
                   this.state.noData ? <Text>No Data Found</Text> :  
   						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
@@ -186,6 +174,20 @@ export class Catalog extends Component {
 	
 }
 
+
+// <View style={gstyles.searchView}>
+//                 <Text style={gstyles.searchViewLeft}>
+//                         <Icon name="search" size={24} color="#ccc" />
+//                 </Text>
+//                 <TextInput style={gstyles.searchViewRight}
+//                     placeholder="Search Product"
+//                     underlineColorAndroid="transparent"
+//                     placeholderTextColor="rgb(158,145,140)"
+//                     autoCorrect={true}
+//                     value={this.state.search}
+//                     onChangeText={this.handleSearchInput.bind(this)}
+//                 />
+//           </View>
 // if(this.state.LoggedIn==false){
 // 	        return(
 // 	          <View style={gstyles.container}>
