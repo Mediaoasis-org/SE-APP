@@ -30,6 +30,7 @@ export class SpecialOffers extends Component {
          this.categories_func();
          this.fetchStore();
     	 this.getSpecialoffer(); 
+    	 
 
    }
    categories_func(){
@@ -304,7 +305,7 @@ export class SpecialOffers extends Component {
 						<View style={gstyles.specialOfferViewHome}>
 							<FlatList numColumns={2} data={this.state.renderData}
 				                renderItem={({item}) =>      
-				                    <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
+				                    <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
 				                    	<Text style={gstyles.discountShow}>{item.percentageOff} Off </Text>
 				                      <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
 				                          <View style={gstyles.flexDirectionColumn}>

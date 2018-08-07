@@ -141,7 +141,7 @@ export class CatalogItems extends PureComponent {
 							<TouchableOpacity onPress={() =>this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 								<Icon name="angle-left" size={30} color="#fff" />
 		                    </TouchableOpacity>
-		                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
+		                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.name}</Text>
 		                    <Text style={gstyles.headerRightButton}></Text>
 				</View>
 				
@@ -151,7 +151,7 @@ export class CatalogItems extends PureComponent {
 					<View>
 					<FlatList numColumns={2} removeClippedSubviews={true} data={this.state.fieldValues} 
 		                renderItem={({item}) =>      
-		                    <View style={{width: '50%',padding:3}}>
+		                    <View style={{width: '50%',padding:5}}>
 		                     
 		                      <TouchableOpacity style={{alignItems:'center'}} onPress={() =>this.handleImage(item.image)}>
 			                      <Image source={{uri : item.image}} style={{height: window.height/4,width: '100%',borderWidth:1,borderColor:'#333',borderRadius:5}} resizeMode="stretch"/>
@@ -176,7 +176,7 @@ export class CatalogItems extends PureComponent {
 							                onPress={() => {
 							                  this.setModalVisible(!this.state.modalVisible);
 							                }}>
-							               <Text style={{textAlign:'right',color:'#fff',fontSize:18}}>Close</Text>
+							               <Text style={{textAlign:'right',color:'#fff',fontSize:18,marginTop:10}}><Icon name="close" size={24} color="#fff" /></Text>
 							              </TouchableHighlight>
 						            
 							             <PhotoView

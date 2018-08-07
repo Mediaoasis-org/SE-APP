@@ -22,6 +22,15 @@ export class HomeComponent extends Component {
          city:'',
       
     	}
+      // NetInfo.getConnectionInfo().then((connectionInfo) => {
+      //     if (connectionInfo.type === 'none') {
+      //         alert("No internet connection")
+      //     } else {
+      //         // online
+      //        // do something
+
+      //     }
+      // });
       // this.isButtonDisabled=false;
     	this.getLoginValue();
 
@@ -40,10 +49,12 @@ export class HomeComponent extends Component {
         {
         	
         }
+
         this.categories_func()
         this.fetchStore();
         this.getSpecialoffer();
     }
+
     categories_func(){
    fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
               method:'GET'
@@ -148,7 +159,7 @@ export class HomeComponent extends Component {
   						  <View style={gstyles.specialOfferViewHome}>
                   <FlatList numColumns={2} data={this.state.specialOffers}
                             renderItem={({item}) =>      
-                                <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
+                                <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
                                   <Text style={gstyles.discountShow}>{item.percentageOff} Off </Text>
                                   <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
                                       <View style={gstyles.flexDirectionColumn}>

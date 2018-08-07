@@ -14,8 +14,10 @@ import {
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import { SearchComponent } from '../../components/Search';
+
 import {Constants} from '../../common';
+import ModalDropdown from 'react-native-modal-dropdown';
+
 // import { DrawerActions } from 'react-navigation';
 // import {FlatlistComponent} from '../../components/FlatlistComponent';
 const window= Dimensions.get('window');
@@ -32,6 +34,8 @@ export class Catalog extends Component {
     		isLoading:true,
     		city:'',
         renderData:[],
+        stores:[],
+        searchFields:[],
     	}
     	this.getStorageValues()
 	}
@@ -40,6 +44,8 @@ export class Catalog extends Component {
          const userData = await AsyncStorage.getItem('userData');
          const city = await AsyncStorage.getItem('cityInformation');
          this.setState({city:city});
+         this.fetchSearchFields()
+          this.fetchStore();
          this.fetchValues();
          // alert(userData.length);
           // if(userData!=null){
@@ -54,6 +60,66 @@ export class Catalog extends Component {
           //   this.setState({LoggedIn:false})
           // }         
    }
+   fetchSearchFields(){
+    
+    return fetch('https://wffer.com/se/api/rest/albums/search-form?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                // alert(JSON.stringify(responseJson.body));
+                 this.setState({
+                  searchFields:responseJson.body,
+                });
+              }
+              else
+              {
+                // 
+              }
+              this.setState({Message:responseJson.Message});
+              // console.log(this.state.searchFields);
+            })
+            
+            .catch((error) =>{
+              console.error(error);
+            });
+   }
+   fetchStore(){
+      var store_title ;
+      let temp = ["Select"];
+      let temp1 = [{value : "Select"}];
+     return fetch('https://wffer.com/se/api/rest/listings/get-stores?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+              method:'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if(responseJson.status_code=='200'){
+                // alert(JSON.stringify(responseJson.body));
+                store_title = responseJson.body;
+                
+                  store_title.map((item)=>{
+                    temp.push(item.title);
+                    temp1.push({value : item.title});
+                  })
+                 this.setState({
+                 stores1:temp1,
+                  stores:temp,
+                  isLoading:false,
+                });
+                 console.log(this.state.stores1)
+              }
+              else
+              {
+                // 0
+              }
+              this.setState({Message:responseJson.Message});
+            })
+            .catch((error) =>{
+              console.error(error);
+            });
+  }
+  
 
    fetchValues(){
       return fetch('https://wffer.com/se/api/rest/albums?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&city='+this.state.city,{
@@ -80,16 +146,17 @@ export class Catalog extends Component {
               console.error(error);
             });
   	}
-     handleSearchInput(e){
-      let text = e.toLowerCase()
-      this.setState({search : e})
+    handleSearchList(e){
+      let text = e;
+      // console.log(text)
+      // this.setState({search : e})
       let fullList = this.state.fieldValues;
 
       let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-        if(item.title.toLowerCase().match(text))
+        if(item.category_id == text)
           return item;
       })
-      if (!text || text === '') {
+      if (!text || text === '' || text == "0") {
         this.setState({
           renderData: fullList,
           noData:false,
@@ -97,7 +164,8 @@ export class Catalog extends Component {
       } else if (!filteredList.length) {
        // set no data flag to true so as to render flatlist conditionally
          this.setState({
-           noData: true
+           noData: true,
+           renderData:filteredList
          })
       }
       else if (Array.isArray(filteredList)) {
@@ -107,44 +175,46 @@ export class Catalog extends Component {
         })
       }
   }
-
+  onTagSelect(idx, data,options){ 
+        // console.log("======== on tag selected ==========="); 
+        // console.log(idx,data); 
+        Object.entries(options).map(([key, value]) => {
+                  // console.log(`${value}`);
+                  if(data == value){
+                    this.handleSearchList(key)
+                  }    
+        })  
+  };
   	catalogItems(){
   		if(this.state.totalItems == 0){
-  			
-  				
-	            	return(
+              	return(
 	            	<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
 			              <Text style={gstyles.ShoppingText}>No data found</Text>
 			              
 	            	</View>)
-	            
-	            
-	        
   		}
   		else
   		{
   			return(
   				<View>
-  				
           {
-                  this.state.noData ? <Text>No Data Found</Text> :  
+            this.state.noData ? <Text>No Data Found</Text> :  
   						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
   							
-							<FlatList data={this.state.renderData}
-				                renderItem={({item}) =>      
-				                    <View style={[gstyles.catalogView,{marginBottom:0}]}>
-				                     
-				                      <TouchableOpacity style={gstyles.alignItemsCenter} onPress={()=>{this.props.navigation.push('CatalogItems',{album_id:item.album_id})}}>
-					                      <Text style={gstyles.catalogPhotoCount}>{item.photo_count}</Text>
-					                      <Image source={{uri: item.image_profile}} style={gstyles.catalogPhoto}  />
-				                      </TouchableOpacity>
-				                      <View style={[gstyles.backgroundWhite,gstyles.padding10]}><Text style={gstyles.newToText}>{item.title}</Text></View> 
-				                    </View>                    
-				                    }
-				                keyExtractor={(item, index) => index.toString()}
-				              />
-						
-						</View>
+  							<FlatList data={this.state.renderData}
+  				                renderItem={({item}) =>      
+  				                    <View style={[gstyles.catalogView,{marginBottom:0}]}>
+  				                     
+  				                      <TouchableOpacity style={gstyles.alignItemsCenter} onPress={()=>{this.props.navigation.push('CatalogItems',{album_id:item.album_id,name:item.title})}}>
+  					                      <Text style={gstyles.catalogPhotoCount}>{item.photo_count}</Text>
+  					                      <Image source={{uri: item.image_profile}} style={gstyles.catalogPhoto}  />
+  				                      </TouchableOpacity>
+  				                      <View style={[gstyles.backgroundWhite,gstyles.padding10]}><Text style={gstyles.newToText}>{item.title}</Text></View> 
+  				                    </View>                    
+  				                    }
+  				                keyExtractor={(item, index) => index.toString()}
+  				              />
+						  </View>
           }
 				</View>
   			);
@@ -164,7 +234,30 @@ export class Catalog extends Component {
 				 { 
         			this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
 					<ScrollView>
-						
+          {
+            this.state.searchFields.map((item,index)=>{
+              if(item.name=='category_id'){
+                 return(
+                  <View key={index}>
+                      <ModalDropdown 
+                            style={gstyles.dropdownMainStyles}                                  
+                            dropdownTextStyle={gstyles.dropdownTextStyle}
+                            textStyle={gstyles.textStyle}
+                            dropdownStyle={gstyles.dropdownStyles}
+                            defaultIndex={this.props.defaultIndex}
+                            showsVerticalScrollIndicator={true}
+                            animated={false}
+                            defaultValue='Select Store'
+                            options={Object.keys(item.multiOptions).map(key => item.multiOptions[key])}                  
+                            onSelect={(key, data)=>{ this.onTagSelect(key, data,item.multiOptions)}}       
+                      />       
+                  </View>
+                 )
+             }
+            })
+          }
+
+						   
 						{this.catalogItems()}
 					</ScrollView>
 				}

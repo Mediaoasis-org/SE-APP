@@ -33,16 +33,24 @@ export class ProductDetails extends Component {
             city:'',
             Message:'',
             priceMessage:'',
+            
       
       }
+      this.best_price='';
+      this.best_price_store='';
       this.getStorageValue();
-      
+       if(this.props.navigation.state.params.best_price){
+		      	this.best_price = this.props.navigation.state.params.best_price;
+		      	this.best_price_store = this.props.navigation.state.params.best_title;
+      }
+      console.log(this.best_price,this.best_price_store)
     }
     async getStorageValue(){
     	const city = await AsyncStorage.getItem('cityInformation');
       	this.setState({city:city});
       	this.fetchValues();
-      this.priceComparision();
+      	this.priceComparision();
+
     }
     fetchValues(){
     	let product_id = this.props.navigation.state.params.product_id;
@@ -113,6 +121,7 @@ export class ProductDetails extends Component {
 	 }
 	render(){
 		// alert(this.state.priceValues.length)
+
 		return(
 				<View style={gstyles.flexContainer}>
 					<View style={gstyles.headerMenu}>
@@ -177,7 +186,15 @@ export class ProductDetails extends Component {
 											          			<View style={gstyles.paddingTop10}><Image source={{uri : item.image}} resizeMode="contain" style={gstyles.priceCompanyImage}/></View>
 											          		</View>
 												            <View style={gstyles.priceComparisonRight}>
-													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} SAR</Text></View>
+												            		{(this.best_price_store == item.wheretobuy_title) && (this.best_price != item.price) ? 
+												            			<View style={gstyles.priceTitleTextView}>
+													            			<Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',fontSize:16}]}>{item.price} SAR</Text>
+					                              							<Text style={gstyles.priceTitleText}>{this.best_price} SAR</Text>
+				                              							</View>
+												            		:
+												            			<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} SAR</Text></View>
+												            		
+													          		}
 													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.wheretobuy_title}</Text></View>
 													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.city}</Text></View>
 													               

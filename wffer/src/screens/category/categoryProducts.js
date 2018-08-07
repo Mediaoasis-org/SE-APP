@@ -319,7 +319,7 @@ export class Products extends Component {
 							this.state.renderData.map((item,index)=>{
 								return(
 									<View style={[gstyles.productsMain,{paddingLeft:10,paddingRight:10,paddingTop:10}]} key={index}>
-		                    		<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
+		                    		<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.best_deal_price,best_title:item.best_deal_title})}}>
 		                    			<View style={{width:'96%',flexDirection:'row',backgroundColor:'#fff',marginLeft:'2%',marginRight:'2%'}}>
 		                    				<TouchableOpacity style={{width:'30%',flexDirection:'column',paddingLeft:10}} onPress={()=>{this.onCheckBoxPress(item.listing_id)}}>
 					          						<Image source={{uri:item.image}} style={[{marginTop:'15%', marginBottom:'10%', width: '100%', height: window.height/6},this.state.selectedCheckboxId.map((items)=>{ if(items == item.listing_id){ return ({opacity:0.6})} })]} />
@@ -327,9 +327,9 @@ export class Products extends Component {
 					          				
 								            <View style={{width:'55%',flexDirection:'column',paddingLeft:10,paddingTop:10,paddingRight:10,paddingBottom:10}}>
 								            	<View style={gstyles.width100}>
-								          					<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
+								          					
 								          						<Text style={gstyles.productTitle}>{item.title}</Text>
-								          					</TouchableOpacity>
+								          					
 								       			</View>
 							       				<View>
 							          				{
