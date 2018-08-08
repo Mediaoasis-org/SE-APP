@@ -18,7 +18,7 @@ class OfflineNotice extends PureComponent {
 
   componentDidMount() {
     NetInfo.isConnected.addEventListener(
-        'change',
+        'connectionChange',
         this._handleConnectivityChange
     );
     NetInfo.isConnected.fetch().done(
@@ -27,7 +27,7 @@ class OfflineNotice extends PureComponent {
   }
   componentWillUnmount() {
     NetInfo.isConnected.removeEventListener(
-        'change',
+        'connectionChange',
         this._handleConnectivityChange
     );
   }

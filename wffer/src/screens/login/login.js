@@ -16,6 +16,8 @@ export class LoginComponent extends Component {
 			userData:[],
 			LoggedIn:null,
 			isLoading:true,
+			email_error:'',
+			password_error:''
 		}
 		// alert(JSON.stringify(this.props.navigation))
 		
@@ -90,7 +92,7 @@ export class LoginComponent extends Component {
 		            }, async function(){
 			        await AsyncStorage.setItem('userLoginAuthentication', responseJson.body.oauth_token);
 			        await AsyncStorage.setItem('userData',JSON.stringify(responseJson.body));
-		              this.props.navigation.navigate('Home');
+		              this.props.navigation.push('Home');
 		            });
 		          }
 		          else
@@ -100,7 +102,13 @@ export class LoginComponent extends Component {
 		            })
 		            Object.entries(this.state.Message).map(([key, value]) => {
 		            	// console.log(`${value}`);
-		            	alert(value)
+		            	if(key == 'email'){
+		            		this.setState({email_error:value});
+		            	}
+		            	if(key == 'password'){
+		            		this.setState({password_error:value});
+		            	}
+		            	// alert(value)
 		            })
 		          
 		          }
@@ -126,7 +134,8 @@ export class LoginComponent extends Component {
 			if(item.type=='Password'){
 				return (
 				<View>
-						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />			
+						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
+								
 				</View>
 				);
 			}

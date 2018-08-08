@@ -332,7 +332,7 @@ export class ShoppingListComponent extends Component {
                     <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
                       <Text><Icon name="bars" size={24} color="#fff" /></Text>
                     </TouchableOpacity>
-                    <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
+                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
               </View>
               <Text style={gstyles.signInButton}>To get Lists ,Please Sign In</Text>
@@ -351,7 +351,7 @@ export class ShoppingListComponent extends Component {
   								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
   									<Text><Icon name="bars" size={24} color="#fff" /></Text>
                   </TouchableOpacity>
-                  <Text style={gstyles.headerProfileLabel}>Shopping List</Text>
+                  <Text style={gstyles.headerProfileLabel}>Wishlist</Text>
                   <TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
   					</View>
             { 

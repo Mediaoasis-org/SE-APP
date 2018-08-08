@@ -190,12 +190,14 @@ export class ProductDetails extends Component {
 												            			<View style={gstyles.priceTitleTextView}>
 													            			<Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',fontSize:16}]}>{item.price} SAR</Text>
 					                              							<Text style={gstyles.priceTitleText}>{this.best_price} SAR</Text>
+					                              							<Text style={[gstyles.priceSubtitleText,{marginTop:5}]}>{item.end_time}</Text>
 				                              							</View>
 												            		:
 												            			<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} SAR</Text></View>
 												            		
 													          		}
 													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.wheretobuy_title}</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.country}</Text></View>
 													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.city}</Text></View>
 													               
 											          		</View>

@@ -19,6 +19,7 @@ export class SpecialOffers extends Component {
     		stores:[],
     		isLoading:true,
     		showLoadMore:false,
+    		Message:''
     	}
     	this.page=1;
     	this.getStorageValues()
@@ -97,23 +98,32 @@ export class SpecialOffers extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
               if(responseJson.status_code=='200'){
+
                 // alert(JSON.stringify(responseJson.body));
-                 this.setState({
-                  specialOffers:responseJson.body.response,
-                  isLoading:false,
-                });
-                 this.setState({renderData : this.state.specialOffers})
-                 let count = this.state.specialOffers.length;
+                if(responseJson.body.response){
+                	this.setState({
+		                  specialOffers:responseJson.body.response,
+		                  isLoading:false,
+		                });
+		                 this.setState({renderData : this.state.specialOffers})
+		                 let count = this.state.specialOffers.length;
 			      		 // alert(count);
 			      		 if(count >= 20){
 			      		 	this.setState({showLoadMore:true})
 			      		 }
+                }
+                else{
+                	this.setState({Message : "No Data Found"});
+                	this.setState({isLoading:false})
+                }
+
+                 
               }
               else
               {
-                // 
+               this.setState({Message:responseJson.Message});
               }
-              this.setState({Message:responseJson.Message});
+              
             })
             .catch((error) =>{
               console.error(error);
@@ -164,35 +174,14 @@ export class SpecialOffers extends Component {
 				      });
 				  })
 	 }
-  handleSearchInput(e){
-	    let text = e.toLowerCase()
-	    this.setState({search : e})
-	    let fullList = this.state.specialOffers;
-
-	    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
-	      if(item.title.toLowerCase().match(text))
-	        return item;
-	    })
-	    if (!text || text === '') {
-	      this.setState({
-	        renderData: fullList,
-	        noData:false,
-	      })
-	    } else if (!filteredList.length) {
-	     // set no data flag to true so as to render flatlist conditionally
-	       this.setState({
-	         noData: true
-	       })
-	    }
-	    else if (Array.isArray(filteredList)) {
-	      this.setState({
-	        noData: false,
-	        renderData: filteredList
-	      })
-	    }
-  }
-
-  handleSearchList(e){
+ 
+onTagSelect(idx, data,name){ 
+	      // console.log("======== on tag selected ==========="); 
+	      // console.log(idx,data,name); 
+	      this.handleSearchList(data)
+	      // this.handleInput(idx,data,name)
+	};
+ handleSearchList(e){
 	    let text = e.toLowerCase()
 	    console.log(text)
 	    // this.setState({search : e})
@@ -203,6 +192,34 @@ export class SpecialOffers extends Component {
 	        return item;
 	    })
 	    if (!text || text === '' || text == "select") {
+	      this.setState({
+	        renderData: fullList,
+	        noData:false,
+	      })
+	    } else if (!filteredList.length) {
+	     // set no data flag to true so as to render flatlist conditionally
+	       this.setState({
+	         noData: true,
+	         renderData:filteredList
+	       })
+	    }
+	    else if (Array.isArray(filteredList)) {
+	      this.setState({
+	        noData: false,
+	        renderData: filteredList
+	      })
+	    }
+  }
+   handleSearchInput(e){
+	    let text = e.toLowerCase()
+	    this.setState({search : e})
+	    let fullList = this.state.specialOffers;
+
+	    let filteredList = fullList.filter((item) => { // search from a full list, and not from a previous search results list
+	      if(item.title.toLowerCase().match(text))
+	        return item;
+	    })
+	    if (!text || text === '') {
 	      this.setState({
 	        renderData: fullList,
 	        noData:false,
@@ -233,12 +250,7 @@ export class SpecialOffers extends Component {
     //  	console.log(obj)
     //  	// console.log(this.state[state]);
     // }
-	onTagSelect(idx, data,name){ 
-	      // console.log("======== on tag selected ==========="); 
-	      // console.log(idx,data,name); 
-	      this.handleSearchList(data)
-	      // this.handleInput(idx,data,name)
-	};
+	
 
 	// select_dropdown(value,options){
 	//  	let data;
@@ -273,6 +285,7 @@ export class SpecialOffers extends Component {
 			                    <Text style={gstyles.headerProfileLabel}>{Constants.specialOffer}</Text>
 			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
 					</View>
+					
 					{ 
                         this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
 						<ScrollView>					
@@ -284,11 +297,12 @@ export class SpecialOffers extends Component {
 						                placeholder="Search Product"
 						                underlineColorAndroid="transparent"
 						                placeholderTextColor="rgb(158,145,140)"
-						                autoCorrect={true}
+						               
 						                value={this.state.search}
 						                onChangeText={this.handleSearchInput.bind(this)}
 						            />
 						        </View>
+
 						    <ModalDropdown 
 			                      style={gstyles.dropdownMainStyles}						                      
 			                      dropdownTextStyle={gstyles.dropdownTextStyle}
@@ -298,10 +312,12 @@ export class SpecialOffers extends Component {
 			                      defaultIndex={this.props.defaultIndex}
 			                      showsVerticalScrollIndicator={true}
 			                      defaultValue='Select Store'
-			                      options={this.state.stores}						         
+			                      options={this.state.stores}		
+			                      keyboardShouldPersistTaps='always'				         
 			                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,data)}}				
-	                		/>		
-
+	                		/>
+	                				
+	                		{(this.state.Message!= '') ?  <View><Text>{this.state.Message}</Text></View> : null }
 						<View style={gstyles.specialOfferViewHome}>
 							<FlatList numColumns={2} data={this.state.renderData}
 				                renderItem={({item}) =>      

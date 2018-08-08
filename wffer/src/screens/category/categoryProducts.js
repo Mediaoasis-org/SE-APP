@@ -322,7 +322,9 @@ export class Products extends Component {
 		                    		<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.best_deal_price,best_title:item.best_deal_title})}}>
 		                    			<View style={{width:'96%',flexDirection:'row',backgroundColor:'#fff',marginLeft:'2%',marginRight:'2%'}}>
 		                    				<TouchableOpacity style={{width:'30%',flexDirection:'column',paddingLeft:10}} onPress={()=>{this.onCheckBoxPress(item.listing_id)}}>
+		                    				{this.state.selectedCheckboxId.map((items,index)=>{ if(items == item.listing_id){ return(<Icon size={24} name="check" color="green" key={index} style={{width:24,height:24,zIndex:1000,position:'absolute',top:10,left:10,opacity:1}}/>)} })}
 					          						<Image source={{uri:item.image}} style={[{marginTop:'15%', marginBottom:'10%', width: '100%', height: window.height/6},this.state.selectedCheckboxId.map((items)=>{ if(items == item.listing_id){ return ({opacity:0.6})} })]} />
+					          						
 					          				</TouchableOpacity>
 					          				
 								            <View style={{width:'55%',flexDirection:'column',paddingLeft:10,paddingTop:10,paddingRight:10,paddingBottom:10}}>

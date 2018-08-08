@@ -267,7 +267,7 @@ export const gstyles = StyleSheet.create({
     SpecialOfferHeadingsHome:{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#fff'},
     specialOfferViewHome:{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'},
     specialOfferView:{width:'46%',paddingLeft:15,paddingRight:15,paddingBottom:15,margin:'2%',backgroundColor:'#fff'},
-    discountShow:{width:'60%',marginBottom:5,marginLeft:-20,backgroundColor:'#c30000',padding:5,color:'#fff',fontSize:14},
+    discountShow:{width:'60%',marginBottom:5,marginLeft:-15,backgroundColor:'#c30000',padding:5,color:'#fff',fontSize:14},
     specialOfferTitle:{width: '90%',paddingTop:10},
     specialOfferCategory:{color:'gray',fontSize:14,fontWeight:'bold'},
     specialOfferCompany:{color:'#c40b00',fontSize:14},

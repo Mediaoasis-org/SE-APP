@@ -251,8 +251,8 @@ export class WishlistComponent extends Component {
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
-									<Icon name="bars" size={24} color="#fff" />
+								<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
+									<Icon name="angle-left" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                   	<Text style={gstyles.headerProfileLabel}>{this.state.data.title}</Text>
 			                    <TouchableOpacity onPress={() => this.handleNavigation()} style={gstyles.headerRightButton}>
@@ -266,12 +266,7 @@ export class WishlistComponent extends Component {
 							this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#333' size="large" style={{height:100,width:'30%'}}/></View> : 
 						<View>
 						<SearchComponent/>
-						<View style={gstyles.specialOfferViewHome}> 
-								<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.wishlistBackButton}>
-									<Icon name="angle-left" size={30} color="#000" />
-			                    </TouchableOpacity>
-			                    
-			            </View>
+
 						
 						<View style={gstyles.specialOfferViewHome}>
 
@@ -368,7 +363,12 @@ export class WishlistComponent extends Component {
 		}
 	}
 }
-
+						// <View style={gstyles.specialOfferViewHome}> 
+						// 		<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.wishlistBackButton}>
+						// 			<Icon name="angle-left" size={30} color="#000" />
+			   //                  </TouchableOpacity>
+			                    
+			   //          </View>
 // <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleCreateWishlist()}><Text style={gstyles.modalMenuText}>Create New Wishlist</Text></TouchableOpacity>
 // <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleReport()}><Text style={gstyles.modalMenuText}>Report</Text></TouchableOpacity>
 // <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleTellFriend()}><Text style={gstyles.modalMenuText}>Tell A Friend</Text></TouchableOpacity>

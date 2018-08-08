@@ -137,7 +137,7 @@ export class SignupComponent extends Component {
 		            this.setState({
 		              dataSource1: responseJson.body,
 		            }, async function(){
-		              this.props.navigation.navigate('Login');
+		              this.props.navigation.push('Login');
 		            });
 		          }
 		          else
