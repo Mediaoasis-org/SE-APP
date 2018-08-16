@@ -10,6 +10,7 @@ FlatList,
 ScrollView,
 Dimensions,
 ActivityIndicator,
+AsyncStorage
 } from 'react-native';
 // import Carousel from 'react-native-snap-carousel';
 import {gstyles} from '../../GlobalStyles';
@@ -39,12 +40,23 @@ export class Products extends Component {
             quantities:[],
             fieldValues:[],
             renderData:[],
+            languagesData:[],
+          	language : '',
             // page:1,
       }
       this.page=1;
+      this._getStorageValue();
       this.fetchValues();
       this.categories_func();
       
+    }
+    async _getStorageValue(){
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
     }
     categories_func(){
 	 fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
@@ -175,7 +187,7 @@ export class Products extends Component {
 	}
 	 addToCart(){
 	 	if(this.state.selectedCheckboxId.length<=0){
-	 		alert("Select Atleast One Product");
+	 		alert(this.state.languagesData.PRODUCT_LIST_AlertAddToCartText);
 	 	}
 	 	else
 	 	{
@@ -322,7 +334,7 @@ export class Products extends Component {
 		                    		<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.best_deal_price,best_title:item.best_deal_title})}}>
 		                    			<View style={{width:'96%',flexDirection:'row',backgroundColor:'#fff',marginLeft:'2%',marginRight:'2%'}}>
 		                    				<TouchableOpacity style={{width:'30%',flexDirection:'column',paddingLeft:10}} onPress={()=>{this.onCheckBoxPress(item.listing_id)}}>
-		                    				{this.state.selectedCheckboxId.map((items,index)=>{ if(items == item.listing_id){ return(<Icon size={24} name="check" color="green" key={index} style={{width:24,height:24,zIndex:1000,position:'absolute',top:10,left:10,opacity:1}}/>)} })}
+		                    				{this.state.selectedCheckboxId.map((items,index)=>{ if(items == item.listing_id){ return(<Icon name="check" color="green" size={24} key={index} style={{width:24,height:24,zIndex:1000,position:'absolute',top:10,left:10,opacity:1}}/>)} })}
 					          						<Image source={{uri:item.image}} style={[{marginTop:'15%', marginBottom:'10%', width: '100%', height: window.height/6},this.state.selectedCheckboxId.map((items)=>{ if(items == item.listing_id){ return ({opacity:0.6})} })]} />
 					          						
 					          				</TouchableOpacity>
@@ -346,7 +358,7 @@ export class Products extends Component {
 								          		</View>
 									          	<Text style={{fontSize:16,color:'#727272',paddingTop:7}}>{item.best_deal_title}</Text>
 								          		<View style={gstyles.bestDealView,{flexDirection:'row',paddingTop:7}}>
-					          						<Text style={{fontSize:16}}>Best Deal</Text>
+					          						<Text style={{fontSize:16}}>{this.state.languagesData.PRODUCT_LIST_BestDealText}</Text>
 									          		<Text style={{fontSize:16,color:'#ff0000'}}> : {item.best_deal_price} {item.currency} </Text>
 									          	</View>												          	 	
 								          	</View>
@@ -376,7 +388,7 @@ export class Products extends Component {
 						}   
 			           </View>
 						{
-							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableOpacity> : null
+							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>{this.state.languagesData.CATALOGITEMS_LoadMoreText}</Text></TouchableOpacity> : null
 						}
 						{				
 							this.state.fetching_Status==true ? <View style={gstyles.loadMoreActivity}><ActivityIndicator color='#333' size="large"/></View>:<View />

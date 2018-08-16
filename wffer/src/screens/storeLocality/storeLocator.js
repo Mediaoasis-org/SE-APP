@@ -11,11 +11,12 @@ import {
   Platform
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
-import MapView, { ProviderPropType, Marker,Callout, AnimatedRegion } from 'react-native-maps';
+import MapView, { ProviderPropType, Marker, Callout, AnimatedRegion, Polyline } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import CustomCallout from './CustomCallout';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { Dropdown } from 'react-native-material-dropdown';
+import MapViewDirections from 'react-native-maps-directions';
 // import { DrawerActions } from 'react-navigation';
 const window = Dimensions.get('window');
 
@@ -42,7 +43,10 @@ export  class StoreLocatorComponent extends Component {
 			city:'',
 			stores:[],
 			stores1:[],
-			renderData:[]
+			renderData:[],
+			coords:[],
+			languagesData:[],
+          	language : '',
 
 		}
 		
@@ -50,6 +54,23 @@ export  class StoreLocatorComponent extends Component {
 	}
 
 	async getStorageValues(){
+		
+			Linking.canOpenURL('app-settings:').then(supported => {
+			  if (!supported) {
+			    console.log('Can\'t handle settings url');
+			  } else {
+			    return Linking.openURL('app-settings:');
+			  }
+			}).catch(err => console.error('An error occurred', err));
+		 
+		
+
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
          const userData = await AsyncStorage.getItem('userData');
          const city = await AsyncStorage.getItem('cityInformation');
          this.setState({city:city});
@@ -151,8 +172,10 @@ export  class StoreLocatorComponent extends Component {
 
     		);
 	  		 const scheme =Platform.select({ ios: 'maps://app?', android: 'geo:0,0?q=' });
-	  		 const latLng = '24.7136,39.1925';
+	  		 // const latLng = '24.7136,39.1925';
+	  		 const latLng = this.state.latitude + ',' + this.state.longitude;
 	  		 var getlatlng = getlat+','+getlong;
+	  		 // var getlatlng = '26.294305,73.014146'
 	  		 const url = Platform.select({
 	  		 	ios:scheme+'saddr='+latLng+'&daddr='+getlatlng,
 	  		 	android:scheme+getlatlng
@@ -206,14 +229,16 @@ export  class StoreLocatorComponent extends Component {
 	      // this.handleInput(idx,data,name)
 	};
 	render(){
-		
+		const origin = {latitude: this.state.latitude, longitude:this.state.longitude};
+		const destination = {latitude: 37.771707, longitude: -122.4053769};
+		const GOOGLE_MAPS_APIKEY = 'AIzaSyCfcWskrfRL7X-VTO2MLYZG22ndYNWShyg';
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Store Locator</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.STORELOCATOR_HeaderTitle}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					
@@ -235,8 +260,8 @@ export  class StoreLocatorComponent extends Component {
 	                		
 							<MapView
 							    initialRegion={{
-							      latitude: 24.7136,
-							      longitude: 46.6753,
+							      latitude: this.state.languagesData.STORELOCATOR_initialRegionLat,
+							      longitude: this.state.languagesData.STORELOCATOR_initialRegionLong,
 							      latitudeDelta:LATITUDE_DELTA ,
 							      longitudeDelta:LONGITUDE_DELTA,
 							    }}
@@ -244,8 +269,9 @@ export  class StoreLocatorComponent extends Component {
 							>
 								{
 									this.state.renderData.map((marker,index) => (
+								    <View key={index}>
 								    <Marker
-								      key={index}
+								     
 								      coordinate={{latitude:marker.latitude,longitude:marker.longitude}}
 								      
 								  	>
@@ -256,13 +282,16 @@ export  class StoreLocatorComponent extends Component {
 										  			<View  style={{flex:1}}>
 											  			<Text style={{color:'#000',fontSize:20,fontWeight:'bold',textAlign:'center',marginBottom:3}}>{marker.title}</Text>
 											     		<Text style={{color:'#000',fontSize:18,textAlign:'center',marginBottom:3}}>{marker.branch}</Text>
-											     		<TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.getLocation(marker.latitude,marker.longitude)}><Text style={{color:'#fff',paddingTop:5,paddingBottom:5,paddingLeft:15,paddingRight:15,backgroundColor:'#007a87',fontSize:18,margin:5}}>Directions</Text></TouchableOpacity>
+											     		<TouchableOpacity style={{alignItems:'center'}} onPress={()=>this.getLocation(marker.latitude,marker.longitude)}><Text style={{color:'#fff',paddingTop:5,paddingBottom:5,paddingLeft:15,paddingRight:15,backgroundColor:'#007a87',fontSize:18,margin:5}}>{this.state.languagesData.STORELOCATOR_DirectionsText}</Text></TouchableOpacity>
 										     		</View>
 										  		</View>
 									  		</View>
 								  		</MapView.Callout>
 								  		
+
 								  	</Marker>
+								  	
+									</View>
 							 	))}
 							 	
 							</MapView>
@@ -275,6 +304,12 @@ export  class StoreLocatorComponent extends Component {
 	}
 }
 
+
+// <MapViewDirections
+// 										    origin={{latitude: 24.7136, longitude:46.6753}}
+// 										    destination={{latitude: marker.latitude, longitude: marker.longitude}}
+// 										    apikey={GOOGLE_MAPS_APIKEY}
+// 										  />
 // <Dropdown
 // 						        label='Select Store'
 // 						        data={this.state.stores1}

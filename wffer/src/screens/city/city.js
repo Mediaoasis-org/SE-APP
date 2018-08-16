@@ -18,11 +18,19 @@ export class CityScreen extends Component {
     	this.state = {
             isLoading:true,
             cities:[],
+            languagesData:[],
+            language : '',
       }
       this.getStorageValue();
       this.fetchCities();
     }
     async getStorageValue(){
+      var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
     	const city = await AsyncStorage.getItem('cityInformation');
       	this.setState({city:city});
     }
@@ -69,13 +77,13 @@ export class CityScreen extends Component {
 								<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={30} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Select City</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.CITY_HeaderText}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{
                               this.state.isLoading==true ?  <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :  	
 					<ScrollView>							
-							<View style={[gstyles.profileHeadingView,gstyles.marginBottom10,gstyles.marginTop10]}><Text style={gstyles.profileHeadingText}>Choose City</Text></View>
+							<View style={[gstyles.profileHeadingView,gstyles.marginBottom10,gstyles.marginTop10]}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.CITY_TitleText}</Text></View>
 		                 
 		                      {
 		                        this.state.cities.map((item,index)=>{

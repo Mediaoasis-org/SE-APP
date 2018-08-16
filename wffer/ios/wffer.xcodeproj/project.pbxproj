@@ -1403,8 +1403,8 @@
 			baseConfigurationReference = CE90065C872FDCA44F13BF5A /* Pods-wffer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: MEDIA OASIS";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: MEDIA OASIS";
+				CODE_SIGN_IDENTITY = "iPhone Developer: deepak bhati (Q796PUPD82)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: deepak bhati (Q796PUPD82)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1424,8 +1424,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mediaoasis.apps.Wffer;
 				PRODUCT_NAME = wffer;
-				PROVISIONING_PROFILE = "3636b10a-ce4a-47ca-94eb-a95c11ed052b";
-				PROVISIONING_PROFILE_SPECIFIER = wfferRN;
+				PROVISIONING_PROFILE = "2d49391b-a1a7-4370-a372-e461ad3e587c";
+				PROVISIONING_PROFILE_SPECIFIER = Wffer;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1435,8 +1435,8 @@
 			baseConfigurationReference = 75099504BDEDDF73BA45BC0A /* Pods-wffer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: MEDIA OASIS";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: MEDIA OASIS";
+				CODE_SIGN_IDENTITY = "iPhone Developer: deepak bhati (Q796PUPD82)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: deepak bhati (Q796PUPD82)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P4X3LYJKLQ;
@@ -1455,8 +1455,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mediaoasis.apps.Wffer;
 				PRODUCT_NAME = wffer;
-				PROVISIONING_PROFILE = "3636b10a-ce4a-47ca-94eb-a95c11ed052b";
-				PROVISIONING_PROFILE_SPECIFIER = wfferRN;
+				PROVISIONING_PROFILE = "2d49391b-a1a7-4370-a372-e461ad3e587c";
+				PROVISIONING_PROFILE_SPECIFIER = Wffer;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

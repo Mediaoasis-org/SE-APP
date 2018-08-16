@@ -1,12 +1,13 @@
 import React, { Component,PureComponent } from 'react';
 import { withNavigation } from 'react-navigation';
-import { Text,View,Dimensions,TouchableOpacity,TouchableHighlight,Image,FlatList,ScrollView,Modal,ActivityIndicator} from 'react-native';
+import { Text,View,Dimensions,TouchableOpacity,TouchableHighlight,Image,FlatList,ScrollView,Modal,ActivityIndicator,StyleSheet,AsyncStorage} from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {Constants} from '../../common';
 import Carousel from 'react-native-snap-carousel';
 import Gallery,{ ImageGallery } from 'react-native-image-gallery';
 import PhotoView from 'react-native-photo-view';
+import ImageCarousel from 'react-native-image-carousel';
 // import {FlatlistComponent} from '../../components/FlatlistComponent';
 const window= Dimensions.get('window');
 
@@ -35,14 +36,25 @@ export class CatalogItems extends PureComponent {
     		fetching_Status: false,
     		images_array:[],
     		ModalImage:'',
+    		languagesData:[],
+          	language : '',
     		
     	}
     	this.page=1;
+    	this._getStorageValue()
     	this.fetchValues()
 	}
 	// state={
 	// 	modalVisible: false,
 	// }
+	async _getStorageValue(){
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
+    }
 	setModalVisible(visible,image) {
 		// alert(visible)
 	    this.setState({modalVisible: visible,ModalImage: image}); 
@@ -90,7 +102,9 @@ export class CatalogItems extends PureComponent {
               console.error(error);
             });
   	}
-
+  	captureImageCarousel = (imageCarousel: React$Element<*>) => {
+	    this.imageCarousel = imageCarousel;
+	  };
   	showLoadMore(){
   		this.page = this.page + 1;
 	 	this.setState({ fetching_Status: true,showLoadMore:false}, ()=>{
@@ -132,7 +146,13 @@ export class CatalogItems extends PureComponent {
     	this.setModalVisible(true,image);
     	// alert(this.state.modalVisible)
     }
-
+    renderImage = (index) => (
+	       <Image
+	      style={StyleSheet.absoluteFill}
+	      resizeMode="contain"
+	      source={{uri: this.state.fieldValues[index].image}}
+	    />
+	  );
 	render(){
 		
 		return(
@@ -141,7 +161,7 @@ export class CatalogItems extends PureComponent {
 							<TouchableOpacity onPress={() =>this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 								<Icon name="angle-left" size={30} color="#fff" />
 		                    </TouchableOpacity>
-		                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.name}</Text>
+		                    <Text style={[gstyles.headerProfileLabel,{letterSpacing:0}]}>{this.props.navigation.state.params.name}</Text>
 		                    <Text style={gstyles.headerRightButton}></Text>
 				</View>
 				
@@ -171,26 +191,40 @@ export class CatalogItems extends PureComponent {
 							          onRequestClose={() => {
 							            alert('Modal has been closed.');
 							          }}>
-							          <View style={{marginBottom:10,backgroundColor:'#fff',width:window.width,height:window.height}}>
-								           <TouchableHighlight style={{backgroundColor:'#febe2b', padding:20}}
-							                onPress={() => {
-							                  this.setModalVisible(!this.state.modalVisible);
-							                }}>
-							               <Text style={{textAlign:'right',color:'#fff',fontSize:18,marginTop:10}}><Icon name="close" size={24} color="#fff" /></Text>
-							              </TouchableHighlight>
-						            
-							             <PhotoView
-	  									  source={{uri: this.state.ModalImage}}
-	  									  
-										  minimumZoomScale={1}
-										  maximumZoomScale={3}
-										  androidScaleType="center"
-										  onLoad={() => console.log("Image loaded!")}
-										  style={{width: '96%', height: window.height,margin:'2%'}} />
-							          </View>
+							           <View style={{marginBottom:10,backgroundColor:'#fff',width:window.width,height:window.height}}>
+                                           <TouchableHighlight style={{backgroundColor:'#febe2b', padding:20}}
+                                            onPress={() => {
+                                              this.setModalVisible(!this.state.modalVisible);
+                                            }}>
+                                           <Text style={{textAlign:'right',color:'#fff',fontSize:18}}><Icon size={24} color="#fff" name="close"/></Text>
+                                          </TouchableHighlight>
+                                                {
+                                                  this.state.fieldValues.map((item,index)=>{
+
+                                                    return(
+                                                     
+                                                       <ImageCarousel key={index}
+                                                            ref={this.captureImageCarousel}
+                                                            renderContent={this.renderImage}
+                                                          >
+                                                            {this.state.fieldValues.map((url) => (
+                                                              <Image
+                                                                style={styles.image}
+                                                                key={url.image}
+                                                                source={{uri: url.image}}
+                                                                resizeMode="contain"
+                                                              />
+                                                            ))}
+                                                          </ImageCarousel>
+                                                      
+                                                    )
+                                                  })
+                                                
+                                                }                                               
+                                      </View>
 							        </Modal>
 					{
-						(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableOpacity> : null
+						(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>{this.state.languagesData.CATALOGITEMS_LoadMoreText}</Text></TouchableOpacity> : null
 					}
 					{				
 						this.state.fetching_Status==true ? <View style={gstyles.loadMoreActivity}><ActivityIndicator color='#333' size="large"/></View>:<View />
@@ -202,6 +236,39 @@ export class CatalogItems extends PureComponent {
 	}
 }
 
+const styles = StyleSheet.create({
+  
+  image: {
+    marginRight: 2,
+    height: window.height,
+    width:window.width
+  },
+});
+// <Modal
+// 							          animationType="slide"
+// 							          transparent={false}
+// 							          visible={this.state.modalVisible}
+// 							          onRequestClose={() => {
+// 							            alert('Modal has been closed.');
+// 							          }}>
+// 							          <View style={{marginBottom:10,backgroundColor:'#fff',width:window.width,height:window.height}}>
+// 								           <TouchableHighlight style={{backgroundColor:'#febe2b', padding:20}}
+// 							                onPress={() => {
+// 							                  this.setModalVisible(!this.state.modalVisible);
+// 							                }}>
+// 							               <Text style={{textAlign:'right',color:'#fff',fontSize:18,marginTop:10}}><Icon name="close" size={24} color="#fff" /></Text>
+// 							              </TouchableHighlight>
+						            
+// 							             <PhotoView
+// 	  									  source={{uri: this.state.ModalImage}}
+	  									  
+// 										  minimumZoomScale={1}
+// 										  maximumZoomScale={3}
+// 										  androidScaleType="center"
+// 										  onLoad={() => console.log("Image loaded!")}
+// 										  style={{width: '96%', height: window.height,margin:'2%'}} />
+// 							          </View>
+// 							        </Modal>
  // <ScrollView maximumZoomScale={2} minimumZoomScale={1} zoomScale={2}>
 	// 					         			<Image source={{uri : this.state.ModalImage}} resizeMethod="auto" style={{borderColor:'#000',borderWidth:2,width:'100%',height:window.height}} resizeMode="contain"/>
 	// 					             </ScrollView>

@@ -167,13 +167,14 @@ const stack = createStackNavigator({
     screen:Catalog,
   },
   CatalogItems:{
-    screen:CatalogItems
+    screen:CatalogItems,
   },
   Products:{
     screen:Products
   },
   ProductDetails:{
-    screen:ProductDetails
+    screen:ProductDetails,
+
   },
   SpecialOffers:{
     screen:SpecialOffers
@@ -246,7 +247,8 @@ const DrawerStack = createDrawerNavigator({
   // drawerCloseRoute: 'DrawerClose',
   // drawerToggleRoute: 'DrawerToggle',
   // drawerPosition:'right',
-  gesturesEnabled: false,
+   // drawerLockMode: 'locked-closed',
+  gesturesEnabled: true,
   contentComponent:({navigation}) => <DrawerTitle navigation={navigation}/>
 })
 

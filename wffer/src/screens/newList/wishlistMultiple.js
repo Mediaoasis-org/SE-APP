@@ -28,7 +28,9 @@ export class MultipleWishlistComponent extends Component {
 			data:[],
 			oauthToken:'',
 			oauthSecret:'',
-			LoggedIn:null
+			LoggedIn:null,
+			languagesData:[],
+          	language : '',
 		}
 		this._getStorageValue();
 		// alert(JSON.stringify(this.props.navigation.state.params.quantities));
@@ -38,6 +40,12 @@ export class MultipleWishlistComponent extends Component {
 	async _getStorageValue(){
 		// alert("wishlist multiple")
 		// console.log(await AsyncStorage.getItem('userData'))
+			var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
 		 var userData = await AsyncStorage.getItem('userData')
 		 // alert(userData);
 		 //  alert(this.state.LoggedIn);
@@ -150,10 +158,10 @@ export class MultipleWishlistComponent extends Component {
                     <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
                       <Text><Icon name="bars" size={24} color="#fff" /></Text>
                     </TouchableOpacity>
-                    <Text style={gstyles.headerProfileLabel}>WishList</Text>
+                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.MULTIPLEWISHLIST_HeaderText}</Text>
                     <Text style={gstyles.headerRightButton}></Text>
               </View>
-              <Text style={gstyles.signInButton}>To Add Products to Wishlist ,Please Sign In</Text>
+              <Text style={gstyles.signInButton}>{this.state.languagesData.MULTIPLEWISHLIST_SIGNIN_DefaultText}</Text>
               <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
                   <Text style={gstyles.createAccountText}>Sign In</Text>
               </TouchableOpacity>
@@ -168,13 +176,13 @@ export class MultipleWishlistComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}></Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.MULTIPLEWISHLIST_HeaderText1}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{ 
                               this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View>  :
                               <ScrollView>
-									<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Add to Shopping List</Text></View>
+									<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.MULTIPLEWISHLIST_TitleText}</Text></View>
 								 	
 						          		
 						          			{
@@ -191,9 +199,9 @@ export class MultipleWishlistComponent extends Component {
 						          					}
 						          				})
 						          			}
-						          		<TouchableOpacity onPress={()=>this.SaveWishlist()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
+						          		<TouchableOpacity onPress={()=>this.SaveWishlist()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.MULTIPLEWISHLIST_SaveButtonText}</Text></TouchableOpacity>
 						          		<View style={gstyles.newToView}><Text style={gstyles.newToText}>OR</Text></View>
-                   						<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.createAccountView}><Text style={gstyles.createAccountText}>Cancel</Text></TouchableOpacity>
+                   						<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.createAccountView}><Text style={gstyles.createAccountText}>{this.state.languagesData.MULTIPLEWISHLIST_CancelButtonText}</Text></TouchableOpacity>
 						        	
 						      </ScrollView>
 				     }

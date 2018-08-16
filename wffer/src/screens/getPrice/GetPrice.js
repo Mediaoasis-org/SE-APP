@@ -3,14 +3,27 @@ import {
   Text,
   View,
   TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 export  class GetPriceComponent extends Component {
   constructor(props){
     super(props);
-
+    this.state={
+      languagesData:[],
+            language : '',
+    }
+    this._getStorageValue();
   }
+  async _getStorageValue(){
+    var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
+    }
 	render(){
     // alert(this.props.navigation.state.params.wishlist_id)
     return(
@@ -19,12 +32,12 @@ export  class GetPriceComponent extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
                   <Icon name="angle-left" size={26} color="#fff" />
                 </TouchableOpacity>
-                <Text style={gstyles.headerProfileLabel}>Get Price</Text>
+                <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.GETPRICE_HeaderText}</Text>
                 <Text style={gstyles.headerRightButton}></Text>
           </View>
           <View>
-                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('Lowest',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>Lowest Price</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
-                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('NearByStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle} >NearBy Store</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('Lowest',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>{this.state.languagesData.GETPRICE_LowestPriceTitle}</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('NearByStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle} >{this.state.languagesData.GETPRICE_NearByTitle}</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
                 
           </View>
       </View>

@@ -19,12 +19,20 @@ export class SpecialOffers extends Component {
     		stores:[],
     		isLoading:true,
     		showLoadMore:false,
-    		Message:''
+    		Message:'',
+    		languagesData:[],
+          	language : '',
     	}
     	this.page=1;
     	this.getStorageValues()
     }
     async getStorageValues(){
+    	var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
          // const userData = await AsyncStorage.getItem('userData');
          const city = await AsyncStorage.getItem('cityInformation');
          this.setState({city:city});
@@ -282,8 +290,8 @@ onTagSelect(idx, data,name){
 								<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>{Constants.specialOffer}</Text>
-			                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('ShoppingList')} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.SPECIALOFFER_HeaderTitle}</Text>
+			                    <TouchableOpacity onPress={()=>this.props.navigation.push('ShoppingList')} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					
 					{ 
@@ -319,10 +327,13 @@ onTagSelect(idx, data,name){
 	                				
 	                		{(this.state.Message!= '') ?  <View><Text>{this.state.Message}</Text></View> : null }
 						<View style={gstyles.specialOfferViewHome}>
-							<FlatList numColumns={2} data={this.state.renderData}
-				                renderItem={({item}) =>      
+					{
+						(this.state.noData) ? <Text style={gstyles.margin5}>No Data Found</Text> :
+						
+							<FlatList numColumns={2} data={this.state.renderData} extraData={this.state}
+				                renderItem={({item}) =>       
 				                    <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
-				                    	<Text style={gstyles.discountShow}>{item.percentageOff} Off </Text>
+				                    	<Text style={gstyles.discountShow}>{item.percentageOff} {this.state.languagesData.SPECIALOFFER_OffText} </Text>
 				                      <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
 				                          <View style={gstyles.flexDirectionColumn}>
 				                          	  
@@ -347,10 +358,10 @@ onTagSelect(idx, data,name){
 				                    }
 				                keyExtractor={(item, index) => index}
 				              />
-							
+					}		
 						</View>
 						{
-							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>Load More</Text></TouchableOpacity> : null
+							(this.state.showLoadMore==true) ? <TouchableOpacity style={gstyles.buttonView} onPress={()=>this.showLoadMore()}><Text style={gstyles.buttonText}>{this.state.languagesData.SPECIALOFFER_LoadMoreText}</Text></TouchableOpacity> : null
 							}
 							{				
 								this.state.fetching_Status==true ? <View style={gstyles.loadMoreActivity}><ActivityIndicator color='#333' size="large"/></View>:<View />

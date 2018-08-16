@@ -6,6 +6,7 @@ import CheckBox from 'react-native-checkbox';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import ImagePicker from 'react-native-image-picker';
 import ModalDropdown from 'react-native-modal-dropdown';
+
 export class SignupComponent extends Component {
 	constructor(props){
 		super(props);
@@ -24,12 +25,26 @@ export class SignupComponent extends Component {
 			 // checked: false,
 			 LoggedIn:null,
 			 isLoading:true,
+			 email_error:'',
+			 password_error:'',
+			 passconf_error:'',
+			 first_name_error:'',
+			 last_name_error:'',
+			 languagesData:[],
+          	language : '',
+
 		}
 		// alert(JSON.stringify(this.props.navigation))
 		this._getStorageValue()
 		// this.handleInput = this.handleInput.bind(this);
 	}
 	async _getStorageValue(){
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
 	  var valuePersonal = await AsyncStorage.getItem('fieldsSignupPersonal');
 	  var value = await AsyncStorage.getItem('fieldsSignup');
 	  if(value!=null){
@@ -145,7 +160,7 @@ export class SignupComponent extends Component {
 		            this.setState({
 		              Message : responseJson.message,
 		            })
-		            alert(JSON.stringify(responseJson.message))
+		            // alert(JSON.stringify(responseJson.message))
 		          
 		          }
 		          
@@ -189,6 +204,7 @@ export class SignupComponent extends Component {
 	//  		return data
 	// }
     continue(){
+    		this.setState({email_error:'',password_error:'',passconf_error:'',first_name_error:'',last_name_error:''});
     	var formData = new FormData;
 	        formData.append('email',this.state.email);
 		    formData.append('password',this.state.password);
@@ -214,14 +230,29 @@ export class SignupComponent extends Component {
 		          if(responseJson.status_code=="204"){
 		          	// this.submit()
 		          }
-		          else
+		          else 
 		          {
 		            this.setState({
 		              Message : responseJson.message,
 		            })
 		            Object.entries(this.state.Message).map(([key, value]) => {
 		            	// console.log(`${value}`);
-		            	alert(value)
+		            	// alert(value)
+		            	if(key == 'email'){
+		            		this.setState({email_error:value});
+		            	}
+		            	if(key == 'password'){
+		            		this.setState({password_error:value});
+		            	}
+		            	if(key == 'passconf'){
+		            		this.setState({passconf_error:value});
+		            	}
+		            	if(key == '1_1_3_alias_first_name'){
+		            		this.setState({first_name_error:value});
+		            	}
+		            	if(key == '1_1_4_alias_last_name'){
+		            		this.setState({last_name_error:value});
+		            	}
 		            })
 		          }
 		        })
@@ -239,14 +270,29 @@ export class SignupComponent extends Component {
 				if(item.type=='Text'){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
+							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+							{this.state.email_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.email_error}</Text> : null }							
 					</View>
 				);
 				}
-				if(item.type=='Password'){
+				if(item.type=='Password' && item.name=='password'){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>					
+							<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+							{this.state.password_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.password_error}</Text> : null }
+							
+											
+					</View>
+					)
+				}
+				if(item.type=='Password' && item.name=='passconf'){
+					return (
+					<View key={index}>
+							<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+							{
+								this.state.passconf_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.passconf_error}</Text> : null 
+							}
+											
 					</View>
 					)
 				}
@@ -262,14 +308,24 @@ export class SignupComponent extends Component {
     	<View>
     	{
 	    	this.state.dataSourcePersonal["Personal Information"].map((item,index)=>{
-				if(item.type=='Text'){
+				if(item.type=='Text' && item.name=="1_1_3_alias_first_name"){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />		
+							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />	
+							{this.state.first_name_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.first_name_error}</Text> : null }
+					</View>
+				);
+				}	
+				if(item.type=='Text' && item.name=="1_1_4_alias_last_name"){
+					return (
+					<View key={index}>
+							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />	
+							{this.state.last_name_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.last_name_error}</Text> : null }
 					</View>
 				);
 				}	
 			})
+
 		}
 		</View>
 		)		
@@ -322,7 +378,7 @@ export class SignupComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>{Constants.Signup}</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.SIGNUP_HeaderTitle}</Text>
 			                     <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{ 
@@ -336,7 +392,7 @@ export class SignupComponent extends Component {
 						{this.renderPersonalInformation()}
 						{this.renderAccount()}
                         
-                     	<TouchableOpacity onPress={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>      
+                     	<TouchableOpacity onPressIn={()=>this.signup()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.SIGNUP_SubmitButton}</Text></TouchableOpacity>      
 						</View>
 					</KeyboardAvoidingView>
 					</ScrollView>

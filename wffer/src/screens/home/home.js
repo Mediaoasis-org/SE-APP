@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, ScrollView,AsyncStorage,ActivityIndicator,FlatList,Image,NetInfo,BackHandler,TextInput } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView,AsyncStorage,ActivityIndicator,FlatList,Image,NetInfo,BackHandler,TextInput,Alert } from 'react-native';
 // import Carousel from 'react-native-banner-carousel';
 import { gstyles } from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -9,8 +9,23 @@ import { SpecialOfferComponent } from '../../components/specialOffer';
 import { SearchComponent } from '../../components/Search';
 import { BannerSliderComponent } from '../../components/BannerSlider';
 import { PromotionalOfferStoreComponent } from '../../components/PromotionalOfferStore';
-var RNFS = require('react-native-fs');
-var path = RNFS.DocumentDirectoryPath + '/abc.csv';
+// import languages from '../../common/constantslist';
+// var RNFS = require('react-native-fs');
+// var path = RNFS.DocumentDirectoryPath + '/abc.csv';
+function MiniOfflineSign() {
+  return (
+  <View style={{backgroundColor: '#b52424',
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width:'100%',
+    
+   }}>
+      <Text style={{color: '#fff'}}>No Internet Connection</Text>
+    </View>
+  )
+}
 export class HomeComponent extends Component {
     constructor(props){
     	super(props);
@@ -22,55 +37,60 @@ export class HomeComponent extends Component {
          specialOffers:[],
          renderData:[],
          city:'',
-         isConnected: true
-      
+         isConnected: true,
+        languagesData:[],
+        language : '',
     	}
-      // alert(path)
-      // NetInfo.getConnectionInfo().then((connectionInfo) => {
-      //     if (connectionInfo.type === 'none') {
-      //         alert("No internet connection")
-      //     } else {
-      //         // online
-      //        // do something
-
-      //     }
-      // });
-      // this.isButtonDisabled=false;
     	this.getLoginValue();
 
     }	
-    // componentDidMount() {
-    //     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-    // }
+    componentDidMount() {
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+       NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+    }
 
-    // componentWillUnmount() {
-    //     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    // }
-
-    // handleBackButton() {
-         // BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    //     BackHandler.exitApp()
-    //     return true;
-    // }
+    componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+       NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+    }
+    handleConnectivityChange = isConnected => {
+        if (isConnected) {
+          this.setState({ isConnected });
+        } else {
+          this.setState({ isConnected });
+        }
+    }
+    handleBackButton = () => {
+     BackHandler.exitApp()
+      return true;
+    } 
     async getLoginValue(){
+        var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        this.setState({languagesData : Datalang[lang]})
         var value = await AsyncStorage.getItem('userLoginAuthentication');
         const city = await AsyncStorage.getItem('cityInformation');
         this.setState({city:city});
-        // alert(value)
-        if(value !== null){
-        	
+        if(value !== null){	
           this.setState({LoggedIn:true});
-          // 
         }
         else
         {
         	
         }
-              this.categories_func()
-              this.fetchStore();
-              this.getSpecialoffer();
-
-        
+        if(this.state.isConnected){
+          // alert('Network connection');
+           this.categories_func()
+           this.fetchStore();
+           this.getSpecialoffer(); 
+        }
+        else
+        {
+          // alert('no internet')
+        }
+             
     }
     handleSearchInput(e){
       let text = e.toLowerCase()
@@ -99,47 +119,33 @@ export class HomeComponent extends Component {
         })
       }
   }
-    write_file(){
+    // write_file(){
 
-      RNFS.downloadFile({fromUrl:'https://www.sample-videos.com/csv/Sample-Spreadsheet-10-rows.csv',toFile:path}).promise.then((success) => {
-        console.log('FILE downloaded!');
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-    }
-    read_file(){
-      RNFS.readFile(path, 'ascii').then((file) => {
-        // console.log(file);
-        var csv = this.csvToArray(file)
-        console.log(csv)
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-    }
-     csvToArray (csv) {
-        rows = csv.split("\n");
-
-        return rows.map(function (row) {
-          return row.split(",");
-        });
-    };
-    // isNetworkConnected() {
-         
-    //     NetInfo.isConnected.addEventListener(
-    //         'connectionChange',
-    //         this._handleConnectivityChange
-    //     );
-    //     NetInfo.isConnected.fetch().done(
-    //         (isConnected) => { this.setState({isConnected}); }
-    //     );
+    //   RNFS.downloadFile({fromUrl:'https://www.sample-videos.com/csv/Sample-Spreadsheet-10-rows.csv',toFile:path}).promise.then((success) => {
+    //     console.log('FILE downloaded!');
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.message);
+    //   });
     // }
-    // _handleConnectivityChange = (isConnected) => {
-    //       this.setState({
-    //         isConnected,
-    //       });
-    //     };
+    // read_file(){
+    //   RNFS.readFile(path, 'ascii').then((file) => {
+    //     // console.log(file);
+    //     var csv = this.csvToArray(file)
+    //     console.log(csv)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.message);
+    //   });
+    // }
+    //  csvToArray (csv) {
+    //     rows = csv.split("\n");
+
+    //     return rows.map(function (row) {
+    //       return row.split(",");
+    //     });
+    // };
+
     categories_func(){
       // this.isNetworkConnected();
       // console.log("Network "  + this.state.isConnected)
@@ -172,9 +178,9 @@ export class HomeComponent extends Component {
       //   alert('No Network connection')
       // }
    
-  }
+    }
     fetchStore(){
-		 return fetch('https://wffer.com/se/api/rest/listings/get-stores?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
+		  fetch('https://wffer.com/se/api/rest/listings/get-stores?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
               method:'GET'
             })
             .then((response) => response.json())
@@ -197,7 +203,7 @@ export class HomeComponent extends Component {
             });
 	}
   getSpecialoffer(){
-    return fetch('https://wffer.com/se/api/rest/listings/special-offer?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=10&city='+this.state.city,{
+     fetch('https://wffer.com/se/api/rest/listings/special-offer?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2&limit=10&city='+this.state.city,{
               method:'GET'
             })
             .then((response) => response.json())
@@ -220,18 +226,34 @@ export class HomeComponent extends Component {
               console.error(error);
             });
   }
-  // disable(){
-  //    this.isButtonDisabled= true;setTimeout(() => this.isButtonDisabled = false , 1000);
-  // }
+
+  disable(){
+     this.isButtonDisabled= true;setTimeout(() => this.isButtonDisabled = false , 1000);
+  }
 	render(){
+    // console.log(this.state.languagesData.HOME_HeaderApp)
+   if (!this.state.isConnected) {
+      return (
+          <View style={gstyles.flexContainer}>
+              <View style={gstyles.headerMenu}>
+                    <TouchableOpacity  style={gstyles.headerMenuButton}>
+                      
+                              </TouchableOpacity>
+                              <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
+                              <TouchableOpacity style={gstyles.headerRightButton}></TouchableOpacity>
+              </View>
+              <MiniOfflineSign />
+          </View>
+      );
+    }
 		return(
 				<View style={gstyles.flexContainer}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() =>{ this.props.navigation.openDrawer()}} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPressIn={() =>{BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton); this.props.navigation.openDrawer()}} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
-			                    <TouchableOpacity onPress={()=>{ this.disable();this.props.navigation.push('ShoppingList')}} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.HOME_HeaderApp}</Text>
+			                    <TouchableOpacity onPress={()=>{  BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);this.disable();this.props.navigation.push('ShoppingList')}} style={gstyles.headerRightButton}><Icon name="shopping-basket" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					<ScrollView>
 						
@@ -254,22 +276,24 @@ export class HomeComponent extends Component {
     						<BannerSliderComponent />
     						{ 
                   this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
-      						  <PromotionalOfferStoreComponent data={this.state.stores}/>
+      						  <PromotionalOfferStoreComponent data={this.state.stores} title={this.state.languagesData.HOME_PromotionalOffer_HeadingText}/>
       					}
               </View>
             }
            
-						<View style={gstyles.SpecialOfferHeadingsHome}><Text style={gstyles.fontSize18,gstyles.textBlack}>Special Offers</Text></View>
+						<View style={gstyles.SpecialOfferHeadingsHome}><Text style={gstyles.fontSize18,gstyles.textBlack}>{this.state.languagesData.HOME_SpecialOffer_HeadingText}</Text></View>
 						<View style={gstyles.specialOfferViewHome}>
             { 
               this.state.isLoading ? 
                 <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
   						  <View style={gstyles.specialOfferViewHome}>
-                  <FlatList numColumns={2} data={this.state.renderData}
+                {
+                   (this.state.noData) ? <Text style={gstyles.margin5}>No Data Found</Text> :
+                  <FlatList numColumns={2} data={this.state.renderData} extraData={this.state}
                             renderItem={({item}) =>      
-                                <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
+                                <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
                                   <Text style={gstyles.discountShow}>{item.percentageOff} Off </Text>
-                                  <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
+                                  <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_icon}} style={gstyles.flatimage} resizeMode="contain"/></View>
                                       <View style={gstyles.flexDirectionColumn}>
                                           
                                           <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={gstyles.title}>{item.title}</Text></View>
@@ -293,7 +317,7 @@ export class HomeComponent extends Component {
                                 }
                             keyExtractor={(item, index) => index}
                           />
-                  
+                  }
                 </View>
             }
 						</View>

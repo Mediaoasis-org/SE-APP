@@ -17,7 +17,9 @@ export class ChangePasswordComponent extends Component {
 			passwordConfirm:'',
 			LoggedIn:null,
 			oauthToken:'',
-			oauthSecret:''
+			oauthSecret:'',
+			languagesData:[],
+          language : '',
 
 		}
 		// this.isButtonDisabled=false;
@@ -28,7 +30,11 @@ export class ChangePasswordComponent extends Component {
         title: 'Chagne Password',
     };
 	async _getStorageValue(){
-
+		  var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        this.setState({languagesData : Datalang[lang]})
 		// this.fetchFields()
 	  var value = await AsyncStorage.getItem('changepasswordFields');
 	  var userData = await AsyncStorage.getItem('userData');
@@ -151,7 +157,7 @@ export class ChangePasswordComponent extends Component {
 												<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 													<Icon name="bars" size={24} color="#fff" />
 							                    </TouchableOpacity>
-							                    <Text style={gstyles.headerProfileLabel}>Change Password</Text>
+							                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.CHANGEPASSWORD_HeaderText}</Text>
 							                    <Text style={gstyles.headerRightButton}></Text>
 									</View>
 									<ScrollView>
@@ -159,7 +165,7 @@ export class ChangePasswordComponent extends Component {
 		           				this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
 									<View>
 									
-										<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Change Password</Text></View>
+										<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.CHANGEPASSWORD_HeaderText}</Text></View>
 										<View>
 											<FlatList extraData={this.state.dataSource}
 												  data={this.state.dataSource}
@@ -167,7 +173,7 @@ export class ChangePasswordComponent extends Component {
 												  keyExtractor={this._keyExtractor}
 											/>	
 											
-											<TouchableOpacity onPress={()=>{ this.disable();this.chagnePassword()}}  style={gstyles.buttonView}><Text style={gstyles.buttonText}>Change Password</Text></TouchableOpacity>
+											<TouchableOpacity onPress={()=>{ this.disable();this.chagnePassword()}}  style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.CHANGEPASSWORD_ButtonText}</Text></TouchableOpacity>
 										</View>
 									
 									</View>

@@ -12,7 +12,9 @@ export  class ContactUsComponent extends Component {
 			email:'',
 			body:'',
 			dataSource:[],
-			isLoading:true
+			isLoading:true,
+			languagesData:[],
+          	language : '',
 			// data:[]
 		}
 		this._getStorageValue();
@@ -22,6 +24,12 @@ export  class ContactUsComponent extends Component {
 
 	async _getStorageValue(){
 		// this.fetchFields()
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
 	  var value = await AsyncStorage.getItem('contactUsInformation');
 	  // this.fetchFields()
 	  // alert(value)
@@ -151,16 +159,16 @@ export  class ContactUsComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Contact Us</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.HELP_HeaderTitle}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{
 						this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
 					
 				 	<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Contact Us</Text></View>
+						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.HELP_HeaderTitle}</Text></View>
 						<View>
-								<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>If you want to ask us a question directly, please submit your message with the following form.</Text></View>
+								<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.HELP_HeadingText}</Text></View>
 								{
 
 							    	this.state.dataSource.map((item,index)=>{
@@ -195,7 +203,7 @@ export  class ContactUsComponent extends Component {
 										}
 									})
 								}
-								<TouchableOpacity onPress={()=>this.SendMessage()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
+								<TouchableOpacity onPress={()=>this.SendMessage()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.HELP_SaveButtonText}</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 					}

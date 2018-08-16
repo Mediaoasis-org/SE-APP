@@ -13,14 +13,21 @@ export class CreateWishlistComponent extends Component {
 			body:'',
 			dataSource:[],
 			isLoading:true,
-			LoggedIn:null
+			LoggedIn:null,
+			languagesData:[],
+          	language : '',
 		}
 		this._getStorageValue()
 		// alert(JSON.stringify(this.props.navigation))
 	}
 	async _getStorageValue(){
 		// this.fetchFields()
-	 
+	 var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
 	  const userData = await AsyncStorage.getItem('userData');
       var value = await AsyncStorage.getItem('createListFields');
       // alert(value)
@@ -133,11 +140,11 @@ export class CreateWishlistComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>        
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.SHOPPING_LIST_HeaderTitle}</Text>        
 					</View>
-					<Text style={gstyles.signInButton}>To Create Wishlist ,Please Sign In</Text>
+					<Text style={gstyles.signInButton}>{this.state.languagesData.CREATENEWLIST_SIGNIN_DefaultText}</Text>
 		              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
-		                  <Text style={gstyles.createAccountText}>Sign In</Text>
+		                  <Text style={gstyles.createAccountText}>{this.state.languagesData.LOGIN_HeaderTitle}</Text>
 		              </TouchableOpacity>
 				</View>
 			);
@@ -148,14 +155,14 @@ export class CreateWishlistComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.SHOPPING_LIST_HeaderTitle}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{
 						this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
 					
 					<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Create New Wishlist</Text></View>
+						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>this.state.languagesData.CREATENEWLIST_HeaderTitle</Text></View>
 						<View>
 					    	{
 						    	this.state.dataSource.map((item,index)=>{
@@ -170,10 +177,10 @@ export class CreateWishlistComponent extends Component {
 								})
 								
 							}
-							<TouchableOpacity onPress={()=>this.createList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Create</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>this.createList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.CRETAENEWLIST_SaveButtonText}</Text></TouchableOpacity>
 							<View style={gstyles.width100}><Text style={gstyles.textCenter}>OR</Text></View>
 							<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.cancelButton}>
-									<Text style={gstyles.cancelButtonText}>Cancel</Text>
+									<Text style={gstyles.cancelButtonText}>{this.state.languagesData.CRETAENEWLIST_CancelButtonText}</Text>
 							</TouchableOpacity>
 						</View>
 

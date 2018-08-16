@@ -5,7 +5,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -16,13 +17,23 @@ export  class StoreProfileComponent extends Component {
 			data:[],
 			isLoading:true,
 			total:'',
+			languagesData:[],
+          	language : '',
 
 		}
 		// alert(this.props.navigation.state.params.wishlist_id);
 		// alert(this.props.navigation.state.params.store_id)
+		this._getStorageValue()
 		this.fetchValues();
 	}
-
+	async _getStorageValue(){
+    var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
+    }
 	fetchValues(){
 		let wishlist_id = this.props.navigation.state.params.wishlist_id;
 		let store_id = this.props.navigation.state.params.store_id;
@@ -86,7 +97,7 @@ export  class StoreProfileComponent extends Component {
 							            
 
 								          				<Text style={gstyles.lowestPriceTitle}>{item.title}</Text>
-										          		<Text style={gstyles.lowestPriceSubTitle}>Qty {item.quantity} X {item.price1} SAR <Text style={[gstyles.fontSize18,gstyles.textRed]}>- {item.quantity*item.price1} SAR</Text></Text>
+										          		<Text style={gstyles.lowestPriceSubTitle}>{this.state.languagesData.STOREPROFILE_QuantityText} {item.quantity} X {item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} <Text style={[gstyles.fontSize18,gstyles.textRed]}>- {item.quantity*item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} </Text></Text>
 										          			
 
 											               
@@ -98,7 +109,7 @@ export  class StoreProfileComponent extends Component {
 					    </View>
 					}
 					</ScrollView>
-					<TouchableOpacity style={{width:'100%',position:'absolute',bottom:2,alignItems:'center',backgroundColor:'#696969',padding:10}}><Text style={gstyles.buttonText}>Total Price {this.state.total}</Text></TouchableOpacity>
+					<TouchableOpacity style={{width:'100%',position:'absolute',bottom:2,alignItems:'center',backgroundColor:'#696969',padding:10}}><Text style={gstyles.buttonText}>{this.state.languagesData.STOREPROFILE_TotalPriceText} {this.state.total}</Text></TouchableOpacity>
 			</View>
 		);
 	}

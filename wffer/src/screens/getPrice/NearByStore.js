@@ -34,11 +34,28 @@ export  class NearByStoreComponent extends Component {
       fieldValues:[],
       isLoading:true,
       gpsLoading:true,
-      city:''
+      city:'',
+      languagesData:[],
+            language : '',
     };
     this.getStorageValue();
   }
   async getStorageValue(){
+    
+      Linking.canOpenURL('app-settings:').then(supported => {
+        if (!supported) {
+          console.log('Can\'t handle settings url');
+        } else {
+          return Linking.openURL('app-settings:');
+        }
+      }).catch(err => console.error('An error occurred', err));
+    
+     var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
     const city = await AsyncStorage.getItem('cityInformation');
       this.setState({city:city});
       // alert(this.state.city)
@@ -105,8 +122,8 @@ export  class NearByStoreComponent extends Component {
                         <View style={gstyles.lowestPriceRightInner}>
                           <View style={gstyles.lowestPriceRightInnerBox}>
                                 <Text style={gstyles.lowestPriceTitle}>{value.title}</Text>
-                                <Text style={gstyles.lowestPriceSubTitle}>Products Available {value.productAvailable}</Text>
-                                <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed]}>Total Price : {value.indivisualSum}</Text>  
+                                <Text style={gstyles.lowestPriceSubTitle}>{this.state.languagesData.NEARBYSTORE_ProductAvailableText} {value.productAvailable}</Text>
+                                <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed]}>{this.state.languagesData.NEARBYSTORE_TotalPriceText} : {value.indivisualSum}</Text>  
                                 
                           </View> 
                           <View style={gstyles.lowestPriceLeftInnerBox}>
@@ -125,7 +142,7 @@ export  class NearByStoreComponent extends Component {
                           <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
                             <Icon name="angle-left" size={24} color="#fff" />
                           </TouchableOpacity>
-                          <Text style={gstyles.headerProfileLabel}>Price Comparison</Text>
+                          <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.NEARBYSTORE_HeaderText}</Text>
                           <Text style={gstyles.headerRightButton}></Text>
                          
           </View>

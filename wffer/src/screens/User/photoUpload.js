@@ -27,6 +27,8 @@ export  class UploadPhotoComponent extends Component {
       data:[],
       name:'',
       dataType:'',
+      languagesData:[],
+          language : '',
 		}
     this._getStorageValue();
 	}
@@ -34,6 +36,11 @@ export  class UploadPhotoComponent extends Component {
   //   this._getStorageValue();
   // }
   async _getStorageValue(){
+    var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        this.setState({languagesData : Datalang[lang]})
      var value = await AsyncStorage.getItem('photoUploadInfo');
      var userData = await AsyncStorage.getItem('userData');
      this.setState({userData:JSON.parse(userData)});
@@ -254,14 +261,14 @@ export  class UploadPhotoComponent extends Component {
     								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
     									<Icon name="bars" size={24} color="#fff" />
     			                    </TouchableOpacity>
-    			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
+    			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.PROFILE_HeaderText}</Text>
                               <Text style={gstyles.headerRightButton}></Text>
     					</View>
       { 
             this.state.isDataLoading ?   <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
               <View>
               <ScrollView>
-                        <View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Edit Photo</Text></View>
+                        <View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.PHOTOUPLOAD_HeaderText}</Text></View>
                         
 
     				 	      <View>
@@ -272,9 +279,9 @@ export  class UploadPhotoComponent extends Component {
                                 <Image style={gstyles.circledImage} source={this.state.ImageSource} />
                                       
                         </View>
-                        <TouchableOpacity onPress={()=>this.uploadPhoto()} style={gstyles.buttonView} disabled={(this.state.name=='') ? true : false}><Text style={gstyles.buttonText}>Save Photo</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.uploadPhoto()} style={gstyles.buttonView} disabled={(this.state.name=='') ? true : false}><Text style={gstyles.buttonText}>{this.state.languagesData.PHOTOUPLOAD_ButtonText}</Text></TouchableOpacity>
                         <View style={gstyles.newToView}><Text style={gstyles.newToText}>OR</Text></View>
-                        <TouchableOpacity onPress={()=>this.removePhoto()} style={gstyles.createAccountView}><Text style={gstyles.createAccountText}>Remove Photo</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.removePhoto()} style={gstyles.createAccountView}><Text style={gstyles.createAccountText}>{this.state.languagesData.PHOTOUPLOAD_RemoveButtonText}</Text></TouchableOpacity>
     			         </View>
                       
               </ScrollView>

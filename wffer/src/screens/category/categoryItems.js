@@ -33,6 +33,8 @@ export class ProductDetails extends Component {
             city:'',
             Message:'',
             priceMessage:'',
+            languagesData:[],
+          	language : '',
             
       
       }
@@ -46,12 +48,19 @@ export class ProductDetails extends Component {
       console.log(this.best_price,this.best_price_store)
     }
     async getStorageValue(){
+    	var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
     	const city = await AsyncStorage.getItem('cityInformation');
       	this.setState({city:city});
       	this.fetchValues();
       	this.priceComparision();
 
     }
+   	
     fetchValues(){
     	let product_id = this.props.navigation.state.params.product_id;
     	// alert(product_id)
@@ -119,6 +128,9 @@ export class ProductDetails extends Component {
 	   	// alert(qty)
 	   	this.setState({qty:qty});
 	 }
+	// static navigationOptions = {
+ //        drawerLockMode : 'locked-closed'
+ //    };
 	render(){
 		// alert(this.state.priceValues.length)
 
@@ -128,7 +140,7 @@ export class ProductDetails extends Component {
 								<TouchableOpacity onPress={() =>this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={30} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Product Details</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.PRODUCT_DETAILS_HeaderText}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{
@@ -138,7 +150,7 @@ export class ProductDetails extends Component {
 								<View style={[gstyles.backgroundWhite,{marginTop:15,width:'94%',marginLeft:'3%',marginRight:'3%'}]}>
 							          <View style={[gstyles.width100,gstyles.flexDirectionRow]}>
 							                <View style={{flexDirection:'column',width:'30%',justifyContent:'center',alignItems:'center'}}>
-									             <Image source={{uri:this.state.fieldValues.image}} style={[gstyles.productDetailsImage,{padding:10}]}/>
+									             <Image source={{uri:this.state.fieldValues.image_normal}} style={[gstyles.productDetailsImage,{padding:10}]}/>
 											</View>
 							                <View style={{flexDirection:'column',width:'55%'}}>
 
@@ -168,16 +180,16 @@ export class ProductDetails extends Component {
 							          </View>
 							          <View style={[gstyles.width100,gstyles.flexDirectionRow]}>
 							             	<TouchableOpacity style={gstyles.likeButton} onPress={()=>alert('liked')}>
-							                  	<Text style={gstyles.textCenter}>Like</Text>
+							                  	<Text style={gstyles.textCenter}>{this.state.languagesData.PRODUCT_DETAILS_LikeText}</Text>
 							              	</TouchableOpacity>
 							             	<TouchableOpacity style={gstyles.likeButton} onPress={()=>this.props.navigation.push('MultipleWishlist',{product_ids:[this.state.fieldValues.listing_id],quantities:[{id : this.state.fieldValues.listing_id,qty : this.state.qty}]})}>
-							                  	<Text style={gstyles.textCenter}>Add to Shopping List</Text>
+							                  	<Text style={gstyles.textCenter}>{this.state.languagesData.PRODUCT_DETAILS_AddToShoppingListText}</Text>
 							             	 </TouchableOpacity>
 							          </View>
 						        </View>
 						        {(this.state.priceValues.length > 0) ? 
 						        		<View>
-											<Text style={gstyles.priceComparisonText}>Price Comparison</Text>
+											<Text style={gstyles.priceComparisonText}>{this.state.languagesData.PRODUCT_DETAILS_PriceComparisonHeaderText}</Text>
 											<View style={gstyles.backgroundWhite}>
 												<FlatList data={this.state.priceValues} 
 													renderItem={({item,index}) =>      
@@ -189,11 +201,11 @@ export class ProductDetails extends Component {
 												            		{(this.best_price_store == item.wheretobuy_title) && (this.best_price != item.price) ? 
 												            			<View style={gstyles.priceTitleTextView}>
 													            			<Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',fontSize:16}]}>{item.price} SAR</Text>
-					                              							<Text style={gstyles.priceTitleText}>{this.best_price} SAR</Text>
+					                              							<Text style={gstyles.priceTitleText}>{this.best_price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text>
 					                              							<Text style={[gstyles.priceSubtitleText,{marginTop:5}]}>{item.end_time}</Text>
 				                              							</View>
 												            		:
-												            			<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} SAR</Text></View>
+												            			<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text></View>
 												            		
 													          		}
 													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.wheretobuy_title}</Text></View>

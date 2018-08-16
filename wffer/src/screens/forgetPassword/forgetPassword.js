@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, ScrollView,AsyncStorage } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
 // import { DrawerActions } from 'react-navigation';
 import { Constants } from '../../common';
@@ -10,9 +10,20 @@ export class ForgetComponent extends Component {
 		super(props);
 		this.state={
 			email:'',
-			Message:''
+			Message:'',
+			languagesData:[],
+          	language : '',
 		}
+		this._getStorageValue()
 	}
+	async _getStorageValue(){
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
+    }
 	forget(){
 	     var formData = new FormData;
 		    formData.append('email',this.state.email);
@@ -55,14 +66,14 @@ export class ForgetComponent extends Component {
 								<TouchableOpacity onPress={() =>this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={30} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>{Constants.forgetPassword}</Text>  
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.FORGETPASSWORD_HeaderTitle}</Text>  
 			                    <Text style={gstyles.headerRightButton}></Text>         
 					</View>
 					<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Forget Password</Text></View>
+						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.FORGETPASSWORD_HeaderTitle}</Text></View>
 						<View>
 							<TextInput name="email" ref={input => { this.textInput = input }} keyboardType="email-address" placeholder="Email Address" returnKeyType={"done"} underlineColorAndroid="#fff" style={gstyles.textInputStyle} onChangeText={(text) => this.setState({email: text})}/>	
-							<TouchableOpacity onPress={()=>this.forget()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Submit</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>this.forget()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.FORGETPASSWORD_SubmitButton}</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 				</View>

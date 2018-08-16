@@ -9,7 +9,8 @@ import {
   ScrollView,
   ActivityIndicator,
   Dimensions,
-  TextInput
+  TextInput,
+  
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 // import {Constants} from '../../common';
@@ -51,13 +52,21 @@ export class ShoppingListComponent extends Component {
       recommendedFieldValues:[],
       totalRecommendedItems:'',
       renderData:[],
-      renderRecommendedData:[]
+      renderRecommendedData:[],
+      languagesData:[],
+            language : '',
 		}
     this.getStorageValues()
     
 		// alert(JSON.stringify(this.props.navigation))
 	}
 	async getStorageValues(){
+        var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
          const userData = await AsyncStorage.getItem('userData');
          // alert(userData.length);
           if(userData!=null){
@@ -198,14 +207,14 @@ export class ShoppingListComponent extends Component {
     // const wish_image='';
     if(this.state.totalItems==0){
        return(
-            <View style={gstyles.content}>
+            <View style={gstyles.flexContainer}>
               <Text style={gstyles.ShoppingText}>No data found</Text>
             </View>);
     }
     else
     {
     return(
-      this.state.noData == true ? <Text>No Data Found</Text> :<View>{
+      this.state.noData == true ? <Text style={gstyles.margin5}>No Data Found</Text> :<View>{
           this.state.renderData.map((item)=>{
             // alert(item.listing_images_1['image'])
             // let img = 'listing_images_'+item.total_item;
@@ -247,7 +256,7 @@ export class ShoppingListComponent extends Component {
     
     if(this.state.totalRecommendedItems==0){
        return(
-            <View style={gstyles.content}>
+            <View style={gstyles.flexContainer}>
               <Text style={gstyles.ShoppingText}>No data found</Text>
             </View>);
     }
@@ -332,12 +341,12 @@ export class ShoppingListComponent extends Component {
                     <TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
                       <Text><Icon name="bars" size={24} color="#fff" /></Text>
                     </TouchableOpacity>
-                    <Text style={gstyles.headerProfileLabel}>Wishlist</Text>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
+                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.SHOPPING_LIST_HeaderTitle}</Text>
+                    <TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
               </View>
-              <Text style={gstyles.signInButton}>To get Lists ,Please Sign In</Text>
-              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
-                  <Text style={gstyles.createAccountText}>Sign In</Text>
+              <Text style={gstyles.signInButton}>{this.state.languagesData.WISHLSIT_SIGNIN_DefaultText}</Text>
+              <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.push('Login')}>
+                  <Text style={gstyles.createAccountText}>{this.state.languagesData.LOGIN_HeaderTitle}</Text>
               </TouchableOpacity>
           </View>
         )
@@ -351,7 +360,7 @@ export class ShoppingListComponent extends Component {
   								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
   									<Text><Icon name="bars" size={24} color="#fff" /></Text>
                   </TouchableOpacity>
-                  <Text style={gstyles.headerProfileLabel}>Wishlist</Text>
+                  <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.SHOPPING_LIST_HeaderTitle}</Text>
                   <TouchableOpacity onPress={()=>this.props.navigation.push('CreateWishlist')} style={gstyles.headerRightButton}><Icon name="plus-circle" size={24} color="#fff" /></TouchableOpacity>
   					</View>
             { 
@@ -372,7 +381,7 @@ export class ShoppingListComponent extends Component {
             </View>
   				  <View>
             
-              <TouchableOpacity onPress={()=>this.setState({mysection:!this.state.mysection,recommendedsection:false})} style={gstyles.ShoppingButton}><Text style={gstyles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={gstyles.flexDirectionColumn} />  My Shopping List</Text></TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.setState({mysection:!this.state.mysection,recommendedsection:false})} style={gstyles.ShoppingButton}><Text style={gstyles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={gstyles.flexDirectionColumn} />  {this.state.languagesData.SHOPPING_LIST_MyShoppingListTitle}</Text></TouchableOpacity>
               {
                 this.state.mysection==true ? <Text style={[gstyles.ShoppingText],{padding:10}}>{this.state.totalItems} shopping lists found</Text> : null
               }
@@ -380,7 +389,7 @@ export class ShoppingListComponent extends Component {
                 this.state.mysection==true ? this.renderMyList() : null
               }
             
-              <TouchableOpacity onPress={()=>this.setState({recommendedsection:!this.state.recommendedsection,mysection:false})} style={gstyles.ShoppingButton}><Text style={gstyles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={gstyles.flexDirectionColumn} />  Recommended List</Text>
+              <TouchableOpacity onPress={()=>this.setState({recommendedsection:!this.state.recommendedsection,mysection:false})} style={gstyles.ShoppingButton}><Text style={gstyles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={gstyles.flexDirectionColumn} /> {this.state.languagesData.SHOPPING_LIST_RecommendedListTitle}</Text>
               </TouchableOpacity>
                {
                 this.state.recommendedsection==true ? this.renderRecommendedList() : null

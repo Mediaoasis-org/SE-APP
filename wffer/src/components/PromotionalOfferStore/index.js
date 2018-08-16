@@ -7,16 +7,16 @@ import {
   Dimensions
 } from 'react-native';
 import { gstyles } from '../../GlobalStyles';
-const window = Dimensions.get('window')
+const window = Dimensions.get('window');
 export class PromotionalOfferStoreComponent extends React.Component{
   constructor(props) {
       super(props);
-      console.log(JSON.stringify(this.props.data))
+      // console.log(JSON.stringify(this.props.data))
     }
   render(){
       return(
         <View>
-          <View style={gstyles.OfferHeadingsHome}><Text style={gstyles.fontSize18}>Promotional Offers in Stores</Text></View>
+          <View style={gstyles.OfferHeadingsHome}><Text style={gstyles.fontSize18}>{this.props.title} in Stores</Text></View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} alwaysBounce={true} scrollEventThrottle={16} style={gstyles.promotionalOfferView}>
             {
               this.props.data.map((item,index)=>{

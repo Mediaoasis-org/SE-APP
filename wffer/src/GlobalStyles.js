@@ -35,6 +35,7 @@ export const gstyles = StyleSheet.create({
 	loadingActivity:{backgroundColor:'#febe2b',padding:20,borderRadius:20},
 
 	textInputStyle:{margin:10,padding:10,borderWidth:1,borderColor:'#ccc'},
+	texterrorStyle:{margin:10,color:'#ff0000'},
 	checkboxStyle:{color:'#ff0000',backgroundColor:'#00ff00'},
 	userImageView:{flexDirection: 'column',justifyContent: 'center',alignItems: 'center',padding:20,},
 	cameraImageView:{position:'absolute',top:22,left:'66%',zIndex:1000},

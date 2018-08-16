@@ -19,10 +19,18 @@ export class EditWishlistComponent extends Component {
 			LoggedIn:null,
 			isLoading:true,
 			isDataLoading:true,
+			languagesData:[],
+          	language : '',
 		}
 		this._getStorageValue()
 	}
 	async _getStorageValue(){
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
 		const userData = await AsyncStorage.getItem('userData');
 	 	const fieldData = await AsyncStorage.getItem('EditWishlistFields');
   		this.setState({userData:JSON.parse(userData)});
@@ -157,13 +165,13 @@ export class EditWishlistComponent extends Component {
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
 								<Text style={gstyles.headerMenuButton}></Text>
-			                    <Text style={gstyles.headerProfileLabel}>Wffer</Text>  
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.EDITWISHLIST_HeaderTitle}</Text>  
 			                    <Text style={gstyles.headerRightButton}></Text>    
 					</View>
 					{ 
                       this.state.isDataLoading && this.state.isLoading ?   <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
                       							<ScrollView>
-                      								<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Edit Shopping List</Text></View>
+                      								<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.EDITWISHLIST_TitleText}</Text></View>
                       									{
                       										this.state.dataSource.map((item)=>{
                       											if(item.type=='Text' || item.type=='Textarea'){
@@ -186,10 +194,10 @@ export class EditWishlistComponent extends Component {
 																} 
                       										})
                       									}
-                      									<TouchableOpacity onPress={()=>this.EditList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save Changes</Text></TouchableOpacity>
+                      									<TouchableOpacity onPress={()=>this.EditList()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.EDITWISHLIST_SaveButtonText}</Text></TouchableOpacity>
 														<View style={gstyles.width100}><Text style={gstyles.textCenter}>OR</Text></View>
 														<TouchableOpacity onPress={()=>this.props.navigation.goBack()} style={gstyles.cancelButton}>
-																<Text style={gstyles.cancelButtonText}>Cancel</Text>
+																<Text style={gstyles.cancelButtonText}>{this.state.languagesData.EDITWISHLIST_CancelButtonText}</Text>
 														</TouchableOpacity>
                       							</ScrollView>
                     }

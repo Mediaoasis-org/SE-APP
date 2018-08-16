@@ -35,6 +35,8 @@ export class WishlistComponent extends Component {
 			LoggedIn:null,
 			selectedCheckboxId:[],
 			modalVisible: false,
+			languagesData:[],
+          	language : '',
 		}
 
 		// alert(JSON.stringify(this.props.navigation))
@@ -45,6 +47,12 @@ export class WishlistComponent extends Component {
 	}
 	
 	async _getStorageValue(){
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
 		const userData = await AsyncStorage.getItem('userData');
 		// alert(userData);
 		if(userData.length>0){
@@ -235,12 +243,12 @@ export class WishlistComponent extends Component {
                   <Text><Icon name="bars" size={24} color="#fff" /></Text>
                 </TouchableOpacity>
 
-                <Text style={gstyles.headerProfileLabel}>WishList</Text>
+                <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.SHOPPING_LIST_HeaderTitle}</Text>
                 <Text style={gstyles.headerRightButton}></Text>
           </View>
-          <Text style={gstyles.signInButton}>To get Lists ,Please Sign In</Text>
+          <Text style={gstyles.signInButton}>{this.state.languagesData.WISHLSIT_SIGNIN_DefaultText}</Text>
           <TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.navigate('Login')}>
-              <Text style={gstyles.createAccountText}>Sign In</Text>
+              <Text style={gstyles.createAccountText}>{this.state.languagesData.LOGIN_HeaderTitle}</Text>
           </TouchableOpacity>
       </View>
         )
@@ -320,15 +328,15 @@ export class WishlistComponent extends Component {
 					          }}>
 				          <View style={gstyles.wishlistModalContainer}>
 				            <View style={gstyles.wishlistModalContainerBox}>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>{this.setModalVisible(false);this.props.navigation.push('Products', {cat_name:'All Categories'})}}><Text style={gstyles.modalMenuText}>Add Product</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleEditWishlist()}><Text style={gstyles.modalMenuText}>Edit</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleDeleteWishlist()}><Text style={gstyles.modalMenuText}>Delete</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>{this.setModalVisible(false);this.props.navigation.push('Products', {cat_name:'All Categories'})}}><Text style={gstyles.modalMenuText}>{this.state.languagesData.WISHLIST_LIST_ModalAddProduct}</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleEditWishlist()}><Text style={gstyles.modalMenuText}>{this.state.languagesData.WISHLIST_LIST_ModalEditWishlist}</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleDeleteWishlist()}><Text style={gstyles.modalMenuText}>{this.state.languagesData.WISHLIST_LIST_ModalDeleteWishlist}</Text></TouchableOpacity>
 				              
 				              <TouchableHighlight
 				                onPress={() => {
 				                  this.setModalVisible(!this.state.modalVisible);
 				                }} style={gstyles.modalMenu}>
-				                <Text style={gstyles.modalMenuText}>Cancel</Text>
+				                <Text style={gstyles.modalMenuText}>{this.state.languagesData.WISHLIST_LIST_ModalCancel}</Text>
 				              </TouchableHighlight>
 				            </View>
 				          </View>
@@ -338,17 +346,17 @@ export class WishlistComponent extends Component {
 					<View style={gstyles.buttonViewFixed}>
 							<TouchableOpacity onPress={()=>Share.share({
 	url: 'https://wffer.com/se/wishlist/'+ this.props.navigation.state.params.wishlist_id,
-    message: 'Here is My Wishlist, Please click on following link to view Wishlist : ' + ' https://wffer.com/se/wishlist/' + this.props.navigation.state.params.wishlist_id ,
-    title: 'Share Your Wishlist ' + this.state.data.title,
+    message: this.state.languagesData.WISHLIST_LIST_ShareMessageText + ' https://wffer.com/se/wishlist/' + this.props.navigation.state.params.wishlist_id ,
+    title: this.state.languagesData.WISHLIST_LIST_ShareTitleText + this.state.data.title,
   }, {
     // Android only:
-    dialogTitle: 'Share BdAppManiac goodness',
+    dialogTitle: 'Share',
     // iOS only:
     excludedActivityTypes: [
       'com.apple.UIKit.activity.PostToTwitter'
     ]
-  })} style={[gstyles.getPriceButton,{borderRightWidth:1,borderRightColor:'#bfbfbf'}]}><Text style={gstyles.buttonTextFixed}>Share</Text></TouchableOpacity>
-							<TouchableOpacity onPress={()=>{this.props.navigation.push('GetPrice',{wishlist_id:this.props.navigation.state.params.wishlist_id})}} style={gstyles.getPriceButton}><Text style={gstyles.buttonTextFixed}>Get Price</Text></TouchableOpacity>
+  })} style={[gstyles.getPriceButton,{borderRightWidth:1,borderRightColor:'#bfbfbf'}]}><Text style={gstyles.buttonTextFixed}>{this.state.languagesData.WISHLIST_LIST_ShareText}</Text></TouchableOpacity>
+							<TouchableOpacity onPress={()=>{this.props.navigation.push('GetPrice',{wishlist_id:this.props.navigation.state.params.wishlist_id})}} style={gstyles.getPriceButton}><Text style={gstyles.buttonTextFixed}>{this.state.languagesData.WISHLIST_LIST_GetPriceText}</Text></TouchableOpacity>
 							
 					</View>
 					{

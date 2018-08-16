@@ -17,13 +17,21 @@ export  class LowestPriceComponent extends Component {
 			data:[],
 			isLoading:true,
 			wishlist_id:'',
-			city:''
+			city:'',
+			languagesData:[],
+          	language : '',
 
 		}
 		this.getStorageValue();
 		
 	}
  	async getStorageValue(){
+ 		 var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
     	const city = await AsyncStorage.getItem('cityInformation');
       	this.setState({city:city});
       	this.fetchValues()
@@ -78,8 +86,8 @@ export  class LowestPriceComponent extends Component {
 				            <View style={gstyles.lowestPriceRightInner}>
 				            	<View style={gstyles.lowestPriceRightInnerBox}>
 					          				<Text style={gstyles.lowestPriceTitle}>{value.title}</Text>
-							          		<Text style={gstyles.lowestPriceSubTitle}>Products Available {value.productAvailable}</Text>
-							          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed]}>Total Price : {value.indivisualSum}</Text>	
+							          		<Text style={gstyles.lowestPriceSubTitle}>{this.state.languagesData.LOWESTPRICE_ProductAvailableText} {value.productAvailable}</Text>
+							          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed]}>{this.state.languagesData.LOWESTPRICE_TotalPriceText} : {value.indivisualSum}</Text>	
 							          		
 								</View>	
 								<View style={gstyles.lowestPriceLeftInnerBox}>
@@ -99,7 +107,7 @@ export  class LowestPriceComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={26} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Price Comparison</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.LOWESTPRICE_HeaderText}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					<ScrollView>
@@ -115,4 +123,4 @@ export  class LowestPriceComponent extends Component {
 	}
 }
 
-// <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,gstyles.marginBottom10]}>Total Save : {value.totalSave}</Text>
+// <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,gstyles.marginBottom10]}>{this.state.languagesData.LOWESTPRICE_TotalSaveText} : {value.totalSave}</Text>

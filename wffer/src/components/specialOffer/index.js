@@ -31,9 +31,9 @@ export class SpecialOfferComponent extends React.Component{
 			      	}
 			      	else
 			      	{
-			      		// 
+			      		this.setState({Message:responseJson.Message});
 			      	}
-			      	this.setState({Message:responseJson.Message});
+			      	
 			      })
 			      .catch((error) =>{
 			        console.error(error);

@@ -10,7 +10,8 @@ import {
 	FlatList,
 	ScrollView,
 	AsyncStorage,
-	ActivityIndicator
+	ActivityIndicator,
+NetInfo
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -36,11 +37,23 @@ export class Catalog extends Component {
         renderData:[],
         stores:[],
         searchFields:[],
+        languagesData:[],
+            language : '',
     	}
     	this.getStorageValues()
 	}
-
+  componentDidMount(){
+    NetInfo.getConnectionInfo().then((connectionInfo) => {
+      console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+    });
+  }
 	async getStorageValues(){
+    var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
          const userData = await AsyncStorage.getItem('userData');
          const city = await AsyncStorage.getItem('cityInformation');
          this.setState({city:city});
@@ -198,7 +211,7 @@ export class Catalog extends Component {
   			return(
   				<View>
           {
-            this.state.noData ? <Text>No Data Found</Text> :  
+            this.state.noData ? <Text style={gstyles.margin5}>No Data Found</Text> :  
   						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
   							
   							<FlatList data={this.state.renderData}
@@ -228,7 +241,7 @@ export class Catalog extends Component {
 							<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 								<Icon name="bars" size={24} color="#fff" />
 		                    </TouchableOpacity>
-		                    <Text style={gstyles.headerProfileLabel}>Catalog</Text>
+		                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.CATALOG_HeaderTitle}</Text>
 		                    <Text style={gstyles.headerRightButton}></Text>
 				</View>
 				 { 

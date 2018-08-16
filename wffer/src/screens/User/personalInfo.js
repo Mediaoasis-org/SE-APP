@@ -19,6 +19,8 @@ export  class PersonalInfoComponent extends Component {
 			oauthToken:'',
 			oauthSecret:'',
 			userData:[],
+			languagesData:[],
+       		language : '',
 			
 		}
 		this.handleInput = this.handleInput.bind(this);
@@ -27,6 +29,11 @@ export  class PersonalInfoComponent extends Component {
 	}
 	async _getStorageValue(){
 		// this.fetchFields()
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        this.setState({languagesData : Datalang[lang]})
 	  var value = await AsyncStorage.getItem('fieldsPersonalInformation');
 	  var userData = await AsyncStorage.getItem('userData');
      this.setState({userData:JSON.parse(userData)});
@@ -233,14 +240,14 @@ export  class PersonalInfoComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>Profile</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.PROFILE_HeaderTitle}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>                 
 					</View>
 					{ 
                 		this.state.isDataLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> : 
                 	<View>
 				 	<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Personal Information</Text></View>                 
+						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.PROFILE_HeaderText}</Text></View>                 
 						<View>
 								{
 							    	this.state.dataSource.map((item,index)=>{
@@ -286,7 +293,7 @@ export  class PersonalInfoComponent extends Component {
 										
 									})
 								}
-								<TouchableOpacity onPress={()=>{this.disable();this.SavePersonalInfo();}} style={gstyles.buttonView}><Text style={gstyles.buttonText}>Save</Text></TouchableOpacity>
+								<TouchableOpacity onPress={()=>{this.disable();this.SavePersonalInfo();}} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.PROFILE_ButtonText}</Text></TouchableOpacity>
 						</View>
 					
 					</ScrollView>

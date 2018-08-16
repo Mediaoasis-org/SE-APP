@@ -3,6 +3,7 @@ import { Text, TextInput, View, TouchableOpacity, ScrollView, AsyncStorage,FlatL
 import { gstyles } from '../../GlobalStyles';
 import { Constants } from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import Toast, {DURATION} from 'react-native-easy-toast'
 // import { DrawerActions } from 'react-navigation';
   
 export class LoginComponent extends Component {
@@ -17,13 +18,21 @@ export class LoginComponent extends Component {
 			LoggedIn:null,
 			isLoading:true,
 			email_error:'',
-			password_error:''
+			password_error:'',
+			languagesData:[],
+          	language : '',
 		}
 		// alert(JSON.stringify(this.props.navigation))
 		
 		this._getStorageValue()
 	}
 	async _getStorageValue(){
+		var languageData = await AsyncStorage.getItem('languageData');
+        const Datalang = JSON.parse(languageData);
+        const lang = await AsyncStorage.getItem('languageinfo');
+        this.setState({language:lang})
+        // alert(this.state.language);
+        this.setState({languagesData : Datalang[lang]})
 	  var fieldData = await AsyncStorage.getItem('fields');
 	  // alert(value)
 	  if(fieldData !== null){
@@ -67,6 +76,7 @@ export class LoginComponent extends Component {
 			
 	}
     login(){
+    	this.setState({email_error:'',password_error:''});
 	     	var formData = new FormData;
 		    formData.append('email',this.state.email);
 		    formData.append('password',this.state.password);
@@ -89,26 +99,52 @@ export class LoginComponent extends Component {
 		              // isLoading: false,
 		              dataSource1: responseJson.body.oauth_token,
 		              userData: responseJson.body.user,
+		              email_error:'',
+		              password_error:''
+		              
 		            }, async function(){
 			        await AsyncStorage.setItem('userLoginAuthentication', responseJson.body.oauth_token);
 			        await AsyncStorage.setItem('userData',JSON.stringify(responseJson.body));
 		              this.props.navigation.push('Home');
 		            });
 		          }
-		          else
+		          else if(responseJson.status_code=="401"){
+		          		 this.setState({
+			              Message : responseJson.message,
+			            })
+		            	alert(this.state.Message)
+		            
+		          }
+		          else if(responseJson.status_code=='400')
 		          {
 		            this.setState({
 		              Message : responseJson.message,
 		            })
+		           
+		            // console.log(responseJson.error_code)
+		            console.log(this.state.Message);
+		            // this.state.Message.map((item)=>{
+		            // 	console.log(item)
+		            // })
 		            Object.entries(this.state.Message).map(([key, value]) => {
 		            	// console.log(`${value}`);
 		            	if(key == 'email'){
 		            		this.setState({email_error:value});
+		            		// this.refs.toast.show(this.state.email_error);
+		            		
+		            		// this.refs.toast.show(value,1000);
+		            		// this.refs.toast.close()
 		            	}
-		            	if(key == 'password'){
+		            	 if(key == 'password'){
 		            		this.setState({password_error:value});
+		            		// this.refs.toast.show(this.state.password_error);
+		            		
+		            		// this.refs.toast.show(value,2000);
+		            		// this.refs.toast.close()
 		            	}
-		            	// alert(value)
+		            	// this.refs.toast.close()
+		            	// this.refs.toast.show(value);
+		            	// console.log(value)
 		            })
 		          
 		          }
@@ -123,31 +159,7 @@ export class LoginComponent extends Component {
   	}
     _keyExtractor = (item, index) => index.toString();
     render_item = ({item}) => {
-    		if(item.type=='Text'){						
-				return (
-				<View>
-						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>	
-				</View>
-				
-			);
-			} 
-			if(item.type=='Password'){
-				return (
-				<View>
-						<TextInput name={item.name} style={gstyles.textInputStyle} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
-								
-				</View>
-				);
-			}
-			if(item.type=='Submit'){
-				return (
-				<View>
-						<TouchableOpacity onPress={()=>this.login()} style={gstyles.buttonView}>
-							<Text style={gstyles.buttonText}>{item.label}</Text>
-						</TouchableOpacity>	
-				</View>
-				);
-			}
+    		
     }
 	render(){
 		return(
@@ -156,34 +168,68 @@ export class LoginComponent extends Component {
 								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
-			                    <Text style={gstyles.headerProfileLabel}>{Constants.Login}</Text>
+			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.LOGIN_HeaderTitle}</Text>
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{
 						this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
-						<ScrollView>
-							<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>Sign In</Text></View>
-								<FlatList extraData={this.state.dataSource}
+						<View>
+							
+							
+							<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.LOGIN_HeaderTitle}</Text></View>
+								<FlatList extraData={this.state}
 								  data={this.state.dataSource}
-								  renderItem={this.render_item}	
+								  renderItem={({item})=>
+								  {
+								  		if(item.type=='Text'){						
+											return (
+											<View>
+													<TextInput name={item.name} style={[gstyles.textInputStyle,(this.state.email_error!='') ? {borderWidth:1,borderColor:'red'} : null]} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>	
+													{this.state.email_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.email_error}</Text> : null }
+											</View>	
+											);
+										} 
+										if(item.type=='Password'){
+											return (
+											<View>
+													<TextInput name={item.name} style={[gstyles.textInputStyle,(this.state.password_error!='') ? {borderWidth:1,borderColor:'red'} : null]} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
+													{this.state.password_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.password_error}</Text> : null }	
+											</View>
+											);
+										}
+										if(item.type=='Submit'){
+											return (
+											<View>
+													<TouchableOpacity onPress={()=>this.login()} style={gstyles.buttonView}>
+														<Text style={gstyles.buttonText}>{item.label}</Text>
+													</TouchableOpacity>	
+											</View>
+											);
+										}
+									}
+								  }	
 								  keyExtractor={this._keyExtractor}
 								/>							
 								<View style={gstyles.newToView}><Text style={gstyles.newToText}>New to Wffer ?</Text></View>
-								<TouchableOpacity style={gstyles.createAccountView} onPress={()=>this.props.navigation.push('Signup')}>
-									<Text style={gstyles.createAccountText}>Create New Account</Text>
+								<TouchableOpacity style={gstyles.createAccountView} onPressIn={()=>this.props.navigation.push('Signup')}>
+									<Text style={gstyles.createAccountText}>{this.state.languagesData.LOGIN_SignUpButtonText}</Text>
 								</TouchableOpacity>
 								<View style={gstyles.forgetPasswordView}>
-									<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.push('ForgetPassword')}>
-										<Text style={gstyles.forgetPasswordText}>Forget Password ?</Text>
+									<TouchableOpacity style={gstyles.flexDirectionColumn} onPressIn={()=>this.props.navigation.push('ForgetPassword')}>
+										<Text style={gstyles.forgetPasswordText}>{this.state.languagesData.LOGIN_ForgetPasswordText}</Text>
 									</TouchableOpacity>
-									<TouchableOpacity style={gstyles.flexDirectionColumn} onPress={()=>this.props.navigation.push('Help')}>
-										<Text style={gstyles.forgetPasswordText}>Help</Text>
+									<TouchableOpacity style={gstyles.flexDirectionColumn} onPressIn={()=>this.props.navigation.push('Help')}>
+										<Text style={gstyles.forgetPasswordText}>{this.state.languagesData.LOGIN_HelpText}</Text>
 									</TouchableOpacity>
 								</View>
 							
-						</ScrollView>
+						</View>
 					}
 				</View>
 			);
 	}
 }
+
+// {this.state.email_error!='' ? null : <Text style={{flex:1,height:50}}>{this.state.email_error}</Text> }
+// 							{this.state.password_error=='' ? null : <Text style={{height:50}}>{this.state.password_error}</Text> }
+// <Toast ref="toast"/>
