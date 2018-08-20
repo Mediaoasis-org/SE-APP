@@ -33,6 +33,7 @@ export  class PersonalInfoComponent extends Component {
         const Datalang = JSON.parse(languageData);
         const lang = await AsyncStorage.getItem('languageinfo');
         this.setState({language:lang})
+        // alert(this.state.language)
         this.setState({languagesData : Datalang[lang]})
 	  var value = await AsyncStorage.getItem('fieldsPersonalInformation');
 	  var userData = await AsyncStorage.getItem('userData');
@@ -256,7 +257,7 @@ export  class PersonalInfoComponent extends Component {
 												<View key={index}>
 														<TextInput name={item.name} 
 																returnKeyType="next"
-																style={gstyles.textInputStyle} 
+																style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} 
 																ref={(input) => {this[item.name] = input; }}	    
 																onSummitTextInput={this.onSummitTextInput}
 																placeholder={item.label} 
@@ -273,8 +274,8 @@ export  class PersonalInfoComponent extends Component {
 													<View key={index}>
 														<ModalDropdown 
 									                      style={gstyles.dropdownMainStyles}						                      
-									                      dropdownTextStyle={gstyles.dropdownTextStyle}
-									                      textStyle={gstyles.textStyle}
+									                      dropdownTextStyle={[gstyles.dropdownTextStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
+									                      textStyle={[gstyles.textStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
 									                      animated={false}
 									                      dropdownStyle={gstyles.dropdownStyles}
 									                      defaultIndex={this.props.defaultIndex}

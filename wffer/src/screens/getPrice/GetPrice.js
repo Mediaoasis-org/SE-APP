@@ -29,15 +29,15 @@ export  class GetPriceComponent extends Component {
     return(
       <View style={gstyles.container}>
           <View style={gstyles.headerMenu}>
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
+                <TouchableOpacity onPressIn={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
                   <Icon name="angle-left" size={26} color="#fff" />
                 </TouchableOpacity>
                 <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.GETPRICE_HeaderText}</Text>
                 <Text style={gstyles.headerRightButton}></Text>
           </View>
           <View>
-                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('Lowest',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle}>{this.state.languagesData.GETPRICE_LowestPriceTitle}</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
-                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('NearByStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={gstyles.tellFriendTitle} >{this.state.languagesData.GETPRICE_NearByTitle}</Text><Text style={gstyles.rightButton}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('Lowest',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={[gstyles.tellFriendTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right',writingDirection:this.state.language == 'en' ? 'ltr' : 'rtl'}]}>{this.state.languagesData.GETPRICE_LowestPriceTitle}</Text><Text style={[gstyles.rightButton,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
+                <TouchableOpacity style={gstyles.flatlist} onPress={()=>{this.props.navigation.push('NearByStore',{wishlist_id:this.props.navigation.state.params.wishlist_id})}}><Text style={[gstyles.tellFriendTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} >{this.state.languagesData.GETPRICE_NearByTitle}</Text><Text style={[gstyles.rightButton,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}><Icon name="angle-right" size={24} color="#000" /></Text></TouchableOpacity>
                 
           </View>
       </View>

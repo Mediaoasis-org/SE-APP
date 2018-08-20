@@ -189,7 +189,7 @@ export class MultipleWishlistComponent extends Component {
 						          				this.state.data.map((item,index)=>{
 						          					if(item.type==='Checkbox'){
 							          					return(
-							          					<View style={gstyles.productsMain} key={index}>
+							          					<View style={[gstyles.productsMain,{direction:this.state.language == 'en' ? 'ltr' : 'rtl'}]} key={index}>
 								          					<View style={gstyles.wishlistMultipleView} key={index}>
 								          						<CheckBox label={item.label.toString()}
 															        onChange={()=>this.onCheckBoxPress(item.name)} labelStyle={gstyles.multipleCheckbox}/> 

@@ -45,7 +45,7 @@ export class ProductDetails extends Component {
 		      	this.best_price = this.props.navigation.state.params.best_price;
 		      	this.best_price_store = this.props.navigation.state.params.best_title;
       }
-      console.log(this.best_price,this.best_price_store)
+      // console.log(this.best_price,this.best_price_store)
     }
     async getStorageValue(){
     	var languageData = await AsyncStorage.getItem('languageData');
@@ -154,9 +154,9 @@ export class ProductDetails extends Component {
 											</View>
 							                <View style={{flexDirection:'column',width:'55%'}}>
 
-												<View style={gstyles.width80}><Text style={gstyles.productDetailsTitle,{paddingTop:25,fontSize:16,color:'#000'}}>{this.state.fieldValues.title}</Text></View>						                    
-									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{fontSize:14,color:'#727272'}}>{this.state.fieldValues.like_count} likes</Text></View>
-									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{fontSize:14,color:'#727272'}}>Location - {this.state.fieldValues.location} </Text></View>
+												<View style={gstyles.width80}><Text style={[gstyles.productDetailsTitle,{paddingTop:25,fontSize:16,color:'#000',textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.fieldValues.title}</Text></View>						                    
+									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{width:'100%',fontSize:14,color:'#727272',textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{this.state.fieldValues.like_count} likes</Text></View>
+									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{width:'100%',fontSize:14,color:'#727272',textAlign:this.state.language == 'en' ? 'left' : 'right'}}>Location - {this.state.fieldValues.location} </Text></View>
 									      	</View>
 
 											<View style={{width:'15%',flexDirection:'column',borderLeftWidth:1,borderLeftColor:'#EAEAEA',paddingTop:10}}>   
@@ -179,7 +179,7 @@ export class ProductDetails extends Component {
 
 							          </View>
 							          <View style={[gstyles.width100,gstyles.flexDirectionRow]}>
-							             	<TouchableOpacity style={gstyles.likeButton} onPress={()=>alert('liked')}>
+							             	<TouchableOpacity style={gstyles.likeButton}>
 							                  	<Text style={gstyles.textCenter}>{this.state.languagesData.PRODUCT_DETAILS_LikeText}</Text>
 							              	</TouchableOpacity>
 							             	<TouchableOpacity style={gstyles.likeButton} onPress={()=>this.props.navigation.push('MultipleWishlist',{product_ids:[this.state.fieldValues.listing_id],quantities:[{id : this.state.fieldValues.listing_id,qty : this.state.qty}]})}>
@@ -189,7 +189,7 @@ export class ProductDetails extends Component {
 						        </View>
 						        {(this.state.priceValues.length > 0) ? 
 						        		<View>
-											<Text style={gstyles.priceComparisonText}>{this.state.languagesData.PRODUCT_DETAILS_PriceComparisonHeaderText}</Text>
+											<Text style={[gstyles.priceComparisonText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.PRODUCT_DETAILS_PriceComparisonHeaderText}</Text>
 											<View style={gstyles.backgroundWhite}>
 												<FlatList data={this.state.priceValues} 
 													renderItem={({item,index}) =>      
@@ -200,17 +200,17 @@ export class ProductDetails extends Component {
 												            <View style={gstyles.priceComparisonRight}>
 												            		{(this.best_price_store == item.wheretobuy_title) && (this.best_price != item.price) ? 
 												            			<View style={gstyles.priceTitleTextView}>
-													            			<Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',fontSize:16}]}>{item.price} SAR</Text>
-					                              							<Text style={gstyles.priceTitleText}>{this.best_price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text>
-					                              							<Text style={[gstyles.priceSubtitleText,{marginTop:5}]}>{item.end_time}</Text>
+													            			<Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',fontSize:16,textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.price} SAR</Text>
+					                              							<Text style={[gstyles.priceTitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.best_price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text>
+					                              							<Text style={[gstyles.priceSubtitleText,{marginTop:5,textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.end_time}</Text>
 				                              							</View>
 												            		:
-												            			<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceTitleText}>{item.price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text></View>
+												            			<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceTitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text></View>
 												            		
 													          		}
-													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.wheretobuy_title}</Text></View>
-													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.country}</Text></View>
-													          		<View style={gstyles.priceTitleTextView}><Text style={gstyles.priceSubtitleText}>{item.city}</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.wheretobuy_title}</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.country}</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.city}</Text></View>
 													               
 											          		</View>
 											        </View>

@@ -21,6 +21,7 @@ export class SpecialOffers extends Component {
     		showLoadMore:false,
     		Message:'',
     		languagesData:[],
+    		categories:[],
           	language : '',
     	}
     	this.page=1;
@@ -301,7 +302,7 @@ onTagSelect(idx, data,name){
 						            <Text style={gstyles.searchViewLeft}>
 						                    <Icon name="search" size={24} color="#ccc" />
 						            </Text>
-						            <TextInput style={gstyles.searchViewRight}
+						            <TextInput style={[gstyles.searchViewRight,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
 						                placeholder="Search Product"
 						                underlineColorAndroid="transparent"
 						                placeholderTextColor="rgb(158,145,140)"
@@ -313,8 +314,8 @@ onTagSelect(idx, data,name){
 
 						    <ModalDropdown 
 			                      style={gstyles.dropdownMainStyles}						                      
-			                      dropdownTextStyle={gstyles.dropdownTextStyle}
-			                      textStyle={gstyles.textStyle}
+			                      dropdownTextStyle={[gstyles.dropdownTextStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
+			                      textStyle={[gstyles.textStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
 			                      dropdownStyle={gstyles.dropdownStyles}
 			                      animated={false}
 			                      defaultIndex={this.props.defaultIndex}
@@ -325,34 +326,34 @@ onTagSelect(idx, data,name){
 			                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,data)}}				
 	                		/>
 	                				
-	                		{(this.state.Message!= '') ?  <View><Text>{this.state.Message}</Text></View> : null }
+	                		{(this.state.Message!= '') ?  <View><Text style={{textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{this.state.Message}</Text></View> : null }
 						<View style={gstyles.specialOfferViewHome}>
 					{
-						(this.state.noData) ? <Text style={gstyles.margin5}>No Data Found</Text> :
+						(this.state.noData) ? <Text style={[gstyles.margin5,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No Data Found</Text> :
 						
 							<FlatList numColumns={2} data={this.state.renderData} extraData={this.state}
 				                renderItem={({item}) =>       
 				                    <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
-				                    	<Text style={gstyles.discountShow}>{item.percentageOff} {this.state.languagesData.SPECIALOFFER_OffText} </Text>
+				                    	<Text style={[gstyles.discountShow,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.percentageOff} {this.state.languagesData.SPECIALOFFER_OffText} </Text>
 				                      <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
 				                          <View style={gstyles.flexDirectionColumn}>
 				                          	  
-				                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={gstyles.title}>{item.title}</Text></View>
+				                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={[gstyles.title,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text></View>
 				                              <View>	
 				                              	{
 						          					this.state.categories.map((cat)=>{
 						          						if(cat.category_id==item.category_id){
 						          							return(
-						          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.specialOfferCategory}>{cat.category_name}</Text></View>
+						          							<View style={gstyles.width100} key={cat.category_id}><Text style={[gstyles.specialOfferCategory,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{cat.category_name}</Text></View>
 						          							);
 						          						}
 						          					})
 						          				}
 						          			  </View>
-				                              <Text style={gstyles.specialOfferCompany}>{item.store_title}</Text>
-				                              <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}]}>{item.listing_price} {item.currency}</Text>
-				                              <Text style={gstyles.specialOfferCategory}>{item.discountprice} {item.currency}</Text>
-				                              <Text style={gstyles.specialOfferCategory}>Offer Ends {item.end_time}</Text>
+				                              <Text style={[gstyles.specialOfferCompany,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.store_title}</Text>
+				                              <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.listing_price} {item.currency}</Text>
+				                              <Text style={[gstyles.specialOfferCategory,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.discountprice} {item.currency}</Text>
+				                              <Text style={[gstyles.specialOfferCategory,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>Offer Ends {item.end_time}</Text>
 				                          </View>
 				                    </TouchableOpacity>                    
 				                    }

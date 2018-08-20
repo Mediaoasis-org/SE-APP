@@ -273,12 +273,12 @@ export class WishlistComponent extends Component {
 						{
 							this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#333' size="large" style={{height:100,width:'30%'}}/></View> : 
 						<View>
-						<SearchComponent/>
+						
 
 						
 						<View style={gstyles.specialOfferViewHome}>
 
-							<FlatList data={this.state.data.listing} 
+							<FlatList data={this.state.data.listing} extraData={this.state}
 
 		                		renderItem={({item}) =>      
 			                    	<TouchableOpacity style={gstyles.wishlistBox} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id})}}>
@@ -290,20 +290,20 @@ export class WishlistComponent extends Component {
 					          				</TouchableOpacity>
 						          			
 						          			<View style={gstyles.wishlistInnerRight}>
-						          				<View style={gstyles.width100}><Text style={gstyles.wishlistInnerTitle}>{item.title}</Text></View>
+						          				<View style={gstyles.width100}><Text style={[gstyles.wishlistInnerTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text></View>
 						          				<View>
 						          				{
 						          					this.state.categories.map((cat)=>{
 						          						if(cat.category_id==item.category_id){
 						          							return(
-						          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.catTitle}>{cat.category_name}</Text></View>
+						          							<View style={gstyles.width100} key={cat.category_id}><Text style={[gstyles.catTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{cat.category_name}</Text></View>
 						          							);
 						          						}
 						          					})
 						          				}
 								          		</View>
-								          		<Text style={gstyles.subtitle}>Qty : {item.quantity}</Text>
-								          		<Text style={gstyles.subtitle}>{item.body}</Text>
+								          		<Text style={[gstyles.subtitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>Qty : {item.quantity}</Text>
+								          		<Text style={[gstyles.subtitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.body}</Text>
 						          			</View>
 						          		</View>
 						          		<View style={gstyles.wishlistBoxRight}>
@@ -328,15 +328,15 @@ export class WishlistComponent extends Component {
 					          }}>
 				          <View style={gstyles.wishlistModalContainer}>
 				            <View style={gstyles.wishlistModalContainerBox}>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>{this.setModalVisible(false);this.props.navigation.push('Products', {cat_name:'All Categories'})}}><Text style={gstyles.modalMenuText}>{this.state.languagesData.WISHLIST_LIST_ModalAddProduct}</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleEditWishlist()}><Text style={gstyles.modalMenuText}>{this.state.languagesData.WISHLIST_LIST_ModalEditWishlist}</Text></TouchableOpacity>
-				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleDeleteWishlist()}><Text style={gstyles.modalMenuText}>{this.state.languagesData.WISHLIST_LIST_ModalDeleteWishlist}</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>{this.setModalVisible(false);this.props.navigation.push('Products', {cat_name:'All Categories'})}}><Text style={[gstyles.modalMenuText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.WISHLIST_LIST_ModalAddProduct}</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleEditWishlist()}><Text style={[gstyles.modalMenuText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.WISHLIST_LIST_ModalEditWishlist}</Text></TouchableOpacity>
+				              <TouchableOpacity style={gstyles.modalMenu} onPress={()=>this.handleDeleteWishlist()}><Text style={[gstyles.modalMenuText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.WISHLIST_LIST_ModalDeleteWishlist}</Text></TouchableOpacity>
 				              
 				              <TouchableHighlight
 				                onPress={() => {
 				                  this.setModalVisible(!this.state.modalVisible);
 				                }} style={gstyles.modalMenu}>
-				                <Text style={gstyles.modalMenuText}>{this.state.languagesData.WISHLIST_LIST_ModalCancel}</Text>
+				                <Text style={[gstyles.modalMenuText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.WISHLIST_LIST_ModalCancel}</Text>
 				              </TouchableHighlight>
 				            </View>
 				          </View>

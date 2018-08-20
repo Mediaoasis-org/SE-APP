@@ -123,7 +123,7 @@ export  class ContactUsComponent extends Component {
      	obj[state] = data;
      	// obj.append(obj[])
      	this.setState(obj);
-     	console.log(obj)
+     	// console.log(obj)
      	// console.log(this.state[state]);
      	  	
      	
@@ -156,7 +156,7 @@ export  class ContactUsComponent extends Component {
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPressIn={() => this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.HELP_HeaderTitle}</Text>
@@ -178,9 +178,7 @@ export  class ContactUsComponent extends Component {
 											<View key={index}>
 													<TextInput name={item.name} 
 															   returnKeyType="next"
-															   style={gstyles.textInputStyle} 
-															   
-															   
+															   style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} 
 															   placeholder={item.label} 
 															   underlineColorAndroid="#fff" 
 															   onChangeText={(text)=>this.onChange(text,item.name)}  
@@ -189,21 +187,19 @@ export  class ContactUsComponent extends Component {
 															   multiline ={item.type=='Textarea'? true :false}
 															   />
 											</View>
-
-											
 										);
 										}
 										if(item.type=='Password'){
 											return (
 											<View key={item.id}>
-													<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"/>
+													<TextInput name={item.name} style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"/>
 													
 											</View>
 											)
 										}
 									})
 								}
-								<TouchableOpacity onPress={()=>this.SendMessage()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.HELP_SaveButtonText}</Text></TouchableOpacity>
+								<TouchableOpacity onPressIn={()=>this.SendMessage()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.HELP_SaveButtonText}</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 					}

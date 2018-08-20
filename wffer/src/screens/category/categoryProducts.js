@@ -128,7 +128,7 @@ export class Products extends Component {
 			      	}
 			      	else
 			      	{
-			      		alert("no data found")
+			      		// alert("no data found")
 			      	}
 			      	this.setState({Message:responseJson.Message});
 			      })
@@ -315,7 +315,7 @@ export class Products extends Component {
 				            <Text style={gstyles.searchViewLeft}>
 				                    <Icon name="search" size={24} color="#ccc" />
 				            </Text>
-				            <TextInput style={gstyles.searchViewRight}
+				            <TextInput style={[gstyles.searchViewRight,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
 				                placeholder="Search Product"
 				                underlineColorAndroid="transparent"
 				                placeholderTextColor="rgb(158,145,140)"
@@ -326,7 +326,7 @@ export class Products extends Component {
 				        </View>
 						<View>
 						{
-							this.state.noData ? <Text>No Data Found</Text> :  <View>    
+							this.state.noData ? <Text style={{textAlign:this.state.language == 'en' ? 'left' : 'right'}}>No Data Found</Text> :  <View>    
 						{
 							this.state.renderData.map((item,index)=>{
 								return(
@@ -342,7 +342,7 @@ export class Products extends Component {
 								            <View style={{width:'55%',flexDirection:'column',paddingLeft:10,paddingTop:10,paddingRight:10,paddingBottom:10}}>
 								            	<View style={gstyles.width100}>
 								          					
-								          						<Text style={gstyles.productTitle}>{item.title}</Text>
+								          						<Text style={[gstyles.productTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text>
 								          					
 								       			</View>
 							       				<View>
@@ -350,16 +350,16 @@ export class Products extends Component {
 							          					this.state.categories.map((cat)=>{
 							          						if(cat.category_id==item.category_id){
 							          							return(
-							          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.productCatTitle,{color:'#727272',paddingTop:7,fontSize:16,fontWeight:'bold'}}>{cat.category_name}</Text></View>
+							          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.productCatTitle,{color:'#727272',paddingTop:7,fontSize:16,fontWeight:'bold',textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{cat.category_name}</Text></View>
 							          							);
 							          						}
 							          					})
 							          				}
 								          		</View>
-									          	<Text style={{fontSize:16,color:'#727272',paddingTop:7}}>{item.best_deal_title}</Text>
+									          	<Text style={{fontSize:16,color:'#727272',paddingTop:7,textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{item.best_deal_title}</Text>
 								          		<View style={gstyles.bestDealView,{flexDirection:'row',paddingTop:7}}>
-					          						<Text style={{fontSize:16}}>{this.state.languagesData.PRODUCT_LIST_BestDealText}</Text>
-									          		<Text style={{fontSize:16,color:'#ff0000'}}> : {item.best_deal_price} {item.currency} </Text>
+					          						<Text style={{fontSize:16,textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{this.state.languagesData.PRODUCT_LIST_BestDealText} </Text>
+									          		<Text style={{fontSize:16,color:'#ff0000',textAlign:this.state.language == 'en' ? 'left' : 'right'}}> : {item.best_deal_price} {item.currency} </Text>
 									          	</View>												          	 	
 								          	</View>
 								            <View style={{width:'15%',flexDirection:'column',borderLeftWidth:1,borderLeftColor:'#EAEAEA',}}>

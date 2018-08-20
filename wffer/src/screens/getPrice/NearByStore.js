@@ -42,13 +42,13 @@ export  class NearByStoreComponent extends Component {
   }
   async getStorageValue(){
     
-      Linking.canOpenURL('app-settings:').then(supported => {
-        if (!supported) {
-          console.log('Can\'t handle settings url');
-        } else {
-          return Linking.openURL('app-settings:');
-        }
-      }).catch(err => console.error('An error occurred', err));
+      // Linking.canOpenURL('app-settings:').then(supported => {
+      //   if (!supported) {
+      //     console.log('Can\'t handle settings url');
+      //   } else {
+      //     return Linking.openURL('app-settings:');
+      //   }
+      // }).catch(err => console.error('An error occurred', err));
     
      var languageData = await AsyncStorage.getItem('languageData');
         const Datalang = JSON.parse(languageData);
@@ -89,7 +89,7 @@ export  class NearByStoreComponent extends Component {
 
     navigator.geolocation.getCurrentPosition(
        (position) => {
-         console.log("wokeeey");
+         // console.log("wokeeey");
          // alert(position);
          this.setState({
            latitude: position.coords.latitude,
@@ -110,7 +110,7 @@ export  class NearByStoreComponent extends Component {
    }
    renderItems(){
     return Object.entries(this.state.fieldValues).map(([key, value]) => {  
-    console.log(`${key} ${value.productAvailable}`);  
+    // console.log(`${key} ${value.productAvailable}`);  
         return ( 
                 <TouchableOpacity onPress={()=>{this.props.navigation.push('StoreProfile',{wishlist_id:this.props.navigation.state.params.wishlist_id,store_id:value.wheretobuy_id,store_name:value.title})}} style={styles.flatlist} key={key}>
                   <View style={gstyles.lowestPriceLeftBox}>
@@ -121,9 +121,9 @@ export  class NearByStoreComponent extends Component {
                   <View style={gstyles.lowestPriceRightBox}>
                         <View style={gstyles.lowestPriceRightInner}>
                           <View style={gstyles.lowestPriceRightInnerBox}>
-                                <Text style={gstyles.lowestPriceTitle}>{value.title}</Text>
-                                <Text style={gstyles.lowestPriceSubTitle}>{this.state.languagesData.NEARBYSTORE_ProductAvailableText} {value.productAvailable}</Text>
-                                <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed]}>{this.state.languagesData.NEARBYSTORE_TotalPriceText} : {value.indivisualSum}</Text>  
+                                <Text style={[gstyles.lowestPriceTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{value.title}</Text>
+                                <Text style={[gstyles.lowestPriceSubTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.NEARBYSTORE_ProductAvailableText} {value.productAvailable}</Text>
+                                <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.NEARBYSTORE_TotalPriceText} : {value.indivisualSum}</Text>  
                                 
                           </View> 
                           <View style={gstyles.lowestPriceLeftInnerBox}>
@@ -139,7 +139,7 @@ export  class NearByStoreComponent extends Component {
     return(
       <View style={gstyles.container}>
           <View style={gstyles.headerMenu}>
-                          <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
+                          <TouchableOpacity onPressIn={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
                             <Icon name="angle-left" size={24} color="#fff" />
                           </TouchableOpacity>
                           <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.NEARBYSTORE_HeaderText}</Text>
@@ -147,7 +147,7 @@ export  class NearByStoreComponent extends Component {
                          
           </View>
           
-            {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
+            {this.state.error ? <Text style={{textAlign:this.state.language == 'en' ? 'left' : 'right'}}>Error: {this.state.error}</Text> : null}
          
           <ScrollView>
                 { 

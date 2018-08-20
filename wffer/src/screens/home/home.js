@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, ScrollView,AsyncStorage,ActivityIndicator,FlatList,Image,NetInfo,BackHandler,TextInput,Alert } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView,AsyncStorage,ActivityIndicator,FlatList,Image,NetInfo,BackHandler,TextInput,Alert,I18nManager } from 'react-native';
 // import Carousel from 'react-native-banner-carousel';
 import { gstyles } from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
@@ -39,10 +39,11 @@ export class HomeComponent extends Component {
          city:'',
          isConnected: true,
         languagesData:[],
+        categories:[],
         language : '',
     	}
     	this.getLoginValue();
-
+      console.log("right : " + I18nManager.isRTL)
     }	
     componentDidMount() {
       BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
@@ -236,20 +237,18 @@ export class HomeComponent extends Component {
       return (
           <View style={gstyles.flexContainer}>
               <View style={gstyles.headerMenu}>
-                    <TouchableOpacity  style={gstyles.headerMenuButton}>
-                      
-                              </TouchableOpacity>
-                              <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
-                              <TouchableOpacity style={gstyles.headerRightButton}></TouchableOpacity>
+                    <TouchableOpacity  style={gstyles.headerMenuButton}></TouchableOpacity>
+                    <Text style={gstyles.headerProfileLabel}>{Constants.AppName}</Text>
+                    <TouchableOpacity style={gstyles.headerRightButton}></TouchableOpacity>
               </View>
               <MiniOfflineSign />
           </View>
       );
     }
 		return(
-				<View style={gstyles.flexContainer}>
+				<View style={[gstyles.flexContainer]}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPressIn={() =>{BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton); this.props.navigation.openDrawer()}} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPress={() =>{BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton); this.props.navigation.openDrawer()}} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.HOME_HeaderApp}</Text>
@@ -261,7 +260,7 @@ export class HomeComponent extends Component {
                 <Text style={gstyles.searchViewLeft}>
                         <Icon name="search" size={24} color="#ccc" />
                 </Text>
-                <TextInput style={gstyles.searchViewRight}
+                <TextInput style={[gstyles.searchViewRight]}
                     placeholder="Search"
                     underlineColorAndroid="transparent"
                     placeholderTextColor="rgb(158,145,140)"
@@ -276,12 +275,12 @@ export class HomeComponent extends Component {
     						<BannerSliderComponent />
     						{ 
                   this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
-      						  <PromotionalOfferStoreComponent data={this.state.stores} title={this.state.languagesData.HOME_PromotionalOffer_HeadingText}/>
+      						  <PromotionalOfferStoreComponent data={this.state.stores} title={this.state.languagesData.HOME_PromotionalOffer_HeadingText} lang={this.state.language}/>
       					}
               </View>
             }
            
-						<View style={gstyles.SpecialOfferHeadingsHome}><Text style={gstyles.fontSize18,gstyles.textBlack}>{this.state.languagesData.HOME_SpecialOffer_HeadingText}</Text></View>
+						<View style={gstyles.SpecialOfferHeadingsHome}><Text style={[gstyles.fontSize18,gstyles.textBlack]}>{this.state.languagesData.HOME_SpecialOffer_HeadingText}</Text></View>
 						<View style={gstyles.specialOfferViewHome}>
             { 
               this.state.isLoading ? 
@@ -292,26 +291,26 @@ export class HomeComponent extends Component {
                   <FlatList numColumns={2} data={this.state.renderData} extraData={this.state}
                             renderItem={({item}) =>      
                                 <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
-                                  <Text style={gstyles.discountShow}>{item.percentageOff} Off </Text>
+                                  <Text style={[gstyles.discountShow,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.percentageOff} Off </Text>
                                   <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_icon}} style={gstyles.flatimage} resizeMode="contain"/></View>
                                       <View style={gstyles.flexDirectionColumn}>
                                           
-                                          <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={gstyles.title}>{item.title}</Text></View>
+                                          <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={[gstyles.title]}>{item.title}</Text></View>
                                           <View>  
                                             {
                                     this.state.categories.map((cat)=>{
                                       if(cat.category_id==item.category_id){
                                         return(
-                                        <View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.specialOfferCategory}>{cat.category_name}</Text></View>
+                                        <View style={gstyles.width100} key={cat.category_id}><Text style={[gstyles.specialOfferCategory]}>{cat.category_name}</Text></View>
                                         );
                                       }
                                     })
                                   }
                                   </View>
-                                          <Text style={gstyles.specialOfferCompany}>{item.store_title}</Text>
-                                          <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}]}>{item.listing_price} {item.currency}</Text>
-                                          <Text style={gstyles.specialOfferCategory}>{item.discountprice} {item.currency}</Text>
-                                          <Text style={gstyles.specialOfferCategory}>Offer Ends {item.end_time}</Text>
+                                          <Text style={[gstyles.specialOfferCompany]}>{item.store_title}</Text>
+                                          <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',}]}>{item.listing_price} {item.currency}</Text>
+                                          <Text style={[gstyles.specialOfferCategory]}>{item.discountprice} {item.currency}</Text>
+                                          <Text style={[gstyles.specialOfferCategory]}>Offer Ends {item.end_time}</Text>
                                       </View>
                                 </TouchableOpacity>                    
                                 }

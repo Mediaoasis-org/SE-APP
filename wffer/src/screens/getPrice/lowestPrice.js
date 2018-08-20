@@ -66,13 +66,13 @@ export  class LowestPriceComponent extends Component {
 	renderItems(){
 		if(this.state.data.length == 0){
 			return(
-			<Text style={[gstyles.ShoppingText,gstyles.padding10]}>no record found</Text>
+			<Text style={[gstyles.ShoppingText,gstyles.padding10,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>no record found</Text>
 			)
 		}
 		else
 		{
 		return Object.entries(this.state.data).map(([key, value]) => {	
-		console.log(`${key} ${value.productAvailable}`);	
+		// console.log(`${key} ${value.productAvailable}`);	
 				return ( 
 					<TouchableOpacity onPress={()=>{this.props.navigation.push('StoreProfile',{wishlist_id:this.props.navigation.state.params.wishlist_id,store_id:value.wheretobuy_id,store_name:value.title})}} style={gstyles.flatlist} key={key}>
 		          		<View style={gstyles.lowestPriceLeftBox}>
@@ -85,9 +85,9 @@ export  class LowestPriceComponent extends Component {
 			            <View style={gstyles.lowestPriceRightBox}>
 				            <View style={gstyles.lowestPriceRightInner}>
 				            	<View style={gstyles.lowestPriceRightInnerBox}>
-					          				<Text style={gstyles.lowestPriceTitle}>{value.title}</Text>
-							          		<Text style={gstyles.lowestPriceSubTitle}>{this.state.languagesData.LOWESTPRICE_ProductAvailableText} {value.productAvailable}</Text>
-							          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed]}>{this.state.languagesData.LOWESTPRICE_TotalPriceText} : {value.indivisualSum}</Text>	
+					          				<Text style={[gstyles.lowestPriceTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{value.title}</Text>
+							          		<Text style={[gstyles.lowestPriceSubTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.LOWESTPRICE_ProductAvailableText} {value.productAvailable}</Text>
+							          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.LOWESTPRICE_TotalPriceText} : {value.indivisualSum}</Text>	
 							          		
 								</View>	
 								<View style={gstyles.lowestPriceLeftInnerBox}>
@@ -104,7 +104,7 @@ export  class LowestPriceComponent extends Component {
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPressIn={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={26} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.LOWESTPRICE_HeaderText}</Text>

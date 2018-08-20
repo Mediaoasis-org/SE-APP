@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { View,ScrollView,Text,Image,TouchableOpacity,Dimensions } from 'react-native';
+import { View,ScrollView,Text,Image,TouchableOpacity,Dimensions,AsyncStorage,I18nManager } from 'react-native';
 import { SwitchNavigator,SafeAreaView,createStackNavigator,createDrawerNavigator,createBottomTabNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { HomeComponent } from './src/screens/home/home';
@@ -40,6 +40,7 @@ import { gstyles } from './src/GlobalStyles';
 
 import {DrawerTitle} from './src/components/SideMenu/index';
 const window = Dimensions.get('window');
+
 // const navigateOnce = (getStateForAction) => (action, state) => {
 //   const {type, routeName} = action;
 //   return (
@@ -246,10 +247,12 @@ const DrawerStack = createDrawerNavigator({
   // drawerOpenRoute: 'DrawerOpen',
   // drawerCloseRoute: 'DrawerClose',
   // drawerToggleRoute: 'DrawerToggle',
-  // drawerPosition:'right',
+ 
+  // drawerPosition:I18nManager.isRTL ? 'left' : 'right',
    // drawerLockMode: 'locked-closed',
   gesturesEnabled: true,
-  contentComponent:({navigation}) => <DrawerTitle navigation={navigation}/>
+  
+  contentComponent:props => <DrawerTitle {...props} />
 })
 
 
@@ -267,6 +270,8 @@ const MyNavigation = createStackNavigator({
 
 export default MyNavigation;
 
+
+// contentComponent:({navigation}) => <DrawerTitle navigation={navigation} />
 //// const defaultGetStateForAction = DrawerStack.router.getStateForAction;
 
 // DrawerStack.router.getStateForAction = (action, state) => {

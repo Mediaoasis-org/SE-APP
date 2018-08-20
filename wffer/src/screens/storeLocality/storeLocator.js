@@ -55,13 +55,13 @@ export  class StoreLocatorComponent extends Component {
 
 	async getStorageValues(){
 		
-			Linking.canOpenURL('app-settings:').then(supported => {
-			  if (!supported) {
-			    console.log('Can\'t handle settings url');
-			  } else {
-			    return Linking.openURL('app-settings:');
-			  }
-			}).catch(err => console.error('An error occurred', err));
+			// Linking.canOpenURL('app-settings:').then(supported => {
+			//   if (!supported) {
+			//     console.log('Can\'t handle settings url');
+			//   } else {
+			//     return Linking.openURL('app-settings:');
+			//   }
+			// }).catch(err => console.error('An error occurred', err));
 		 
 		
 
@@ -247,8 +247,8 @@ export  class StoreLocatorComponent extends Component {
 							<View>
 							 <ModalDropdown 
 			                      style={gstyles.dropdownMainStyles}						                      
-			                      dropdownTextStyle={gstyles.dropdownTextStyle}
-			                      textStyle={gstyles.textStyle}
+			                      dropdownTextStyle={[gstyles.dropdownTextStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
+			                      textStyle={[gstyles.textStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
 			                      dropdownStyle={gstyles.dropdownStyles}
 			                      defaultIndex={this.props.defaultIndex}
 			                      showsVerticalScrollIndicator={true}

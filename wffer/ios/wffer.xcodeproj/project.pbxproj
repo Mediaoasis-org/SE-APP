@@ -45,6 +45,7 @@
 		4327320029FB48539EB038C6 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CFB4DE2A270641878DC2EF09 /* libRNVectorIcons.a */; };
 		513F672BBDC74C87AE1A0785 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60AF1BDDDBD24EEC86FB93F1 /* Octicons.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		7045473B5E294FBAA561D1C0 /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B73A6B5AF9EB40F19665BEF8 /* libRCTRestart.a */; };
 		799188E9113E4A57BE92104C /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B522ADCEC6044E718E3D3317 /* Foundation.ttf */; };
 		800A402D8F5B4E8081839B25 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 16CD87A7EBCC4C71A8554C29 /* Feather.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -89,6 +90,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 832C81801AAF6DEF007FA2F7;
 			remoteInfo = RCTVibration;
+		};
+		061C7BDB212AA37500F8ACE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5F6A5BDBE26F4DB68605C3E1 /* RCTRestart.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
+			remoteInfo = RCTRestart;
 		};
 		0625B76820AEF67500851768 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -397,6 +405,7 @@
 		352914BECB504B639ACCC9B3 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		48081DDBFCE24F7D8EAC2580 /* libRNPhotoView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPhotoView.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		5F6A5BDBE26F4DB68605C3E1 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTRestart.xcodeproj; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; };
 		60AF1BDDDBD24EEC86FB93F1 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		617EE47E04AC4C15BA279802 /* RNPhotoView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNPhotoView.xcodeproj; path = "../node_modules/react-native-photo-view/ios/RNPhotoView.xcodeproj"; sourceTree = "<group>"; };
 		74AE64D024C94C4ABB9EE207 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -408,6 +417,7 @@
 		A013B861B5074B81AAD51244 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B522ADCEC6044E718E3D3317 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		B73A6B5AF9EB40F19665BEF8 /* libRCTRestart.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTRestart.a; sourceTree = "<group>"; };
 		BD14DB33A55445F2813CE687 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		CE90065C872FDCA44F13BF5A /* Pods-wffer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wffer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-wffer/Pods-wffer.debug.xcconfig"; sourceTree = "<group>"; };
 		CFB4DE2A270641878DC2EF09 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
@@ -441,6 +451,7 @@
 				4327320029FB48539EB038C6 /* libRNVectorIcons.a in Frameworks */,
 				215264EADD874D1AA9C9A5B7 /* libRNImagePicker.a in Frameworks */,
 				0B591CB8DF5A67DAB910C626 /* libPods-wffer.a in Frameworks */,
+				7045473B5E294FBAA561D1C0 /* libRCTRestart.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +539,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		061C7BD8212AA37400F8ACE4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				061C7BDC212AA37500F8ACE4 /* libRCTRestart.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		0625B76220AEF67400851768 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -550,6 +569,7 @@
 				CFB4DE2A270641878DC2EF09 /* libRNVectorIcons.a */,
 				A013B861B5074B81AAD51244 /* libRNImagePicker.a */,
 				48081DDBFCE24F7D8EAC2580 /* libRNPhotoView.a */,
+				B73A6B5AF9EB40F19665BEF8 /* libRCTRestart.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -685,6 +705,7 @@
 				F059DFE18BB74AA1BAF5245E /* RNVectorIcons.xcodeproj */,
 				352914BECB504B639ACCC9B3 /* RNImagePicker.xcodeproj */,
 				617EE47E04AC4C15BA279802 /* RNPhotoView.xcodeproj */,
+				5F6A5BDBE26F4DB68605C3E1 /* RCTRestart.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -890,6 +911,10 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
+					ProductGroup = 061C7BD8212AA37400F8ACE4 /* Products */;
+					ProjectRef = 5F6A5BDBE26F4DB68605C3E1 /* RCTRestart.xcodeproj */;
+				},
+				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
@@ -973,6 +998,13 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		061C7BDC212AA37500F8ACE4 /* libRCTRestart.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTRestart.a;
+			remoteRef = 061C7BDB212AA37500F8ACE4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0625B76920AEF67500851768 /* libRNImagePicker.a */ = {
@@ -1403,8 +1435,9 @@
 			baseConfigurationReference = CE90065C872FDCA44F13BF5A /* Pods-wffer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: deepak bhati (Q796PUPD82)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: deepak bhati (Q796PUPD82)";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: MEDIA OASIS";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: MEDIA OASIS";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
@@ -1414,9 +1447,14 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 				);
 				INFOPLIST_FILE = wffer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/wffer\"",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1424,8 +1462,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mediaoasis.apps.Wffer;
 				PRODUCT_NAME = wffer;
-				PROVISIONING_PROFILE = "2d49391b-a1a7-4370-a372-e461ad3e587c";
-				PROVISIONING_PROFILE_SPECIFIER = Wffer;
+				PROVISIONING_PROFILE = "3636b10a-ce4a-47ca-94eb-a95c11ed052b";
+				PROVISIONING_PROFILE_SPECIFIER = wfferRN;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1435,8 +1473,9 @@
 			baseConfigurationReference = 75099504BDEDDF73BA45BC0A /* Pods-wffer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: deepak bhati (Q796PUPD82)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: deepak bhati (Q796PUPD82)";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: MEDIA OASIS";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: MEDIA OASIS";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P4X3LYJKLQ;
@@ -1445,9 +1484,14 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 				);
 				INFOPLIST_FILE = wffer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/wffer\"",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1455,8 +1499,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mediaoasis.apps.Wffer;
 				PRODUCT_NAME = wffer;
-				PROVISIONING_PROFILE = "2d49391b-a1a7-4370-a372-e461ad3e587c";
-				PROVISIONING_PROFILE_SPECIFIER = Wffer;
+				PROVISIONING_PROFILE = "3636b10a-ce4a-47ca-94eb-a95c11ed052b";
+				PROVISIONING_PROFILE_SPECIFIER = wfferRN;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1478,6 +1522,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 				);
 				INFOPLIST_FILE = "wffer-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1514,6 +1559,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 				);
 				INFOPLIST_FILE = "wffer-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1549,6 +1595,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 				);
 				INFOPLIST_FILE = "wffer-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1584,6 +1631,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 				);
 				INFOPLIST_FILE = "wffer-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

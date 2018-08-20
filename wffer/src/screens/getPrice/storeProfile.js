@@ -74,7 +74,7 @@ export  class StoreProfileComponent extends Component {
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPressIn={() => this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={26} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.store_name}</Text>
@@ -96,8 +96,8 @@ export  class StoreProfileComponent extends Component {
 						            <View style={gstyles.lowestPriceRightBox}>
 							            
 
-								          				<Text style={gstyles.lowestPriceTitle}>{item.title}</Text>
-										          		<Text style={gstyles.lowestPriceSubTitle}>{this.state.languagesData.STOREPROFILE_QuantityText} {item.quantity} X {item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} <Text style={[gstyles.fontSize18,gstyles.textRed]}>- {item.quantity*item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} </Text></Text>
+								          				<Text style={[gstyles.lowestPriceTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text>
+										          		<Text style={[gstyles.lowestPriceSubTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.STOREPROFILE_QuantityText} {item.quantity} X {item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} <Text style={[gstyles.fontSize18,gstyles.textRed]}>- {item.quantity*item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} </Text></Text>
 										          			
 
 											               

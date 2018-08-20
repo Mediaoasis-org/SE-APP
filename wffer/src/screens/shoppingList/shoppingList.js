@@ -208,13 +208,13 @@ export class ShoppingListComponent extends Component {
     if(this.state.totalItems==0){
        return(
             <View style={gstyles.flexContainer}>
-              <Text style={gstyles.ShoppingText}>No data found</Text>
+              <Text style={[gstyles.ShoppingText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No data found</Text>
             </View>);
     }
     else
     {
     return(
-      this.state.noData == true ? <Text style={gstyles.margin5}>No Data Found</Text> :<View>{
+      this.state.noData == true ? <Text style={[gstyles.margin5,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No Data Found</Text> :<View>{
           this.state.renderData.map((item)=>{
             // alert(item.listing_images_1['image'])
             // let img = 'listing_images_'+item.total_item;
@@ -237,10 +237,10 @@ export class ShoppingListComponent extends Component {
                             <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:window.height/6}}/>
                         </View>
                         <View style={gstyles.ShoppingListItemsViewRightContent}>
-                            <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
-                            <Text style={gstyles.ShoppingWishlistText}>{item.total_item} entries</Text>
-                            <Text style={gstyles.ShoppingWishlistText}>{item.creation_date}</Text>
-                            <Text style={gstyles.ShoppingWishlistText}>{item.body}</Text>
+                            <Text style={[gstyles.ShoppingWishlistTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text>
+                            <Text style={[gstyles.ShoppingWishlistText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.total_item} entries</Text>
+                            <Text style={[gstyles.ShoppingWishlistText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.creation_date}</Text>
+                            <Text style={[gstyles.ShoppingWishlistText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.body}</Text>
                         </View>
                     </View>
                   </TouchableOpacity>
@@ -257,7 +257,7 @@ export class ShoppingListComponent extends Component {
     if(this.state.totalRecommendedItems==0){
        return(
             <View style={gstyles.flexContainer}>
-              <Text style={gstyles.ShoppingText}>No data found</Text>
+              <Text style={[gstyles.ShoppingText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No data found</Text>
             </View>);
     }
     else
@@ -281,10 +281,10 @@ export class ShoppingListComponent extends Component {
                                 <Image source={{uri : wish_image}} resizeMode="contain" style={gstyles.width100,{height:100}}/>
                             </View>
                             <View style={gstyles.ShoppingListItemsViewRightContent}>
-                                <Text style={gstyles.ShoppingWishlistTitle}>{item.title}</Text>
-                                <Text style={gstyles.ShoppingWishlistText}>{item.total_item} entries</Text>
-                                <Text style={gstyles.ShoppingWishlistText}>{item.creation_date}</Text>
-                                <Text style={gstyles.ShoppingWishlistText}>{item.body}</Text>
+                                <Text style={[gstyles.ShoppingWishlistTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text>
+                                <Text style={[gstyles.ShoppingWishlistText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.total_item} entries</Text>
+                                <Text style={[gstyles.ShoppingWishlistText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.creation_date}</Text>
+                                <Text style={[gstyles.ShoppingWishlistText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.body}</Text>
                             </View>
                         </View>
                       </TouchableOpacity>
@@ -367,10 +367,10 @@ export class ShoppingListComponent extends Component {
                 this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
           <ScrollView>
             <View style={gstyles.searchView}>
-                <Text style={gstyles.searchViewLeft}>
+                <Text style={[gstyles.searchViewLeft]}>
                         <Icon name="search" size={24} color="#ccc" />
                 </Text>
-                <TextInput style={gstyles.searchViewRight}
+                <TextInput style={[gstyles.searchViewRight,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
                     placeholder="Search"
                     underlineColorAndroid="transparent"
                     placeholderTextColor="rgb(158,145,140)"
@@ -383,7 +383,7 @@ export class ShoppingListComponent extends Component {
             
               <TouchableOpacity onPress={()=>this.setState({mysection:!this.state.mysection,recommendedsection:false})} style={gstyles.ShoppingButton}><Text style={gstyles.ShoppingText}><Icon name="angle-down" size={24} color="#000" style={gstyles.flexDirectionColumn} />  {this.state.languagesData.SHOPPING_LIST_MyShoppingListTitle}</Text></TouchableOpacity>
               {
-                this.state.mysection==true ? <Text style={[gstyles.ShoppingText],{padding:10}}>{this.state.totalItems} shopping lists found</Text> : null
+                this.state.mysection==true ? <Text style={[gstyles.ShoppingText],{padding:10,textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{this.state.totalItems} shopping lists found</Text> : null
               }
               {
                 this.state.mysection==true ? this.renderMyList() : null

@@ -63,7 +63,7 @@ export class ForgetComponent extends Component {
 		return(
 				<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() =>this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPressIn={() =>this.props.navigation.goBack()} style={gstyles.headerMenuButton}>
 									<Icon name="angle-left" size={30} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.FORGETPASSWORD_HeaderTitle}</Text>  
@@ -72,8 +72,8 @@ export class ForgetComponent extends Component {
 					<ScrollView>
 						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.FORGETPASSWORD_HeaderTitle}</Text></View>
 						<View>
-							<TextInput name="email" ref={input => { this.textInput = input }} keyboardType="email-address" placeholder="Email Address" returnKeyType={"done"} underlineColorAndroid="#fff" style={gstyles.textInputStyle} onChangeText={(text) => this.setState({email: text})}/>	
-							<TouchableOpacity onPress={()=>this.forget()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.FORGETPASSWORD_SubmitButton}</Text></TouchableOpacity>
+							<TextInput name="email" ref={input => { this.textInput = input }} keyboardType="email-address" placeholder="Email Address" returnKeyType={"done"} underlineColorAndroid="#fff" style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} onChangeText={(text) => this.setState({email: text})}/>	
+							<TouchableOpacity onPressIn={()=>this.forget()} style={gstyles.buttonView}><Text style={gstyles.buttonText}>{this.state.languagesData.FORGETPASSWORD_SubmitButton}</Text></TouchableOpacity>
 						</View>
 					</ScrollView>
 				</View>

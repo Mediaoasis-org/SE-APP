@@ -41,6 +41,8 @@ target 'wffer' do
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
+  pod 'RCTRestart', :path => '../node_modules/react-native-restart/ios'
+ 
 
 end
 

@@ -179,7 +179,7 @@ export class EditWishlistComponent extends Component {
 																	<View>
 																			<TextInput name={item.name} 
 																					returnKeyType="next"
-																					style={gstyles.textInputStyle} 
+																					style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} 
 																					ref={(input) => {this[item.name] = input; }}	    
 																					onSummitTextInput={this.onSummitTextInput}
 																					placeholder={item.label} 

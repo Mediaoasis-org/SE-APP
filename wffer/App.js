@@ -7,7 +7,8 @@ import {
   YellowBox,
   AsyncStorage,
   NetInfo,
-  Alert
+  Alert,
+  // I18nManager
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
@@ -16,8 +17,9 @@ import SplashScreen from './SplashScreen';
 // import languages from './src/common/constantslist';
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 YellowBox.ignoreWarnings(['Class RCTCxxModule']);
+console.disableYellowBox = true;
 type Props = {};
-export default class App extends Component<Props> {
+export default class App extends React.Component<Props> {
   constructor(props){
     super(props);
     this.state = {
@@ -36,8 +38,9 @@ export default class App extends Component<Props> {
   //       await AsyncStorage.setItem('languageData', JSON.stringify(languages));
   //   }
   // }
-  componentDidMount(){
+ componentDidMount(){
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+ 
   }
   componentWillUnmount() {
      NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
@@ -52,18 +55,28 @@ export default class App extends Component<Props> {
     }
   async getStorageValue(){
     var value = await AsyncStorage.getItem('languageData');
+     // var lang = await AsyncStorage.getItem('languageinfo');
+       
+     //     console.log("val " + lang)
+     //        if (lang === 'ar_SA') {
+     //            I18nManager.forceRTL(true);
+     //        } else {
+     //            I18nManager.forceRTL(false);
+     //        }
+           
     if(value !== null){  
           this.setState({LoggedIn:true});
     }
     else
     {
         if(this.state.isConnected){
-          alert('netwrok connect')
+          this.fetchLanguageData()
+          // alert('netwrok connect')
          
         }
         else
         {
-          alert('no netwrok');
+          // alert('no netwrok');
 
         }
     }

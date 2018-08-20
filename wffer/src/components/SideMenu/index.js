@@ -15,6 +15,7 @@ import {gstyles} from '../../GlobalStyles';
 import { DrawerActions } from 'react-navigation';
 import { SafeAreaView} from 'react-navigation';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import RNRestart from 'react-native-restart'; 
 export class DrawerTitle extends React.Component{
   constructor(props) {
       super(props);
@@ -36,20 +37,27 @@ export class DrawerTitle extends React.Component{
       }
       // alert(this.props.connectionAvailable)
       // this.city ='';
-     
-      
-      // alert(this.city)
+     this.getInitialValues();
+     this.languageDataFetch = this.languageDataFetch.bind(this)  
     }
     
      componentDidMount(){
 
         NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
         this.getInitialValues();
+        // alert(this.state.language)    
 
+      }
+      componentWillMount() {
+        
+         console.log('called')
       }
       componentWillUnmount() {
          NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
       }
+      // componentDidUpdate(){
+  //     this.languageDataFetch();
+  // }
       handleConnectivityChange = isConnected => {
         // alert('work')
           if (isConnected) {
@@ -60,14 +68,14 @@ export class DrawerTitle extends React.Component{
           }
       }
       getInitialValues(){
-      console.log('connection' + this.state.isConnected)
+            console.log('connection' + this.state.isConnected)
             if(this.state.isConnected){
                this.languageDataFetch();
                 this.fetchValues();
                 this.fetchCities();
                 this.getCity();
             }   
-    }
+      }
     refreshLangugage(){
       this.props.navigation.dispatch(DrawerActions.closeDrawer());
       this.setState({refresh : true})
@@ -82,7 +90,8 @@ export class DrawerTitle extends React.Component{
                   AsyncStorage.setItem('languageData', JSON.stringify(responseJson.body));
                   // AsyncStorage.setItem('languageinfo', 'en');
                  // alert(JSON.stringify(responseJson.body));
-                 this.props.navigation.push('Home');
+                 // this.props.navigation.push('Home');
+                 RNRestart.Restart();
               }
               else
               {
@@ -96,8 +105,11 @@ export class DrawerTitle extends React.Component{
     }
     async languageDataFetch(){
       var languageData = await AsyncStorage.getItem('languageData');
+      // console.log(languageData);
+
         const Datalang = JSON.parse(languageData);
         const lang = await AsyncStorage.getItem('languageinfo');
+        // console.log('language : '+lang)
         this.setState({language:lang})
         this.setState({languagesData : Datalang[lang]})
     }
@@ -228,10 +240,28 @@ export class DrawerTitle extends React.Component{
 			        console.error(error);
 			      });
 	}
+ 
+  
   disable(){
-      this.setState({isButtonDisabled: true});setTimeout(() => this.setState({ isButtonDisabled: false }), 5000);
+    
+      this.setState({isButtonDisabled: true});setTimeout(() => this.setState({ isButtonDisabled: false }), 1000);
+  }
+  handleLanguage(){
+    this.props.navigation.push('Language');
+    // this.languageDataFetch()
+  }
+  navigationOptions = {
+    drawerPosition:'right'
   }
   render(){
+    // this.languageDataFetch.bind(this)
+
+    // AsyncStorage.getItem("languageinfo").then((value) => {
+    //       // this.setState({language:value})
+    //       this.languageDataFetch()
+    //       // console.log(this.state.language)
+    //   }).done();
+    
   	// alert(this.state.fieldValues.length)
   // 		if (this.state.fieldValues.length === 0) {
 		//   return null
@@ -241,40 +271,41 @@ export class DrawerTitle extends React.Component{
             this.setState({LoggedIn:true})
           }
       }).done();
+
       return(
 
         <ScrollView style={gstyles.sideMenuView} decelerationRate="normal">
         	<SafeAreaView>
           
         		<View>
-  	      		<Text style={gstyles.drawertitleHeadingText}>Menu</Text>
+  	      		<Text style={[gstyles.drawertitleHeadingText,{writingDirection:this.state.language =='ar_SA' ? 'rtl' : 'ltr',textAlign:this.state.language =='ar_SA' ? 'right' : null}]}>{this.state.languagesData.DrawerMenuTitleText}</Text>
               {
                   (this.state.LoggedIn === true) 
-                  ?<TouchableOpacity style={gstyles.drawerView} onPressIn={()=>{this.disable();this.props.navigation.push('Profile')}}><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Profile</Text></TouchableOpacity>
+                  ?<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Profile')}} ><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerProfileTitleText}</Text></TouchableOpacity>
                   : null
               }
-  	      		<TouchableOpacity style={gstyles.drawerView} onPressIn={()=>{this.disable();this.props.navigation.push('Home')}} disabled={this.state.isButtonDisabled}><Icon name="home" size={24} color="#febe2b" style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Home</Text></TouchableOpacity>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPressIn={()=>{this.disable();this.props.navigation.push('Language')}}><Image source={require('../../../assets/switch_lang.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Language</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Home')}} ><Icon name="home" size={24} color="#febe2b" style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerHomeTitleText}</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.handleLanguage()}} ><Image source={require('../../../assets/switch_lang.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerLanguageTitleText}</Text></TouchableOpacity>
         		</View>
 
         		<View>
-  	      		<Text style={gstyles.drawertitleHeadingText}> Shopping</Text>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPressIn={()=>{this.disable();this.props.navigation.push('Catalog')}}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Catalog</Text></TouchableOpacity>
-  	      		<TouchableOpacity onPressIn={()=>{this.disable();this.props.navigation.push('ShoppingList')}} style={gstyles.drawerView}><Image source={require('../../../assets/shopping-basket.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> My Shopping List</Text></TouchableOpacity>
-  	      		<TouchableOpacity onPressIn={()=>{this.disable();this.props.navigation.push('CreateWishlist')}} style={gstyles.drawerView}><Image source={require('../../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Create New List</Text></TouchableOpacity>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPressIn={()=>{this.disable();this.props.navigation.push('SpecialOffers')}}><Image source={require('../../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Special Offer</Text></TouchableOpacity>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPressIn={()=>{this.disable();this.props.navigation.push('StoreLocator')}}><Image source={require('../../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Store Locator</Text></TouchableOpacity>
-        		  <TouchableOpacity style={gstyles.drawerView} onPressIn={()=>{this.disable();this.handleNavigation()}}><Icon name="location-arrow" style={gstyles.drawerImage} size={24} color="#febe2b"/><Text style={gstyles.drawertitleNormalText}>{this.state.city == '' ? 'Select City' : this.state.city } </Text></TouchableOpacity>
+  	      		<Text style={gstyles.drawertitleHeadingText}> {this.state.languagesData.DrawerShoppingTitleText}</Text>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Catalog')}} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerCatalogTitleText}</Text></TouchableOpacity>
+  	      		<TouchableOpacity onPress={()=>{this.disable();this.props.navigation.push('ShoppingList')}} style={gstyles.drawerView} ><Image source={require('../../../assets/shopping-basket.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerWishlistTitleText}</Text></TouchableOpacity>
+  	      		<TouchableOpacity onPress={()=>{this.disable();this.props.navigation.push('CreateWishlist')}} style={gstyles.drawerView} ><Image source={require('../../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerNewListTitleText}</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('SpecialOffers')}} ><Image source={require('../../../assets/tag-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerSpecialOfferTitleText}</Text></TouchableOpacity>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('StoreLocator')}} ><Image source={require('../../../assets/store-locator-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerStoreLocatorTitleText}</Text></TouchableOpacity>
+        		  <TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.handleNavigation()}} ><Icon name="location-arrow" style={gstyles.drawerImage} size={24} color="#febe2b"/><Text style={gstyles.drawertitleNormalText}>{this.state.city == '' ? this.state.languagesData.DrawerSelectCityTitleText : this.state.city } </Text></TouchableOpacity>
             </View>
 
         		<View>
-            	<Text style={gstyles.drawertitleHeadingText}>Categories</Text>
-  	      		<TouchableOpacity style={gstyles.drawerView} onPressIn={()=>{this.disable();this.props.navigation.push('Products', {cat_name:'All Categories'})}}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> All Categories</Text></TouchableOpacity>
+            	<Text style={gstyles.drawertitleHeadingText}>{this.state.languagesData.DrawerCategoriesTitleText}</Text>
+  	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Products', {cat_name:'All Categories'})}} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerCategoriesTitleText}</Text></TouchableOpacity>
   	      		<View>
   	      		{
   	      			this.state.fieldValues.map((item,index)=>{
   	      				return(
-  	      				<TouchableOpacity key={index} style={gstyles.drawerView} onPressIn={()=>{this.disable();this.props.navigation.push('Products', {cat_name:item.category_name,cat_id:item.category_id})}}>
+  	      				<TouchableOpacity key={index} style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Products', {cat_name:item.category_name,cat_id:item.category_id})}} >
   	      					<Image source={{uri:item.image_icon}} style={[gstyles.drawerImage,{tintColor:'#febe2b'}]}/><Text style={gstyles.drawertitleNormalText}> {item.category_name}</Text>
   	      				</TouchableOpacity>
   	      				)
@@ -284,18 +315,18 @@ export class DrawerTitle extends React.Component{
         		</View>
 
         		<View style={{marginBottom:20}}>
-  	      		<Text style={gstyles.drawertitleHeadingText}>Settings</Text> 
-              <TouchableOpacity style={gstyles.drawerView}  onPressIn={() =>{this.disable();this.refreshLangugage()}} ><Icon name="refresh" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}>Refresh Language Data</Text></TouchableOpacity>
+  	      		<Text style={gstyles.drawertitleHeadingText}>{this.state.languagesData.DrawerSettingsTitleText}</Text> 
+              <TouchableOpacity style={gstyles.drawerView}  onPress={() =>{this.disable();this.refreshLangugage()}}><Icon name="refresh" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}>Refresh Language Data</Text></TouchableOpacity>
                 {
                   (this.state.LoggedIn === true) 
                   ?
                   <View>
-                    <TouchableOpacity style={gstyles.drawerView}  onPressIn={() =>{this.disable(); this.logout() }}><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> Logout</Text></TouchableOpacity>
+                    <TouchableOpacity style={gstyles.drawerView}  onPress={() =>{this.disable(); this.logout() }}><Icon name="power-off" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerLogoutTitleText}</Text></TouchableOpacity>
                   </View>
                   :
                   <View>
-                    <TouchableOpacity style={gstyles.drawerView}  onPressIn={() =>{this.disable();this.props.navigation.navigate('Login')}} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign In</Text></TouchableOpacity>
-                     <TouchableOpacity style={gstyles.drawerView} onPressIn={() => {this.disable();this.props.navigation.navigate('Signup')}}><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> Sign Up</Text></TouchableOpacity>
+                    <TouchableOpacity style={gstyles.drawerView}  onPress={() =>{this.disable();this.props.navigation.navigate('Login')}} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerSignInTitleText}</Text></TouchableOpacity>
+                     <TouchableOpacity style={gstyles.drawerView} onPress={() => {this.disable();this.props.navigation.navigate('Signup')}} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerSignUpTitleText}</Text></TouchableOpacity>
         	       </View>
                }
                
@@ -324,7 +355,7 @@ export class DrawerTitle extends React.Component{
                           {
                             this.state.cities.map((item,index)=>{
                               return(
-                                <TouchableOpacity key={index} style={{width:'96%',padding:15,backgroundColor:'#febe2b',marginLeft:'2%',marginRight:'2%',marginTop:5,marginBottom:5}} onPress={()=>{this.selectCity(item.title)}}><Text style={{color:'#fff',fontSize:20,fontWeight:'bold'}}>{item.title}</Text></TouchableOpacity>
+                                <TouchableOpacity key={index} style={{width:'96%',padding:15,backgroundColor:'#febe2b',marginLeft:'2%',marginRight:'2%',marginTop:5,marginBottom:5}} onPress={()=>{this.selectCity(item.title)}}><Text style={{color:'#fff',fontSize:20,fontWeight:'bold',textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{item.title}</Text></TouchableOpacity>
                               )
                             })
                           }
@@ -342,7 +373,7 @@ export class DrawerTitle extends React.Component{
         )
       }
   }
-
+// disabled={this.state.isButtonDisabled}
   // <Modal
   //             animationType="slide"
   //             transparent={true}

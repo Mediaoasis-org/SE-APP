@@ -3,6 +3,8 @@ package com.wffer;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
+// import com.airbnb.android.react.maps.MapsPackage;
 import com.rnfs.RNFSPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -27,12 +29,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeRestartPackage(),
+            new MapsPackage(),
+
             new RNFSPackage(),
             new PhotoViewPackage(),
             new ImagePickerPackage(),
-            new VectorIconsPackage(),
-            
-            new MapsPackage()
+            new VectorIconsPackage()
+
       );
     }
 

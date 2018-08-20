@@ -270,16 +270,16 @@ export class SignupComponent extends Component {
 				if(item.type=='Text'){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-							{this.state.email_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.email_error}</Text> : null }							
+							<TextInput name={item.name} style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+							{this.state.email_error!='' ? <Text style={[gstyles.texterrorStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.email_error}</Text> : null }							
 					</View>
 				);
 				}
 				if(item.type=='Password' && item.name=='password'){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
-							{this.state.password_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.password_error}</Text> : null }
+							<TextInput name={item.name} style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+							{this.state.password_error!='' ? <Text style={[gstyles.texterrorStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.password_error}</Text> : null }
 							
 											
 					</View>
@@ -288,9 +288,9 @@ export class SignupComponent extends Component {
 				if(item.type=='Password' && item.name=='passconf'){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
+							<TextInput name={item.name} style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>
 							{
-								this.state.passconf_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.passconf_error}</Text> : null 
+								this.state.passconf_error!='' ? <Text style={[gstyles.texterrorStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.passconf_error}</Text> : null 
 							}
 											
 					</View>
@@ -311,16 +311,16 @@ export class SignupComponent extends Component {
 				if(item.type=='Text' && item.name=="1_1_3_alias_first_name"){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />	
-							{this.state.first_name_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.first_name_error}</Text> : null }
+							<TextInput name={item.name} style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />	
+							{this.state.first_name_error!='' ? <Text style={[gstyles.texterrorStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.first_name_error}</Text> : null }
 					</View>
 				);
 				}	
 				if(item.type=='Text' && item.name=="1_1_4_alias_last_name"){
 					return (
 					<View key={index}>
-							<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />	
-							{this.state.last_name_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.last_name_error}</Text> : null }
+							<TextInput name={item.name} style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})} />	
+							{this.state.last_name_error!='' ? <Text style={[gstyles.texterrorStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.last_name_error}</Text> : null }
 					</View>
 				);
 				}	

@@ -1,8 +1,9 @@
-import { StyleSheet,Platform,Dimensions } from 'react-native';
+import { StyleSheet,Platform,Dimensions,AsyncStorage } from 'react-native';
+
 const window= Dimensions.get('window');
 export const gstyles = StyleSheet.create({
 	flexContainer:{
-		flex:1,backgroundColor:'#eee'
+		flex:1,backgroundColor:'#eee',
 	},
     container:{
 		flex:1,backgroundColor:'#fff',
@@ -47,6 +48,7 @@ export const gstyles = StyleSheet.create({
 
 	sideMenuView:
 	{
+		width:window.width*0.75,
 		backgroundColor:'#fff',
 		...Platform.select({
 			ios:{
@@ -231,8 +233,8 @@ export const gstyles = StyleSheet.create({
 	// },
 	menuicon:{height:24,width:24},
 	drawerView:{width:'100%',flexDirection:'row',padding:3},
-	drawertitleHeadingText:{backgroundColor:'#eee',padding:10,color:'#333',borderBottomColor:'#dedede',borderBottomWidth:1,fontSize:14,fontWeight:'bold'},
-	drawertitleNormalText:{padding:10,color:'#333',fontSize:14,width:'100%'},
+	drawertitleHeadingText:{width:'100%',backgroundColor:'#eee',padding:10,color:'#333',borderBottomColor:'#dedede',borderBottomWidth:1,fontSize:14,fontWeight:'bold'},
+	drawertitleNormalText:{padding:10,color:'#333',fontSize:14,width:'85%'},
 	drawerImage:{marginTop:10,marginLeft:10,marginRight:0,width:24,height:24,flexDirection:'column'},
 	flatimage:{ height: 150, width: '100%' },
 	title:{  fontSize: 16, color: '#000' },
@@ -259,13 +261,13 @@ export const gstyles = StyleSheet.create({
     //search component
     searchView:{width:'100%',flexDirection:'row',padding:12,backgroundColor:'#fff'},
     searchViewLeft:{width:'10%',flexDirection:'column'},
-    searchViewRight:{width:'90%',flexDirection:'column',...Platform.select({android:{padding:0}}),fontSize:16},
+    searchViewRight:{width:'85%',flexDirection:'column',...Platform.select({android:{padding:0}}),fontSize:16,marginRight:'5%'},
 
     //promotional offer heading
     OfferHeadingsHome:{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#fff'},
     
     //special offer 
-    SpecialOfferHeadingsHome:{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#fff'},
+    SpecialOfferHeadingsHome:{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#fff',width:'100%'},
     specialOfferViewHome:{width:'100%',flexDirection:'row',backgroundColor:'#e9ebee'},
     specialOfferView:{width:'46%',paddingLeft:15,paddingRight:15,paddingBottom:15,margin:'2%',backgroundColor:'#fff'},
     discountShow:{width:'60%',marginBottom:5,marginLeft:-15,backgroundColor:'#c30000',padding:5,color:'#fff',fontSize:14},
@@ -290,7 +292,7 @@ export const gstyles = StyleSheet.create({
     newToView:{margin:10,padding:10,alignItems:'center'},
     newToText:{color:'#000',fontWeight:'bold',fontSize:16},
     forgetPasswordView:{margin:10,padding:10,justifyContent:'center',flexDirection:'row'},
-    forgetPasswordText:{fontSize:16,color:'#5b9626'},
+    forgetPasswordText:{fontSize:16,color:'#5b9626',marginRight:5},
 
     //catalog 
     catalogView:{margin:10,borderWidth:1,borderColor:'#000'},
@@ -327,7 +329,7 @@ export const gstyles = StyleSheet.create({
  	productsMainRightIcon:{paddingTop:'100%',marginLeft:'5%',fontWeight:'bold'},
  	productBottomPart:{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5},
  	checkboxView:{width:'60%',padding:10},
- 	bestDealView:{width:'40%',padding:3},
+ 	bestDealView:{width:'46%',padding:3},
  	discountDeal:{color: '#ff0000', fontSize: 16,textAlign:'center',fontStyle:'italic'},
  	bestDeal:{color: '#000', marginTop: '3%', fontSize: 16,textAlign:'center'},
  	loadMoreActivity:{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'transparent'},
@@ -350,7 +352,7 @@ export const gstyles = StyleSheet.create({
   	wishlistBackButton:{padding:10,width:'30%',flexDirection:'column'},
   	wishlistTitle:{padding:10,fontSize:16,width:'90%',flexDirection:'column',color:'#000',fontWeight:'bold',marginTop:2},
   	wishlistBox:{backgroundColor: '#fff', margin:5,flexDirection:'row',width:'96%',marginLeft:'2%',marginRight:'2%'},
-  	wishlistBoxLeft:{width:'90%',flexDirection:'row',marginBottom:10},
+  	wishlistBoxLeft:{width:'85%',flexDirection:'row',marginBottom:10,marginRight:'3%'},
   	wishlistBoxRight:{width:'10%',marginTop:'10%'},
   	wishlistInnerLeft:{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3},
   	wishlistInnerLeftImage:{marginTop:'15%', marginBottom:'10%', width: '100%', height: 80},
@@ -395,10 +397,10 @@ export const gstyles = StyleSheet.create({
 	//lowest price
 	lowestPriceLeftBox:{flexDirection: 'column',width:'30%'},
 	lowestPriceImage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '100%', height: 100},
-	lowestPriceRightBox:{flexDirection: 'column',width:'70%'},
+	lowestPriceRightBox:{flexDirection: 'column',width:'68%',paddingRight:'2%'},
 	lowestPriceLeftInnerBox:{flexDirection: 'column',width:'10%'},
 	lowestPriceRightInner:{flexDirection:'row',width:'100%'},
-	lowestPriceRightInnerBox:{flexDirection: 'column',width:'90%'},
+	lowestPriceRightInnerBox:{flexDirection: 'column',width:'85%',marginRight:'4%'},
 	lowestPriceTitle:{fontSize: 16, marginTop: '10%',color:'#000',fontWeight:'bold'},
 	lowestPriceSubTitle:{color: '#000', marginTop: '3%', fontSize: 16},
 
@@ -420,6 +422,6 @@ export const gstyles = StyleSheet.create({
    	//tell a friend
     flatlist:{backgroundColor: '#fff',borderBottomColor:'grey',borderBottomWidth:0.5,flexDirection:'row',width:'100%'},
     tellfriend:{backgroundColor: '#fff',flexDirection:'row',width:'100%'},
-    tellFriendTitle:{fontSize: 16,padding:20,color:'#000',fontWeight:'bold',width:'85%'},
-    rightButton:{paddingTop:20,paddingBottom:20,paddingRight:10,width:'15%'},
+    tellFriendTitle:{fontSize: 16,padding:20,color:'#000',fontWeight:'bold',width:'80%'},
+    rightButton:{paddingTop:20,paddingBottom:20,width:'15%'},
 })

@@ -5,11 +5,12 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
+  I18nManager
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import {Constants} from '../../common';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-
+import RNRestart from 'react-native-restart'; 
 export class LanguageComponent extends Component {
 	constructor(props){
 		super(props);
@@ -38,7 +39,18 @@ export class LanguageComponent extends Component {
 	      this.setState({lang:value})
 	      // alert(this.state.lang)
 	      // this.setModalVisible(!this.state.modalVisible);
-	      this.props.navigation.push('Home');
+	      // this.props.navigation.reload()
+	      if(this.state.lang=='en'){
+	      	I18nManager.forceRTL(false);
+	      }
+	      else
+	      {
+	      	I18nManager.forceRTL(true);
+	      	I18nManager.allowRTL(true);
+	      }
+	      
+	      RNRestart.Restart();
+	      // this.props.navigation.push('Home');
 	  }
 	render(){
 		// const navigation = this.props.navigation;
@@ -56,12 +68,12 @@ export class LanguageComponent extends Component {
 						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
 							<TouchableOpacity style={gstyles.languageView} onPress={()=>{this.selectLanguage('ar_SA')}}>
 								<View style={gstyles.languageImageView}>
-									<Image source={require('../../../assets/sa-icon.png')} resizeMode="contain" style={gstyles.languageImage}/><Text style={gstyles.languageText}> {this.state.languagesData.LANGUAGE_Arabic} </Text>
+									<Image source={require('../../../assets/sa-icon.png')} resizeMode="contain" style={gstyles.languageImage}/><Text style={[gstyles.languageText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}> {this.state.languagesData.LANGUAGE_Arabic} </Text>
 								</View>
 							</TouchableOpacity>
 							<TouchableOpacity style={gstyles.languageView}  onPress={()=>{this.selectLanguage('en')}}>
 								<View style={gstyles.languageImageView}>
-									<Image source={require('../../../assets/en-icon.png')} resizeMode="contain" style={gstyles.languageImage}/><Text style={gstyles.languageText}> {this.state.languagesData.LANGUAGE_English} </Text>
+									<Image source={require('../../../assets/en-icon.png')} resizeMode="contain" style={gstyles.languageImage}/><Text style={[gstyles.languageText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}> {this.state.languagesData.LANGUAGE_English} </Text>
 								</View>
 							</TouchableOpacity>
 						</View>

@@ -27,8 +27,8 @@ export class Catalog extends Component {
 		super(props);
 		this.state={
 			oauthToken:'',
-      		oauthSecret:'',
-      		userData:[],
+    		oauthSecret:'',
+    		userData:[],
     		search :'',
     		fieldValues:[],
     		// LoggedIn:null,
@@ -38,13 +38,13 @@ export class Catalog extends Component {
         stores:[],
         searchFields:[],
         languagesData:[],
-            language : '',
+        language : '',
     	}
     	this.getStorageValues()
 	}
   componentDidMount(){
     NetInfo.getConnectionInfo().then((connectionInfo) => {
-      console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
+      // console.log('Initial, type: ' + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType);
     });
   }
 	async getStorageValues(){
@@ -120,7 +120,7 @@ export class Catalog extends Component {
                   stores:temp,
                   isLoading:false,
                 });
-                 console.log(this.state.stores1)
+                 // console.log(this.state.stores1)
               }
               else
               {
@@ -202,7 +202,7 @@ export class Catalog extends Component {
   		if(this.state.totalItems == 0){
               	return(
 	            	<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
-			              <Text style={gstyles.ShoppingText}>No data found</Text>
+			              <Text style={[gstyles.ShoppingText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No data found</Text>
 			              
 	            	</View>)
   		}
@@ -211,7 +211,7 @@ export class Catalog extends Component {
   			return(
   				<View>
           {
-            this.state.noData ? <Text style={gstyles.margin5}>No Data Found</Text> :  
+            this.state.noData ? <Text style={[gstyles.margin5,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No Data Found</Text> :  
   						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
   							
   							<FlatList data={this.state.renderData}
@@ -219,10 +219,10 @@ export class Catalog extends Component {
   				                    <View style={[gstyles.catalogView,{marginBottom:0}]}>
   				                     
   				                      <TouchableOpacity style={gstyles.alignItemsCenter} onPress={()=>{this.props.navigation.push('CatalogItems',{album_id:item.album_id,name:item.title})}}>
-  					                      <Text style={gstyles.catalogPhotoCount}>{item.photo_count}</Text>
+  					                      <Text style={[gstyles.catalogPhotoCount,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.photo_count}</Text>
   					                      <Image source={{uri: item.image_profile}} style={gstyles.catalogPhoto}  />
   				                      </TouchableOpacity>
-  				                      <View style={[gstyles.backgroundWhite,gstyles.padding10]}><Text style={gstyles.newToText}>{item.title}</Text></View> 
+  				                      <View style={[gstyles.backgroundWhite,gstyles.padding10]}><Text style={[gstyles.newToText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text></View> 
   				                    </View>                    
   				                    }
   				                keyExtractor={(item, index) => index.toString()}
@@ -254,8 +254,8 @@ export class Catalog extends Component {
                   <View key={index}>
                       <ModalDropdown 
                             style={gstyles.dropdownMainStyles}                                  
-                            dropdownTextStyle={gstyles.dropdownTextStyle}
-                            textStyle={gstyles.textStyle}
+                            dropdownTextStyle={[gstyles.dropdownTextStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
+                            textStyle={[gstyles.textStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
                             dropdownStyle={gstyles.dropdownStyles}
                             defaultIndex={this.props.defaultIndex}
                             showsVerticalScrollIndicator={true}

@@ -140,7 +140,7 @@ export class ChangePasswordComponent extends Component {
 			if(item.type=='Password'){
 				return (
 				<View key={item.id}>
-						<TextInput name={item.name} style={gstyles.textInputStyle} ref={input => { this.textInput = input }} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
+						<TextInput name={item.name} style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} ref={input => { this.textInput = input }} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
 						
 				</View>
 				);

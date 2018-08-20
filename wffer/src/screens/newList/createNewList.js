@@ -162,14 +162,14 @@ export class CreateWishlistComponent extends Component {
 						this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View> :
 					
 					<ScrollView>
-						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>this.state.languagesData.CREATENEWLIST_HeaderTitle</Text></View>
+						<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.CREATENEWLIST_HeaderTitle}</Text></View>
 						<View>
 					    	{
 						    	this.state.dataSource.map((item,index)=>{
 									if(item.type=='Text'){
 										return (
 										<View key={index}>
-												<TextInput name={item.name} style={gstyles.textInputStyle} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
+												<TextInput name={item.name} style={[gstyles.textInputStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>							
 										</View>
 										
 									);

@@ -184,7 +184,7 @@ export class LoginComponent extends Component {
 								  		if(item.type=='Text'){						
 											return (
 											<View>
-													<TextInput name={item.name} style={[gstyles.textInputStyle,(this.state.email_error!='') ? {borderWidth:1,borderColor:'red'} : null]} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>	
+													<TextInput name={item.name} style={[gstyles.textInputStyle,(this.state.email_error!='') ? {borderWidth:1,borderColor:'red'} : null,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} returnKeyType={"next"}  placeholder={item.label} underlineColorAndroid="#fff" onChangeText={(text) => this.setState({[item.name]: text})}/>	
 													{this.state.email_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.email_error}</Text> : null }
 											</View>	
 											);
@@ -192,7 +192,7 @@ export class LoginComponent extends Component {
 										if(item.type=='Password'){
 											return (
 											<View>
-													<TextInput name={item.name} style={[gstyles.textInputStyle,(this.state.password_error!='') ? {borderWidth:1,borderColor:'red'} : null]} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
+													<TextInput name={item.name} style={[gstyles.textInputStyle,(this.state.password_error!='') ? {borderWidth:1,borderColor:'red'} : null,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]} returnKeyType={"done"}  secureTextEntry={true} placeholder={item.label} underlineColorAndroid="#fff"  onChangeText={(text) => this.setState({[item.name]: text})} />
 													{this.state.password_error!='' ? <Text style={gstyles.texterrorStyle}>{this.state.password_error}</Text> : null }	
 											</View>
 											);
@@ -216,7 +216,7 @@ export class LoginComponent extends Component {
 								</TouchableOpacity>
 								<View style={gstyles.forgetPasswordView}>
 									<TouchableOpacity style={gstyles.flexDirectionColumn} onPressIn={()=>this.props.navigation.push('ForgetPassword')}>
-										<Text style={gstyles.forgetPasswordText}>{this.state.languagesData.LOGIN_ForgetPasswordText}</Text>
+										<Text style={gstyles.forgetPasswordText}>{this.state.languagesData.LOGIN_ForgetPasswordText} ?  </Text>  
 									</TouchableOpacity>
 									<TouchableOpacity style={gstyles.flexDirectionColumn} onPressIn={()=>this.props.navigation.push('Help')}>
 										<Text style={gstyles.forgetPasswordText}>{this.state.languagesData.LOGIN_HelpText}</Text>
