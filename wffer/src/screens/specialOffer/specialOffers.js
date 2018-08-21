@@ -40,8 +40,6 @@ export class SpecialOffers extends Component {
          this.categories_func();
          this.fetchStore();
     	 this.getSpecialoffer(); 
-    	 
-
    }
    categories_func(){
 	 fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
@@ -314,8 +312,8 @@ onTagSelect(idx, data,name){
 
 						    <ModalDropdown 
 			                      style={gstyles.dropdownMainStyles}						                      
-			                      dropdownTextStyle={[gstyles.dropdownTextStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
-			                      textStyle={[gstyles.textStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
+			                      dropdownTextStyle={[gstyles.dropdownTextStyle,gstyles.textLeft]}
+			                      textStyle={[gstyles.textStyle,gstyles.textLeft]}
 			                      dropdownStyle={gstyles.dropdownStyles}
 			                      animated={false}
 			                      defaultIndex={this.props.defaultIndex}
@@ -326,34 +324,34 @@ onTagSelect(idx, data,name){
 			                      onSelect={(idx, data)=>{ this.onTagSelect(idx, data,data)}}				
 	                		/>
 	                				
-	                		{(this.state.Message!= '') ?  <View><Text style={{textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{this.state.Message}</Text></View> : null }
+	                		{(this.state.Message!= '') ?  <View><Text style={gstyles.textLeft}>{this.state.Message}</Text></View> : null }
 						<View style={gstyles.specialOfferViewHome}>
 					{
-						(this.state.noData) ? <Text style={[gstyles.margin5,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No Data Found</Text> :
+						(this.state.noData) ? <Text style={[gstyles.margin5,gstyles.textLeft]}>No Data Found</Text> :
 						
 							<FlatList numColumns={2} data={this.state.renderData} extraData={this.state}
 				                renderItem={({item}) =>       
 				                    <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
-				                    	<Text style={[gstyles.discountShow,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.percentageOff} {this.state.languagesData.SPECIALOFFER_OffText} </Text>
+				                    	<Text style={[gstyles.discountShow,gstyles.textLeft]}>{item.percentageOff} {this.state.languagesData.SPECIALOFFER_OffText} </Text>
 				                      <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_normal}} style={gstyles.flatimage} resizeMode="contain"/></View>
 				                          <View style={gstyles.flexDirectionColumn}>
 				                          	  
-				                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={[gstyles.title,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text></View>
+				                              <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={[gstyles.title,gstyles.textLeft]}>{item.title}</Text></View>
 				                              <View>	
 				                              	{
 						          					this.state.categories.map((cat)=>{
 						          						if(cat.category_id==item.category_id){
 						          							return(
-						          							<View style={gstyles.width100} key={cat.category_id}><Text style={[gstyles.specialOfferCategory,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{cat.category_name}</Text></View>
+						          							<View style={gstyles.width100} key={cat.category_id}><Text style={[gstyles.specialOfferCategory,gstyles.textLeft]}>{cat.category_name}</Text></View>
 						          							);
 						          						}
 						          					})
 						          				}
 						          			  </View>
-				                              <Text style={[gstyles.specialOfferCompany,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.store_title}</Text>
-				                              <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.listing_price} {item.currency}</Text>
-				                              <Text style={[gstyles.specialOfferCategory,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.discountprice} {item.currency}</Text>
-				                              <Text style={[gstyles.specialOfferCategory,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>Offer Ends {item.end_time}</Text>
+				                              <Text style={[gstyles.specialOfferCompany,gstyles.textLeft]}>{item.store_title}</Text>
+				                              <Text style={[gstyles.specialOfferCategory,gstyles.textLeft,{textDecorationLine: 'line-through', textDecorationStyle: 'solid'}]}>{item.listing_price} {item.currency}</Text>
+				                              <Text style={[gstyles.specialOfferCategory,gstyles.textLeft]}>{item.discountprice} {item.currency}</Text>
+				                              <Text style={[gstyles.specialOfferCategory,gstyles.textLeft]}>Offer Ends {item.end_time}</Text>
 				                          </View>
 				                    </TouchableOpacity>                    
 				                    }

@@ -278,7 +278,7 @@ export class DrawerTitle extends React.Component{
         	<SafeAreaView>
           
         		<View>
-  	      		<Text style={[gstyles.drawertitleHeadingText,{writingDirection:this.state.language =='ar_SA' ? 'rtl' : 'ltr',textAlign:this.state.language =='ar_SA' ? 'right' : null}]}>{this.state.languagesData.DrawerMenuTitleText}</Text>
+  	      		<Text style={[gstyles.drawertitleHeadingText,gstyles.textLeft]}>{this.state.languagesData.DrawerMenuTitleText}</Text>
               {
                   (this.state.LoggedIn === true) 
                   ?<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Profile')}} ><Image source={require('../../../assets/nophoto_icon.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerProfileTitleText}</Text></TouchableOpacity>
@@ -289,7 +289,7 @@ export class DrawerTitle extends React.Component{
         		</View>
 
         		<View>
-  	      		<Text style={gstyles.drawertitleHeadingText}> {this.state.languagesData.DrawerShoppingTitleText}</Text>
+  	      		<Text style={[gstyles.drawertitleHeadingText,gstyles.textLeft]}> {this.state.languagesData.DrawerShoppingTitleText}</Text>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Catalog')}} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerCatalogTitleText}</Text></TouchableOpacity>
   	      		<TouchableOpacity onPress={()=>{this.disable();this.props.navigation.push('ShoppingList')}} style={gstyles.drawerView} ><Image source={require('../../../assets/shopping-basket.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerWishlistTitleText}</Text></TouchableOpacity>
   	      		<TouchableOpacity onPress={()=>{this.disable();this.props.navigation.push('CreateWishlist')}} style={gstyles.drawerView} ><Image source={require('../../../assets/create-list1-c.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerNewListTitleText}</Text></TouchableOpacity>
@@ -299,7 +299,7 @@ export class DrawerTitle extends React.Component{
             </View>
 
         		<View>
-            	<Text style={gstyles.drawertitleHeadingText}>{this.state.languagesData.DrawerCategoriesTitleText}</Text>
+            	<Text style={[gstyles.drawertitleHeadingText,gstyles.textLeft]}>{this.state.languagesData.DrawerCategoriesTitleText}</Text>
   	      		<TouchableOpacity style={gstyles.drawerView} onPress={()=>{this.disable();this.props.navigation.push('Products', {cat_name:'All Categories'})}} ><Image source={require('../../../assets/all-category.png')} style={gstyles.drawerImage}/><Text style={gstyles.drawertitleNormalText}> {this.state.languagesData.DrawerCategoriesTitleText}</Text></TouchableOpacity>
   	      		<View>
   	      		{
@@ -315,7 +315,7 @@ export class DrawerTitle extends React.Component{
         		</View>
 
         		<View style={{marginBottom:20}}>
-  	      		<Text style={gstyles.drawertitleHeadingText}>{this.state.languagesData.DrawerSettingsTitleText}</Text> 
+  	      		<Text style={[gstyles.drawertitleHeadingText,gstyles.textLeft]}>{this.state.languagesData.DrawerSettingsTitleText}</Text> 
               <TouchableOpacity style={gstyles.drawerView}  onPress={() =>{this.disable();this.refreshLangugage()}}><Icon name="refresh" color="#febe2b" size={24} style={gstyles.drawerImage} /><Text style={gstyles.drawertitleNormalText}>Refresh Language Data</Text></TouchableOpacity>
                 {
                   (this.state.LoggedIn === true) 
@@ -355,7 +355,7 @@ export class DrawerTitle extends React.Component{
                           {
                             this.state.cities.map((item,index)=>{
                               return(
-                                <TouchableOpacity key={index} style={{width:'96%',padding:15,backgroundColor:'#febe2b',marginLeft:'2%',marginRight:'2%',marginTop:5,marginBottom:5}} onPress={()=>{this.selectCity(item.title)}}><Text style={{color:'#fff',fontSize:20,fontWeight:'bold',textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{item.title}</Text></TouchableOpacity>
+                                <TouchableOpacity key={index} style={{width:'96%',padding:15,backgroundColor:'#febe2b',marginLeft:'2%',marginRight:'2%',marginTop:5,marginBottom:5}} onPress={()=>{this.selectCity(item.title)}}><Text style={[gstyles.textLeft,{color:'#fff',fontSize:20,fontWeight:'bold'}]}>{item.title}</Text></TouchableOpacity>
                               )
                             })
                           }

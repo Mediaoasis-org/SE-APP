@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import {
 	Text,
 	View,
@@ -15,10 +14,8 @@ NetInfo
 } from 'react-native';
 import {gstyles} from '../../GlobalStyles';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-
 import {Constants} from '../../common';
 import ModalDropdown from 'react-native-modal-dropdown';
-
 // import { DrawerActions } from 'react-navigation';
 // import {FlatlistComponent} from '../../components/FlatlistComponent';
 const window= Dimensions.get('window');
@@ -48,18 +45,18 @@ export class Catalog extends Component {
     });
   }
 	async getStorageValues(){
-    var languageData = await AsyncStorage.getItem('languageData');
+        var languageData = await AsyncStorage.getItem('languageData');
         const Datalang = JSON.parse(languageData);
         const lang = await AsyncStorage.getItem('languageinfo');
         this.setState({language:lang})
         // alert(this.state.language);
         this.setState({languagesData : Datalang[lang]})
-         const userData = await AsyncStorage.getItem('userData');
-         const city = await AsyncStorage.getItem('cityInformation');
-         this.setState({city:city});
-         this.fetchSearchFields()
-          this.fetchStore();
-         this.fetchValues();
+        const userData = await AsyncStorage.getItem('userData');
+        const city = await AsyncStorage.getItem('cityInformation');
+        this.setState({city:city});
+        this.fetchSearchFields()
+        this.fetchStore();
+        this.fetchValues();
          // alert(userData.length);
           // if(userData!=null){
           //   this.setState({LoggedIn:true});
@@ -74,7 +71,6 @@ export class Catalog extends Component {
           // }         
    }
    fetchSearchFields(){
-    
     return fetch('https://wffer.com/se/api/rest/albums/search-form?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&oauth_token='+ this.state.oauthToken + '&oauth_secret=' +this.state.oauthSecret,{
               method:'GET'
             })
@@ -202,7 +198,7 @@ export class Catalog extends Component {
   		if(this.state.totalItems == 0){
               	return(
 	            	<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
-			              <Text style={[gstyles.ShoppingText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No data found</Text>
+			              <Text style={[gstyles.ShoppingText,gstyles.textLeft]}>No data found</Text>
 			              
 	            	</View>)
   		}
@@ -211,7 +207,7 @@ export class Catalog extends Component {
   			return(
   				<View>
           {
-            this.state.noData ? <Text style={[gstyles.margin5,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>No Data Found</Text> :  
+            this.state.noData ? <Text style={[gstyles.margin5,,gstyles.textLeft]}>No Data Found</Text> :  
   						<View style={[gstyles.width100,gstyles.flexDirectionRow]}>
   							
   							<FlatList data={this.state.renderData}
@@ -219,10 +215,10 @@ export class Catalog extends Component {
   				                    <View style={[gstyles.catalogView,{marginBottom:0}]}>
   				                     
   				                      <TouchableOpacity style={gstyles.alignItemsCenter} onPress={()=>{this.props.navigation.push('CatalogItems',{album_id:item.album_id,name:item.title})}}>
-  					                      <Text style={[gstyles.catalogPhotoCount,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.photo_count}</Text>
+  					                      <Text style={[gstyles.catalogPhotoCount]}>{item.photo_count}</Text>
   					                      <Image source={{uri: item.image_profile}} style={gstyles.catalogPhoto}  />
   				                      </TouchableOpacity>
-  				                      <View style={[gstyles.backgroundWhite,gstyles.padding10]}><Text style={[gstyles.newToText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text></View> 
+  				                      <View style={[gstyles.backgroundWhite,gstyles.padding10]}><Text style={[gstyles.newToText,gstyles.textLeft]}>{item.title}</Text></View> 
   				                    </View>                    
   				                    }
   				                keyExtractor={(item, index) => index.toString()}
@@ -238,7 +234,7 @@ export class Catalog extends Component {
 		return(
 			<View style={gstyles.flexContainer}>
 				<View style={gstyles.headerMenu}>
-							<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+							<TouchableOpacity onPressIn={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 								<Icon name="bars" size={24} color="#fff" />
 		                    </TouchableOpacity>
 		                    <Text style={gstyles.headerProfileLabel}>{this.state.languagesData.CATALOG_HeaderTitle}</Text>
@@ -254,8 +250,8 @@ export class Catalog extends Component {
                   <View key={index}>
                       <ModalDropdown 
                             style={gstyles.dropdownMainStyles}                                  
-                            dropdownTextStyle={[gstyles.dropdownTextStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
-                            textStyle={[gstyles.textStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
+                            dropdownTextStyle={[gstyles.dropdownTextStyle,gstyles.textLeft]}
+                            textStyle={[gstyles.textStyle,gstyles.textLeft]}
                             dropdownStyle={gstyles.dropdownStyles}
                             defaultIndex={this.props.defaultIndex}
                             showsVerticalScrollIndicator={true}
@@ -268,9 +264,7 @@ export class Catalog extends Component {
                  )
              }
             })
-          }
-
-						   
+          } 
 						{this.catalogItems()}
 					</ScrollView>
 				}

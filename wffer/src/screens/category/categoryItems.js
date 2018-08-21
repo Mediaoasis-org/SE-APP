@@ -21,7 +21,6 @@ import {ProductDetail} from '../../components/Products';
 // const window= Dimensions.get('window');
 
 export class ProductDetails extends Component {
-
     constructor(props){
     	super(props);
     	this.state = {
@@ -35,16 +34,14 @@ export class ProductDetails extends Component {
             priceMessage:'',
             languagesData:[],
           	language : '',
-            
-      
       }
       this.best_price='';
       this.best_price_store='';
       this.getStorageValue();
-       if(this.props.navigation.state.params.best_price){
+        if(this.props.navigation.state.params.best_price){
 		      	this.best_price = this.props.navigation.state.params.best_price;
 		      	this.best_price_store = this.props.navigation.state.params.best_title;
-      }
+      	}
       // console.log(this.best_price,this.best_price_store)
     }
     async getStorageValue(){
@@ -122,18 +119,10 @@ export class ProductDetails extends Component {
 		this.setState({qty:qty});
 	}
 	 increase_qty(qty){
-	   	// alert(id)
-	   	
 	   	qty=parseInt(qty)+1; 
-	   	// alert(qty)
 	   	this.setState({qty:qty});
 	 }
-	// static navigationOptions = {
- //        drawerLockMode : 'locked-closed'
- //    };
 	render(){
-		// alert(this.state.priceValues.length)
-
 		return(
 				<View style={gstyles.flexContainer}>
 					<View style={gstyles.headerMenu}>
@@ -152,11 +141,11 @@ export class ProductDetails extends Component {
 							                <View style={{flexDirection:'column',width:'30%',justifyContent:'center',alignItems:'center'}}>
 									             <Image source={{uri:this.state.fieldValues.image_normal}} style={[gstyles.productDetailsImage,{padding:10}]}/>
 											</View>
-							                <View style={{flexDirection:'column',width:'55%'}}>
+							                <View style={{flexDirection:'column',width:'55%',paddingLeft:8}}>
 
-												<View style={gstyles.width80}><Text style={[gstyles.productDetailsTitle,{paddingTop:25,fontSize:16,color:'#000',textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.fieldValues.title}</Text></View>						                    
-									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{width:'100%',fontSize:14,color:'#727272',textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{this.state.fieldValues.like_count} likes</Text></View>
-									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={{width:'100%',fontSize:14,color:'#727272',textAlign:this.state.language == 'en' ? 'left' : 'right'}}>Location - {this.state.fieldValues.location} </Text></View>
+												<View style={gstyles.width80}><Text style={[gstyles.productDetailsTitle,gstyles.textLeft,{paddingTop:15,fontSize:16,color:'#000'}]}>{this.state.fieldValues.title}</Text></View>						                    
+									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={[gstyles.textLeft,{width:'100%',fontSize:14,color:'#727272'}]}>{this.state.fieldValues.like_count} likes</Text></View>
+									            <View style={[gstyles.width80,gstyles.flexDirectionRow,gstyles.marginTop5per]}><Text style={[gstyles.textLeft,{width:'100%',fontSize:14,color:'#727272'}]}>Location - {this.state.fieldValues.location} </Text></View>
 									      	</View>
 
 											<View style={{width:'15%',flexDirection:'column',borderLeftWidth:1,borderLeftColor:'#EAEAEA',paddingTop:10}}>   
@@ -189,7 +178,7 @@ export class ProductDetails extends Component {
 						        </View>
 						        {(this.state.priceValues.length > 0) ? 
 						        		<View>
-											<Text style={[gstyles.priceComparisonText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.PRODUCT_DETAILS_PriceComparisonHeaderText}</Text>
+											<Text style={[gstyles.priceComparisonText,gstyles.textLeft]}>{this.state.languagesData.PRODUCT_DETAILS_PriceComparisonHeaderText}</Text>
 											<View style={gstyles.backgroundWhite}>
 												<FlatList data={this.state.priceValues} 
 													renderItem={({item,index}) =>      
@@ -200,17 +189,17 @@ export class ProductDetails extends Component {
 												            <View style={gstyles.priceComparisonRight}>
 												            		{(this.best_price_store == item.wheretobuy_title) && (this.best_price != item.price) ? 
 												            			<View style={gstyles.priceTitleTextView}>
-													            			<Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',fontSize:16,textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.price} SAR</Text>
-					                              							<Text style={[gstyles.priceTitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.best_price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text>
-					                              							<Text style={[gstyles.priceSubtitleText,{marginTop:5,textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.end_time}</Text>
+													            			<Text style={[gstyles.specialOfferCategory,gstyles.textLeft,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',fontSize:16}]}>{item.price} SAR</Text>
+					                              							<Text style={[gstyles.priceTitleText,gstyles.textLeft]}>{this.best_price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text>
+					                              							<Text style={[gstyles.priceSubtitleText,gstyles.textLeft,{marginTop:5}]}>{item.end_time}</Text>
 				                              							</View>
 												            		:
-												            			<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceTitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text></View>
+												            			<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceTitleText,gstyles.textLeft]}>{item.price} {this.state.languagesData.PRODUCT_DETAILS_CurrencyText}</Text></View>
 												            		
 													          		}
-													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.wheretobuy_title}</Text></View>
-													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.country}</Text></View>
-													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.city}</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,gstyles.textLeft]}>{item.wheretobuy_title}</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,gstyles.textLeft]}>{item.country}</Text></View>
+													          		<View style={gstyles.priceTitleTextView}><Text style={[gstyles.priceSubtitleText,gstyles.textLeft]}>{item.city}</Text></View>
 													               
 											          		</View>
 											        </View>

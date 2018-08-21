@@ -274,8 +274,8 @@ export  class PersonalInfoComponent extends Component {
 													<View key={index}>
 														<ModalDropdown 
 									                      style={gstyles.dropdownMainStyles}						                      
-									                      dropdownTextStyle={[gstyles.dropdownTextStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
-									                      textStyle={[gstyles.textStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
+									                      dropdownTextStyle={[gstyles.dropdownTextStyle,gstyles.textLeft]}
+									                      textStyle={[gstyles.textStyle,gstyles.textLeft]}
 									                      animated={false}
 									                      dropdownStyle={gstyles.dropdownStyles}
 									                      defaultIndex={this.props.defaultIndex}

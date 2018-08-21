@@ -180,16 +180,14 @@ export class MultipleWishlistComponent extends Component {
 			                    <Text style={gstyles.headerRightButton}></Text>
 					</View>
 					{ 
-                              this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#00ff00' size="large"/></View>  :
+                              this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator color='#333' size="large" style={{height:100,width:'30%'}}/></View>  :
                               <ScrollView>
 									<View style={gstyles.profileHeadingView}><Text style={gstyles.profileHeadingText}>{this.state.languagesData.MULTIPLEWISHLIST_TitleText}</Text></View>
-								 	
-						          		
 						          			{
 						          				this.state.data.map((item,index)=>{
 						          					if(item.type==='Checkbox'){
 							          					return(
-							          					<View style={[gstyles.productsMain,{direction:this.state.language == 'en' ? 'ltr' : 'rtl'}]} key={index}>
+							          					<View style={[gstyles.productsMain]} key={index}>
 								          					<View style={gstyles.wishlistMultipleView} key={index}>
 								          						<CheckBox label={item.label.toString()}
 															        onChange={()=>this.onCheckBoxPress(item.name)} labelStyle={gstyles.multipleCheckbox}/> 

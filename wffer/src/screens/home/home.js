@@ -148,9 +148,6 @@ export class HomeComponent extends Component {
     // };
 
     categories_func(){
-      // this.isNetworkConnected();
-      // console.log("Network "  + this.state.isConnected)
-      // if(this.state.isConnected){
           fetch('https://wffer.com/se/api/rest/listings/categories?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&listingtype_id=2',{
               method:'GET'
             })
@@ -173,12 +170,6 @@ export class HomeComponent extends Component {
             .catch((error) =>{
               console.error(error);
             });
-      // }
-      // else
-      // {
-      //   alert('No Network connection')
-      // }
-   
     }
     fetchStore(){
 		  fetch('https://wffer.com/se/api/rest/listings/get-stores?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe',{
@@ -227,12 +218,10 @@ export class HomeComponent extends Component {
               console.error(error);
             });
   }
-
   disable(){
      this.isButtonDisabled= true;setTimeout(() => this.isButtonDisabled = false , 1000);
   }
 	render(){
-    // console.log(this.state.languagesData.HOME_HeaderApp)
    if (!this.state.isConnected) {
       return (
           <View style={gstyles.flexContainer}>
@@ -260,7 +249,7 @@ export class HomeComponent extends Component {
                 <Text style={gstyles.searchViewLeft}>
                         <Icon name="search" size={24} color="#ccc" />
                 </Text>
-                <TextInput style={[gstyles.searchViewRight]}
+                <TextInput style={[gstyles.searchViewRight,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
                     placeholder="Search"
                     underlineColorAndroid="transparent"
                     placeholderTextColor="rgb(158,145,140)"
@@ -280,7 +269,7 @@ export class HomeComponent extends Component {
               </View>
             }
            
-						<View style={gstyles.SpecialOfferHeadingsHome}><Text style={[gstyles.fontSize18,gstyles.textBlack]}>{this.state.languagesData.HOME_SpecialOffer_HeadingText}</Text></View>
+						<View style={gstyles.SpecialOfferHeadingsHome}><Text style={[gstyles.fontSize18,gstyles.textBlack,gstyles.textLeft]}>{this.state.languagesData.HOME_SpecialOffer_HeadingText}</Text></View>
 						<View style={gstyles.specialOfferViewHome}>
             { 
               this.state.isLoading ? 
@@ -291,26 +280,26 @@ export class HomeComponent extends Component {
                   <FlatList numColumns={2} data={this.state.renderData} extraData={this.state}
                             renderItem={({item}) =>      
                                 <TouchableOpacity style={gstyles.specialOfferView} onPress={()=>{BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.discountprice,best_title:item.store_title})}}>
-                                  <Text style={[gstyles.discountShow,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.percentageOff} Off </Text>
+                                  <Text style={[gstyles.discountShow,gstyles.textLeft]}>{item.percentageOff} Off </Text>
                                   <View style={gstyles.alignItemsCenter}><Image source={{uri:item.image_icon}} style={gstyles.flatimage} resizeMode="contain"/></View>
                                       <View style={gstyles.flexDirectionColumn}>
                                           
-                                          <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={[gstyles.title]}>{item.title}</Text></View>
+                                          <View style={gstyles.specialOfferTitle}><Text numberOfLines={2}  style={[gstyles.title,gstyles.textLeft]}>{item.title}</Text></View>
                                           <View>  
                                             {
                                     this.state.categories.map((cat)=>{
                                       if(cat.category_id==item.category_id){
                                         return(
-                                        <View style={gstyles.width100} key={cat.category_id}><Text style={[gstyles.specialOfferCategory]}>{cat.category_name}</Text></View>
+                                        <View style={gstyles.width100} key={cat.category_id}><Text style={[gstyles.specialOfferCategory,gstyles.textLeft]}>{cat.category_name}</Text></View>
                                         );
                                       }
                                     })
                                   }
                                   </View>
-                                          <Text style={[gstyles.specialOfferCompany]}>{item.store_title}</Text>
-                                          <Text style={[gstyles.specialOfferCategory,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',}]}>{item.listing_price} {item.currency}</Text>
-                                          <Text style={[gstyles.specialOfferCategory]}>{item.discountprice} {item.currency}</Text>
-                                          <Text style={[gstyles.specialOfferCategory]}>Offer Ends {item.end_time}</Text>
+                                          <Text style={[gstyles.specialOfferCompany,gstyles.textLeft]}>{item.store_title}</Text>
+                                          <Text style={[gstyles.specialOfferCategory,gstyles.textLeft,{textDecorationLine: 'line-through', textDecorationStyle: 'solid',}]}>{item.listing_price} {item.currency}</Text>
+                                          <Text style={[gstyles.specialOfferCategory,gstyles.textLeft]}>{item.discountprice} {item.currency}</Text>
+                                          <Text style={[gstyles.specialOfferCategory,gstyles.textLeft]}>Offer Ends {item.end_time}</Text>
                                       </View>
                                 </TouchableOpacity>                    
                                 }

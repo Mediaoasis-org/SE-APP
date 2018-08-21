@@ -66,7 +66,7 @@ export  class LowestPriceComponent extends Component {
 	renderItems(){
 		if(this.state.data.length == 0){
 			return(
-			<Text style={[gstyles.ShoppingText,gstyles.padding10,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>no record found</Text>
+			<Text style={[gstyles.ShoppingText,gstyles.padding10,,gstyles.textLeft]}>no record found</Text>
 			)
 		}
 		else
@@ -85,9 +85,9 @@ export  class LowestPriceComponent extends Component {
 			            <View style={gstyles.lowestPriceRightBox}>
 				            <View style={gstyles.lowestPriceRightInner}>
 				            	<View style={gstyles.lowestPriceRightInnerBox}>
-					          				<Text style={[gstyles.lowestPriceTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{value.title}</Text>
-							          		<Text style={[gstyles.lowestPriceSubTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.LOWESTPRICE_ProductAvailableText} {value.productAvailable}</Text>
-							          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.LOWESTPRICE_TotalPriceText} : {value.indivisualSum}</Text>	
+					          				<Text style={[gstyles.lowestPriceTitle,,gstyles.textLeft]}>{value.title}</Text>
+							          		<Text style={[gstyles.lowestPriceSubTitle,,gstyles.textLeft]}>{this.state.languagesData.LOWESTPRICE_ProductAvailableText} {value.productAvailable}</Text>
+							          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,gstyles.textLeft]}>{this.state.languagesData.LOWESTPRICE_TotalPriceText} : {value.indivisualSum}</Text>	
 							          		
 								</View>	
 								<View style={gstyles.lowestPriceLeftInnerBox}>

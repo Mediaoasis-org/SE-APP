@@ -47,14 +47,10 @@ export  class StoreLocatorComponent extends Component {
 			coords:[],
 			languagesData:[],
           	language : '',
-
 		}
-		
 		this.getStorageValues();
 	}
-
 	async getStorageValues(){
-		
 			// Linking.canOpenURL('app-settings:').then(supported => {
 			//   if (!supported) {
 			//     console.log('Can\'t handle settings url');
@@ -62,9 +58,6 @@ export  class StoreLocatorComponent extends Component {
 			//     return Linking.openURL('app-settings:');
 			//   }
 			// }).catch(err => console.error('An error occurred', err));
-		 
-		
-
 		var languageData = await AsyncStorage.getItem('languageData');
         const Datalang = JSON.parse(languageData);
         const lang = await AsyncStorage.getItem('languageinfo');
@@ -229,9 +222,9 @@ export  class StoreLocatorComponent extends Component {
 	      // this.handleInput(idx,data,name)
 	};
 	render(){
-		const origin = {latitude: this.state.latitude, longitude:this.state.longitude};
-		const destination = {latitude: 37.771707, longitude: -122.4053769};
-		const GOOGLE_MAPS_APIKEY = 'AIzaSyCfcWskrfRL7X-VTO2MLYZG22ndYNWShyg';
+		// const origin = {latitude: this.state.latitude, longitude:this.state.longitude};
+		// const destination = {latitude: 37.771707, longitude: -122.4053769};
+		// const GOOGLE_MAPS_APIKEY = 'AIzaSyCfcWskrfRL7X-VTO2MLYZG22ndYNWShyg';
 		return(
 			<View style={gstyles.container}>
 					<View style={gstyles.headerMenu}>
@@ -247,8 +240,8 @@ export  class StoreLocatorComponent extends Component {
 							<View>
 							 <ModalDropdown 
 			                      style={gstyles.dropdownMainStyles}						                      
-			                      dropdownTextStyle={[gstyles.dropdownTextStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
-			                      textStyle={[gstyles.textStyle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}
+			                      dropdownTextStyle={[gstyles.dropdownTextStyle,gstyles.textLeft]}
+			                      textStyle={[gstyles.textStyle,gstyles.textLeft]}
 			                      dropdownStyle={gstyles.dropdownStyles}
 			                      defaultIndex={this.props.defaultIndex}
 			                      showsVerticalScrollIndicator={true}

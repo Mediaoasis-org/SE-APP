@@ -94,13 +94,8 @@ export  class StoreProfileComponent extends Component {
 					          			</View>
 					          		 </View>
 						            <View style={gstyles.lowestPriceRightBox}>
-							            
-
-								          				<Text style={[gstyles.lowestPriceTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text>
-										          		<Text style={[gstyles.lowestPriceSubTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.STOREPROFILE_QuantityText} {item.quantity} X {item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} <Text style={[gstyles.fontSize18,gstyles.textRed]}>- {item.quantity*item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} </Text></Text>
-										          			
-
-											               
+								          				<Text style={[gstyles.lowestPriceTitle,gstyles.textLeft]}>{item.title}</Text>
+										          		<Text style={[gstyles.lowestPriceSubTitle,gstyles.textLeft]}>{this.state.languagesData.STOREPROFILE_QuantityText} {item.quantity} X {item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} <Text style={[gstyles.fontSize18,gstyles.textRed]}>- {item.quantity*item.price1} {this.state.languagesData.STOREPROFILE_CurrencyText} </Text></Text>			               
 					          		</View>
 					        	</TouchableOpacity>
 					        	)

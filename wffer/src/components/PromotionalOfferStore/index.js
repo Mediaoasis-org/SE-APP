@@ -16,7 +16,7 @@ export class PromotionalOfferStoreComponent extends React.Component{
   render(){
       return(
         <View>
-          <View style={gstyles.OfferHeadingsHome}><Text style={[gstyles.fontSize18,{textAlign:this.props.lang == 'en' ? 'left' : 'right'}]}>{this.props.title} in Stores</Text></View>
+          <View style={gstyles.OfferHeadingsHome}><Text style={[gstyles.fontSize18,gstyles.textLeft]}>{this.props.title} in Stores</Text></View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} alwaysBounce={true} scrollEventThrottle={16} style={gstyles.promotionalOfferView}>
             {
               this.props.data.map((item,index)=>{

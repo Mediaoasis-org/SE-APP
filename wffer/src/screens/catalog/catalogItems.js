@@ -10,19 +10,18 @@ import PhotoView from 'react-native-photo-view';
 import ImageCarousel from 'react-native-image-carousel';
 // import {FlatlistComponent} from '../../components/FlatlistComponent';
 const window= Dimensions.get('window');
+// function wp (percentage) {
+//     const value = (percentage * window.width) / 100;
+//     return Math.round(value);
+// }
+// const slideHeight = window.height * 0.36;
+// const slideWidth = wp(75);
+// const itemHorizontalMargin = wp(2);
 
-function wp (percentage) {
-    const value = (percentage * window.width) / 100;
-    return Math.round(value);
-}
-const slideHeight = window.height * 0.36;
-const slideWidth = wp(75);
-const itemHorizontalMargin = wp(2);
+// const sliderWidth = window.width;
+// const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
-const sliderWidth = window.width;
-const itemWidth = slideWidth + itemHorizontalMargin * 2;
-
-const entryBorderRadius = 8;
+// const entryBorderRadius = 8;
 
 export class CatalogItems extends PureComponent {
 	constructor(props){
@@ -67,7 +66,6 @@ export class CatalogItems extends PureComponent {
       return fetch('https://wffer.com/se/api/rest/albums/view/'+ catalog_id +'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&page='+this.page,{
               method:'GET'
             })
-      // &page=2
             .then((response) => response.json())
             .then((responseJson) => {
               if(responseJson.status_code=='200'){
@@ -82,15 +80,6 @@ export class CatalogItems extends PureComponent {
                  if(count >= 20){
 	      		 	this.setState({showLoadMore:true})
 	      		 }
-	    //   		 this.state.fieldValues.map((item)=>{
-					// 		this.setState({images_array : [...this.state.images_array,...item.image]})
-	    // //   		 	var joined = this.state.images_array.concat(item.image);
-					// // this.setState({ myArray: joined })
-					// // alert(this.state.myArray);
-	    //   		  	// this.state.images_array.{source: { uri: item.image }}
-	    //   		 	})
-	      		 
-	      		 // alert(this.state.myArray);
               }
               else
               {
@@ -192,7 +181,7 @@ export class CatalogItems extends PureComponent {
 							            alert('Modal has been closed.');
 							          }}>
 							           <View style={{marginBottom:10,backgroundColor:'#fff',width:window.width,height:window.height}}>
-                                           <TouchableHighlight style={{backgroundColor:'#febe2b', padding:20}}
+                                           <TouchableHighlight style={{backgroundColor:'#febe2b', paddingTop:20,paddingBottom:20,paddingLeft:10,paddingRight:10}}
                                             onPress={() => {
                                               this.setModalVisible(!this.state.modalVisible);
                                             }}>

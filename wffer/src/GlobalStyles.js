@@ -29,6 +29,8 @@ export const gstyles = StyleSheet.create({
 	paddingTop10:{paddingTop:10},
 	padding10:{padding:10},
 	textCenter:{textAlign:'center'},
+	textRight:{textAlign:'right'},
+	textLeft:{textAlign:'left'},
 	textRed:{color:'#ff0000'},
 	textBlack:{color:'#000'},
 	
@@ -261,7 +263,7 @@ export const gstyles = StyleSheet.create({
     //search component
     searchView:{width:'100%',flexDirection:'row',padding:12,backgroundColor:'#fff'},
     searchViewLeft:{width:'10%',flexDirection:'column'},
-    searchViewRight:{width:'85%',flexDirection:'column',...Platform.select({android:{padding:0}}),fontSize:16,marginRight:'5%'},
+    searchViewRight:{width:'85%',flexDirection:'column',...Platform.select({android:{padding:0}}),fontSize:16,marginRight:'5%',marginLeft:'5%'},
 
     //promotional offer heading
     OfferHeadingsHome:{borderBottomWidth:1,borderBottomColor:'#FFC107',padding:10,marginTop:10,backgroundColor:'#fff'},
@@ -313,7 +315,7 @@ export const gstyles = StyleSheet.create({
   	signInButton:{padding:10,fontSize:16,margin:10,textAlign:'center'},
 
   	// products css
-  	productsMain:{backgroundColor: '#fff',marginTop:12,marginLeft:12,marginRight:12},
+  	productsMain:{backgroundColor: '#fff',marginTop:12,marginLeft:10,marginRight:10},
   	productsMainLeft:{width:'90%',flexDirection:'row'},
   	productsMainRight:{width:'10%'},
   	productImageView:{width:'17%',marginLeft:'3%',flexDirection:'column',padding:3},
@@ -322,14 +324,15 @@ export const gstyles = StyleSheet.create({
   	productTitle:{fontSize: 16, marginTop: '5%',color:'#000',fontWeight:'bold'},
   	productCatTitle:{fontSize: 16, marginTop: '2%',color:'#000'},
   	qtyView:{flexDirection: 'row',padding:10,marginLeft:'40%'},
-  	qtybuttonDecrease:{margin:5},
- 	qtybuttonIncrease:{margin:5},
+  	qtybuttonDecrease:{margin:3},
+ 	qtybuttonIncrease:{margin:3},
  	qtyText:{backgroundColor:'#e9ebee',textAlign:'center',fontSize: 14, color: '#000', margin:5,paddingTop:8,paddingBottom:8,paddingLeft:15,paddingRight:15,borderColor:'#adadad',borderWidth:1},
  	qtyIcon:{width:30,height:30},
  	productsMainRightIcon:{paddingTop:'100%',marginLeft:'5%',fontWeight:'bold'},
  	productBottomPart:{width:'100%',flexDirection:'row',borderTopColor:'gray',borderTopWidth:1,paddingTop:5},
  	checkboxView:{width:'60%',padding:10},
- 	bestDealView:{width:'46%',padding:3},
+ 	bestDealView:{width:'46%'},
+ 	// ,padding:3
  	discountDeal:{color: '#ff0000', fontSize: 16,textAlign:'center',fontStyle:'italic'},
  	bestDeal:{color: '#000', marginTop: '3%', fontSize: 16,textAlign:'center'},
  	loadMoreActivity:{padding:10,width:'100%',position:'absolute', bottom:0,backgroundColor:'transparent'},

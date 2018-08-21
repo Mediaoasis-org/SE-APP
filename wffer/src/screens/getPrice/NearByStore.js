@@ -26,7 +26,6 @@ const window= Dimensions.get('window');
 export  class NearByStoreComponent extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       latitude: null,
       longitude: null,
@@ -36,12 +35,10 @@ export  class NearByStoreComponent extends Component {
       gpsLoading:true,
       city:'',
       languagesData:[],
-            language : '',
+      language : '',
     };
-    this.getStorageValue();
   }
-  async getStorageValue(){
-    
+  async getStorageValue(){    
       // Linking.canOpenURL('app-settings:').then(supported => {
       //   if (!supported) {
       //     console.log('Can\'t handle settings url');
@@ -49,36 +46,35 @@ export  class NearByStoreComponent extends Component {
       //     return Linking.openURL('app-settings:');
       //   }
       // }).catch(err => console.error('An error occurred', err));
-    
-     var languageData = await AsyncStorage.getItem('languageData');
+        const city = await AsyncStorage.getItem('cityInformation');
+        this.setState({city:city});
+        var languageData = await AsyncStorage.getItem('languageData');
         const Datalang = JSON.parse(languageData);
         const lang = await AsyncStorage.getItem('languageinfo');
         this.setState({language:lang})
         // alert(this.state.language);
-        this.setState({languagesData : Datalang[lang]})
-    const city = await AsyncStorage.getItem('cityInformation');
-      this.setState({city:city});
+        this.setState({languagesData : Datalang[lang]}) 
       // alert(this.state.city)
   }
   fetchValues(){
     let wishlist_id = this.props.navigation.state.params.wishlist_id;
-     fetch('https://wffer.com/se/api/rest/listings/wishlist/get-nearby-store-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&latitude='+this.state.latitude+'&longitude='+this.state.longitude+'&city='+this.state.city,{
+    fetch('https://wffer.com/se/api/rest/listings/wishlist/get-nearby-store-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&latitude='+this.state.latitude+'&longitude='+this.state.longitude+'&city='+this.state.city,{
               method:'GET'
         })
-        .then((response) => response.json())
+        .then(response => response.json())
         .then((responseJson) => {
+          // console.log('https://wffer.com/se/api/rest/listings/wishlist/get-nearby-store-price/'+wishlist_id+'?oauth_consumer_key=mji82teif5e8aoloye09fqrq3sjpajkk&oauth_consumer_secret=aoxhigoa336wt5n26zid8k976v9pwipe&latitude='+this.state.latitude+'&longitude='+this.state.longitude+'&city='+this.state.city)
           // alert(JSON.stringify(responseJson))
           if(responseJson.status_code=='200'){
              this.setState({
                 fieldValues: responseJson.body,
                 isLoading: false,
             
-          },function(){
-          });
+              });
           }
           else
           {
-            // this.setState({Message:responseJson.Message});
+            this.setState({Message:responseJson.Message});
           }
         })
         .catch((error) =>{
@@ -107,6 +103,7 @@ export  class NearByStoreComponent extends Component {
        { enableHighAccuracy: false, timeout: 50000, maximumAge: 1000 },
 
      );
+    this.getStorageValue();
    }
    renderItems(){
     return Object.entries(this.state.fieldValues).map(([key, value]) => {  
@@ -121,9 +118,9 @@ export  class NearByStoreComponent extends Component {
                   <View style={gstyles.lowestPriceRightBox}>
                         <View style={gstyles.lowestPriceRightInner}>
                           <View style={gstyles.lowestPriceRightInnerBox}>
-                                <Text style={[gstyles.lowestPriceTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{value.title}</Text>
-                                <Text style={[gstyles.lowestPriceSubTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.NEARBYSTORE_ProductAvailableText} {value.productAvailable}</Text>
-                                <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{this.state.languagesData.NEARBYSTORE_TotalPriceText} : {value.indivisualSum}</Text>  
+                                <Text style={[gstyles.lowestPriceTitle,,gstyles.textLeft]}>{value.title}</Text>
+                                <Text style={[gstyles.lowestPriceSubTitle,,gstyles.textLeft]}>{this.state.languagesData.NEARBYSTORE_ProductAvailableText} {value.productAvailable}</Text>
+                                <Text style={[gstyles.lowestPriceSubTitle,gstyles.textRed,,gstyles.textLeft]}>{this.state.languagesData.NEARBYSTORE_TotalPriceText} : {value.indivisualSum}</Text>  
                                 
                           </View> 
                           <View style={gstyles.lowestPriceLeftInnerBox}>
@@ -147,7 +144,7 @@ export  class NearByStoreComponent extends Component {
                          
           </View>
           
-            {this.state.error ? <Text style={{textAlign:this.state.language == 'en' ? 'left' : 'right'}}>Error: {this.state.error}</Text> : null}
+            {this.state.error ? <Text style={gstyles.textLeft}>Error: {this.state.error}</Text> : null}
          
           <ScrollView>
                 { 
@@ -163,39 +160,7 @@ export  class NearByStoreComponent extends Component {
   }
 }
 const styles  = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  map: {
-    // position: 'absolute',
-    // top: 0,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
-    width:'100%',
-    height:window.height
-  },
     flatlist:{backgroundColor: '#fff', flexDirection: 'row', borderColor:'#adadad',borderBottomWidth:1},
-    flatimage:{marginTop:'15%', marginBottom:'10%', marginLeft: '5%', width: '100%', height: 100},
-    title:{fontSize: 18, marginTop: '10%',color:'#000',fontWeight:'bold'},
-    subtitle:{color: '#000', marginTop: '3%', fontSize: 18},
-    discountDeal:{color: '#ff0000', marginTop: '3%', fontSize: 18},
-    qtyView:{flexDirection: 'row',borderWidth: 1,borderColor:'#adadad',width:100,height:30,},
-    qtybuttonDecrease:{width:28,borderRightWidth:1,borderColor:'#adadad'},
-    qtybuttonIncrease:{width:28,borderLeftWidth:1,borderColor:'#adadad'},
-    qtyText:{width:40,textAlign:'center',fontSize: 14,textAlign:'center', color: 'rgb(147, 198, 87)', marginTop: '5%',borderColor:'#adadad'},
-    subTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'rgb(113,113,113)',paddingLeft:12},
-    subTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'rgb(113,113,113)',fontWeight:'bold',paddingRight:10},
-    itemTotal:{fontSize: 18,flexDirection:'column',width:'50%',color:'#000'},
-    itemTotalRight:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000'},
-    itemTotalRightIcon:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right'},
-    orderTotalAmount:{fontSize: 18,flexDirection:'column',width:'50%',textAlign:'right',color:'#000',fontWeight:'bold'}
 })
 
 

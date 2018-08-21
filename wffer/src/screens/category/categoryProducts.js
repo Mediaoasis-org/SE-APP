@@ -302,11 +302,11 @@ export class Products extends Component {
 		return(
 				<View style={gstyles.flexContainer}>
 					<View style={gstyles.headerMenu}>
-								<TouchableOpacity onPress={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
+								<TouchableOpacity onPressIn={() =>this.props.navigation.openDrawer()} style={gstyles.headerMenuButton}>
 									<Icon name="bars" size={24} color="#fff" />
 			                    </TouchableOpacity>
 			                    <Text style={gstyles.headerProfileLabel}>{this.props.navigation.state.params.cat_name}</Text>
-			                    <TouchableOpacity onPress={()=>this.addToCart()} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
+			                    <TouchableOpacity onPressIn={()=>this.addToCart()} style={gstyles.headerRightButton}><Icon name="cart-plus" size={24} color="#fff" /></TouchableOpacity>
 					</View>
 					{ 
                         this.state.isLoading ? <View style={gstyles.loading}><ActivityIndicator style={gstyles.loadingActivity} color='#333' size="large"/></View>  :
@@ -326,23 +326,23 @@ export class Products extends Component {
 				        </View>
 						<View>
 						{
-							this.state.noData ? <Text style={{textAlign:this.state.language == 'en' ? 'left' : 'right'}}>No Data Found</Text> :  <View>    
+							this.state.noData ? <Text style={gstyles.textLeft}>No Data Found</Text> :  <View>    
 						{
 							this.state.renderData.map((item,index)=>{
 								return(
 									<View style={[gstyles.productsMain,{paddingLeft:10,paddingRight:10,paddingTop:10}]} key={index}>
 		                    		<TouchableOpacity onPress={()=>{this.props.navigation.push('ProductDetails',{product_id:item.listing_id,best_price:item.best_deal_price,best_title:item.best_deal_title})}}>
-		                    			<View style={{width:'96%',flexDirection:'row',backgroundColor:'#fff',marginLeft:'2%',marginRight:'2%'}}>
-		                    				<TouchableOpacity style={{width:'30%',flexDirection:'column',paddingLeft:10}} onPress={()=>{this.onCheckBoxPress(item.listing_id)}}>
+		                    			<View style={{width:'98%',flexDirection:'row',backgroundColor:'#fff',marginLeft:'1%',marginRight:'1%'}}>
+		                    				<TouchableOpacity style={{width:'30%',flexDirection:'column'}} onPress={()=>{this.onCheckBoxPress(item.listing_id)}}>
 		                    				{this.state.selectedCheckboxId.map((items,index)=>{ if(items == item.listing_id){ return(<Icon name="check" color="green" size={24} key={index} style={{width:24,height:24,zIndex:1000,position:'absolute',top:10,left:10,opacity:1}}/>)} })}
 					          						<Image source={{uri:item.image}} style={[{marginTop:'15%', marginBottom:'10%', width: '100%', height: window.height/6},this.state.selectedCheckboxId.map((items)=>{ if(items == item.listing_id){ return ({opacity:0.6})} })]} />
 					          						
 					          				</TouchableOpacity>
 					          				
-								            <View style={{width:'55%',flexDirection:'column',paddingLeft:10,paddingTop:10,paddingRight:10,paddingBottom:10}}>
+								            <View style={{width:'60%',flexDirection:'column',paddingTop:5,paddingBottom:10,paddingLeft:8,paddingRight:8}}>
 								            	<View style={gstyles.width100}>
 								          					
-								          						<Text style={[gstyles.productTitle,{textAlign:this.state.language == 'en' ? 'left' : 'right'}]}>{item.title}</Text>
+								          						<Text style={[gstyles.productTitle,gstyles.textLeft]}>{item.title}</Text>
 								          					
 								       			</View>
 							       				<View>
@@ -350,22 +350,22 @@ export class Products extends Component {
 							          					this.state.categories.map((cat)=>{
 							          						if(cat.category_id==item.category_id){
 							          							return(
-							          							<View style={gstyles.width100} key={cat.category_id}><Text style={gstyles.productCatTitle,{color:'#727272',paddingTop:7,fontSize:16,fontWeight:'bold',textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{cat.category_name}</Text></View>
+							          							<View style={gstyles.width100} key={cat.category_id}><Text style={[gstyles.productCatTitle,gstyles.textLeft,{color:'#727272',paddingTop:7,fontSize:16,fontWeight:'bold'}]}>{cat.category_name}</Text></View>
 							          							);
 							          						}
 							          					})
 							          				}
 								          		</View>
-									          	<Text style={{fontSize:16,color:'#727272',paddingTop:7,textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{item.best_deal_title}</Text>
+									          	<Text style={[gstyles.textLeft,{fontSize:16,color:'#727272',paddingTop:7}]}>{item.best_deal_title}</Text>
 								          		<View style={gstyles.bestDealView,{flexDirection:'row',paddingTop:7}}>
-					          						<Text style={{fontSize:16,textAlign:this.state.language == 'en' ? 'left' : 'right'}}>{this.state.languagesData.PRODUCT_LIST_BestDealText} </Text>
-									          		<Text style={{fontSize:16,color:'#ff0000',textAlign:this.state.language == 'en' ? 'left' : 'right'}}> : {item.best_deal_price} {item.currency} </Text>
+					          						<Text style={[gstyles.textLeft,{fontSize:16}]}>{this.state.languagesData.PRODUCT_LIST_BestDealText} : <Text style={{color:'#ff0000'}}> {item.best_deal_price} {item.currency} </Text></Text>
+									          		
 									          	</View>												          	 	
 								          	</View>
-								            <View style={{width:'15%',flexDirection:'column',borderLeftWidth:1,borderLeftColor:'#EAEAEA',}}>
+								            <View style={{width:'10%',flexDirection:'column',borderLeftWidth:1,borderLeftColor:'#EAEAEA',paddingLeft:5}}>
 						                          <TouchableHighlight 
 						                             onPress={() => this.increase_qty(item.listing_id)}
-						                             underlayColor='#BEBEBE' style={[gstyles.qtybuttonDecrease,{justifyContent:'center',alignItems:'center',height:50}]}>
+						                             underlayColor='transparent' style={[gstyles.qtybuttonDecrease,{justifyContent:'center',alignItems:'center',height:50}]}>
 						                             <Image source={require('../../../assets/aditionsign.png')} style={{width:24,height:24}}/>
 						                          </TouchableHighlight>										                      
 						                          <View style={{justifyContent:'center',alignItems:'center',height:50}}>
@@ -373,7 +373,7 @@ export class Products extends Component {
 						                          </View>										                          
 						                          <TouchableHighlight 
 						                             onPress={() => this.decrease_qty(item.listing_id)}
-						                             underlayColor='#BEBEBE' style={[gstyles.qtybuttonIncrease,{justifyContent:'center',alignItems:'center',height:50}]}>
+						                             underlayColor='transparent' style={[gstyles.qtybuttonIncrease,{justifyContent:'center',alignItems:'center',height:50}]}>
 						                            <Image source={require('../../../assets/subsign.png')} style={gstyles.qtyIcon}/>
 						                          </TouchableHighlight>										                        
 								            </View>
