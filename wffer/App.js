@@ -69,8 +69,9 @@ export default class App extends React.Component<Props> {
     }
     else
     {
+      this.fetchLanguageData()
         if(this.state.isConnected){
-          this.fetchLanguageData()
+          
           // alert('netwrok connect')
          
         }
